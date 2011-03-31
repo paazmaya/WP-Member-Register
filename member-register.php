@@ -10,32 +10,21 @@
 */
 
 /**
-Database tables:
-
-sy_club
-sy_grade
-sy_member
-sy_payment
-*/
-
-/**
  * add field to user profiles
  */
 
 class member_register
 {
-	function get_grades($member) 
+
+
+
+	function member_register()
 	{
-		global $wpdb;
-		$grades = $wpdb->get_results("SELECT * FROM sy_grade WHERE member='" . $member . "' ORDER BY ";
-		return $grades;	
-	}
-
-
-
-
-	function simple_local_avatars()
-	{
+		global $mr_db_version;
+		$mr_db_version = '0.1';
+	
+		register_activation_hook(__FILE__,'mr_install');
+	
 		add_filter( 'get_avatar', array( $this, 'get_avatar' ), 10, 5 );
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
@@ -48,6 +37,63 @@ class member_register
 
 		add_filter( 'avatar_defaults', array( $this, 'avatar_defaults' ) );
 	}
+
+
+
+	function mr_install () {
+		global $wpdb;
+		global $mr_db_version;
+		
+		$tables = array('club', 'grade', 'member', 'payment');
+
+		$table_name = $wpdb->prefix . '';
+		
+		if($wpdb->get_var("show tables like '$table_name'") != $table_name) {
+
+			$sql = "CREATE TABLE " . $table_name . " (
+				id mediumint(9) NOT NULL AUTO_INCREMENT,
+				time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+				name tinytext NOT NULL,
+				text text NOT NULL,
+				url VARCHAR(55) DEFAULT '' NOT NULL,
+				UNIQUE KEY id (id)
+			);";
+
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql);
+
+			$welcome_name = "Mr. Wordpress";
+			$welcome_text = "Congratulations, you just completed the installation!";
+
+			$rows_affected = $wpdb->insert( $table_name, array( 'time' => current_time('mysql'), 'name' => $welcome_name, 'text' => $welcome_text ) );
+
+			add_option("mr_db_version", $mr_db_version);
+
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	function get_grades($member) 
+	{
+		global $wpdb;
+		$grades = $wpdb->get_results("SELECT * FROM sy_grade WHERE member='" . $member . "' ORDER BY ";
+		return $grades;	
+	}
+
+
+
 
 	function get_avatar( $avatar = '', $id_or_email, $size = '96', $default = '', $alt = false )
 	{
