@@ -13,6 +13,13 @@
  * add field to user profiles
  */
 
+ 
+define ('MEMBER_REGISTER_VERSION', '0.3.1');
+
+
+wp_enqueue_script('jquery');
+
+
 class member_register
 {
 
@@ -44,32 +51,105 @@ class member_register
 		global $wpdb;
 		global $mr_db_version;
 		
-		$tables = array('club', 'grade', 'member', 'payment');
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-		$table_name = $wpdb->prefix . '';
-		
-		if($wpdb->get_var("show tables like '$table_name'") != $table_name) {
-
-			$sql = "CREATE TABLE " . $table_name . " (
-				id mediumint(9) NOT NULL AUTO_INCREMENT,
-				time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-				name tinytext NOT NULL,
-				text text NOT NULL,
-				url VARCHAR(55) DEFAULT '' NOT NULL,
-				UNIQUE KEY id (id)
-			);";
-
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-			dbDelta($sql);
 
 			$welcome_name = "Mr. Wordpress";
 			$welcome_text = "Congratulations, you just completed the installation!";
 
 			$rows_affected = $wpdb->insert( $table_name, array( 'time' => current_time('mysql'), 'name' => $welcome_name, 'text' => $welcome_text ) );
 
-			add_option("mr_db_version", $mr_db_version);
+		
+		
+		
+		$table_name = $wpdb->prefix . 'mr_club';
+		if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+		{
+		
+			$sql = "CREATE TABLE " . $table_name . " (
+			  id mediumint(6) unsigned NOT NULL DEFAULT '0',
+			  name varchar(100) COLLATE utf8_swedish_ci NOT NULL,
+			  address tinytext COLLATE utf8_swedish_ci NOT NULL,
+			  PRIMARY KEY (id)
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
 
+			dbDelta($sql);
 		}
+
+		$table_name = $wpdb->prefix . 'mr_grade';
+		if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+		{
+		
+			$sql = "CREATE TABLE " . $table_name . " (
+			  member mediumint(5) unsigned NOT NULL DEFAULT '0',
+			  grade enum('8K','7K','6K','5h','5K','4h','4K','3h','3K','2h','2K','1h','1K','1s','1D','2s','2D','3D','4D','5D','6D','7D','8D') COLLATE utf8_swedish_ci NOT NULL DEFAULT '8K',
+			  location varchar(100) COLLATE utf8_swedish_ci NOT NULL,
+			  nominator tinyint(4) NOT NULL DEFAULT '0',
+			  day date DEFAULT '0000-00-00' NOT NULL,
+			  KEY member (member)
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
+
+			dbDelta($sql);
+		}
+
+		$table_name = $wpdb->prefix . 'mr_member';
+		if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+		{
+		
+			$sql = "CREATE TABLE " . $table_name . " (
+			  id mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
+			  user_login varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'wp_users reference',
+			  access tinyint(1) NOT NULL DEFAULT '0',
+			  firstname varchar(40) COLLATE utf8_swedish_ci NOT NULL,
+			  lastname varchar(40) COLLATE utf8_swedish_ci NOT NULL,
+			  birthdate date DEFAULT '0000-00-00' NOT NULL,
+			  address varchar(160) COLLATE utf8_swedish_ci NOT NULL,
+			  zipcode varchar(6) COLLATE utf8_swedish_ci NOT NULL DEFAULT '20100',
+			  postitoimi varchar(80) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'Turku',
+			  phone varchar(20) COLLATE utf8_swedish_ci NOT NULL,
+			  email varchar(200) COLLATE utf8_swedish_ci NOT NULL,
+			  nationality varchar(2) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'FI',
+			  joindate date DEFAULT '0000-00-00' NOT NULL,
+			  passinro mediumint(6) unsigned NOT NULL DEFAULT '0',
+			  notes tinytext COLLATE utf8_swedish_ci NOT NULL,
+			  lastlogin int(10) unsigned NOT NULL DEFAULT '0',
+			  active tinyint(1) NOT NULL DEFAULT '0',
+			  club mediumint(6) unsigned NOT NULL DEFAULT '0',
+			  PRIMARY KEY (id)
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
+
+			dbDelta($sql);
+		}
+
+		$table_name = $wpdb->prefix . 'mr_payment';
+		if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+		{
+		
+			$sql = "CREATE TABLE " . $table_name . " (
+			  id mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
+			  member mediumint(5) unsigned NOT NULL DEFAULT '0',
+			  reference mediumint(6) unsigned NOT NULL DEFAULT '0',
+			  type varchar(24) COLLATE utf8_swedish_ci NOT NULL,
+			  amount float(8,2) NOT NULL DEFAULT '0.00',
+			  deadline date DEFAULT '0000-00-00' NOT NULL,
+			  paidday date DEFAULT '0000-00-00' NOT NULL,
+			  validuntil date DEFAULT '0000-00-00' NOT NULL,
+			  club mediumint(6) unsigned NOT NULL DEFAULT '0',
+			  PRIMARY KEY (id),
+			  KEY member (member)
+			) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
+		
+		
+			dbDelta($sql);
+		}
+		
+		
+		
+		add_option('mr_db_version', $mr_db_version);
+		
+		
+		
+		
 	}
 
 
