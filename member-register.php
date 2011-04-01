@@ -42,27 +42,68 @@ function mr_plugin_menu()
 {
 	// http://codex.wordpress.org/Adding_Administration_Menus
 	add_menu_page('Jäsenrekisterin Hallinta', 'Jäsenrekisteri', 'create_users', 'member-register-control', 
-		'mr_options'); //$icon_url, $position );
+		'mr_member_list'); //$icon_url, $position );
 	add_submenu_page('member-register-control', 'Lisää uusi jäsen',
-		'Uusi jäsen', 'create_users', 'member-register-new', 'mr_new_user');
+		'Uusi jäsen', 'create_users', 'member-register-new', 'mr_member_new');
+	add_submenu_page('member-register-control', 'Hallinnoi jäsenmaksuja',
+		'Jäsenmaksut', 'create_users', 'member-payment-list', 'mr_payment_list');
+	add_submenu_page('member-register-control', 'Uusi maksu',
+		'Uusi maksu', 'create_users', 'member-payment-new', 'mr_payment_new');
 }
 
-function mr_options()
+function mr_member_list()
 {
-	if (!current_user_can('create_users'))  {
+	if (!current_user_can('create_users')) 
+	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	echo '<div class="wrap">';
 	echo '<h2>Jäsenrekisteri</h2>';
-	echo '<p><a class="button add-new-h2" href="member-new.php">Lisää uusi jäsen</a></p>';
+	echo '<p>Alla lista rekisteröidyistä jäsenistä</p>';
 	echo mr_show_members();
 	echo '</div>';
 }
-function mr_new_user()
+function mr_payment_list()
 {
-	if (!current_user_can('create_users'))  {
+	if (!current_user_can('create_users')) 
+	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
+	
+	global $wpdb;
+	
+	if (isset($_GET['haspaid']) && is_numeric($_GET['haspaid']))
+	{
+		$id = intval($_GET['haspaid']);
+		$today = date('Y-m-d');
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id;
+		if ($wpdb->query($sql))
+		{
+			?>
+			<div class="updated"><p><strong>Maksu merkitty maksetuksi tänään</strong></p></div>
+			<?php
+		}
+		else 
+		{
+			echo '<p>' . mysql_error() . '</p>';
+		}
+	}
+	
+	echo '<div class="wrap">';
+	echo '<h2>Jäsenmaksut</h2>';
+	echo '<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>';
+	echo mr_show_payments();
+	echo '</div>';
+}
+
+function mr_member_new()
+{
+	if (!current_user_can('create_users')) 
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	global $wpdb;
 	
     $hidden_field_name = 'mr_submit_hidden';
 
@@ -70,7 +111,7 @@ function mr_new_user()
     // If they did, this hidden field will be set to 'Y'
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' )
 	{
-        if (mr_insert_new_user($_POST))
+        if (mr_insert_new_member($_POST))
 		{
 
 			// Put an settings updated message on the screen
@@ -90,68 +131,79 @@ function mr_new_user()
 		<h2>Lisää uusi jäsen</h2>
 		<form name="form1" method="post" action="">
 			<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
-			<table>
-				<tr>
-					<th>user_login (jos siis on jo WP käyttäjä)</th>
-					<td><input type="text" name="user_login" /></td>
+			<table class="form-table" id="createuser">
+				<tr class="form-field">
+					<th>user_login <span class="description">(jos siis on jo WP käyttäjä)</span></th>
+					<td><select name="user_login">
+					<option value="">-</option>
+					<?php
+					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN ' . $wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
+					
+					$users = $wpdb->get_results($sql, ARRAY_A);
+					foreach($users as $user)
+					{
+						echo '<option value="' . $user['user_login']. '">' . $user['display_name'] . ' (' . $user['user_login'] . ')</option>';
+					}
+					?>
+					</select></td>
 				</tr>
-				<tr>
+				<tr class="form-field form-required">
 					<th>access</th>
 					<td><input type="text" name="access" value="1" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field form-required">
 					<th>firstname</th>
 					<td><input type="text" name="firstname" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field form-required">
 					<th>lastname</th>
 					<td><input type="text" name="lastname" /></td>
 				</tr>
-				<tr>
-					<th>birthdate (YYYY-MM-DD)</th>
+				<tr class="form-field">
+					<th>birthdate <span class="description">(YYYY-MM-DD)</span></th>
 					<td><input type="text" name="birthdate" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>address</th>
 					<td><input type="text" name="address" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>zipcode</th>
 					<td><input type="text" name="zipcode" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>postal</th>
 					<td><input type="text" name="postal" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>phone</th>
 					<td><input type="text" name="phone" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>email</th>
 					<td><input type="text" name="email" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>nationality</th>
 					<td><input type="text" name="nationality" /></td>
 				</tr>
-				<tr>
-					<th>joindate (YYYY-MM-DD)</th>
+				<tr class="form-field">
+					<th>joindate <span class="description">(YYYY-MM-DD)</span></th>
 					<td><input type="text" name="joindate" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>passnro</th>
 					<td><input type="text" name="passnro" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>notes</th>
 					<td><input type="text" name="notes" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>active</th>
 					<td><input type="text" name="active" value="1" /></td>
 				</tr>
-				<tr>
+				<tr class="form-field">
 					<th>club</th>
 					<td><select name="club">
 					<option value="0">-</option>
@@ -165,8 +217,101 @@ function mr_new_user()
 					</select></td>
 				</tr>
 			</table>
-			<hr />
+		  
+			<p class="submit">
+				<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			</p>
+
+		</form>
+	</div>
+
+	<?php
 		
+}
+function mr_payment_new()
+{
+	if (!current_user_can('create_users'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	global $wpdb;
+	
+    $hidden_field_name = 'mr_submit_hidden';
+
+    // See if the user has posted us some information
+    // If they did, this hidden field will be set to 'Y'
+    if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' )
+	{
+        if (mr_insert_new_payment($_POST))
+		{
+			?>
+			<div class="updated"><p><strong>Uusi/uudet maksu(t) lisätty</strong></p></div>
+			<?php
+		}
+		else 
+		{
+			echo '<p>' . mysql_error() . '</p>';
+		}
+
+    }
+
+    ?>
+	<div class="wrap">
+		<h2>Lisää uusi maksu, useammalle henkilölle jos tarve vaatii</h2>
+		<p>Pääasia että rahaa tulee, sitä kun menee</p>
+		<form name="form1" method="post" action="" enctype="multipart/form-data">
+			<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
+			<table class="form-table" id="createuser">				
+				<tr class="form-field">
+					<th>member <span class="description">(monivalinta)</span></th>
+					<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;">
+					<option value="">-</option>
+					<?php
+					$sql = 'SELECT firstname, lastname, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
+					echo $sql;
+					
+					$users = $wpdb->get_results($sql, ARRAY_A);
+					foreach($users as $user)
+					{
+						echo '<option value="' . $user['id']. '">' . $user['lastname'] . ', ' . $user['firstname'] . '</option>';
+					}
+					?>
+					</select></td>
+				</tr>
+				<tr class="form-field">
+					<th>type <span class="description">(lienee aina vuosimaksu)</span></th>
+					<td><input type="text" name="type" value="vuosimaksu" /></td>
+				</tr>
+				<tr class="form-field">
+					<th>amount <span class="description">(EUR)</span></th>
+					<td><input type="text" name="amount" value="10" /></td>
+				</tr>
+				<tr class="form-field">
+					<th>deadline <span class="description">(3 viikkoa tulevaisuudessa)</span></th>
+					<td><input type="text" name="deadline" value="<?php
+					echo date('Y-m-d', time() + 60*60*24*21);
+					?>" /></td>
+				</tr>
+				<tr class="form-field">
+					<th>validuntil <span class="description">(kuluvan vuoden loppuun)</span></th>
+					<td><input type="text" name="validuntil" value="<?php
+					echo date('Y') . '-12-31';
+					?>" /></td>
+				</tr>
+				<tr class="form-field">
+					<th>club</th>
+					<td><select name="club">
+					<option value="0">-</option>
+					<?php
+					$clubs = mr_get_list('club', '', '', 'name ASC');
+					foreach($clubs as $club)
+					{
+						echo '<option value="' . $club['id']. '">' . $club['name'] . '</option>';
+					}
+					?>
+					</select></td>
+				</tr>
+			</table>
 		  
 			<p class="submit">
 				<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
@@ -197,7 +342,54 @@ function mr_urize($str)
 	return $str;
 }
 
-function mr_insert_new_user($postdata)
+function mr_insert_new_payment($postdata)
+{
+	global $wpdb;
+	
+	$keys = array();
+	$values = array();
+	$setval = array();
+		
+	$required = array('type', 'amount', 'deadline', 'validuntil', 'club');
+
+	
+	if (isset($postdata['members']) && is_array($postdata['members']) && count($postdata['members']) > 0)
+	{
+		foreach($postdata as $k => $v)
+		{
+			if (in_array($k, $required))
+			{
+				// sanitize
+				$keys[] = mr_urize($k);
+				$values[] = "'" . mr_htmlent($v) . "'";
+			}
+		}
+		
+		$keys[] = 'member';
+		$keys[] = 'reference';
+		
+		
+		foreach($postdata['members'] as $member)
+		{
+			// calculate reference number
+			$ref = "'" . '22222' . "'";
+			
+			$setval[] = '(' . implode(', ', array_merge($values, array('"' . $member . '"', $ref))) . ')';
+			
+		}
+	}
+	
+	
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
+	
+	//echo $sql;
+	
+	return $wpdb->query($sql);
+}
+
+
+
+function mr_insert_new_member()
 {
 	global $wpdb;
 	
@@ -222,12 +414,113 @@ function mr_insert_new_user($postdata)
 	//echo $sql;
 	
 	return $wpdb->query($sql);
+
 }
 
 function admin_init()
 {
 
 }
+
+
+
+
+
+
+
+
+/**
+ * Get a set of items from the given table, where should be like something.
+ */
+function mr_get_list($table, $where = '', $shouldbe = '', $order = '1 ASC') 
+{
+	global $wpdb;
+	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_' . $table;
+	if (isset($where) && $where != '') 
+	{
+		$sql .= ' WHERE ' . $where . ' LIKE \'%' . $shouldbe . '%\'';
+	}
+	$sql .= ' ORDER BY ' . $order;
+	
+	return $wpdb->get_results($sql, ARRAY_A);
+}
+
+function mr_show_payments()
+{
+	global $wpdb;
+	$sql = 'SELECT A.*, B.firstname, B.lastname, C.name AS clubname FROM ' . $wpdb->prefix .
+		'mr_payment A LEFT JOIN ' . $wpdb->prefix . 
+		'mr_member B ON A.member = B.id LEFT JOIN ' . $wpdb->prefix . 
+		'mr_club C ON B.club = C.id ORDER BY A.deadline DESC';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+	
+	$items = array('firstname', 'lastname', 'id',
+		'member', 'reference', 'type', 'amount', 'deadline', 
+		'paidday', 'validuntil', 'club', 'clubname');
+		
+	$out = '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	$out .='<th></th>';
+	
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}	
+	
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+	
+	foreach($res as $payment)
+	{
+		$out .= '<tr id="payment_' . $payment['id'] . '">';
+		$out .= '<td><a href="/wp-admin/admin.php?page=member-payment-list?haspaid=' . $payment['id'] . '" title="Merkitse maksetuksi">OK</a></td>';
+		foreach($items as $item)
+		{
+			$out .= '<td>' . $payment[$item] . '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+
+	return $out;
+}
+
+
+function mr_show_members()
+{
+	$items = array('user_login', 'firstname', 'lastname', 'birthdate', 'email', 'joindate');
+	$members = mr_get_list('member');
+	$out = '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}
+	
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+		
+	foreach($members as $member)
+	{
+		$out .= '<tr id="user_' . $member['id'] . '">';
+		foreach($items as $item)
+		{
+			$out .= '<td>' . $member[$item] . '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+
+	return $out;
+}
+
 
 
 function mr_install () 
@@ -326,60 +619,3 @@ function mr_install ()
 		
 }
 
-
-
-
-
-
-
-
-/**
- * Get a set of items from the given table, where should be like something.
- */
-function mr_get_list($table, $where = '', $shouldbe = '', $order = '1 ASC') 
-{
-	global $wpdb;
-	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_' . $table;
-	if (isset($where) && $where != '') 
-	{
-		$sql .= ' WHERE ' . $where . ' LIKE \'%' . $shouldbe . '%\'';
-	}
-	$sql .= ' ORDER BY ' . $order;
-	
-	return $wpdb->get_results($sql, ARRAY_A);
-}
-
-
-
-
-function mr_show_members()
-{
-	$items = array('user_login', 'firstname', 'lastname', 'birthdate', 'email');
-	$members = mr_get_list('member');
-	$out = '<table>';
-	$out .= '<thead>';
-	$out .= '<tr>';
-	
-	foreach($items as $item)
-	{
-		$out .= '<th>' . $item . '</th>';
-	}
-	
-	$out .= '</tr>';
-	$out .= '</thead>';
-	$out .= '<tbody>';
-		
-	foreach($members as $member)
-	{
-		$out .= '<tr>';
-		foreach($items as $item)
-		{
-			$out .= '<td>' . $member[$item] . '</td>';
-		}
-		$out .= '</tr>';
-	}
-	$out .= '</tbody>';
-	$out .= '</table>';
-
-	return $out;
-}
