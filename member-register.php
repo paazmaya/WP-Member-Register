@@ -15,7 +15,12 @@
 
  
 define ('MEMBER_REGISTER_VERSION', '0.3.2');
+global $mr_db_version;
+$mr_db_version = '0.2';
 
+
+register_activation_hook(__FILE__, 'mr_install');
+//register_uninstall_hook( __FILE__, 'member_register_uninstall' );
 
 
 /*
@@ -26,6 +31,8 @@ $(document).ready(function(){
 
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
+
+
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
@@ -64,16 +71,9 @@ function member_register_admin_menu()
 
 
 
-global $mr_db_version;
-$mr_db_version = '0.1';
-
-register_activation_hook(__FILE__,'mr_install');
-
-add_action('admin_menu', 'mr_plugin_menu');
 
 
 /*
-register_uninstall_hook( __FILE__, 'member_register_uninstall' );
 
 function member_register_uninstall()
 {
@@ -115,7 +115,7 @@ function mr_payment_list()
 		}
 		else 
 		{
-			echo '<p>' . mysql_error() . '</p>';
+			echo '<p>' . $wpdb->print_error() . '</p>';
 		}
 	}
 	
@@ -169,7 +169,7 @@ function mr_member_new()
 		}
 		else 
 		{
-			echo '<p>' . mysql_error() . '</p>';
+			echo '<p>' . $wpdb->print_error() . '</p>';
 		}
 
     }
@@ -298,7 +298,7 @@ function mr_payment_new()
 		}
 		else 
 		{
-			echo '<p>' . mysql_error() . '</p>';
+			echo '<p>' . $wpdb->print_error() . '</p>';
 		}
 
     }
@@ -455,16 +455,18 @@ function mr_insert_new_payment($postdata)
 		$keys[] = 'reference';
 		
 		
+		$id = '10' . $wpdb->get_var('SELECT MAX(id) FROM ' . $wpdb->prefix . 'mr_payment');
+	
 		foreach($postdata['members'] as $member)
 		{
+			$id++;
 			// calculate reference number
-			$ref = "'" . '22222' . "'";
+			$ref = "'" . mr_reference_count($id) . "'";
 			
 			$setval[] = '(' . implode(', ', array_merge($values, array('"' . $member . '"', $ref))) . ')';
 			
 		}
 	}
-	
 	
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 	
@@ -530,16 +532,6 @@ function mr_insert_new_grade()
 	//echo $sql;
 	
 	return $wpdb->query($sql);
-
-}
-
-function admin_init()
-{
-
-}
-
-
-
 
 
 
@@ -776,5 +768,22 @@ function mr_install ()
 	add_option('mr_db_version', $mr_db_version);
 		
 		
+}
+
+/**
+ * Counts and adds the check number used in the Finnish invoices.
+ */
+function mr_reference_count($given)
+{
+	$div = array (7, 3, 1);
+	$len = strlen($given);
+	$arr = str_split($given);
+	$summed = 0;
+	for ($i = $len - 1; $i >= 0; --$i)
+	{
+		$summed += $arr[$i] * $div[($len - 1 - $i) % 3];
+	}
+	$check = (10 - ($summed % 10)) %10;
+	return $given.$check;
 }
 
