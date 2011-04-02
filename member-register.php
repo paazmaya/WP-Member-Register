@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.3.1
+ Version: 0.3.2
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,10 +14,52 @@
  */
 
  
-define ('MEMBER_REGISTER_VERSION', '0.3.1');
+define ('MEMBER_REGISTER_VERSION', '0.3.2');
 
 
-wp_enqueue_script('jquery');
+
+/*
+$(document).ready(function(){
+    
+});
+*/
+
+add_action( 'admin_init', 'member_register_admin_init' );
+add_action( 'admin_menu', 'member_register_admin_menu' );
+
+// http://tablesorter.com/docs/
+// http://bassistance.de/jquery-plugins/jquery-plugin-validation/
+function member_register_admin_init() 
+{
+	/* Register our script. */
+	// wp_register_script( 'myPluginScript', WP_PLUGIN_URL . '/myPlugin/script.js' );
+	wp_register_script( 'jquery-bassistance-validation', plugins_url('/jquery.validate.min.js', __FILE__) );
+	wp_register_script( 'jquery-tablesorter', plugins_url('/jquery.tablesorter.min.js', __FILE__) );
+}
+
+function member_register_admin_menu() 
+{
+	// http://codex.wordpress.org/Adding_Administration_Menus
+	add_menu_page('Jäsenrekisterin Hallinta', 'Jäsenrekisteri', 'create_users', 'member-register-control', 
+		'mr_member_list'); //$icon_url, $position );
+	add_submenu_page('member-register-control', 'Lisää uusi jäsen',
+		'Uusi jäsen', 'create_users', 'member-register-new', 'mr_member_new');
+	add_submenu_page('member-register-control', 'Hallinnoi jäsenmaksuja',
+		'Jäsenmaksut', 'create_users', 'member-payment-list', 'mr_payment_list');
+	add_submenu_page('member-register-control', 'Uusi maksu',
+		'Uusi maksu', 'create_users', 'member-payment-new', 'mr_payment_new');
+	add_submenu_page('member-register-control', 'Vyöarvot',
+		'Vyöarvot', 'create_users', 'member-grade-list', 'mr_grade_list');
+	add_submenu_page('member-register-control', 'Myönnä vyöarvoja',
+		'Myönnä vyöarvoja', 'create_users', 'member-grade-new', 'mr_grade_new');
+
+	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('jquery-bassistance-validation');
+	wp_enqueue_script('jquery-tablesorter');
+}
+
+
 
 
 
@@ -38,18 +80,6 @@ function member_register_uninstall()
 }
 */
 
-function mr_plugin_menu()
-{
-	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page('Jäsenrekisterin Hallinta', 'Jäsenrekisteri', 'create_users', 'member-register-control', 
-		'mr_member_list'); //$icon_url, $position );
-	add_submenu_page('member-register-control', 'Lisää uusi jäsen',
-		'Uusi jäsen', 'create_users', 'member-register-new', 'mr_member_new');
-	add_submenu_page('member-register-control', 'Hallinnoi jäsenmaksuja',
-		'Jäsenmaksut', 'create_users', 'member-payment-list', 'mr_payment_list');
-	add_submenu_page('member-register-control', 'Uusi maksu',
-		'Uusi maksu', 'create_users', 'member-payment-new', 'mr_payment_new');
-}
 
 function mr_member_list()
 {
@@ -95,6 +125,24 @@ function mr_payment_list()
 	echo mr_show_payments();
 	echo '</div>';
 }
+
+function mr_grade_list()
+{
+	if (!current_user_can('create_users')) 
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	global $wpdb;
+	
+	echo '<div class="wrap">';
+	echo '<h2>Vyöarvot</h2>';
+	echo '<p>Jäsenet heidän viimeisimmän vyöarvon mukaan.</p>';
+	echo '<p>Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.</p>';
+	echo mr_show_grades();
+	echo '</div>';
+}
+
 
 function mr_member_new()
 {
@@ -324,6 +372,44 @@ function mr_payment_new()
 		
 }
 
+
+function mr_grade_new()
+{
+	if (!current_user_can('create_users'))  {
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	global $wpdb;
+	
+    $hidden_field_name = 'mr_submit_hidden';
+
+    // See if the user has posted us some information
+    // If they did, this hidden field will be set to 'Y'
+    if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' )
+	{
+        if (mr_insert_new_grade($_POST))
+		{
+			?>
+			<div class="updated"><p><strong>Uusi/uudet vyöarvo(t) lisätty</strong></p></div>
+			<?php
+		}
+		else 
+		{
+			echo '<p>' . mysql_error() . '</p>';
+		}
+
+    }
+
+    ?>
+	<div class="wrap">
+	
+	
+	</div>
+
+	<?php
+		
+}
+
 function mr_htmlent($str)
 {
 	return htmlentities(trim($str), ENT_QUOTES, 'UTF-8');
@@ -395,6 +481,36 @@ function mr_insert_new_member()
 	
 	$keys = array();
 	$values = array();
+	$required = array('user_login', 'access', 'firstname', 'lastname', 'birthdate',
+		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
+		'passnro', 'notes', 'active', 'club');
+	
+	foreach($postdata as $k => $v)
+	{
+		if (in_array($k, $required))
+		{
+			// sanitize
+			$keys[] = mr_urize($k);
+			$values[] = "'" . mr_htmlent($v) . "'";
+		}
+	}
+	
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
+	
+	//echo $sql;
+	
+	return $wpdb->query($sql);
+
+}
+function mr_insert_new_grade()
+{
+	global $wpdb;
+	
+	$keys = array();
+	$values = array();
+	
+	$items = array('member', 'grade', 'location', 'nominator', 'day');
+		
 	$required = array('user_login', 'access', 'firstname', 'lastname', 'birthdate',
 		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
 		'passnro', 'notes', 'active', 'club');
@@ -488,6 +604,47 @@ function mr_show_payments()
 	return $out;
 }
 
+function mr_show_grades()
+{
+
+	global $wpdb;
+	$sql = 'SELECT A.firstname, A.lastname, B.*, C.name AS clubname FROM ' . $wpdb->prefix .
+		'mr_member A LEFT JOIN ' . $wpdb->prefix . 
+		'mr_grade B ON A.id = B.member LEFT JOIN ' . $wpdb->prefix . 
+		'mr_club C ON B.club = C.id ORDER BY A.day DESC';
+		
+	$res = $wpdb->get_results($sql, ARRAY_A);
+	
+	$items = array('firstname', 'lastname',
+		'id', 'member', 'grade', 'location', 'nominator', 'day');
+		
+	$out = '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}	
+	
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+	
+	foreach($res as $grade)
+	{
+		$out .= '<tr id="grade_' . $grade['id'] . '">';
+		foreach($items as $item)
+		{
+			$out .= '<td>' . $grade[$item] . '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+
+	return $out;
+}
 
 function mr_show_members()
 {
@@ -550,11 +707,13 @@ function mr_install ()
 	{
 	
 		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
 		  member mediumint(5) unsigned NOT NULL DEFAULT '0',
 		  grade enum('8K','7K','6K','5h','5K','4h','4K','3h','3K','2h','2K','1h','1K','1s','1D','2s','2D','3D','4D','5D','6D','7D','8D') COLLATE utf8_swedish_ci NOT NULL DEFAULT '8K',
 		  location varchar(100) COLLATE utf8_swedish_ci NOT NULL,
-		  nominator tinyint(4) NOT NULL DEFAULT '0',
+		  nominator varchar(255) NOT NULL DEFAULT '',
 		  day date DEFAULT '0000-00-00' NOT NULL,
+		  PRIMARY KEY (id),
 		  KEY member (member)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
 
