@@ -25,7 +25,11 @@ register_activation_hook(__FILE__, 'mr_install');
 
 /*
 $(document).ready(function(){
-
+	$.datepicker.setDefaults({
+		showWeek: true;
+		numberOfMonths: 2,
+		dateFormat: 'yy-mm-dd'
+	});
 });
 */
 
@@ -38,13 +42,13 @@ add_action( 'admin_menu', 'member_register_admin_menu' );
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
-	/* Register our script. */
-	// wp_register_script( 'myPluginScript', WP_PLUGIN_URL . '/myPlugin/script.js' );
-	wp_register_script( 'jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__) );
-	wp_register_script( 'jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__) );
-	wp_register_script( 'jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__) );
+	wp_register_script( 'jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core') ); // 1.8.9
+	wp_register_script( 'jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery') );
 	
-	//wp_register_style( 'myPluginStylesheet', WP_PLUGIN_URL . '/myPlugin/stylesheet.css' );
+	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__);
 }
 
 function member_register_admin_menu()
@@ -68,9 +72,11 @@ function member_register_admin_menu()
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
+	wp_enqueue_script('jquery-ui-datepicker');
+	wp_enqueue_script('jquery-ui-datepicker-fi');
 	
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
-	//wp_enqueue_style( 'myPluginStylesheet' );
+	wp_enqueue_style( 'jquery-ui-datepicker' );
 }
 
 
