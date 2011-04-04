@@ -1,12 +1,12 @@
 === Plugin Name ===
 Contributors: paazmaya
 Donate link: http://paazmaya.com/
-Tags: comments, spam
+Tags: members, users, martial art, register, payments
 Requires at least: 3.0.0
 Tested up to: 3.1.0
 Stable tag: 4.3
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Manage members, payments and belt grades for a registery of members who do not need to be WP users.
 
 == Description ==
 

@@ -23,19 +23,10 @@ register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall' );
 
 
-/*
-$(document).ready(function(){
-	$.datepicker.setDefaults({
-		showWeek: true;
-		numberOfMonths: 2,
-		dateFormat: 'yy-mm-dd'
-	});
-});
-*/
 
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
-
+add_action( 'admin_print_scripts', 'member_register_admin_print_scripts' );
 
 
 // http://tablesorter.com/docs/
@@ -79,6 +70,24 @@ function member_register_admin_menu()
 	wp_enqueue_style( 'jquery-ui-datepicker' );
 }
 
+function member_register_admin_print_scripts()
+{
+	?>
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+			$.datepicker.setDefaults({
+				showWeek: true;
+				numberOfMonths: 2,
+				dateFormat: 'yy-mm-dd'
+			});
+			$('input.pickday').datepicker();
+		});
+		
+	</script>
+	<?
+
+}
 
 
 
@@ -221,7 +230,7 @@ function mr_member_new()
 				</tr>
 				<tr class="form-field">
 					<th>birthdate <span class="description">(YYYY-MM-DD)</span></th>
-					<td><input type="text" name="birthdate" /></td>
+					<td><input type="text" name="birthdate" class="pickday" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>address</th>
@@ -249,7 +258,7 @@ function mr_member_new()
 				</tr>
 				<tr class="form-field">
 					<th>joindate <span class="description">(YYYY-MM-DD)</span></th>
-					<td><input type="text" name="joindate" /></td>
+					<td><input type="text" name="joindate" class="pickday" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>passnro</th>
@@ -349,13 +358,13 @@ function mr_payment_new()
 				</tr>
 				<tr class="form-field">
 					<th>deadline <span class="description">(3 viikkoa tulevaisuudessa)</span></th>
-					<td><input type="text" name="deadline" value="<?php
+					<td><input type="text" name="deadline" class="pickday" value="<?php
 					echo date('Y-m-d', time() + 60*60*24*21);
 					?>" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>validuntil <span class="description">(kuluvan vuoden loppuun)</span></th>
-					<td><input type="text" name="validuntil" value="<?php
+					<td><input type="text" name="validuntil" class="pickday" value="<?php
 					echo date('Y') . '-12-31';
 					?>" /></td>
 				</tr>
@@ -449,8 +458,8 @@ function mr_grade_new()
 					<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
 				</tr>
 				<tr class="form-field">
-					<th>day <span class="description">(eilen)</span></th>
-					<td><input type="text" name="day" value="<?php
+					<th>day <span class="description">(YYYY-MM-DD)</span></th>
+					<td><input type="text" name="day" class="pickday" value="<?php
 					echo date('Y-m-d', time() - 60*60*24*1);
 					?>" /></td>
 				</tr>
