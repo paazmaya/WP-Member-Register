@@ -26,7 +26,9 @@ register_activation_hook(__FILE__, 'mr_install');
 
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
+add_action( 'admin_print_styles', 'member_register_admin_print_styles' );
 add_action( 'admin_print_scripts', 'member_register_admin_print_scripts' );
+add_action( 'admin_head', 'member_register_admin_head' );
 
 
 // http://tablesorter.com/docs/
@@ -39,7 +41,8 @@ function member_register_admin_init()
 	wp_register_script( 'jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core') ); // 1.8.9
 	wp_register_script( 'jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery') );
 	
-	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__);
+	wp_register_style( 'jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
+	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 }
 
 function member_register_admin_menu()
@@ -58,34 +61,44 @@ function member_register_admin_menu()
 	add_submenu_page('member-register-control', 'Myönnä vyöarvoja',
 		'Myönnä vyöarvoja', 'create_users', 'member-grade-new', 'mr_grade_new');
 
+}
+
+function member_register_admin_print_scripts()
+{
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
 	wp_enqueue_script('jquery');
+	wp_enqueue_script('jquery-ui-core');
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
 	wp_enqueue_script('jquery-ui-datepicker');
 	wp_enqueue_script('jquery-ui-datepicker-fi');
 	
+}
+function member_register_admin_print_styles()
+{
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
+	//wp_enqueue_style( 'jquery-ui-core' );
 	wp_enqueue_style( 'jquery-ui-datepicker' );
 }
 
-function member_register_admin_print_scripts()
+function member_register_admin_head()
 {
+	// jQuery is in noConflict state while in Wordpress...
 	?>
 	<script type="text/javascript">
 
-		$(document).ready(function(){
-			$.datepicker.setDefaults({
-				showWeek: true;
+		jQuery(document).ready(function(){
+			jQuery.datepicker.setDefaults({
+				showWeek: true,
 				numberOfMonths: 2,
 				dateFormat: 'yy-mm-dd'
 			});
-			$('input.pickday').datepicker();
+			jQuery('input.pickday').datepicker();
 		});
 		
 	</script>
-	<?
+	<?php
 
 }
 
