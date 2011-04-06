@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.3.2
+ Version: 0.3.3
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.3.2');
+define ('MEMBER_REGISTER_VERSION', '0.3.3');
 global $mr_db_version;
 $mr_db_version = '0.2';
 
@@ -31,20 +31,63 @@ $(document).ready(function(){
 
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
-
+add_action( 'admin_print_styles', 'member_register_admin_print_styles' );
+add_action( 'admin_print_scripts', 'member_register_admin_print_scripts' );
+add_action( 'admin_head', 'member_register_admin_head' );
 
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
-	/* Register our script. */
-	// wp_register_script( 'myPluginScript', WP_PLUGIN_URL . '/myPlugin/script.js' );
-	wp_register_script( 'jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__) );
-	wp_register_script( 'jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__) );
-	wp_register_script( 'jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__) );
+	wp_register_script( 'jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery') );
+	wp_register_script( 'jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core') ); // 1.8.9
+	wp_register_script( 'jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery') );
 	
-	//wp_register_style( 'myPluginStylesheet', WP_PLUGIN_URL . '/myPlugin/stylesheet.css' );
+	
+	wp_register_style( 'jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
+	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
+}
+
+function member_register_admin_print_scripts()
+{
+	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-bassistance-validation');
+	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
+	wp_enqueue_script('jquery-tablesorter');
+	wp_enqueue_script('jquery-ui-datepicker');
+	wp_enqueue_script('jquery-ui-datepicker-fi');
+}
+
+function member_register_admin_print_styles()
+{
+	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
+	//wp_enqueue_style( 'jquery-ui-core' );
+	wp_enqueue_style( 'jquery-ui-datepicker' );
+}
+
+function member_register_admin_head()
+{
+	// jQuery is in noConflict state while in Wordpress...
+	?>
+	<script type="text/javascript">
+
+		jQuery(document).ready(function(){
+			jQuery.datepicker.setDefaults({
+				showWeek: true,
+				numberOfMonths: 2,
+				dateFormat: 'yy-mm-dd'
+			});
+			jQuery('input.pickday').datepicker();
+		});
+		
+	</script>
+	<?php
+
 }
 
 function member_register_admin_menu()
@@ -215,7 +258,7 @@ function mr_member_new()
 				</tr>
 				<tr class="form-field">
 					<th>birthdate <span class="description">(YYYY-MM-DD)</span></th>
-					<td><input type="text" name="birthdate" /></td>
+					<td><input type="text" name="birthdate" class="pickday" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>address</th>
@@ -243,7 +286,7 @@ function mr_member_new()
 				</tr>
 				<tr class="form-field">
 					<th>joindate <span class="description">(YYYY-MM-DD)</span></th>
-					<td><input type="text" name="joindate" /></td>
+					<td><input type="text" name="joindate" class="pickday" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>passnro</th>
@@ -343,13 +386,13 @@ function mr_payment_new()
 				</tr>
 				<tr class="form-field">
 					<th>deadline <span class="description">(3 viikkoa tulevaisuudessa)</span></th>
-					<td><input type="text" name="deadline" value="<?php
+					<td><input type="text" name="deadline" class="pickday" value="<?php
 					echo date('Y-m-d', time() + 60*60*24*21);
 					?>" /></td>
 				</tr>
 				<tr class="form-field">
 					<th>validuntil <span class="description">(kuluvan vuoden loppuun)</span></th>
-					<td><input type="text" name="validuntil" value="<?php
+					<td><input type="text" name="validuntil" class="pickday" value="<?php
 					echo date('Y') . '-12-31';
 					?>" /></td>
 				</tr>
@@ -443,8 +486,8 @@ function mr_grade_new()
 					<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
 				</tr>
 				<tr class="form-field">
-					<th>day <span class="description">(eilen)</span></th>
-					<td><input type="text" name="day" value="<?php
+					<th>day <span class="description">(YYYY-MM-DD)</span></th>
+					<td><input type="text" name="day" class="pickday" value="<?php
 					echo date('Y-m-d', time() - 60*60*24*1);
 					?>" /></td>
 				</tr>
