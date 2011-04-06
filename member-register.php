@@ -46,7 +46,7 @@ function member_register_admin_init()
 	wp_register_script( 'jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core') ); // 1.8.9
 	wp_register_script( 'jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery') );
 	
-	
+	wp_register_style( 'jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style( 'jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
 	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 }
@@ -68,6 +68,7 @@ function member_register_admin_print_styles()
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
 	//wp_enqueue_style( 'jquery-ui-core' );
 	wp_enqueue_style( 'jquery-ui-datepicker' );
+	wp_enqueue_style( 'jquery-ui-theme-blizter' );
 }
 
 function member_register_admin_head()
