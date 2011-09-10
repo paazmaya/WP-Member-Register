@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.3.3
+ Version: 0.4.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,10 +14,30 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.3.3');
+define ('MEMBER_REGISTER_VERSION', '0.4.0');
 global $mr_db_version;
 $mr_db_version = '0.2';
 
+global $mr_grade_values;
+$mr_grade_values = array(
+	'5K' => '5 kyu',
+	'5h' => '5 kyu + natsa',
+	'4K' => '4 kyu',
+	'4h' => '4 kyu + natsa',
+	'3K' => '3 kyu',
+	'3h' => '3 kyu + natsa',
+	'2K' => '2 kyu',
+	'2h' => '2 kyu + natsa',
+	'1K' => '1 kyu',
+	'1h' => '1 kyu + natsa',
+	'1D' => '1 dan',
+	'2D' => '2 dan',
+	'3D' => '3 dan',
+	'4D' => '4 dan',
+	'5D' => '5 dan',
+	'6D' => '6 dan',
+	'7D' => '7 dan'
+);
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall' );
@@ -29,6 +49,7 @@ $(document).ready(function(){
 });
 */
 
+// http://codex.wordpress.org/Function_Reference/add_action
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
 add_action( 'admin_print_styles', 'member_register_admin_print_styles' );
@@ -49,6 +70,8 @@ function member_register_admin_init()
 	wp_register_style( 'jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style( 'jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
 	wp_register_style( 'jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
+	wp_register_style( 'jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
+	wp_register_style( 'mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
 
 function member_register_admin_print_scripts()
@@ -69,6 +92,8 @@ function member_register_admin_print_styles()
 	//wp_enqueue_style( 'jquery-ui-core' );
 	wp_enqueue_style( 'jquery-ui-datepicker' );
 	wp_enqueue_style( 'jquery-ui-theme-blizter' );
+	wp_enqueue_style( 'jquery-tablesorter' );
+	wp_enqueue_style( 'mr-styles' );
 }
 
 function member_register_admin_head()
@@ -80,10 +105,14 @@ function member_register_admin_head()
 		jQuery(document).ready(function(){
 			jQuery.datepicker.setDefaults({
 				showWeek: true,
-				numberOfMonths: 2,
+				changeMonth: true,
+				changeYear: true,
+				yearRange: '1900:2110',
+				numberOfMonths: 1,
 				dateFormat: 'yy-mm-dd'
 			});
 			jQuery('input.pickday').datepicker();
+			jQuery('table').tablesorter();
 		});
 		
 	</script>
@@ -107,14 +136,6 @@ function member_register_admin_menu()
 	add_submenu_page('member-register-control', 'Myönnä vyöarvoja',
 		'Myönnä vyöarvoja', 'create_users', 'member-grade-new', 'mr_grade_new');
 
-	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('jquery-bassistance-validation');
-	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
-	wp_enqueue_script('jquery-tablesorter');
-	
-	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
-	//wp_enqueue_style( 'myPluginStylesheet' );
 }
 
 
@@ -139,9 +160,17 @@ function mr_member_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	echo '<div class="wrap">';
-	echo '<h2>Jäsenrekisteri</h2>';
-	echo '<p>Alla lista rekisteröidyistä jäsenistä</p>';
-	echo mr_show_members();
+	
+	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
+	{
+		echo mr_show_member_info(intval($_GET['memberid']));
+	}
+	else
+	{
+		echo '<h2>Jäsenrekisteri</h2>';
+		echo '<p>Alla lista rekisteröidyistä jäsenistä</p>';
+		echo mr_show_members();
+	}
 	echo '</div>';
 }
 function mr_payment_list()
@@ -160,9 +189,22 @@ function mr_payment_list()
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id;
 		if ($wpdb->query($sql))
 		{
-			?>
-			<div class="updated"><p><strong>Maksu merkitty maksetuksi tänään</strong></p></div>
-			<?php
+			echo '<div class="updated"><p><strong>Maksu merkitty maksetuksi tänään, ' . $today . '</strong></p></div>';
+		}
+		else
+		{
+			echo '<p>' . $wpdb->print_error() . '</p>';
+		}
+	}
+	else if (isset($_GET['removepayment']) && is_numeric($_GET['removepayment']))
+	{
+		// Mark the given payment visible=0, so it can be recovered just in case...
+		$id = intval($_GET['removepayment']);
+		$today = date('Y-m-d');
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id;
+		if ($wpdb->query($sql))
+		{
+			echo '<div class="updated"><p><strong>Maksu (' . $id . ') poistettu.</strong></p></div>';
 		}
 		else
 		{
@@ -172,7 +214,6 @@ function mr_payment_list()
 
 	echo '<div class="wrap">';
 	echo '<h2>Jäsenmaksut</h2>';
-	echo '<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>';
 	echo mr_show_payments();
 	echo '</div>';
 }
@@ -184,8 +225,6 @@ function mr_grade_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 
-	global $wpdb;
-
 	echo '<div class="wrap">';
 	echo '<h2>Vyöarvot</h2>';
 	echo '<p>Jäsenet heidän viimeisimmän vyöarvon mukaan.</p>';
@@ -193,7 +232,6 @@ function mr_grade_list()
 	echo mr_show_grades();
 	echo '</div>';
 }
-
 
 function mr_member_new()
 {
@@ -206,16 +244,11 @@ function mr_member_new()
 
     $hidden_field_name = 'mr_submit_hidden';
 
-    // See if the user has posted us some information
-    // If they did, this hidden field will be set to 'Y'
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'Y' )
 	{
         if (mr_insert_new_member($_POST))
 		{
-			// Put an settings updated message on the screen
-			?>
-			<div class="updated"><p><strong>Uusi jäsen lisätty</strong></p></div>
-			<?php
+			echo '<div class="updated"><p><strong>Uusi jäsen lisätty, nimellä: ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong></p></div>';
 		}
 		else
 		{
@@ -283,7 +316,22 @@ function mr_member_new()
 				</tr>
 				<tr class="form-field">
 					<th>nationality</th>
-					<td><input type="text" name="nationality" /></td>
+					<td><select name="nationality">
+					<option value="">-</option>
+					<?php
+					$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
+					$countries = $wpdb->get_results($sql, ARRAY_A);
+					foreach($countries as $cnt)
+					{
+						echo '<option value="' . $cnt['code']. '"';
+						if ($cnt['code'] == 'FI')
+						{
+							echo ' selected="selected"';
+						}
+						echo '>' . $cnt['name'] . '</option>';
+					}
+					?>
+					</select></td>
 				</tr>
 				<tr class="form-field">
 					<th>joindate <span class="description">(YYYY-MM-DD)</span></th>
@@ -352,13 +400,13 @@ function mr_payment_new()
 		{
 			echo '<p>' . $wpdb->print_error() . '</p>';
 		}
-
     }
 
     ?>
 	<div class="wrap">
 		<h2>Lisää uusi maksu, useammalle henkilölle jos tarve vaatii</h2>
-		<p>Pääasia että rahaa tulee, sitä kun menee</p>
+		<p>Pääasia että rahaa tulee, sitä kun menee.</p>
+		<p>Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.</p>
 		<form name="form1" method="post" action="" enctype="multipart/form-data">
 			<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
 			<table class="form-table" id="createuser">
@@ -378,7 +426,7 @@ function mr_payment_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th>type <span class="description">(lienee aina vuosimaksu)</span></th>
+					<th>type <span class="description">(lienee aina vuosimaksu, Ainaisjäsenmaksu)</span></th>
 					<td><input type="text" name="type" value="vuosimaksu" /></td>
 				</tr>
 				<tr class="form-field">
@@ -397,6 +445,8 @@ function mr_payment_new()
 					echo date('Y') . '-12-31';
 					?>" /></td>
 				</tr>
+				<?php
+				/*
 				<tr class="form-field">
 					<th>club</th>
 					<td><select name="club">
@@ -410,6 +460,8 @@ function mr_payment_new()
 					?>
 					</select></td>
 				</tr>
+				*/
+				?>
 			</table>
 
 			<p class="submit">
@@ -432,6 +484,7 @@ function mr_grade_new()
 	}
 
 	global $wpdb;
+	global $mr_grade_values;
 
     $hidden_field_name = 'mr_submit_hidden';
 
@@ -461,7 +514,7 @@ function mr_grade_new()
 			<table class="form-table" id="createuser">
 				<tr class="form-field">
 					<th>member <span class="description">(monivalinta)</span></th>
-					<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;">
+					<td><select name="members[]" multiple="multiple" size="8">
 					<option value="">-</option>
 					<?php
 					$sql = 'SELECT firstname, lastname, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
@@ -469,17 +522,30 @@ function mr_grade_new()
 					$users = $wpdb->get_results($sql, ARRAY_A);
 					foreach($users as $user)
 					{
-						echo '<option value="' . $user['id']. '">' . $user['lastname'] . ', ' . $user['firstname'] . '</option>';
+						echo '<option value="' . $user['id']. '">' . $user['lastname'] . ', ' . $user['firstname'] . ' (' . $user['id']. ')</option>';
 					}
 					?>
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th>grade <span class="description">()</span></th>
-					<td><input type="text" name="grade" value="2K" /></td>
+					<th>grade <span class="description">(suluissa tietokantamerkintä)</span></th>
+					<td><select name="grade">
+					<option value="">-</option>
+					<?php
+					foreach($mr_grade_values as $k => $v)
+					{
+						echo '<option value="' . $k . '">' . $v . ' (' . $k . ')</option>';
+					}
+					?>
+					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th>location <span class="description">(missä)</span></th>
+					<th>type <span class="description">(kummassa lajissa)</span></th>
+					<td><label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
+					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label></td>
+				</tr>
+				<tr class="form-field">
+					<th>location <span class="description">(millä paikkakunnalla)</span></th>
 					<td><input type="text" name="location" value="Turku" /></td>
 				</tr>
 				<tr class="form-field">
@@ -505,23 +571,6 @@ function mr_grade_new()
 	<?php
 }
 
-function mr_htmlent($str)
-{
-	return htmlentities(trim($str), ENT_QUOTES, 'UTF-8');
-}
-function mr_htmldec($str)
-{
-	return html_entity_decode(trim($str), ENT_QUOTES, 'UTF-8');
-}
-
-function mr_urize($str)
-{
-	$str = mb_strtolower($str, 'UTF-8');
-	$str = mr_htmldec($str);
-	$str = str_replace(array(' ', ',', '@', '$', '/', '&', '!', '=', '%'), '-', $str);
-	$str = str_replace(array('--', '---'), '-', $str);
-	return $str;
-}
 
 function mr_insert_new_payment($postdata)
 {
@@ -531,7 +580,7 @@ function mr_insert_new_payment($postdata)
 	$values = array();
 	$setval = array();
 
-	$required = array('type', 'amount', 'deadline', 'validuntil', 'club');
+	$required = array('type', 'amount', 'deadline', 'validuntil');
 
 
 	if (isset($postdata['members']) && is_array($postdata['members']) && count($postdata['members']) > 0)
@@ -606,7 +655,7 @@ function mr_insert_new_grade($postdata)
 	$keys = array();
 	$values = array();
 
-	$required = array('grade', 'location', 'nominator', 'day');
+	$required = array('grade', 'type', 'location', 'nominator', 'day');
 
 	foreach($postdata as $k => $v)
 	{
@@ -653,26 +702,27 @@ function mr_get_list($table, $where = '', $shouldbe = '', $order = '1 ASC')
 function mr_show_payments()
 {
 	global $wpdb;
-	$sql = 'SELECT A.*, B.firstname, B.lastname, C.name AS clubname FROM ' . $wpdb->prefix .
+	
+	$out = '<h3>Maksamattomat maksut</h3>';
+	$out .= '<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>';
+	
+	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id LEFT JOIN ' . $wpdb->prefix .
-		'mr_club C ON A.club = C.id ORDER BY A.deadline DESC';
+		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND A.paidday = \'0000-00-00\' ORDER BY A.deadline DESC';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	$items = array('firstname', 'lastname', 'id',
 		'member', 'reference', 'type', 'amount', 'deadline',
-		'paidday', 'validuntil', 'club', 'clubname');
+		'validuntil');
 
-	$out = '<table class="wp-list-table widefat fixed users">';
+	$out .= '<table class="wp-list-table widefat fixed users">';
 	$out .= '<thead>';
 	$out .= '<tr>';
-	$out .='<th></th>';
-
+	$out .='<th>Maksettu?</th>';
 	foreach($items as $item)
 	{
 		$out .= '<th>' . $item . '</th>';
 	}
-
 	$out .= '</tr>';
 	$out .= '</thead>';
 	$out .= '<tbody>';
@@ -690,28 +740,83 @@ function mr_show_payments()
 		$out .= '</td>';
 		foreach($items as $item)
 		{
-			$out .= '<td>' . $payment[$item] . '</td>';
+			$out .= '<td>';
+			if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
+			{
+				$out .= '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] . ' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
+			}
+			else
+			{
+				$out .= $payment[$item];
+			}
+			$out .= '</td>';
 		}
 		$out .= '</tr>';
 	}
 	$out .= '</tbody>';
 	$out .= '</table>';
+	
+	// -------------
+	
+	$out .= '<h3>Maksetut maksut</h3>';
+	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
+		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
+		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND A.paidday != \'0000-00-00\' ORDER BY A.deadline DESC';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+
+	$items = array('firstname', 'lastname', 'id',
+		'member', 'reference', 'type', 'amount', 'deadline',
+		'paidday', 'validuntil');
+
+	$out .= '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+
+	foreach($res as $payment)
+	{
+		$out .= '<tr id="payment_' . $payment['id'] . '">';
+		foreach($items as $item)
+		{
+			$out .= '<td>';
+			if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
+			{
+				$out .= '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] . ' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
+			}
+			else
+			{
+				$out .= $payment[$item];
+			}
+			$out .= '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+	
 
 	return $out;
 }
 
 function mr_show_grades()
 {
-
 	global $wpdb;
-	$sql = 'SELECT A.firstname, A.lastname, B.* FROM ' . $wpdb->prefix .
+	global $mr_grade_values;
+	
+	$sql = 'SELECT A.firstname, A.lastname, A.id AS memberid, B.* FROM ' . $wpdb->prefix .
 		'mr_member A LEFT JOIN ' . $wpdb->prefix .
 		'mr_grade B ON A.id = B.member WHERE B.id IS NOT NULL ORDER BY A.lastname DESC';
 
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
-	$items = array('firstname', 'lastname',
-		'id', 'member', 'grade', 'location', 'nominator', 'day');
+	$items = array('firstname', 'lastname', 'memberid',
+		'id', 'member', 'grade', 'type', 'location', 'nominator', 'day');
 
 	$out = '<table class="wp-list-table widefat fixed users">';
 	$out .= '<thead>';
@@ -731,7 +836,20 @@ function mr_show_grades()
 		$out .= '<tr id="grade_' . $grade['id'] . '">';
 		foreach($items as $item)
 		{
-			$out .= '<td>' . $grade[$item] . '</td>';
+			$out .= '<td>';
+			if ($item == 'grade' && array_key_exists($grade[$item], $mr_grade_values))
+			{
+				$out .= $mr_grade_values[$grade[$item]];
+			}
+			else if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
+			{
+				$out .= '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] . ' ' . $grade['lastname'] . '">' . $grade[$item] . '</a>';
+			}
+			else
+			{
+				$out .= $grade[$item];
+			}
+			$out .= '</td>';
 		}
 		$out .= '</tr>';
 	}
@@ -763,7 +881,7 @@ function mr_show_members()
 		$out .= '<tr id="user_' . $member['id'] . '">';
 		foreach($items as $item)
 		{
-			$out .= '<td>' . $member[$item] . '</td>';
+			$out .= '<td><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $member['id'] . '" title="' . $member['firstname'] . ' ' . $member['lastname'] . '">' . $member[$item] . '</a></td>';
 		}
 		$out .= '</tr>';
 	}
@@ -773,7 +891,118 @@ function mr_show_members()
 	return $out;
 }
 
+/**
+ * Show all possible information of the given user.
+ */
+function mr_show_member_info($id)
+{
+	$id = intval($id);
+	
+	global $wpdb;
+	global $mr_grade_values;
+	
+	
+	// ---------------
+	
+	$items = array('id', 'user_login', 'access', 'firstname', 'lastname', 
+		'birthdate', 'address', 'zipcode', 'postal', 'phone', 'email', 
+		'nationality', 'joindate', 'passnro', 'notes', 'lastlogin', 'active', 
+		'club');	
+	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $id . ' LIMIT 1';
+	$res = $wpdb->get_row($sql, ARRAY_A);
 
+	$out = '<h2>' . $res['firstname'] . ' ' . $res['lastname'] . '</h2>';
+	$out .= '<h3>Henkilötiedot</h3>';
+	$out .= '<table class="wp-list-table widefat fixed users">';
+	$out .= '<tbody>';
+	foreach($items as $item)
+	{
+		$out .= '<tr>';
+		$out .= '<th>' . $item . '</th>';
+		$out .= '<td>' . $res[$item] . '</td>';
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+
+	// ---------------
+	
+	$items = array('id', 'grade', 'type', 'location', 'nominator', 'day');
+	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_grade WHERE member = ' .
+		$id . ' ORDER BY day DESC';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+
+	$out .= '<h3>Vyöarvot</h3>';
+	$out .= '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+	foreach($res as $grade)
+	{
+		$out .= '<tr id="grade_' . $grade['id'] . '">';
+		foreach($items as $item)
+		{
+			$out .= '<td>';
+			if ($item == 'grade' && array_key_exists($grade[$item], $mr_grade_values))
+			{
+				$out .= $mr_grade_values[$grade[$item]];
+			}
+			else
+			{
+				$out .= $grade[$item];
+			}
+			$out .= '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+	
+	// ---------------
+	
+	$items = array('id', 'reference', 'type', 'amount', 'deadline', 'paidday', 'validuntil');
+	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' .
+		$id . ' AND visible = 1 ORDER BY deadline DESC';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+
+	$out .= '<h3>Jäsenmaksut</h3>';
+	$out .= '<table class="wp-list-table widefat fixed users">';
+	$out .= '<thead>';
+	$out .= '<tr>';
+	$out .= '<th>Poista maksu</th>';
+	foreach($items as $item)
+	{
+		$out .= '<th>' . $item . '</th>';
+	}
+	$out .= '</tr>';
+	$out .= '</thead>';
+	$out .= '<tbody>';
+	foreach($res as $pay)
+	{
+		$out .= '<tr>';
+		// set visible to 0, do not remove for real...
+		$out .= '<td><a href="' . admin_url('admin.php?page=member-payment-list') . '&removepayment=' . $pay['id'] . '" title="Poista maksu">poista maksu</a></td>';
+		foreach($items as $item)
+		{
+			$out .= '<td>' . $pay[$item] . '</td>';
+		}
+		$out .= '</tr>';
+	}
+	$out .= '</tbody>';
+	$out .= '</table>';
+	
+	
+	return $out;
+}
+
+
+// missing country list
 function mr_install ()
 {
 	global $wpdb;
@@ -877,5 +1106,24 @@ function mr_reference_count($given)
 	}
 	$check = (10 - ($summed % 10)) %10;
 	return $given.$check;
+}
+
+function mr_htmlent($str)
+{
+	return htmlentities(trim($str), ENT_QUOTES, 'UTF-8');
+}
+
+function mr_htmldec($str)
+{
+	return html_entity_decode(trim($str), ENT_QUOTES, 'UTF-8');
+}
+
+function mr_urize($str)
+{
+	$str = mb_strtolower($str, 'UTF-8');
+	$str = mr_htmldec($str);
+	$str = str_replace(array(' ', ',', '@', '$', '/', '&', '!', '=', '%'), '-', $str);
+	$str = str_replace(array('--', '---'), '-', $str);
+	return $str;
 }
 

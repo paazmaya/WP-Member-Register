@@ -1,0 +1,9 @@
+#createuser .form-field select {
+    width: 25em;
+}
+#createuser .form-field select[multiple] {
+	height: 10em;
+}
+#createuser .form-field input[type=radio] {
+    width: 2em;
+}

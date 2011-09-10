@@ -1,12 +1,12 @@
-=== Plugin Name ===
+=== Member Register ===
 Contributors: paazmaya
 Donate link: http://paazmaya.com/
-Tags: comments, spam
+Tags: members, organisation
 Requires at least: 3.0.0
-Tested up to: 3.1.0
+Tested up to: 3.2.1
 Stable tag: 4.3
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Member register management related to personal information, payments and what is common for martial arts: belt grades.
 
 == Description ==
 
