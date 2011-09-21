@@ -14,9 +14,9 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.4.0');
+define ('MEMBER_REGISTER_VERSION', '0.5.0');
 global $mr_db_version;
-$mr_db_version = '0.2';
+$mr_db_version = '3';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -40,20 +40,17 @@ $mr_grade_values = array(
 );
 
 require 'member-functions.php';
+require 'member-forum.php';
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
 
 
-/*
-$(document).ready(function(){
-
-});
-*/
 
 // http://codex.wordpress.org/Function_Reference/add_action
 add_action('admin_init', 'member_register_admin_init');
 add_action('admin_menu', 'member_register_admin_menu');
+add_action('admin_menu', 'member_register_forum_menu');
 add_action('admin_print_styles', 'member_register_admin_print_styles');
 add_action('admin_print_scripts', 'member_register_admin_print_scripts');
 add_action('admin_head', 'member_register_admin_head');
@@ -146,6 +143,17 @@ function member_register_admin_menu()
 }
 
 
+/**
+ * Any member with login access can use the forum
+ * http://codex.wordpress.org/Roles_and_Capabilities#Subscriber
+ */
+function member_register_forum_menu()
+{
+	// http://codex.wordpress.org/Adding_Administration_Menus
+	add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum-list',
+		'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+
+}
 
 
 
@@ -844,6 +852,37 @@ function mr_install ()
 
 		dbDelta($sql);
 	}
+
+	$table_name = $wpdb->prefix . 'mr_forum_post';
+	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(6) NOT NULL AUTO_INCREMENT,
+		  topic mediumint(6) NOT NULL,
+		  content text COLLATE utf8_swedish_ci NOT NULL,
+		  member mediumint(6) NOT NULL,
+		  created int(10) NOT NULL COMMENT 'Unix timestamp',
+		  PRIMARY KEY (id)
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
+
+		dbDelta($sql);
+	}
+	
+	$table_name = $wpdb->prefix . 'mr_forum_topic';
+	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(6) NOT NULL AUTO_INCREMENT,
+		  title varchar(250) COLLATE utf8_swedish_ci NOT NULL,
+		  member mediumint(6) NOT NULL COMMENT 'User ID in mr_member',
+		  access tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Minimum access level needed to see',
+		  created int(10) unsigned NOT NULL COMMENT 'Unix timestamp',
+		  UNIQUE KEY id (id)
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
+
+		dbDelta($sql);
+	}
+	
 
 	add_option('mr_db_version', $mr_db_version);
 }
