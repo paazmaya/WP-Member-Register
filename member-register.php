@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.1
+ Version: 0.5.2
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.1');
+define ('MEMBER_REGISTER_VERSION', '0.5.2');
 global $mr_db_version;
 $mr_db_version = '3';
 
@@ -39,6 +39,54 @@ $mr_grade_values = array(
 	'7D' => '7 dan'
 );
 
+/*
+// Security permissions:
+$writePost = 1;
+$readPost = 2;
+$deletePost = 4;
+$addUser = 8;
+$deleteUser = 16;
+
+$mr_access_values = (
+	'1' => 'Kirjoittaa viestejä',
+	'2' => 'Lukea viestejä',
+);
+
+// User groups:
+$mr_access_type = array(
+	0 => 0,
+	1 => $readPost,
+	2 => $writePost | $readPost,
+	3 => ,
+	4 => ,
+	5 => ,
+	6 => $readPost | $deletePost | $deleteUser,
+	7 => ,
+	8 => ,
+	9 => ,
+	10 => $writePost | $readPosts | $deletePosts | $addUser | $deleteUser
+);
+*/
+	
+global $mr_access_type;
+$mr_access_type = array(
+	0 => 'Ei mitään, ei aktiivinen jäsen',
+	1 => 'Omien tietojen katselu ja päivitys',
+	2 => 'Keskusteluun osallistuminen',
+	3 => 'Keskusteluaiheiden luominen',
+	4 => 'Keskustelujen poisto',
+	5 => 'Keskusteluaiheiden poisto',
+	6 => 'Jäsenten lisääminen ja muokkaus',
+	7 => 'Jäsenten poistamine',
+	8 => 'Jäsenmaksujen hallinta',
+	9 => 'Vyöarvojen hallinta',
+	10 => 'Kaikki mahdollinen mitä täällä ikinä voi tehdä'
+);
+// Now we apply all of this!
+if(checkPermission($administrator, $deleteUser)) {
+	deleteUser("Some User"); # This is executed because $administrator can $deleteUser
+}
+
 require 'member-functions.php';
 require 'member-forum.php';
 
@@ -54,6 +102,13 @@ add_action('admin_menu', 'member_register_forum_menu');
 add_action('admin_print_styles', 'member_register_admin_print_styles');
 add_action('admin_print_scripts', 'member_register_admin_print_scripts');
 add_action('admin_head', 'member_register_admin_head');
+
+// http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
+add_action('profile_update', 'member_register_profile_update');
+
+// Login and logout
+add_action('wp_login', 'member_register_login');
+add_action('wp_logout', 'member_register_logout');
 
 
 // http://tablesorter.com/docs/
@@ -156,6 +211,26 @@ function member_register_forum_menu()
 }
 
 
+// http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
+function member_register_profile_update($user_id, $old_user_data)
+{
+	echo '<pre>';
+	print_r($old_user_data);
+	echo '</pre>';
+}
+
+/**
+ * Check which user logged in to WP and set Session Access variable.
+ */
+function member_register_login()
+{
+	$_SESSION['mr_access'] = 1;
+}
+
+function member_register_logout()
+{
+	$_SESSION['mr_access'] = 0;	
+}
 
 
 
@@ -184,7 +259,8 @@ function mr_member_list()
 	{
 		echo '<h2>Jäsenrekisteri</h2>';
 		echo '<p>Alla lista rekisteröidyistä jäsenistä</p>';
-		echo mr_show_members();
+		mr_show_access_values();
+		mr_show_members();
 	}
 	echo '</div>';
 }
@@ -240,7 +316,7 @@ function mr_payment_list()
 	echo '<div class="wrap">';
 	echo '<h2>Jäsenmaksut</h2>';
 	
-	echo mr_show_payments();
+	mr_show_payments();
 	echo '</div>';
 }
 
@@ -255,7 +331,7 @@ function mr_grade_list()
 	echo '<h2>Vyöarvot</h2>';
 	echo '<p>Jäsenet heidän viimeisimmän vyöarvon mukaan.</p>';
 	echo '<p>Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.</p>';
-	echo mr_show_grades();
+	mr_show_grades();
 	echo '</div>';
 }
 
@@ -287,7 +363,7 @@ function mr_member_new()
 	<div class="wrap">
 		<h2>Lisää uusi jäsen</h2>
 		<?php
-		print_new_member_form(array());
+		mr_new_member_form(array());
 		?>
 	</div>
 
@@ -328,7 +404,7 @@ function mr_payment_new()
 		<?php
 		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
-		print_new_payment_form($users);
+		mr_new_payment_form($users);
 		?>
 	</div>
 
@@ -373,7 +449,7 @@ function mr_grade_new()
 		<?php
 		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
-		print_grade_form($users);
+		mr_grade_form($users);
 		?>
 	</div>
 
@@ -649,7 +725,7 @@ function mr_show_member_info($id)
 	echo '<h2>' . $person['firstname'] . ' ' . $person['lastname'] . '</h2>';
 	if (isset($_GET['edit']))
 	{
-		print_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
+		mr_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
 	}
 	else 
 	{
@@ -717,7 +793,7 @@ function mr_show_member_info($id)
 	</table>
 	<?php
 	// Quick add a grade
-	print_grade_quick_form(array(
+	mr_grade_quick_form(array(
 		'id' => $id,
 		'name' => $person['firstname'] . ' ' . $person['lastname']
 	));
@@ -840,14 +916,14 @@ function mr_install ()
 	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
-		  member mediumint(5) unsigned NOT NULL DEFAULT '0',
+		  member mediumint(5) unsigned NOT NULL COMMENT 'User ID in mr_member',
 		  reference mediumint(6) unsigned NOT NULL DEFAULT '0',
 		  type varchar(24) COLLATE utf8_swedish_ci NOT NULL,
 		  amount float(8,2) NOT NULL DEFAULT '0.00',
 		  deadline date DEFAULT '0000-00-00' NOT NULL,
 		  paidday date DEFAULT '0000-00-00' NOT NULL,
 		  validuntil date DEFAULT '0000-00-00' NOT NULL,
-		  club mediumint(6) unsigned NOT NULL DEFAULT '0',
+		  club mediumint(6) unsigned NOT NULL COMMENT 'Club ID in mr_club',
 		  PRIMARY KEY (id),
 		  KEY member (member)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
@@ -862,7 +938,7 @@ function mr_install ()
 		  id mediumint(6) NOT NULL AUTO_INCREMENT,
 		  topic mediumint(6) NOT NULL,
 		  content text COLLATE utf8_swedish_ci NOT NULL,
-		  member mediumint(6) NOT NULL,
+		  member mediumint(6) NOT NULL COMMENT 'User ID in mr_member',
 		  created int(10) NOT NULL COMMENT 'Unix timestamp',
 		  PRIMARY KEY (id)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";

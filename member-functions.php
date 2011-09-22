@@ -3,7 +3,37 @@
  Plugin Name: Member Register
 */
 
+/**
+ * Check for permission for doing certain things.
+ * @param $access int Access level of the current user
+ * @param $permission bytes to check against which are for the action that is to be checked
+ */
+function mr_check_permission($access, $permission)
+{
+	global $mr_access_type;
+	
+	if ($mr_access_type[$access] & $permission) 
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
+
+function mr_show_access_values()
+{
+	global $mr_access_type;
+	echo '<p>Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet. Pyynnöstä näitä voidaan lisätä tai vähentää.</p>';
+	echo '<ul>';
+	foreach ($mr_access_type as $k => $v)
+	{
+		echo '<li title="' . $v . ' (' . $k . ')">[' . $k . '] ' . $v . '</li>';
+	}
+	echo '</ul>';
+}
 
 /**
  * Insert the given grade
@@ -186,7 +216,7 @@ function mr_get_list($table, $where = '', $shouldbe = '', $order = '1 ASC')
 /**
  * Print out a form for creating new payments
  */
-function print_new_payment_form($members)
+function mr_new_payment_form($members)
 {
 	global $wpdb;
 	?>
@@ -240,8 +270,12 @@ function print_new_payment_form($members)
  * @param $action Target page of the form
  * @param $data Array
  */
-function print_new_member_form($action, $data)
+function mr_new_member_form($action, $data)
 {
+	global $wpdb;
+	global $mr_access_type;
+	
+	// Default values for an empty form
 	$values = array(
 		'id' => 0,
 		'user_login' => 0,
@@ -267,7 +301,6 @@ function print_new_member_form($action, $data)
 	print_r($values);
 	echo '</pre>';
 	
-	global $wpdb;
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>">
 		<input type="hidden" name="mr_submit_hidden_member" value="Y" />
@@ -303,7 +336,20 @@ function print_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field form-required">
 				<th>access</th>
-				<td><input type="text" name="access" value="<?php echo $values['access']; ?>" /></td>
+				<td><select name="access">
+					<?php
+					foreach ($mr_access_type as $k => $v)
+					{
+						echo '<option value="' . $k . '"';
+						if ($values['access'] == $k)
+						{
+							echo ' selected="selected"';
+						}
+						echo '>' . $v . ' (' . $k . ')</option>';
+					}
+					?>
+					</select>
+				</td>
 			</tr>
 			<tr class="form-field form-required">
 				<th>firstname</th>
@@ -404,7 +450,7 @@ function print_new_member_form($action, $data)
  * Print out a form that is used to give grades.
  * @param $members Array of members, {id: , name: }
  */
-function print_grade_form($members)
+function mr_grade_form($members)
 {
 	global $mr_grade_values;
 	?>
@@ -476,7 +522,7 @@ function print_grade_form($members)
  * Print out a form that is used to give a grade to a given member.
  * @param $member Array of member, {id: , name: }
  */
-function print_grade_quick_form($member)
+function mr_grade_quick_form($member)
 {
 	global $mr_grade_values;
 	?>
