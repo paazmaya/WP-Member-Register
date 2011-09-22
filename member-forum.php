@@ -15,6 +15,7 @@ function mr_forum_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
+	global $wpdb;
 	global $userdata;
 	
 	echo '<div class="wrap">';
@@ -76,6 +77,23 @@ function mr_forum_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
+		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && $userdata->mr_access >= 5)
+		{
+			// In reality just archive the topic
+			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 1 WHERE id = \'' . intval($_GET['remove-topic']) . '\'';
+			if ($wpdb->query($sql))
+			{
+				?>
+				<div class="updated"><p>
+					<strong>Valittu aihe poistettu.</strong>
+				</p></div>
+				<?php
+			}
+			else
+			{
+				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
+			}
+		}
 		
 		mr_show_form_topic();
 		echo '<hr />';
@@ -92,14 +110,15 @@ function mr_show_info_topic($topic, $access)
 	global $wpdb;
 	
 	$items = array('id', 'title', 'member', 'access', 'created');
-	
-	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
+	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access <= ' .
-		intval($access) . ' AND A.id = ' . intval($topic) .
-		' GROUP BY B.topic ORDER BY lastpost DESC LIMIT 1';
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+		$wpdb->prefix . 'mr_member D ON D.id = ' .
+		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
+		' WHERE A.access <= ' . intval($access) . ' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
+		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
+	
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$res = $wpdb->get_row($sql, ARRAY_A);
 	
@@ -114,23 +133,33 @@ function mr_show_info_topic($topic, $access)
 function mr_show_list_topics($access)
 {
 	global $wpdb;
+	global $userdata;
 	
 	// Remember that the "created" is a unix timestamp
 	// id, title, member, access, created
 	$items = array('id', 'title', 'member', 'access', 'created');
-	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
+	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access <= ' .
-		intval($access) . ' GROUP BY B.topic ORDER BY lastpost DESC';
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+		$wpdb->prefix . 'mr_member D ON D.id = ' .
+		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
+		' WHERE A.access <= ' . intval($access) . ' AND A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
+		
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th>Aihe</th>
+		<th>Aihe
+		<?php
+		if ($userdata->mr_access >= 5)
+		{
+			echo ' (poista)';
+		}
+		?>
+		</th>
 		<th class="w20em headerSortUp">Viimeisin viesti</th>
 		<th class="w20em">Viimeisimmän viestin kirjoitti</th>
 		<th>Viestejä</th>
@@ -145,7 +174,14 @@ function mr_show_list_topics($access)
 			echo '<tr id="topic_' . $topic['id'] . '">';
 			echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
 				'&topic=' . $topic['id'] . '" title="' . $topic['title'] .
-				'">' . $topic['title'] . '</a></td>';
+				'">' . $topic['title'] . '</a>';
+			if ($userdata->mr_access >= 5)
+			{
+				echo ' <a href="' . admin_url('admin.php?page=member-forum') .
+				'&remove-topic=' . $topic['id'] . '" title="' . $topic['title'] .
+				'">(X)</a>';
+			}
+			echo '</td>';
 			echo '<td>';
 			if ($topic['lastpost'] != 0 && $topic['lastpost'] != null)
 			{
@@ -167,6 +203,7 @@ function mr_show_list_topics($access)
 function mr_show_posts_for_topic($topic)
 {
 	global $wpdb;
+	global $userdata;
 	
 	// id, topic, content, member, created
 
@@ -175,7 +212,7 @@ function mr_show_posts_for_topic($topic)
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . 
 		$wpdb->prefix . 'mr_forum_post A LEFT JOIN ' . 
 		$wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
-		intval($topic) . ' ORDER BY A.created DESC';
+		intval($topic) . ' AND A.visible = 1 ORDER BY A.created DESC';
 	echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 	

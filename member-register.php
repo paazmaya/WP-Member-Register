@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.4
+ Version: 0.5.5
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,9 +14,9 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.4');
+define ('MEMBER_REGISTER_VERSION', '0.5.5');
 global $mr_db_version;
-$mr_db_version = '4';
+$mr_db_version = '5';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -962,6 +962,7 @@ function mr_install ()
 		  content text COLLATE utf8_swedish_ci NOT NULL,
 		  member mediumint(6) NOT NULL COMMENT 'User ID in mr_member',
 		  created int(10) NOT NULL COMMENT 'Unix timestamp',
+		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  PRIMARY KEY (id)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
 
@@ -977,6 +978,7 @@ function mr_install ()
 		  member mediumint(6) NOT NULL COMMENT 'User ID in mr_member',
 		  access tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Minimum access level needed to see',
 		  created int(10) unsigned NOT NULL COMMENT 'Unix timestamp',
+		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  UNIQUE KEY id (id)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;";
 
