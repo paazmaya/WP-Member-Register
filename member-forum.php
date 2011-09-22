@@ -5,7 +5,9 @@
 */
 
 
-
+/**
+ * This is the only function hooked to display a page
+ */
 function mr_forum_list()
 {
 	if (!current_user_can('read'))
@@ -13,21 +15,13 @@ function mr_forum_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	echo '<div class="wrap">';
+	global $userdata;
 	
-	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
-	echo '<pre>';
-	print_r($userdata);
-	echo '</pre>';
+	echo '<div class="wrap">';
 	
 	if (isset($_GET['topic']) && is_numeric($_GET['topic']))
 	{
 		echo '<h2>Keskustelua aiheesta...</h2>';
-	
-		mr_show_info_topic($_GET['topic']);
-		
-		// New post form to the given topic
-		echo '<h2>Lisää viesti</h2>';
 		
 		// Check for possible insert	
 		$hidden_field_name = 'mr_submit_hidden_post';
@@ -44,13 +38,16 @@ function mr_forum_list()
 			}
 			else
 			{
-				echo '<p>' . $wpdb->print_error() . '</p>';
+				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		else 
-		{
-			mr_show_form_post($_GET['new-post']);
-		}
+	
+		mr_show_info_topic($_GET['topic'], $userdata->mr_access);
+		
+		// New post form to the given topic
+		echo '<h3>Lisää viesti</h3>';
+		mr_show_form_post($_GET['topic']);
+		echo '<hr />';
 		
 		mr_show_posts_for_topic($_GET['topic']);
 	}
@@ -76,41 +73,41 @@ function mr_forum_list()
 			}
 			else
 			{
-				echo '<p>' . $wpdb->print_error() . '</p>';
+				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		else 
-		{
-			mr_show_form_topic();
-		}
 		
+		mr_show_form_topic();
+		echo '<hr />';
 		echo '<h3>Käynnissä olevat keskustelun aiheet</h3>';
 		
-		mr_show_list_topics('0');
+		mr_show_list_topics($userdata->mr_access);
 	}
 	echo '</div>';
 }
 
 
-function mr_show_info_topic($topic)
+function mr_show_info_topic($topic, $access)
 {
 	global $wpdb;
 	
 	$items = array('id', 'title', 'member', 'access', 'created');
 	
-	$sql = 'SELECT A.*, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
+	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access >= ' .
-		intval($access) . ' GROUP BY B.topic WHERE A.id = ' . intval($topic) .
-		' ORDER BY lastpost DESC LIMIT 1';
-	echo '<p>' . $sql . '</p>';
+		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access <= ' .
+		intval($access) . ' AND A.id = ' . intval($topic) .
+		' GROUP BY B.topic ORDER BY lastpost DESC LIMIT 1';
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$res = $wpdb->get_row($sql, ARRAY_A);
 	
 	echo '<h3>' . $res['title'] . '</h3>';
 	echo '<p>Tämän aiheen loi ' .  $res['firstname'] . ' ' . $res['lastname'] .
-		', päivämäärällä ' . date('Y-m-d', $res['created']) . '.</p>';
+		', päivämäärällä ' . date('Y-m-d', $res['created']) . '.<br />';
+	echo 'Viestejä yhteensä ' . $res['total'] . ', joista viimeisin ' .
+		date('Y-m-d H:i:s', $res['lastpost']) . '</p>';
 }
 
 
@@ -121,21 +118,22 @@ function mr_show_list_topics($access)
 	// Remember that the "created" is a unix timestamp
 	// id, title, member, access, created
 	$items = array('id', 'title', 'member', 'access', 'created');
-	$sql = 'SELECT A.*, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
+	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access >= ' .
+		$wpdb->prefix . 'mr_member C ON B.member = C.id WHERE A.access <= ' .
 		intval($access) . ' GROUP BY B.topic ORDER BY lastpost DESC';
-	echo '<p>' . $sql . '</p>';
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
 		<th>Aihe</th>
-		<th>Viimeisin viesti</th>
-		<th>Viimeisimmän viestin kirjoitti</th>
+		<th class="w20em headerSortUp">Viimeisin viesti</th>
+		<th class="w20em">Viimeisimmän viestin kirjoitti</th>
+		<th>Viestejä</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -148,8 +146,14 @@ function mr_show_list_topics($access)
 			echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
 				'&topic=' . $topic['id'] . '" title="' . $topic['title'] .
 				'">' . $topic['title'] . '</a></td>';
-			echo '<td>' . date('Y-m-d h:i:s', $topic['lastpost']) . '</td>';
+			echo '<td>';
+			if ($topic['lastpost'] != 0 && $topic['lastpost'] != null)
+			{
+				echo date('Y-m-d H:i:s', $topic['lastpost']);
+			}
+			echo '</td>';
 			echo '<td>' . $topic['firstname'] . ' ' . $topic['lastname'] . '</td>';
+			echo '<td>' . $topic['total'] . '</td>';
 			echo '</tr>';
 		}
 	}
@@ -172,15 +176,15 @@ function mr_show_posts_for_topic($topic)
 		$wpdb->prefix . 'mr_forum_post A LEFT JOIN ' . 
 		$wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
 		intval($topic) . ' ORDER BY A.created DESC';
-	echo '<p>' . $sql . '</p>';
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 	
 	?>
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th>Aika</th>
-		<th>Jäsen</th>
+		<th class="w20em headerSortUp">Aika</th>
+		<th class="w20em">Jäsen</th>
 		<th>Viesti</th>
 	</tr>
 	</thead>
@@ -189,9 +193,9 @@ function mr_show_posts_for_topic($topic)
 	foreach($res as $topic)
 	{
 		echo '<tr id="post_' . $topic['id'] . '">';
-		echo '<td>' . date('Y-m-d h:i:s', $topic['created']) . '</td>';
+		echo '<td>' . date('Y-m-d H:i:s', $topic['created']) . '</td>';
 		echo '<td>' . $topic['firstname'] . ' ' . $topic['lastname'] . '</td>';
-		echo '<td>' . $topic['content'] . '</td>';
+		echo '<td>' . mr_htmldec($topic['content']) . '</td>';
 		echo '</tr>';
 	}
 	?>
@@ -204,6 +208,7 @@ function mr_show_posts_for_topic($topic)
 function mr_insert_new_topic($postdata)
 {
 	global $wpdb;
+	global $userdata;
 
 	$values = array();
 	$required = array('title', 'access');
@@ -216,14 +221,14 @@ function mr_insert_new_topic($postdata)
 			$values[] = "'" . mr_htmlent($v) . "'";
 		}
 	}
-	$values[] = 0;
+	$values[] = "'" . $userdata->mr_memberid . "'";
 	$values[] = "'" . time() . "'";
 	
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, access, member, created) VALUES(' 
 		. implode(', ', $values) . ')';
 
-	//echo $sql;
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -231,18 +236,19 @@ function mr_insert_new_topic($postdata)
 function mr_insert_new_post($postdata)
 {
 	global $wpdb;
+	global $userdata;
 
 	$values = array(
-		"'" . mr_htmlent($postdata['content']) . "'",
+		"'" . mr_htmlent(nl2br($postdata['content'], true)) . "'",
 		"'" . intval($postdata['topic']) . "'",
-		$values[] = 0,
+		$values[] = "'" . $userdata->mr_memberid . "'",
 		$values[] = "'" . time() . "'"
 	);	
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_post (content, topic, member, created) VALUES(' 
 		. implode(', ', $values) . ')';
 
-	//echo $sql;
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -251,6 +257,8 @@ function mr_insert_new_post($postdata)
 function mr_show_form_topic()
 {
 	global $mr_access_type;
+	global $userdata;
+	
 	$action = admin_url('admin.php?page=member-forum');
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
@@ -265,9 +273,9 @@ function mr_show_form_topic()
 				<td>
 					<select name="access">
 					<?php
-					foreach ($mr_access_type as $k => $v)
+					for ($i = 1; $i <= $userdata->mr_access; $i++)
 					{
-						echo '<option value="' . $k . '">' . $v . ' (' . $k . ')</option>';
+						echo '<option value="' . $i . '">' . $mr_access_type[$i] . ' (' . $i . ')</option>';
 					}
 					?>
 					</select>
@@ -276,7 +284,7 @@ function mr_show_form_topic()
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>" />
 		</p>
 
 	</form>
@@ -299,7 +307,7 @@ function mr_show_form_post($topic)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>" />
 		</p>
 
 	</form>

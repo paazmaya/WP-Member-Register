@@ -7,3 +7,10 @@
 #createuser .form-field input[type=radio] {
     width: 2em;
 }
+
+.w40em {
+	width: 40em;
+}
+.w20em {
+	width: 20em;
+}

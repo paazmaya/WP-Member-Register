@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.2
+ Version: 0.5.4
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,9 +14,9 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.2');
+define ('MEMBER_REGISTER_VERSION', '0.5.4');
 global $mr_db_version;
-$mr_db_version = '3';
+$mr_db_version = '4';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -66,6 +66,11 @@ $mr_access_type = array(
 	9 => ,
 	10 => $writePost | $readPosts | $deletePosts | $addUser | $deleteUser
 );
+// Now we apply all of this!
+if(mr_check_permission($administrator, $deleteUser)) {
+	deleteUser("Some User"); # This is executed because $administrator can $deleteUser
+}
+
 */
 	
 global $mr_access_type;
@@ -82,11 +87,6 @@ $mr_access_type = array(
 	9 => 'Vyöarvojen hallinta',
 	10 => 'Kaikki mahdollinen mitä täällä ikinä voi tehdä'
 );
-// Now we apply all of this!
-if(checkPermission($administrator, $deleteUser)) {
-	deleteUser("Some User"); # This is executed because $administrator can $deleteUser
-}
-
 require 'member-functions.php';
 require 'member-forum.php';
 
@@ -110,6 +110,9 @@ add_action('profile_update', 'member_register_profile_update');
 add_action('wp_login', 'member_register_login');
 add_action('wp_logout', 'member_register_logout');
 
+// Check Member Register related access data
+add_action('wp_loaded', 'member_register_wp_loaded');
+ 
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
@@ -214,6 +217,7 @@ function member_register_forum_menu()
 // http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
 function member_register_profile_update($user_id, $old_user_data)
 {
+	echo '<p>' . $user_id . '</p>';
 	echo '<pre>';
 	print_r($old_user_data);
 	echo '</pre>';
@@ -224,16 +228,34 @@ function member_register_profile_update($user_id, $old_user_data)
  */
 function member_register_login()
 {
-	$_SESSION['mr_access'] = 1;
+	global $userdata;
 }
 
 function member_register_logout()
 {
-	$_SESSION['mr_access'] = 0;	
+	global $userdata;
 }
 
 
 
+function member_register_wp_loaded()
+{
+	global $wpdb;
+	global $userdata;
+		
+	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
+	if (!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
+		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid))
+	{
+		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
+			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';	
+		$res = $wpdb->get_row($sql, ARRAY_A);
+		$userdata->mr_access = intval($res['access']);
+		$userdata->mr_memberid = intval($res['id']);
+	}
+	
+	date_default_timezone_set('Europe/Helsinki');
+}
 
 /*
 
@@ -294,7 +316,7 @@ function mr_payment_list()
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
 	else if (isset($_GET['removepayment']) && is_numeric($_GET['removepayment']))
@@ -309,7 +331,7 @@ function mr_payment_list()
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
 
@@ -355,7 +377,7 @@ function mr_member_new()
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
 
@@ -363,7 +385,7 @@ function mr_member_new()
 	<div class="wrap">
 		<h2>Lisää uusi jäsen</h2>
 		<?php
-		mr_new_member_form(array());
+		mr_new_member_form(admin_url('admin.php?page=member-register-new'), array());
 		?>
 	</div>
 
@@ -392,7 +414,7 @@ function mr_payment_new()
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
 
@@ -438,7 +460,7 @@ function mr_grade_new()
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
 
@@ -479,7 +501,7 @@ function mr_show_payments()
 	<h3>Maksamattomat maksut</h3>
 	<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>
 
-	<table class="wp-list-table widefat fixed users">';
+	<table class="wp-list-table widefat tablesorter">';
 		<thead>';
 			<tr>
 				<th>Maksettu?</th>
@@ -537,7 +559,7 @@ function mr_show_payments()
 		'paidday', 'validuntil');
 	?>
 	<h3>Maksetut maksut</h3>';
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
 	<?php
@@ -590,7 +612,7 @@ function mr_show_grades()
 	$items = array('firstname', 'lastname', 'memberid',
 		'id', 'member', 'grade', 'type', 'location', 'nominator', 'day');
 	?>
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat tablesorter">
 
 	<thead>
 	<tr>
@@ -640,9 +662,9 @@ function mr_show_members()
 	// joindate passnro notes lastlogin active club
 	$members = mr_get_list('member');
 	?>
-	<table class="wp-list-table widefat fixed users">';
-	<thead>';
-	<tr>';
+	<table class="wp-list-table widefat tablesorter">
+	<thead>
+	<tr>
 
 	<?php
 	foreach($items as $item)
@@ -651,9 +673,9 @@ function mr_show_members()
 	}
 	?>
 
-	</tr>';
-	</thead>';
-	<tbody>';
+	</tr>
+	</thead>
+	<tbody>
 
 	<?php
 	foreach($members as $member)
@@ -695,7 +717,7 @@ function mr_show_member_info($id)
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
     else if (isset($_POST['mr_submit_hidden_grade']) && $_POST['mr_submit_hidden_grade'] == 'Y' )
@@ -708,7 +730,7 @@ function mr_show_member_info($id)
 		}
 		else
 		{
-			echo '<p>' . $wpdb->print_error() . '</p>';
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
 	
@@ -733,7 +755,7 @@ function mr_show_member_info($id)
 			. $id . '&edit" title="Muokkaa tätä käyttää" class="button-primary">Muokkaa tätä käyttää</a></p>';
 		?>
 		<h3>Henkilötiedot</h3>
-		<table class="wp-list-table widefat fixed users">
+		<table class="wp-list-table widefat users">
 		<tbody>
 		<?php
 		foreach($items as $item)
@@ -757,7 +779,7 @@ function mr_show_member_info($id)
 	$grades = $wpdb->get_results($sql, ARRAY_A);
 	?>
 	<h3>Vyöarvot</h3>
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat users">
 	<thead>
 	<tr>
 	<?php
@@ -811,7 +833,7 @@ function mr_show_member_info($id)
 	?>
 
 	<h3>Jäsenmaksut</h3>
-	<table class="wp-list-table widefat fixed users">
+	<table class="wp-list-table widefat users">
 	<thead>
 	<tr>
 	<th>Poista maksu</th>

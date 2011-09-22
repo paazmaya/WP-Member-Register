@@ -128,7 +128,7 @@ function mr_insert_new_payment($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
-	//echo $sql;
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -157,7 +157,7 @@ function mr_insert_new_member($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
 
-	//echo $sql;
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -415,11 +415,14 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="notes" value="<?php echo $values['notes']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>active</th>
-				<td><input type="text" name="active" value="<?php echo $values['active']; ?>" /></td>
+				<th>active <span class="description">(voiko käyttää sivustoa)</span></th>
+				<td>
+					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> kyllä</label><br />
+					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> ei</label>
+				</td>
 			</tr>
 			<tr class="form-field">
-				<th>club</th>
+				<th>club <span class="description">(missä seurassa pääsääntöisesti harjoittelee)</span></th>
 				<td><select name="club">
 				<option value="-1">-</option>
 				<?php
