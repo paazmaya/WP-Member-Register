@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.0
+ Version: 0.5.1
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.0');
+define ('MEMBER_REGISTER_VERSION', '0.5.1');
 global $mr_db_version;
 $mr_db_version = '3';
 
@@ -150,7 +150,7 @@ function member_register_admin_menu()
 function member_register_forum_menu()
 {
 	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum-list',
+	add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum',
 		'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
 
 }
@@ -433,7 +433,9 @@ function mr_show_payments()
 			echo '<td>';
 			if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
 			{
-				echo '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] . ' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
+				echo '<a href="' . admin_url('admin.php?page=member-register-control') .
+					'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
+					' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
 			}
 			else
 			{
