@@ -80,7 +80,7 @@ $mr_access_type = array(
 	2 => 'Keskusteluun osallistuminen',
 	3 => 'Keskusteluaiheiden luominen',
 	4 => 'Keskustelujen poisto',
-	5 => 'Keskusteluaiheiden poisto',
+	5 => 'Keskusteluaiheiden poisto', // voi myös päättää keskusteluaiheen näkyvyys tason
 	6 => 'Jäsenten lisääminen ja muokkaus',
 	7 => 'Jäsenten poistamine',
 	8 => 'Jäsenmaksujen hallinta',
@@ -173,8 +173,8 @@ function member_register_admin_head()
 				dateFormat: 'yy-mm-dd'
 			});
 			jQuery('input.pickday').datepicker();
-			jQuery('table').tablesorter();
-			jQuery('table a').cluetip();
+			jQuery('table.tablesorter').tablesorter();
+			jQuery('table a[rel]').cluetip();
 		});
 
 	</script>
@@ -275,7 +275,7 @@ function mr_member_list()
 
 	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
 	{
-		echo mr_show_member_info(intval($_GET['memberid']));
+		mr_show_member_info(intval($_GET['memberid']));
 	}
 	else
 	{
@@ -656,23 +656,32 @@ function mr_show_grades()
 
 function mr_show_members()
 {
+	global $wpdb;
+	global $mr_access_type;
+	
 	$items = array('user_login', 'firstname', 'lastname', 'birthdate', 'email', 'joindate');
 
 	// id access firstname lastname birthdate address zipcode postal phone email nationality
 	// joindate passnro notes lastlogin active club
-	$members = mr_get_list('member');
+		
+	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid FROM ' . $wpdb->prefix .
+		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.id LEFT JOIN ' 
+		. $wpdb->prefix . 'users C ON A.user_login = C.user_login ORDER BY A.lastname ASC';
+
+	$members = $wpdb->get_results($sql, ARRAY_A);
+	
 	?>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-
-	<?php
-	foreach($items as $item)
-	{
-		echo '<th>' . $item . '</th>';
-	}
-	?>
-
+		<th class="headerSortDown">Sukunimi</th>
+		<th>Etunimi</th>
+		<th>Syntymäpäivä</th>
+		<th>Sähköposti</th>
+		<th>Puhelin</th>
+		<th>Passi #</th>
+		<th>Oikeudet</th>
+		<th>WP käyttäjä</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -680,13 +689,33 @@ function mr_show_members()
 	<?php
 	foreach($members as $member)
 	{
-		echo '<tr id="user_' . $member['id'] . '">';
-		foreach($items as $item)
+		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
+			' '	. $member['lastname'] . '" rel="Osoite: ' . $member['address'] . ', ' .
+			$member['zipcode'] . ' ' . $member['postal'] . '|Kansallisuus: ' . $member['nationalityname'] .
+			'|Liittymispäivä: ' . $member['joindate'] . '">';
+		
+		echo '<tr id="user_' . $member['id'] . '"';
+		if ($member['active'] == 0)
 		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-register-control')
-				. '&memberid=' . $member['id'] . '" title="' . $member['firstname'] . ' '
-				. $member['lastname'] . '" rel="">' . $member[$item] . '</a></td>';
+			echo ' class="redback"';
 		}
+		echo '>';
+		echo '<td>' . $url . $member['lastname'] . '</a></td>';
+		echo '<td>' . $url . $member['firstname'] . '</a></td>';
+		echo '<td>' . $member['birthdate'] . '</td>';
+		echo '<td>' . $member['email'] . '</td>';
+		echo '<td>' . $member['phone'] . '</td>';
+		echo '<td>' . $member['passnro'] . '</td>';
+		echo '<td title="' . $mr_access_type[$member['access']] . '">' . $member['access'] . '</td>';
+		echo '<td>';
+		if ($member['user_login'] != '' && $member['user_login'] != null && is_numeric($member['wpuserid']))
+		{
+			echo '<a href="' . admin_url('user-edit.php?user_id=') . $member['wpuserid'] .
+				'" title="Muokkaa WP käyttäjää">' . $member['user_login'] . '</a>';
+		}
+		echo  '</td>';
+		
 		echo '</tr>';
 	}
 	?>
@@ -700,11 +729,10 @@ function mr_show_members()
  */
 function mr_show_member_info($id)
 {
-	$id = intval($id);
-
 	global $wpdb;
 	global $mr_grade_values;
-	
+
+	$id = intval($id);
 	
 	// Check for possible insert	
     if (isset($_POST['mr_submit_hidden_member']) && $_POST['mr_submit_hidden_member'] == 'Y' )

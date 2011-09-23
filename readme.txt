@@ -1,10 +1,10 @@
 === Member Register ===
 Contributors: paazmaya
 Donate link: http://paazmaya.com/
-Tags: members, organisation
+Tags: members, organisation, forum, conversation, users, register
 Requires at least: 3.0.0
 Tested up to: 3.2.1
-Stable tag: 4.3
+Stable tag: master
 
 Member register management related to personal information, payments and what is common for martial arts: belt grades.
 
@@ -15,35 +15,11 @@ This is the long description.  No limit, and you can use Markdown (as well as in
 For backwards compatibility, if this section is missing, the full length of the short description will be used, and
 Markdown parsed.
 
-A few notes about the sections above:
-
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Upload folder `member-register` to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 
@@ -63,48 +39,42 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 0.5.5 =
+* More information of a member via jQuery Cluetip while in the member listing
+* Moderate messages by hiding them, posts in level 4 and up, topics in level 5 and up
+* Topic visibility level can be set if member has level 5 or higher
+* Access levels actually checked before showing Forum forms
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 0.5.4 = 
+* Member access levels used in Forum and shown more clearly in member forms
+* Timezone was ignored from the .htaccess file, thus is now set via wp_loaded() hook
 
-== Upgrade Notice ==
+= 0.5.3 = 
+* Create new topic on the same page as they are listed
+* Create a message to a topic on the same page where other messages are listed
+* Several SQL query related fixes for accuracy
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+= 0.5.2 =
+* Tablesorter styling to actually show how table is sorted
+* Member access levels defined
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+= 0.5.1 = 
+* Initial version of Forum, listing topics
 
-== Arbitrary section ==
+= 0.5.0 = 
+* Fine tuning and possible bitfails fixed
 
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
+= 0.4.0 =
+* Payments can be deleted
+* jQuery Tablesorter for sorting tables
+* Grade type added, karate or kobujutsu
 
-== A brief Markdown Example ==
+= 0.3.0 =
+* Members can be edited and linked to existing WP users
+* List of Nationalities added
+* Payments include the reference number
 
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+= 0.2.0 =
+* Initial Member Registery available
+* Adding grades to members form
+* Adding payments and updating their status
