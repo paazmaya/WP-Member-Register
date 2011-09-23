@@ -132,14 +132,13 @@ function mr_show_info_topic($topic, $access)
 	global $wpdb;
 	
 	$items = array('id', 'title', 'member', 'access', 'created');
-	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
+	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member D ON D.id = ' .
-		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
-		' WHERE A.access <= ' . intval($access) . ' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
+		$wpdb->prefix . 'mr_member C ON C.id = A.member WHERE A.access <= ' . intval($access) .
+		' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
 		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
-	
+
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$res = $wpdb->get_row($sql, ARRAY_A);
@@ -181,7 +180,7 @@ function mr_show_list_topics($access)
 		<?php
 		if ($userdata->mr_access >= 5)
 		{
-			echo '<th class="w8em">Poista</th>';
+			echo '<th class="w4em">Poista</th>';
 		}
 		?>
 	</tr>
@@ -247,7 +246,7 @@ function mr_show_posts_for_topic($topic)
 		<?php
 		if ($userdata->mr_access >= 4)
 		{
-			echo '<th class="w8em">Poista</th>';
+			echo '<th class="w4em">Poista</th>';
 		}
 		?>
 	</tr>

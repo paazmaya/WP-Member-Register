@@ -82,7 +82,7 @@ $mr_access_type = array(
 	4 => 'Keskustelujen poisto',
 	5 => 'Keskusteluaiheiden poisto', // voi myös päättää keskusteluaiheen näkyvyys tason
 	6 => 'Jäsenten lisääminen ja muokkaus',
-	7 => 'Jäsenten poistamine',
+	7 => 'Jäsenten poistaminen',
 	8 => 'Jäsenmaksujen hallinta',
 	9 => 'Vyöarvojen hallinta',
 	10 => 'Kaikki mahdollinen mitä täällä ikinä voi tehdä'
@@ -174,7 +174,12 @@ function member_register_admin_head()
 			});
 			jQuery('input.pickday').datepicker();
 			jQuery('table.tablesorter').tablesorter();
-			jQuery('table a[rel]').cluetip();
+			jQuery('table a.tip').cluetip({
+				splitTitle: '|',
+				sticky: true,
+				closeText: 'sulje',
+				closePosition: 'title'
+			});
 		});
 
 	</script>
@@ -207,10 +212,14 @@ function member_register_admin_menu()
  */
 function member_register_forum_menu()
 {
-	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum',
-		'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
-
+	global $userdata;
+	
+	if (isset($userdata->user_login) && isset($userdata->mr_access) && $userdata->mr_access >= 2)
+	{
+		// http://codex.wordpress.org/Adding_Administration_Menus
+		add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum',
+			'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+	}
 }
 
 
@@ -244,8 +253,9 @@ function member_register_wp_loaded()
 	global $userdata;
 		
 	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
-	if (!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
-		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid))
+	if (isset($userdata->user_login) && (!isset($userdata->mr_access) ||
+		!is_numeric($userdata->mr_access) ||
+		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
 		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
 			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';	
@@ -665,7 +675,7 @@ function mr_show_members()
 	// joindate passnro notes lastlogin active club
 		
 	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid FROM ' . $wpdb->prefix .
-		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.id LEFT JOIN ' 
+		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' 
 		. $wpdb->prefix . 'users C ON A.user_login = C.user_login ORDER BY A.lastname ASC';
 
 	$members = $wpdb->get_results($sql, ARRAY_A);
@@ -691,17 +701,17 @@ function mr_show_members()
 	{
 		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
 			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
-			' '	. $member['lastname'] . '" rel="Osoite: ' . $member['address'] . ', ' .
+			' '	. $member['lastname'] . '|Osoite: ' . $member['address'] . ', ' .
 			$member['zipcode'] . ' ' . $member['postal'] . '|Kansallisuus: ' . $member['nationalityname'] .
-			'|Liittymispäivä: ' . $member['joindate'] . '">';
+			'|Liittymispäivä: ' . $member['joindate'] . '" class="tip">';
 		
-		echo '<tr id="user_' . $member['id'] . '"';
-		if ($member['active'] == 0)
+		echo '<tr id="user_' . $member['id'] . '">';
+		echo '<td';
+		if (intval($member['active']) == 0)
 		{
 			echo ' class="redback"';
 		}
-		echo '>';
-		echo '<td>' . $url . $member['lastname'] . '</a></td>';
+		echo '>' . $url . $member['lastname'] . '</a></td>';
 		echo '<td>' . $url . $member['firstname'] . '</a></td>';
 		echo '<td>' . $member['birthdate'] . '</td>';
 		echo '<td>' . $member['email'] . '</td>';
@@ -719,7 +729,7 @@ function mr_show_members()
 		echo '</tr>';
 	}
 	?>
-	</tbody>';
+	</tbody>
 	</table>
 	<?php
 }

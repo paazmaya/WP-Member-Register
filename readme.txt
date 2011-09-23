@@ -40,41 +40,57 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 
 = 0.5.5 =
+* Released 23 September 2011
 * More information of a member via jQuery Cluetip while in the member listing
 * Moderate messages by hiding them, posts in level 4 and up, topics in level 5 and up
 * Topic visibility level can be set if member has level 5 or higher
 * Access levels actually checked before showing Forum forms
 
 = 0.5.4 = 
+* Released 23 September 2011
 * Member access levels used in Forum and shown more clearly in member forms
 * Timezone was ignored from the .htaccess file, thus is now set via wp_loaded() hook
 
 = 0.5.3 = 
+* Released 22 September 2011
 * Create new topic on the same page as they are listed
 * Create a message to a topic on the same page where other messages are listed
 * Several SQL query related fixes for accuracy
 
 = 0.5.2 =
+* Released 22 September 2011
 * Tablesorter styling to actually show how table is sorted
 * Member access levels defined
 
 = 0.5.1 = 
+* Released 22 September 2011
 * Initial version of Forum, listing topics
 
 = 0.5.0 = 
+* Release 17 September 2011
 * Fine tuning and possible bitfails fixed
 
 = 0.4.0 =
+* Released 10 September 2011
 * Payments can be deleted
 * jQuery Tablesorter for sorting tables
 * Grade type added, karate or kobujutsu
+* Datepicker from jQuery UI, which is not included by default in Wordpress. Strange.
 
 = 0.3.0 =
-* Members can be edited and linked to existing WP users
+* Released 03 April 2011
+* Members can be edited 
 * List of Nationalities added
+* Adding grades for members form
 * Payments include the reference number
+* Wrote something in Friday before getting totally wasted and now I am not sure what happened. Where is my bicycle?
 
 = 0.2.0 =
-* Initial Member Registery available
-* Adding grades to members form
+* Released 01 April 2011
+* Add new members and link to existing WP users
 * Adding payments and updating their status
+
+= 0.1.0 =
+* Released 29 March 2011
+* Initial Member Registery available
+* List and add members
