@@ -118,12 +118,13 @@ add_action('wp_loaded', 'member_register_wp_loaded');
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
-	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery') );
-	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery') );
-	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery') );
-	wp_register_script('jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core') ); // 1.8.9
-	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery') );
-	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery') );
+	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core')); // 1.8.9
+	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style('jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
@@ -144,6 +145,7 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-ui-datepicker');
 	wp_enqueue_script('jquery-ui-datepicker-fi');
 	wp_enqueue_script('jquery-cluetip');
+	wp_enqueue_script('jquery-picnet-table-filter');
 }
 
 function member_register_admin_print_styles()
@@ -180,6 +182,7 @@ function member_register_admin_head()
 				closeText: 'sulje',
 				closePosition: 'title'
 			});
+			jQuery('table.tablesorter').tableFilter();
 		});
 
 	</script>
@@ -279,7 +282,7 @@ function mr_member_list()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 	echo '<div class="wrap">';
 
@@ -310,7 +313,7 @@ function mr_payment_list()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
 	global $wpdb;
@@ -356,7 +359,7 @@ function mr_grade_list()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
 	echo '<div class="wrap">';
@@ -371,7 +374,7 @@ function mr_member_new()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
 	global $wpdb;
@@ -406,7 +409,7 @@ function mr_payment_new()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
 	global $wpdb;
@@ -449,7 +452,7 @@ function mr_grade_new()
 {
 	if (!current_user_can('create_users'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.') );
+		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
 	global $wpdb;

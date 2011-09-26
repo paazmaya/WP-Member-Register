@@ -38,6 +38,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.5.6 =
+* Tablefilter at client side for finding the data faster (picnet.table.filter.min.js)
 
 = 0.5.5 =
 * Released 23 September 2011
