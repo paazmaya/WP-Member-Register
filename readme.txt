@@ -42,6 +42,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Tablefilter at client side for finding the data faster (picnet.table.filter.min.js)
 * More efficient use of helper functions
 * Nicer and more human readable headings for table columns
+* Installation hook up to date, including the country data
 
 = 0.5.5 =
 * Released 23 September 2011
