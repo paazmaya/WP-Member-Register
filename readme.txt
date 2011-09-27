@@ -40,6 +40,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 == Changelog ==
 = 0.5.6 =
 * Tablefilter at client side for finding the data faster (picnet.table.filter.min.js)
+* More efficient use of helper functions
+* Nicer and more human readable headings for table columns
 
 = 0.5.5 =
 * Released 23 September 2011
@@ -48,12 +50,12 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Topic visibility level can be set if member has level 5 or higher
 * Access levels actually checked before showing Forum forms
 
-= 0.5.4 = 
+= 0.5.4 =
 * Released 23 September 2011
 * Member access levels used in Forum and shown more clearly in member forms
 * Timezone was ignored from the .htaccess file, thus is now set via wp_loaded() hook
 
-= 0.5.3 = 
+= 0.5.3 =
 * Released 22 September 2011
 * Create new topic on the same page as they are listed
 * Create a message to a topic on the same page where other messages are listed
@@ -64,11 +66,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Tablesorter styling to actually show how table is sorted
 * Member access levels defined
 
-= 0.5.1 = 
+= 0.5.1 =
 * Released 22 September 2011
 * Initial version of Forum, listing topics
 
-= 0.5.0 = 
+= 0.5.0 =
 * Release 17 September 2011
 * Fine tuning and possible bitfails fixed
 
@@ -81,7 +83,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.3.0 =
 * Released 03 April 2011
-* Members can be edited 
+* Members can be edited
 * List of Nationalities added
 * Adding grades for members form
 * Payments include the reference number

@@ -11,8 +11,8 @@
 function mr_check_permission($access, $permission)
 {
 	global $mr_access_type;
-	
-	if ($mr_access_type[$access] & $permission) 
+
+	if ($mr_access_type[$access] & $permission)
 	{
 		return true;
 	}
@@ -38,7 +38,7 @@ function mr_show_access_values()
 /**
  * Insert the given grade
  * @param $postdata Array
- */ 
+ */
 function mr_insert_new_grade($postdata)
 {
 	global $wpdb;
@@ -59,12 +59,12 @@ function mr_insert_new_grade($postdata)
 		}
 	}
 	$keys[] = 'member';
-	
+
 	if (isset($postdata['member']))
 	{
 		$postdata['members'] = array($postdata['member']);
 	}
-	
+
 	if (isset($postdata['members']) && is_array($postdata['members']))
 	{
 		foreach($postdata['members'] as $member)
@@ -78,7 +78,7 @@ function mr_insert_new_grade($postdata)
 
 		return $wpdb->query($sql);
 	}
-	else 
+	else
 	{
 		return false;
 	}
@@ -181,7 +181,7 @@ function mr_update_member_info($postdata)
 				$set[] = mr_urize($k) . " = '" . mr_htmlent($v) . "'";
 			}
 		}
-		
+
 		$id = intval($postdata['id']);
 
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $set) . 'WHERE id = ' . $id;
@@ -274,7 +274,7 @@ function mr_new_member_form($action, $data)
 {
 	global $wpdb;
 	global $mr_access_type;
-	
+
 	// Default values for an empty form
 	$values = array(
 		'id' => 0,
@@ -296,11 +296,11 @@ function mr_new_member_form($action, $data)
 		'club' => -1
 	);
 	$values = array_merge($values, $data);
-	
+
 	echo '<pre>';
 	print_r($values);
 	echo '</pre>';
-	
+
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>">
 		<input type="hidden" name="mr_submit_hidden_member" value="Y" />
@@ -317,7 +317,7 @@ function mr_new_member_form($action, $data)
 				}
 				else
 				{
-					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN ' 
+					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN '
 						. $wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
 				}
 

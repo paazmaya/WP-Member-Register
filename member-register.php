@@ -15,8 +15,9 @@
 
 
 define ('MEMBER_REGISTER_VERSION', '0.5.6');
+
 global $mr_db_version;
-$mr_db_version = '5';
+$mr_db_version = '6';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -41,8 +42,8 @@ $mr_grade_values = array(
 
 global $mr_grade_types;
 $mr_grade_types = array(
-	'Y' => 'Yuishinkai Karate',
-	'K' => 'Ryukyu Kobujutsu'
+	'Yuishinkai' => 'Yuishinkai Karate',
+	'Kobujutsu' => 'Ryukyu Kobujutsu'
 );
 
 /*
@@ -78,7 +79,7 @@ if(mr_check_permission($administrator, $deleteUser)) {
 }
 
 */
-	
+
 global $mr_access_type;
 $mr_access_type = array(
 	0 => 'Ei mitään, ei aktiivinen jäsen',
@@ -118,7 +119,7 @@ add_action('wp_logout', 'member_register_logout');
 
 // Check Member Register related access data
 add_action('wp_loaded', 'member_register_wp_loaded');
- 
+
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
@@ -222,7 +223,7 @@ function member_register_admin_menu()
 function member_register_forum_menu()
 {
 	global $userdata;
-	
+
 	if (isset($userdata->user_login) && isset($userdata->mr_access) && $userdata->mr_access >= 2)
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
@@ -260,19 +261,19 @@ function member_register_wp_loaded()
 {
 	global $wpdb;
 	global $userdata;
-		
+
 	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
 	if (isset($userdata->user_login) && (!isset($userdata->mr_access) ||
 		!is_numeric($userdata->mr_access) ||
 		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
 		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
-			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';	
+			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
 		$res = $wpdb->get_row($sql, ARRAY_A);
 		$userdata->mr_access = intval($res['access']);
 		$userdata->mr_memberid = intval($res['id']);
 	}
-	
+
 	date_default_timezone_set('Europe/Helsinki');
 }
 
@@ -356,8 +357,8 @@ function mr_payment_list()
 
 	echo '<div class="wrap">';
 	echo '<h2>Jäsenmaksut</h2>';
-	
-	mr_show_payments();
+
+	mr_show_payments_lists(null); // no specific member
 	echo '</div>';
 }
 
@@ -384,14 +385,14 @@ function mr_member_new()
 	}
 
 	global $wpdb;
-	
+
 	// Check for possible insert
     $hidden_field_name = 'mr_submit_hidden_member';
     if( isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' )
 	{
         if (mr_insert_new_member($_POST))
 		{
-			echo '<div class="updated"><p><strong>Uusi jäsen lisätty, nimellä: ' 
+			echo '<div class="updated"><p><strong>Uusi jäsen lisätty, nimellä: '
 				. $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong></p></div>';
 		}
 		else
@@ -463,11 +464,9 @@ function mr_grade_new()
 
 	global $wpdb;
 	global $mr_grade_values;
+	global $mr_grade_types;
 
-	
-	
-	
-	// Check for possible insert	
+	// Check for possible insert
     $hidden_field_name = 'mr_submit_hidden_grade';
     if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' )
 	{
@@ -497,37 +496,88 @@ function mr_grade_new()
 	<?php
 }
 
-
-
-
-
-
-function mr_show_payments()
+/**
+ * List all payments for all members.
+ */
+function mr_show_payments_lists($memberid)
 {
-	global $wpdb;
-
-	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
-		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND A.paidday = \'0000-00-00\' ORDER BY A.deadline DESC';
-	$res = $wpdb->get_results($sql, ARRAY_A);
-
-	$items = array('firstname', 'lastname', 'id',
-		'member', 'reference', 'type', 'amount', 'deadline',
-		'validuntil');
-	// id member reference type amount deadline paidday validuntil club visible
 	?>
-
 	<h3>Maksamattomat maksut</h3>
 	<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>
 
-	<table class="wp-list-table widefat tablesorter">';
-		<thead>';
+	<?php
+	mr_show_payments($memberid, true);
+	?>
+	<hr />
+	<h3>Maksetut maksut</h3>
+	<?php
+	mr_show_payments($memberid, false);
+}
+
+
+
+/**
+ * Show list of payments for a member,
+ * for all, unpaid, paid ones.
+ */
+function mr_show_payments($memberid = null, $isUnpaidView = false)
+{
+	global $wpdb;
+
+	$where = '';
+	if ($memberid != null && is_numeric($memberid))
+	{
+		$where .= 'AND A.member = \'' . $memberid . '\' ';
+	}
+	if ($isUnpaidView)
+	{
+		$where .= 'AND A.paidday = \'0000-00-00\' ';
+	}
+	else
+	{
+		$where .= 'AND A.paidday != \'0000-00-00\' ';
+	}
+	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
+		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
+		'mr_member B ON A.member = B.id WHERE A.visible = 1 ' .
+		$where . 'ORDER BY A.deadline DESC';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+
+	$allowremove = false;
+
+	// id member reference type amount deadline paidday validuntil club visible
+	?>
+	<table class="wp-list-table widefat tablesorter">
+		<thead>
 			<tr>
-				<th filter="false">Maksettu?</th>
 				<?php
-				foreach($items as $item)
+				if ($isUnpaidView)
 				{
-					echo '<th>' . $item . '</th>';
+					echo '<th filter="false">Maksettu?</th>';
+				}
+				if ($memberid == null)
+				{
+					?>
+					<th>Sukunimi</th>
+					<th>Etunimi</th>
+					<?php
+				}
+				?>
+				<th>Tyyppi</th>
+				<th class="w8em">Summa (EUR)</th>
+				<th class="w8em">Viite</th>
+				<th class="headerSortUp">Eräpäivä</th>
+				<?php
+				if (!$isUnpaidView)
+				{
+					echo '<th>Maksu PVM</th>';
+				}
+				?>
+				<th>Voimassaolo</th>
+				<?php
+				if ($allowremove)
+				{
+					echo '<th>Poista</th>';
 				}
 				?>
 			</tr>
@@ -537,76 +587,41 @@ function mr_show_payments()
 	foreach($res as $payment)
 	{
 		echo '<tr id="payment_' . $payment['id'] . '">';
-		echo '<td>';
-		if ($payment['paidday'] == '0000-00-00')
-		{
-			echo '<form action="admin.php?page=member-payment-list" method="post">';
-			echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
-			echo '<input type="submit" value="OK" /></form>';
-		}
-		echo '</td>';
-		foreach($items as $item)
+		if ($isUnpaidView)
 		{
 			echo '<td>';
-			if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
+			if ($payment['paidday'] == '0000-00-00')
 			{
-				echo '<a href="' . admin_url('admin.php?page=member-register-control') .
-					'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
-					' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
-			}
-			else
-			{
-				echo $payment[$item];
+				echo '<form action="admin.php?page=member-payment-list" method="post">';
+				echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
+				echo '<input type="submit" value="OK" /></form>';
 			}
 			echo '</td>';
 		}
-		echo '</tr>';
-	}
-	?>
-	</tbody>
-	</table>
-	<?php
-	// -------------
-
-	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
-		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND A.paidday != \'0000-00-00\' ORDER BY A.deadline DESC';
-	$res = $wpdb->get_results($sql, ARRAY_A);
-
-	$items = array('firstname', 'lastname', 'id',
-		'member', 'reference', 'type', 'amount', 'deadline',
-		'paidday', 'validuntil');
-	?>
-	<h3>Maksetut maksut</h3>';
-	<table class="wp-list-table widefat tablesorter">
-	<thead>
-	<tr>
-	<?php
-	foreach($items as $item)
-	{
-		echo '<th>' . $item . '</th>';
-	}
-	?>
-	</tr>
-	</thead>
-	<tbody>
-
-	<?php
-	foreach($res as $payment)
-	{
-		echo '<tr id="payment_' . $payment['id'] . '">';
-		foreach($items as $item)
+		if ($memberid == null)
 		{
-			echo '<td>';
-			if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
-			{
-				echo '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] . ' ' . $payment['lastname'] . '">' . $payment[$item] . '</a>';
-			}
-			else
-			{
-				echo $payment[$item];
-			}
-			echo '</td>';
+			$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+				'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
+				' ' . $payment['lastname'] . '">';
+			echo '<td>' . $url . $payment['lastname'] . '</a></td>';
+			echo '<td>' . $url . $payment['firstname'] . '</a></td>';
+		}
+		echo '<td>' . $payment['type'] . '</td>';
+		echo '<td>' . $payment['amount'] . '</td>';
+		echo '<td>' . $payment['reference'] . '</td>';
+		echo '<td>' . $payment['deadline'] . '</td>';
+		if (!$isUnpaidView)
+		{
+			echo '<td>' . $payment['paidday'] . '</td>';
+		}
+		echo '<td>' . $payment['validuntil'] . '</td>';
+
+		// set visible to 0, do not remove for real...
+		if ($allowremove)
+		{
+			echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
+				'&removepayment=' . $payment['id'] . '" title="Poista maksu viitteellä ' .
+				$payment['reference'] . '">X</a></td>';
 		}
 		echo '</tr>';
 	}
@@ -616,15 +631,26 @@ function mr_show_payments()
 	<?php
 }
 
-function mr_show_grades()
+/**
+ * Show grades for a single member or for everyone
+ */
+function mr_show_grades($memberid = null)
 {
 	global $wpdb;
 	global $mr_grade_values;
 	global $mr_grade_types;
 
-	$sql = 'SELECT A.firstname, A.lastname, A.id AS memberid, B.* FROM ' . $wpdb->prefix .
-		'mr_member A LEFT JOIN ' . $wpdb->prefix .
-		'mr_grade B ON A.id = B.member WHERE B.id IS NOT NULL ORDER BY A.lastname DESC';
+	$where = '';
+	$order = 'B.lastname ASC, ';
+	if ($memberid != null && is_numeric($memberid))
+	{
+		$where = 'WHERE B.id = \'' . $memberid . '\' ';
+		$order = '';
+	}
+
+	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
+		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
+		'mr_member B ON A.member = B.id ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
@@ -636,11 +662,25 @@ function mr_show_grades()
 
 	<thead>
 	<tr>
-		<th>Sukunimi</th>
-		<th>Etunimi</th>
+		<?php
+		if ($memberid == null)
+		{
+			?>
+			<th class="headerSortDown">Sukunimi</th>
+			<th>Etunimi</th>
+			<?php
+		}
+		?>
 		<th>Vyöarvo</th>
 		<th>Laji</th>
-		<th>Myöntö PVM</th>
+		<th
+		<?php
+		if ($memberid != null)
+		{
+			echo ' class="headerSortUp"';
+		}
+		?>
+		>Myöntö PVM</th>
 		<th>Paikka</th>
 	</tr>
 	</thead>
@@ -648,24 +688,22 @@ function mr_show_grades()
 	<?php
 	foreach($res as $grade)
 	{
-		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-			'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
-			' ' . $grade['lastname'] . '">';
 		echo '<tr id="grade_' . $grade['id'] . '">';
-		echo '<td>' . $url . $grade['lastname'] . '</a></td>';
-		echo '<td>' . $url . $grade['firstname'] . '</a></td>';
+		if ($memberid == null)
+		{
+			$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+				'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
+				' ' . $grade['lastname'] . '">';
+			echo '<td>' . $url . $grade['lastname'] . '</a></td>';
+			echo '<td>' . $url . $grade['firstname'] . '</a></td>';
+		}
 		echo '<td>';
 		if (array_key_exists($grade['grade'], $mr_grade_values))
 		{
 			echo $mr_grade_values[$grade['grade']];
 		}
 		echo '</td>';
-		echo '<td>';
-		if (array_key_exists($grade['type'], $mr_grade_types))
-		{
-			echo $mr_grade_types[$grade['type']];
-		}
-		echo '</td>';
+		echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
 		echo '<td>' . $grade['day'] . '</td>';
 		echo '<td>' . $grade['location'] . '</td>';
 		echo '</tr>';
@@ -680,18 +718,18 @@ function mr_show_members()
 {
 	global $wpdb;
 	global $mr_access_type;
-	
+
 	$items = array('user_login', 'firstname', 'lastname', 'birthdate', 'email', 'joindate');
 
 	// id access firstname lastname birthdate address zipcode postal phone email nationality
 	// joindate passnro notes lastlogin active club
-		
+
 	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid FROM ' . $wpdb->prefix .
-		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' 
+		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN '
 		. $wpdb->prefix . 'users C ON A.user_login = C.user_login ORDER BY A.lastname ASC';
 
 	$members = $wpdb->get_results($sql, ARRAY_A);
-	
+
 	?>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
@@ -716,7 +754,7 @@ function mr_show_members()
 			' '	. $member['lastname'] . '|Osoite: ' . $member['address'] . ', ' .
 			$member['zipcode'] . ' ' . $member['postal'] . '|Kansallisuus: ' . $member['nationalityname'] .
 			'|Liittymispäivä: ' . $member['joindate'] . '" class="tip">';
-		
+
 		echo '<tr id="user_' . $member['id'] . '">';
 		echo '<td';
 		if (intval($member['active']) == 0)
@@ -737,7 +775,7 @@ function mr_show_members()
 				'" title="Muokkaa WP käyttäjää">' . $member['user_login'] . '</a>';
 		}
 		echo  '</td>';
-		
+
 		echo '</tr>';
 	}
 	?>
@@ -753,10 +791,11 @@ function mr_show_member_info($id)
 {
 	global $wpdb;
 	global $mr_grade_values;
+	global $mr_grade_types;
 
 	$id = intval($id);
-	
-	// Check for possible insert	
+
+	// Check for possible insert
     if (isset($_POST['mr_submit_hidden_member']) && $_POST['mr_submit_hidden_member'] == 'Y' )
 	{
         if (mr_update_member_info($_POST))
@@ -783,7 +822,7 @@ function mr_show_member_info($id)
 			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
-	
+
 
 	// ---------------
 
@@ -794,15 +833,13 @@ function mr_show_member_info($id)
 	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $id . ' LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
-	echo '<h2>' . $person['firstname'] . ' ' . $person['lastname'] . '</h2>';
+	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
 	if (isset($_GET['edit']))
 	{
 		mr_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
 	}
-	else 
+	else
 	{
-		echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' 
-			. $id . '&edit" title="Muokkaa tätä käyttää" class="button-primary">Muokkaa tätä käyttää</a></p>';
 		?>
 		<h3>Henkilötiedot</h3>
 		<table class="wp-list-table widefat users">
@@ -817,53 +854,17 @@ function mr_show_member_info($id)
 		}
 		?>
 		</tbody>
-		</table>		
+		</table>
 		<?php
+		echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid='
+			. $id . '&edit" title="Muokkaa tätä käyttää" class="button-primary">Muokkaa tätä käyttää</a></p>';
 	}
 
 	// ---------------
+	echo '<hr />';
+	echo '<h2>Vyöarvot</h2>';
+	mr_show_grades($id);
 
-	$items = array('id', 'grade', 'type', 'location', 'nominator', 'day');
-	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_grade WHERE member = ' .
-		$id . ' ORDER BY day DESC';
-	$grades = $wpdb->get_results($sql, ARRAY_A);
-	?>
-	<h3>Vyöarvot</h3>
-	<table class="wp-list-table widefat users">
-	<thead>
-	<tr>
-	<?php
-	foreach($items as $item)
-	{
-		echo '<th>' . $item . '</th>';
-	}
-	?>
-	</tr>
-	</thead>
-	<tbody>
-	<?php
-	foreach($grades as $grade)
-	{
-		echo '<tr id="grade_' . $grade['id'] . '">';
-		foreach($items as $item)
-		{
-			echo '<td>';
-			if ($item == 'grade' && array_key_exists($grade[$item], $mr_grade_values))
-			{
-				echo $mr_grade_values[$grade[$item]];
-			}
-			else
-			{
-				echo $grade[$item];
-			}
-			echo '</td>';
-		}
-		echo '</tr>';
-	}
-	?>
-	</tbody>
-	</table>
-	<?php
 	// Quick add a grade
 	mr_grade_quick_form(array(
 		'id' => $id,
@@ -872,48 +873,13 @@ function mr_show_member_info($id)
 	?>
 
 	<hr />
+	<h2>Jäsenmaksut</h2>
 	<?php
 
 	// ---------------
 
-	$items = array('id', 'reference', 'type', 'amount', 'deadline', 'paidday', 'validuntil');
-	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' .
-		$id . ' AND visible = 1 ORDER BY deadline DESC';
-	$res = $wpdb->get_results($sql, ARRAY_A);
-	?>
+	mr_show_payments_lists($id);
 
-	<h3>Jäsenmaksut</h3>
-	<table class="wp-list-table widefat users">
-	<thead>
-	<tr>
-	<th>Poista maksu</th>
-
-	<?php
-	foreach($items as $item)
-	{
-		echo '<th>' . $item . '</th>';
-	}
-	?>
-	</tr>
-	</thead>
-	<tbody>
-	<?php
-	foreach($res as $pay)
-	{
-		echo '<tr>';
-		// set visible to 0, do not remove for real...
-		echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') . '&removepayment=' . $pay['id'] . '" title="Poista maksu">poista maksu</a></td>';
-		foreach($items as $item)
-		{
-			echo '<td>' . $pay[$item] . '</td>';
-		}
-		echo '</tr>';
-	}
-	?>
-	</tbody>
-	</table>
-
-	<?php
 }
 
 
@@ -945,7 +911,8 @@ function mr_install ()
 		  id mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
 		  member mediumint(5) unsigned NOT NULL DEFAULT '0',
 		  grade enum('8K','7K','6K','5h','5K','4h','4K','3h','3K','2h','2K','1h','1K','1s','1D','2s','2D','3D','4D','5D','6D','7D','8D') COLLATE utf8_swedish_ci NOT NULL DEFAULT '8K',
-		  location varchar(100) COLLATE utf8_swedish_ci NOT NULL,
+		  type enum('Yuishinkai','Kobujutsu') COLLATE utf8_swedish_ci NOT NULL DEFAULT 'Yuishinkai',
+		  location varchar(255) COLLATE utf8_swedish_ci NOT NULL,
 		  nominator varchar(255) NOT NULL DEFAULT '',
 		  day date DEFAULT '0000-00-00' NOT NULL,
 		  PRIMARY KEY (id),
@@ -1018,7 +985,7 @@ function mr_install ()
 
 		dbDelta($sql);
 	}
-	
+
 	$table_name = $wpdb->prefix . 'mr_forum_topic';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
 	{
@@ -1034,7 +1001,7 @@ function mr_install ()
 
 		dbDelta($sql);
 	}
-	
+
 
 	add_option('mr_db_version', $mr_db_version);
 }
