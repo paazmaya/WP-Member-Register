@@ -180,7 +180,7 @@ function mr_show_list_topics($access)
 		<?php
 		if ($userdata->mr_access >= 5)
 		{
-			echo '<th class="w4em">Poista</th>';
+			echo '<th class="w4em" filter="false">Poista</th>';
 		}
 		?>
 	</tr>
@@ -246,7 +246,7 @@ function mr_show_posts_for_topic($topic)
 		<?php
 		if ($userdata->mr_access >= 4)
 		{
-			echo '<th class="w4em">Poista</th>';
+			echo '<th class="w4em" filter="false">Poista</th>';
 		}
 		?>
 	</tr>

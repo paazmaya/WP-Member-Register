@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.5
+ Version: 0.5.6
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.5');
+define ('MEMBER_REGISTER_VERSION', '0.5.6');
 global $mr_db_version;
 $mr_db_version = '5';
 
@@ -37,6 +37,12 @@ $mr_grade_values = array(
 	'5D' => '5 dan',
 	'6D' => '6 dan',
 	'7D' => '7 dan'
+);
+
+global $mr_grade_types;
+$mr_grade_types = array(
+	'Y' => 'Yuishinkai Karate',
+	'K' => 'Ryukyu Kobujutsu'
 );
 
 /*
@@ -187,7 +193,7 @@ function member_register_admin_head()
 
 	</script>
 	<?php
-
+	// http://www.picnet.com.au/picnet_table_filter.html
 }
 
 function member_register_admin_menu()
@@ -517,7 +523,7 @@ function mr_show_payments()
 	<table class="wp-list-table widefat tablesorter">';
 		<thead>';
 			<tr>
-				<th>Maksettu?</th>
+				<th filter="false">Maksettu?</th>
 				<?php
 				foreach($items as $item)
 				{
@@ -614,6 +620,7 @@ function mr_show_grades()
 {
 	global $wpdb;
 	global $mr_grade_values;
+	global $mr_grade_types;
 
 	$sql = 'SELECT A.firstname, A.lastname, A.id AS memberid, B.* FROM ' . $wpdb->prefix .
 		'mr_member A LEFT JOIN ' . $wpdb->prefix .
@@ -629,36 +636,38 @@ function mr_show_grades()
 
 	<thead>
 	<tr>
-	<?php
-	foreach($items as $item)
-	{
-		echo '<th>' . $item . '</th>';
-	}
-	?>
+		<th>Sukunimi</th>
+		<th>Etunimi</th>
+		<th>Vyöarvo</th>
+		<th>Laji</th>
+		<th>Myöntö PVM</th>
+		<th>Paikka</th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
 	foreach($res as $grade)
 	{
+		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+			'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
+			' ' . $grade['lastname'] . '">';
 		echo '<tr id="grade_' . $grade['id'] . '">';
-		foreach($items as $item)
+		echo '<td>' . $url . $grade['lastname'] . '</a></td>';
+		echo '<td>' . $url . $grade['firstname'] . '</a></td>';
+		echo '<td>';
+		if (array_key_exists($grade['grade'], $mr_grade_values))
 		{
-			echo '<td>';
-			if ($item == 'grade' && array_key_exists($grade[$item], $mr_grade_values))
-			{
-				echo $mr_grade_values[$grade[$item]];
-			}
-			else if ($item == 'firstname' || $item == 'lastname' || $item == 'memberid')
-			{
-				echo '<a href="' . admin_url('admin.php?page=member-register-control') . '&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] . ' ' . $grade['lastname'] . '">' . $grade[$item] . '</a>';
-			}
-			else
-			{
-				echo $grade[$item];
-			}
-			echo '</td>';
+			echo $mr_grade_values[$grade['grade']];
 		}
+		echo '</td>';
+		echo '<td>';
+		if (array_key_exists($grade['type'], $mr_grade_types))
+		{
+			echo $mr_grade_types[$grade['type']];
+		}
+		echo '</td>';
+		echo '<td>' . $grade['day'] . '</td>';
+		echo '<td>' . $grade['location'] . '</td>';
 		echo '</tr>';
 	}
 	?>
