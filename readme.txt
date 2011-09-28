@@ -38,7 +38,12 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.6.0 =
+* Released 2011 ?
+* Localisation for English and Finnish done properly with PO files
+
 = 0.5.6 =
+* Released 28 September 2011 ?
 * Tablefilter at client side for finding the data faster (picnet.table.filter.min.js)
 * More efficient use of helper functions
 * Nicer and more human readable headings for table columns

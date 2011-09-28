@@ -22,7 +22,7 @@ function mr_forum_list()
 
 	if (isset($_GET['topic']) && is_numeric($_GET['topic']))
 	{
-		echo '<h2>Keskustelua aiheesta...</h2>';
+		echo '<h2>' . __('Keskustelua aiheesta...') . '</h2>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_post';
@@ -31,11 +31,9 @@ function mr_forum_list()
 
 			if (mr_insert_new_post($_POST))
 			{
-				?>
-				<div class="updated"><p>
-					<strong>Uusi viesti keskusteluun lisätty</strong>
-				</p></div>
-				<?php
+				echo '<div class="updated"><p>';
+				echo '<strong>' . __('Uusi viesti keskusteluun lisätty') . '</strong>';
+				echo '</p></div>';
 			}
 			else
 			{
@@ -48,11 +46,9 @@ function mr_forum_list()
 			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_post SET visible = 0 WHERE id = \'' . intval($_GET['remove-post']) . '\'';
 			if ($wpdb->query($sql))
 			{
-				?>
-				<div class="updated"><p>
-					<strong>Valittu viesti poistettu.</strong>
-				</p></div>
-				<?php
+				echo '<div class="updated"><p>';
+				echo '<strong>' . __('Valittu viesti poistettu.') . '</strong>';
+				echo '</p></div>';
 			}
 			else
 			{
@@ -65,7 +61,7 @@ function mr_forum_list()
 		// New post form to the given topic
 		if ($userdata->mr_access >= 2)
 		{
-			echo '<h3>Lisää viesti</h3>';
+			echo '<h3>' . __('Lisää viesti') . '</h3>';
 			mr_show_form_post($_GET['topic']);
 			echo '<hr />';
 		}
@@ -74,8 +70,8 @@ function mr_forum_list()
 	}
 	else
 	{
-		echo '<h2>Keskustelu</h2>';
-		echo '<p>Alempana lista aktiivista keskustelun aiheista</p>';
+		echo '<h2>' . __('Keskustelu') . '</h2>';
+		echo '<p>' . __('Alempana lista aktiivista keskustelun aiheista') . '</p>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_topic';
@@ -83,11 +79,9 @@ function mr_forum_list()
 		{
 			if (mr_insert_new_topic($_POST))
 			{
-				?>
-				<div class="updated"><p>
-					<strong>Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun.</strong>
-				</p></div>
-				<?php
+				echo '<div class="updated"><p>';
+				echo '<strong>' . __('Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun.') . '</strong>';
+				echo '</p></div>';
 			}
 			else
 			{
@@ -100,11 +94,9 @@ function mr_forum_list()
 			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 0 WHERE id = \'' . intval($_GET['remove-topic']) . '\'';
 			if ($wpdb->query($sql))
 			{
-				?>
-				<div class="updated"><p>
-					<strong>Valittu aihe poistettu.</strong>
-				</p></div>
-				<?php
+				echo '<div class="updated"><p>';
+				echo '<strong>' . __('Valittu aihe poistettu.') . '</strong>';
+				echo '</p></div>';
 			}
 			else
 			{
@@ -115,11 +107,11 @@ function mr_forum_list()
 		// New topic form
 		if ($userdata->mr_access >= 3)
 		{
-			echo '<h3>Luo uusi keskustelun aihe</h3>';
+			echo '<h3>' . __('Luo uusi keskustelun aihe') . '</h3>';
 			mr_show_form_topic();
 			echo '<hr />';
 		}
-		echo '<h3>Käynnissä olevat keskustelun aiheet</h3>';
+		echo '<h3>' . __('Käynnissä olevat keskustelun aiheet') . '</h3>';
 
 		mr_show_list_topics($userdata->mr_access);
 	}
@@ -130,6 +122,7 @@ function mr_forum_list()
 function mr_show_info_topic($topic, $access)
 {
 	global $wpdb;
+	global $mr_date_format;
 
 	$items = array('id', 'title', 'member', 'access', 'created');
 	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
@@ -144,12 +137,12 @@ function mr_show_info_topic($topic, $access)
 	$res = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h3>' . $res['title'] . '</h3>';
-	echo '<p>Tämän aiheen loi ' .  $res['firstname'] . ' ' . $res['lastname'] .
-		', päivämäärällä ' . date('Y-m-d', $res['created']) . '.<br />';
-	echo 'Viestejä yhteensä ' . $res['total'];
+	echo '<p>' . __('Tämän aiheen loi') . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
+		', ' . __('päivämäärällä') . ' ' . date('Y-m-d', $res['created']) . '.<br />';
+	echo __('Viestejä yhteensä') . ' ' . $res['total'];
 	if ($res['total'] > 0)
 	{
-		echo ', joista viimeisin ' . date('Y-m-d H:i:s', $res['lastpost']);
+		echo ', ' . __('joista viimeisin') . ' ' . date($mr_date_format, $res['lastpost']);
 	}
 	echo '.</p>';
 }
@@ -159,6 +152,7 @@ function mr_show_list_topics($access)
 {
 	global $wpdb;
 	global $userdata;
+	global $mr_date_format;
 
 	// Remember that the "created" is a unix timestamp
 	// id, title, member, access, created
@@ -177,14 +171,14 @@ function mr_show_list_topics($access)
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th>Aihe</th>
-		<th class="w20em headerSortUp">Viimeisin viesti</th>
-		<th class="w20em">Viimeisimmän viestin kirjoitti</th>
-		<th>Viestejä</th>
+		<th><?php echo __('Aihe'); ?></th>
+		<th class="w20em headerSortUp"><?php echo __('Viimeisin viesti'); ?></th>
+		<th class="w20em"><?php echo __('Viimeisimmän viestin kirjoitti'); ?></th>
+		<th><?php echo __('Viestejä'); ?></th>
 		<?php
 		if ($userdata->mr_access >= 5)
 		{
-			echo '<th class="w4em" filter="false">Poista</th>';
+			echo '<th class="w4em" filter="false">' . __('Poista') . '</th>';
 		}
 		?>
 	</tr>
@@ -203,7 +197,7 @@ function mr_show_list_topics($access)
 			echo '<td>';
 			if ($topic['lastpost'] != 0 && $topic['lastpost'] != null)
 			{
-				echo date('Y-m-d H:i:s', $topic['lastpost']);
+				echo date($mr_date_format, $topic['lastpost']);
 			}
 			echo '</td>';
 			echo '<td>' . $topic['firstname'] . ' ' . $topic['lastname'] . '</td>';
@@ -211,7 +205,7 @@ function mr_show_list_topics($access)
 			if ($userdata->mr_access >= 5)
 			{
 				echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
-				'&remove-topic=' . $topic['id'] . '" title="Poista tämä aihe">X</a></td>';
+				'&remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe') . '">X</a></td>';
 			}
 			echo '</tr>';
 		}
@@ -227,6 +221,7 @@ function mr_show_posts_for_topic($topic)
 {
 	global $wpdb;
 	global $userdata;
+	global $mr_date_format;
 
 	$topic = intval($topic);
 	// id, topic, content, member, created
@@ -245,13 +240,13 @@ function mr_show_posts_for_topic($topic)
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="w20em headerSortUp">Aika</th>
-		<th class="w20em">Jäsen</th>
-		<th>Viesti</th>
+		<th class="w20em headerSortUp"><?php echo __('Aika'); ?></th>
+		<th class="w20em"><?php echo __('Jäsen'); ?></th>
+		<th><?php echo __('Viesti'); ?></th>
 		<?php
 		if ($userdata->mr_access >= 4)
 		{
-			echo '<th class="w4em" filter="false">Poista</th>';
+			echo '<th class="w4em" filter="false">' . __('Poista') . '</th>';
 		}
 		?>
 	</tr>
@@ -261,13 +256,13 @@ function mr_show_posts_for_topic($topic)
 	foreach($res as $post)
 	{
 		echo '<tr id="post_' . $post['id'] . '">';
-		echo '<td>' . date('Y-m-d H:i:s', $post['created']) . '</td>';
+		echo '<td>' . date($mr_date_format, $post['created']) . '</td>';
 		echo '<td>' . $post['firstname'] . ' ' . $post['lastname'] . '</td>';
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if ($userdata->mr_access >= 4)
 		{
 			echo '<td><a href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
-				'&remove-post=' . $post['id'] . '" title="Poista tämä viesti">X</a></td>';
+				'&remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti') . '">X</a></td>';
 		}
 		echo '</tr>';
 	}
@@ -338,7 +333,7 @@ function mr_show_form_topic()
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th>Aihe <span class="description">(otsikko)</span></th>
+				<th><?php echo __('Aihe'); ?> <span class="description">(<?php echo __('otsikko'); ?>)</span></th>
 				<td><input type="text" name="title" value="" /></td>
 			</tr>
 			<?php
@@ -346,7 +341,7 @@ function mr_show_form_topic()
 			{
 				?>
 				<tr class="form-field">
-					<th>Lukuoikeus <span class="description">(mistä tasosta alkaen lukuoikeus myönnetään)</span></th>
+					<th><?php echo __('Lukuoikeus'); ?> <span class="description">(<?php echo __('mistä tasosta alkaen lukuoikeus myönnetään'); ?>)</span></th>
 					<td>
 						<select name="access">
 						<?php
@@ -381,7 +376,7 @@ function mr_show_form_post($topic)
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th>Viesti <span class="description">(vapaasti)</span></th>
+				<th><?php echo __('Viesti'); ?> <span class="description">(<?php echo __('vapaasti'); ?>)</span></th>
 				<td><textarea name="content"></textarea></td>
 			</tr>
 		</table>

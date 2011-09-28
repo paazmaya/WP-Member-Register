@@ -26,7 +26,8 @@ function mr_check_permission($access, $permission)
 function mr_show_access_values()
 {
 	global $mr_access_type;
-	echo '<p>Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet. Pyynnöstä näitä voidaan lisätä tai vähentää.</p>';
+	echo '<p>' . __('Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet') . '. ' .
+		__('Pyynnöstä näitä voidaan lisätä tai vähentää.') . '</p>';
 	echo '<ul>';
 	foreach ($mr_access_type as $k => $v)
 	{
@@ -128,7 +129,7 @@ function mr_insert_new_payment($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -157,7 +158,7 @@ function mr_insert_new_member($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
 
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -186,7 +187,7 @@ function mr_update_member_info($postdata)
 
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $set) . 'WHERE id = ' . $id;
 
-		echo $sql;
+		//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 		return $wpdb->query($sql);
 	}
@@ -224,7 +225,7 @@ function mr_new_payment_form($members)
 		<input type="hidden" name="mr_submit_hidden_payment" value="Y" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th>member <span class="description">(monivalinta)</span></th>
+				<th><?php echo __('Member'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
 				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;">
 				<option value="">-</option>
 				<?php
@@ -236,21 +237,21 @@ function mr_new_payment_form($members)
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th>type <span class="description">(lienee aina vuosimaksu, Ainaisjäsenmaksu)</span></th>
+				<th><?php echo __('Type'); ?> <span class="description">(<?php echo __('lienee aina vuosimaksu, Ainaisjäsenmaksu'); ?>)</span></th>
 				<td><input type="text" name="type" value="vuosimaksu" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>amount <span class="description">(EUR)</span></th>
+				<th><?php echo __('Amount'); ?> <span class="description">(<?php echo __('EUR'); ?>)</span></th>
 				<td><input type="text" name="amount" value="10" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>deadline <span class="description">(3 viikkoa tulevaisuudessa)</span></th>
+				<th><?php echo __('Deadline'); ?> <span class="description">(<?php echo __('3 viikkoa tulevaisuudessa'); ?>)</span></th>
 				<td><input type="text" name="deadline" class="pickday" value="<?php
 				echo date('Y-m-d', time() + 60*60*24*21);
 				?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>validuntil <span class="description">(kuluvan vuoden loppuun)</span></th>
+				<th><?php echo __('Valid until'); ?> <span class="description">(<?php echo __('kuluvan vuoden loppuun'); ?>)</span></th>
 				<td><input type="text" name="validuntil" class="pickday" value="<?php
 				echo date('Y') . '-12-31';
 				?>" /></td>
@@ -258,7 +259,7 @@ function mr_new_payment_form($members)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php __('Add bills') ?>" />
 		</p>
 
 	</form>
@@ -307,7 +308,7 @@ function mr_new_member_form($action, $data)
 		<input type="hidden" name="id" value="<?php echo $values['id']; ?>" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th>user_login <span class="description">(jos siis on jo WP käyttäjä)</span></th>
+				<th><?php echo __('WP käyttäjä'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
 				<td><select name="user_login">
 				<option value="">-</option>
 				<?php
@@ -335,7 +336,7 @@ function mr_new_member_form($action, $data)
 				</select></td>
 			</tr>
 			<tr class="form-field form-required">
-				<th>access</th>
+				<th><?php echo __('Kirjautumistaso'); ?></th>
 				<td><select name="access">
 					<?php
 					foreach ($mr_access_type as $k => $v)
@@ -352,39 +353,39 @@ function mr_new_member_form($action, $data)
 				</td>
 			</tr>
 			<tr class="form-field form-required">
-				<th>firstname</th>
+				<th<?php echo __('>Etunimi'); ?></th>
 				<td><input type="text" name="firstname" value="<?php echo $values['firstname']; ?>" /></td>
 			</tr>
 			<tr class="form-field form-required">
-				<th>lastname</th>
+				<th><?php echo __('Sukunimi'); ?></th>
 				<td><input type="text" name="lastname" value="<?php echo $values['lastname']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>birthdate <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Syntymäpäivä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>address</th>
+				<th><?php echo __('Postiosoite'); ?></th>
 				<td><input type="text" name="address" value="<?php echo $values['address']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>zipcode</th>
+				<th><?php echo __('Postinumero'); ?></th>
 				<td><input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>postal</th>
+				<th><?php echo __('Postitoimipaikka'); ?></th>
 				<td><input type="text" name="postal" value="<?php echo $values['postal']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>phone</th>
+				<th><?php echo __('Puhelinnumero'); ?></th>
 				<td><input type="text" name="phone" value="<?php echo $values['phone']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>email</th>
+				<th><?php echo __('Sähköposti'); ?></th>
 				<td><input type="text" name="email" value="<?php echo $values['email']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>nationality</th>
+				<th><?php echo __('Kansallisuus'); ?></th>
 				<td><select name="nationality">
 				<option value="">-</option>
 				<?php
@@ -403,26 +404,26 @@ function mr_new_member_form($action, $data)
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th>joindate <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Liittymispäivä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="joindate" class="pickday" value="<?php echo $values['joindate']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>passnro</th>
+				<th><?php echo __('Yuishinkai passinumero'); ?></th>
 				<td><input type="text" name="passnro" value="<?php echo $values['passnro']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>notes</th>
+				<th><?php echo __('Lisätietoja'); ?></th>
 				<td><input type="text" name="notes" value="<?php echo $values['notes']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>active <span class="description">(voiko käyttää sivustoa)</span></th>
+				<th><?php echo __('Aktiivinen'); ?> <span class="description">(<?php echo __('voiko käyttää sivustoa'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> kyllä</label><br />
 					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> ei</label>
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th>club <span class="description">(missä seurassa pääsääntöisesti harjoittelee)</span></th>
+				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä seurassa pääsääntöisesti harjoittelee'); ?>)</span></th>
 				<td><select name="club">
 				<option value="-1">-</option>
 				<?php
@@ -461,7 +462,7 @@ function mr_grade_form($members)
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th>member <span class="description">(monivalinta)</span></th>
+				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä'); ?>)</span></th>
 				<td>
 					<select name="members[]" multiple="multiple" size="8">
 					<option value="">-</option>
@@ -475,7 +476,7 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th>grade <span class="description">(suluissa tietokantamerkintä)</span></th>
+				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
 					<select name="grade">
 					<option value="">-</option>
@@ -489,22 +490,22 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th>type <span class="description">(kummassa lajissa)</span></th>
+				<th><?php echo __('Tyyppi'); ?> <span class="description">(<?php echo __('kummassa lajissa'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
 					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th>location <span class="description">(millä paikkakunnalla)</span></th>
+				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi'); ?>)</span></th>
 				<td><input type="text" name="location" value="Turku" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>nominator <span class="description">(kuka myönsi)</span></th>
+				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
 				<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
 			</tr>
 			<tr class="form-field">
-				<th>day <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="day" class="pickday" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
 				?>" /></td>
@@ -533,13 +534,13 @@ function mr_grade_quick_form($member)
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
 		<table class="form-table" id="creategrade">
 			<tr>
-				<th>member <span class="description">(monivalinta)</span></th>
+				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valmiiksi valittu'); ?>)</span></th>
 				<td><input name="member" type="hidden" value="<?php echo $member['id']; ?>" />
 				<?php
 				echo $member['name'];
 				?>
 				</td>
-				<th>grade <span class="description">(suluissa tietokantamerkintä)</span></th>
+				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
 					<select name="grade">
 					<option value="">-</option>
@@ -551,18 +552,18 @@ function mr_grade_quick_form($member)
 					?>
 					</select>
 				</td>
-				<th>type <span class="description">(kummassa lajissa)</span></th>
+				<th><?php echo __('Tyyppi'); ?> <span class="description">(<?php echo __('kummassa lajissa'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
 					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr>
-				<th>location <span class="description">(millä paikkakunnalla)</span></th>
+				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla'); ?>)</span></th>
 				<td><input type="text" name="location" value="Turku" /></td>
-				<th>nominator <span class="description">(kuka myönsi)</span></th>
+				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
 				<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
-				<th>day <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="day" class="pickday" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
 				?>" /></td>

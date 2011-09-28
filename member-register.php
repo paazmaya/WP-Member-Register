@@ -16,8 +16,11 @@
 
 define ('MEMBER_REGISTER_VERSION', '0.5.6');
 
+global $mr_date_format;
+$mr_date_format = 'Y-m-d H:i:s';
+
 global $mr_db_version;
-$mr_db_version = '6';
+$mr_db_version = '7';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -201,18 +204,18 @@ function member_register_admin_head()
 function member_register_admin_menu()
 {
 	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page('Jäsenrekisterin Hallinta', 'Jäsenrekisteri', 'create_users', 'member-register-control',
+	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'create_users', 'member-register-control',
 		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
-	add_submenu_page('member-register-control', 'Lisää uusi jäsen',
-		'Uusi jäsen', 'create_users', 'member-register-new', 'mr_member_new');
-	add_submenu_page('member-register-control', 'Hallinnoi jäsenmaksuja',
-		'Jäsenmaksut', 'create_users', 'member-payment-list', 'mr_payment_list');
-	add_submenu_page('member-register-control', 'Uusi maksu',
-		'Uusi maksu', 'create_users', 'member-payment-new', 'mr_payment_new');
-	add_submenu_page('member-register-control', 'Vyöarvot',
-		'Vyöarvot', 'create_users', 'member-grade-list', 'mr_grade_list');
-	add_submenu_page('member-register-control', 'Myönnä vyöarvoja',
-		'Myönnä vyöarvoja', 'create_users', 'member-grade-new', 'mr_grade_new');
+	add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
+		__('Uusi jäsen'), 'create_users', 'member-register-new', 'mr_member_new');
+	add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
+		__('Jäsenmaksut'), 'create_users', 'member-payment-list', 'mr_payment_list');
+	add_submenu_page('member-register-control', __('Uusi maksu'),
+		__('Uusi maksu'), 'create_users', 'member-payment-new', 'mr_payment_new');
+	add_submenu_page('member-register-control', __('Vyöarvot'),
+		__('Vyöarvot'), 'create_users', 'member-grade-list', 'mr_grade_list');
+	add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
+		__('Myönnä vyöarvoja'), 'create_users', 'member-grade-new', 'mr_grade_new');
 
 }
 
@@ -228,7 +231,7 @@ function member_register_forum_menu()
 	if (isset($userdata->user_login) && isset($userdata->mr_access) && $userdata->mr_access >= 2)
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
-		add_menu_page('Keskustelu', 'Keskustelu', 'read', 'member-forum',
+		add_menu_page(__('Keskustelu'), __('Keskustelu'), 'read', 'member-forum',
 			'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
 	}
 }
@@ -300,19 +303,13 @@ function mr_member_list()
 	}
 	else
 	{
-		echo '<h2>Jäsenrekisteri</h2>';
-		echo '<p>Alla lista rekisteröidyistä jäsenistä</p>';
+		echo '<h2>' . __('Jäsenrekisteri') . '</h2>';
+		echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä') . '</p>';
 		mr_show_access_values();
 		mr_show_members();
 	}
 	echo '</div>';
 }
-
-
-
-
-
-
 
 
 
@@ -333,7 +330,9 @@ function mr_payment_list()
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id;
 		if ($wpdb->query($sql))
 		{
-			echo '<div class="updated"><p><strong>Maksu merkitty maksetuksi tänään, ' . $today . '</strong></p></div>';
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Maksu merkitty maksetuksi tänään') . ', ' . $today . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -348,7 +347,9 @@ function mr_payment_list()
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id;
 		if ($wpdb->query($sql))
 		{
-			echo '<div class="updated"><p><strong>Maksu (' . $id . ') poistettu.</strong></p></div>';
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Maksu poistettu') . ' (' . $id . ')</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -357,7 +358,7 @@ function mr_payment_list()
 	}
 
 	echo '<div class="wrap">';
-	echo '<h2>Jäsenmaksut</h2>';
+	echo '<h2>' . __('Jäsenmaksut') . '</h2>';
 
 	mr_show_payments_lists(null); // no specific member
 	echo '</div>';
@@ -371,9 +372,9 @@ function mr_grade_list()
 	}
 
 	echo '<div class="wrap">';
-	echo '<h2>Vyöarvot</h2>';
-	echo '<p>Jäsenet heidän viimeisimmän vyöarvon mukaan.</p>';
-	echo '<p>Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.</p>';
+	echo '<h2>' . __('Vyöarvot') . '</h2>';
+	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.') . '</p>';
+	echo '<p>' . __('Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.') . '</p>';
 	mr_show_grades();
 	echo '</div>';
 }
@@ -393,8 +394,9 @@ function mr_member_new()
 	{
         if (mr_insert_new_member($_POST))
 		{
-			echo '<div class="updated"><p><strong>Uusi jäsen lisätty, nimellä: '
-				. $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong></p></div>';
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Uusi jäsen lisätty, nimellä:') . ' ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -404,7 +406,7 @@ function mr_member_new()
 
     ?>
 	<div class="wrap">
-		<h2>Lisää uusi jäsen</h2>
+		<h2><?php echo __('Lisää uusi jäsen'); ?></h2>
 		<?php
 		mr_new_member_form(admin_url('admin.php?page=member-register-new'), array());
 		?>
@@ -429,9 +431,9 @@ function mr_payment_new()
 	{
         if (mr_insert_new_payment($_POST))
 		{
-			?>
-			<div class="updated"><p><strong>Uusi/uudet maksu(t) lisätty</strong></p></div>
-			<?php
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Uusi/uudet maksu(t) lisätty') . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -441,9 +443,9 @@ function mr_payment_new()
 
     ?>
 	<div class="wrap">
-		<h2>Lisää uusi maksu, useammalle henkilölle jos tarve vaatii</h2>
-		<p>Pääasia että rahaa tulee, sitä kun menee.</p>
-		<p>Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.</p>
+		<h2><?php echo __('Lisää uusi maksu, useammalle henkilölle jos tarve vaatii'); ?></h2>
+		<p><?php echo __('Pääasia että rahaa tulee, sitä kun menee.'); ?></p>
+		<p><?php echo __('Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.'); ?></p>
 		<?php
 		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
@@ -473,9 +475,9 @@ function mr_grade_new()
 	{
         if (mr_insert_new_grade($_POST))
 		{
-			?>
-			<div class="updated"><p><strong>Uusi/uudet vyöarvo(t) lisätty</strong></p></div>
-			<?php
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Uusi/uudet vyöarvo(t) lisätty') . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -486,7 +488,7 @@ function mr_grade_new()
     ?>
 	<div class="wrap">
 
-		<h2>Myönnä vyöarvoja</h2>
+		<h2><?php echo __('Myönnä vyöarvoja'); ?></h2>
 		<?php
 		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
@@ -503,14 +505,14 @@ function mr_grade_new()
 function mr_show_payments_lists($memberid)
 {
 	?>
-	<h3>Maksamattomat maksut</h3>
-	<p>Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.</p>
+	<h3><?php echo __('Maksamattomat maksut'); ?></h3>
+	<p><?php echo __('Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.'); ?></p>
 
 	<?php
 	mr_show_payments($memberid, true);
 	?>
 	<hr />
-	<h3>Maksetut maksut</h3>
+	<h3><?php echo __('Maksetut maksut'); ?></h3>
 	<?php
 	mr_show_payments($memberid, false);
 }
@@ -554,31 +556,31 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				<?php
 				if ($isUnpaidView)
 				{
-					echo '<th filter="false">Maksettu?</th>';
+					echo '<th filter="false">' . __('Maksettu?') . '</th>';
 				}
 				if ($memberid == null)
 				{
 					?>
-					<th>Sukunimi</th>
-					<th>Etunimi</th>
+					<th><?php echo __('Sukunimi'); ?></th>
+					<th><?php echo __('Etunimi'); ?></th>
 					<?php
 				}
 				?>
-				<th>Tyyppi</th>
-				<th class="w8em">Summa (EUR)</th>
-				<th class="w8em">Viite</th>
-				<th class="headerSortUp">Eräpäivä</th>
+				<th><?php echo __('Tyyppi'); ?></th>
+				<th class="w8em"><?php echo __('Summa (EUR)'); ?></th>
+				<th class="w8em"><?php echo __('Viite'); ?></th>
+				<th class="headerSortUp"><?php echo __('Eräpäivä'); ?></th>
 				<?php
 				if (!$isUnpaidView)
 				{
-					echo '<th>Maksu PVM</th>';
+					echo '<th>' . __('Maksu PVM') . '</th>';
 				}
 				?>
-				<th>Voimassaolo</th>
+				<th><?php echo __('Voimassaolo'); ?></th>
 				<?php
 				if ($allowremove)
 				{
-					echo '<th>Poista</th>';
+					echo '<th>' . __('Poista') . '</th>';
 				}
 				?>
 			</tr>
@@ -667,13 +669,13 @@ function mr_show_grades($memberid = null)
 		if ($memberid == null)
 		{
 			?>
-			<th class="headerSortDown">Sukunimi</th>
-			<th>Etunimi</th>
+			<th class="headerSortDown"><?php echo __('Sukunimi'); ?></th>
+			<th><?php echo __('Etunimi'); ?></th>
 			<?php
 		}
 		?>
-		<th>Vyöarvo</th>
-		<th>Laji</th>
+		<th><?php echo __('Vyöarvo'); ?></th>
+		<th><?php echo __('Laji'); ?></th>
 		<th
 		<?php
 		if ($memberid != null)
@@ -681,8 +683,8 @@ function mr_show_grades($memberid = null)
 			echo ' class="headerSortUp"';
 		}
 		?>
-		>Myöntö PVM</th>
-		<th>Paikka</th>
+		><?php echo __('Myöntö PVM'); ?></th>
+		<th><?php echo __('Paikka'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -715,12 +717,19 @@ function mr_show_grades($memberid = null)
 	<?php
 }
 
-function mr_show_members()
+/**
+ * Show a table of members based on the given filter if any.
+ */
+function mr_show_members($filters = null)
 {
 	global $wpdb;
 	global $mr_access_type;
-
-	$items = array('user_login', 'firstname', 'lastname', 'birthdate', 'email', 'joindate');
+	
+	// Possible filter options. TODO
+	$possible = array(
+		'club' => '',
+		'active' => ''
+	);
 
 	// id access firstname lastname birthdate address zipcode postal phone email nationality
 	// joindate passnro notes lastlogin active club
@@ -735,14 +744,15 @@ function mr_show_members()
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="headerSortDown">Sukunimi</th>
-		<th>Etunimi</th>
-		<th>Syntymäpäivä</th>
-		<th>Sähköposti</th>
-		<th>Puhelin</th>
-		<th>Passi #</th>
-		<th>Oikeudet</th>
-		<th>WP käyttäjä</th>
+		<th class="headerSortDown"><?php echo __('Sukunimi'); ?></th>
+		<th><?php echo __('Etunimi'); ?></th>
+		<th><?php echo __('Syntymäpäivä'); ?></th>
+		<th><?php echo __('Sähköposti'); ?></th>
+		<th><?php echo __('Puhelin'); ?></th>
+		<th><?php echo __('Passi #'); ?></th>
+		<th><?php echo __('Oikeudet'); ?></th>
+		<th><?php echo __('Viimeksi vieraillut'); ?></th>
+		<th><?php echo __('WP käyttäjä'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -775,6 +785,12 @@ function mr_show_members()
 		echo '<td>' . $member['passnro'] . '</td>';
 		echo '<td title="' . $mr_access_type[$member['access']] . '">' . $member['access'] . '</td>';
 		echo '<td>';
+		if ($member['lastlogin'] > 0)
+		{
+			echo date($mr_date_format, $member['lastlogin']);
+		}
+		echo '</td>';
+		echo '<td>';
 		if ($member['user_login'] != '' && $member['user_login'] != null && is_numeric($member['wpuserid']))
 		{
 			echo '<a href="' . admin_url('user-edit.php?user_id=') . $member['wpuserid'] .
@@ -796,6 +812,8 @@ function mr_show_members()
 function mr_show_member_info($id)
 {
 	global $wpdb;
+	global $mr_date_format;
+	global $mr_access_type;
 	global $mr_grade_values;
 	global $mr_grade_types;
 
@@ -806,9 +824,9 @@ function mr_show_member_info($id)
 	{
         if (mr_update_member_info($_POST))
 		{
-			?>
-			<div class="updated"><p><strong>Jäsenen tiedot päivitetty</strong></p></div>
-			<?php
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Jäsenen tiedot päivitetty') . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -819,9 +837,9 @@ function mr_show_member_info($id)
 	{
         if (mr_insert_new_grade($_POST))
 		{
-			?>
-			<div class="updated"><p><strong>Uusi vyöarvo lisätty</strong></p></div>
-			<?php
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Uusi vyöarvo lisätty') . '</strong>';
+			echo '</p></div>';
 		}
 		else
 		{
@@ -836,7 +854,8 @@ function mr_show_member_info($id)
 		'birthdate', 'address', 'zipcode', 'postal', 'phone', 'email',
 		'nationality', 'joindate', 'passnro', 'notes', 'lastlogin', 'active',
 		'club');
-	$sql = 'SELECT ' . implode(', ', $items) . ' FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $id . ' LIMIT 1';
+	$sql = 'SELECT A.*, B.name AS nationalitycountry FROM ' . $wpdb->prefix . 'mr_member A LEFT JOIN ' .
+		$wpdb->prefix . 'mr_country ON A.nationality = B.code WHERE A.id = ' . $id . ' LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
@@ -847,36 +866,83 @@ function mr_show_member_info($id)
 	else
 	{
 		?>
-		<h3>Henkilötiedot</h3>
+		<h3><?php echo __('Henkilötiedot'); ?></h3>
 		<table class="wp-list-table widefat users">
 		<tbody>
 			<tr>
-				<th>Sukunimi</th>
+				<th><?php echo __('Sukunimi'); ?></th>
 				<td><?php echo $person['lastname']; ?></td>
 			</tr>
 			<tr>
-				<th>Etunimi</th>
+				<th><?php echo __('Etunimi'); ?></th>
 				<td><?php echo $person['firstname']; ?></td>
 			</tr>
-		<?php
-		foreach($items as $item)
-		{
-			echo '<tr>';
-			echo '<th>' . $item . '</th>';
-			echo '<td>' . $person[$item] . '</td>';
-			echo '</tr>';
-		}
-		?>
+			<tr>
+				<th><?php echo __('Kirjautumistaso'); ?> <span class="description">()</span></th>
+				<td><?php echo $mr_access_type[$person['access']]; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Syntymäpäivä'); ?></th>
+				<td><?php echo $person['birthdate']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Osoite'); ?></th>
+				<td><?php echo $person['address']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Postinumero'); ?></th>
+				<td><?php echo $person['zipcode']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Postitoimipaikka'); ?> <span class="description">(<?php echo __('ja maa jos ei Suomi'); ?>)</span></th>
+				<td><?php echo $person['postal']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Puhelin'); ?></th>
+				<td><?php echo $person['phone']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Sähköposti'); ?></th>
+				<td><a href="mailto:<?php echo $person['email']; ?>" title="Lähetä sähköpostia"><?php echo $person['email']; ?></a></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Kansallisuus'); ?></th>
+				<td><?php echo $person['nationalitycountry']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Liittymispäivä'); ?></th>
+				<td><?php echo $person['joindate']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Yuishinkai passinumero'); ?> <span class="description">()</span></th>
+				<td><?php echo $person['passnro']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Lisätietoja'); ?> <span class="description">(<?php echo __('vapaasti kirjoiteltu'); ?>)</span></th>
+				<td><?php echo $person['notes']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Viimeksi vieraillut sivuilla'); ?></th>
+				<td><?php echo date($mr_date_format, $person['lastlogin']); ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('Aktiivinen'); ?> <span class="description">(s<?php echo __('aako kirjautua sivuille'); ?>)</span></th>
+				<td><?php echo $person['active']; ?></td>
+			</tr>
+			<tr>
+				<th><?php echo __('WP käyttäjä'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
+				<td><?php echo $person['user_login']; ?></td>
+			</tr>
 		</tbody>
 		</table>
 		<?php
 		echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid='
-			. $id . '&edit" title="Muokkaa tätä käyttää" class="button-primary">Muokkaa tätä käyttää</a></p>';
+			. $id . '&edit" title="' . 'Muokkaa tätä käyttää" class="button-primary">Muokkaa tätä käyttää</a></p>';
 	}
 
 	// ---------------
 	echo '<hr />';
-	echo '<h2>Vyöarvot</h2>';
+	echo '<h2>' . 'Vyöarvot' . '</h2>';
 	mr_show_grades($id);
 
 	// Quick add a grade
@@ -887,7 +953,7 @@ function mr_show_member_info($id)
 	?>
 
 	<hr />
-	<h2>Jäsenmaksut</h2>
+	<h2><?php echo __('Jäsenmaksut'); ?></h2>
 	<?php
 
 	// ---------------

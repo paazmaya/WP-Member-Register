@@ -84,7 +84,7 @@ function mr_install ()
 		  joindate date NOT NULL DEFAULT '0000-00-00',
 		  passnro mediumint(6) unsigned NOT NULL DEFAULT '0',
 		  notes tinytext COLLATE utf8_swedish_ci NOT NULL,
-		  lastlogin int(10) unsigned NOT NULL DEFAULT '0',
+		  lastlogin int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Unix timestamp',
 		  active tinyint(1) NOT NULL DEFAULT '0',
 		  club mediumint(6) unsigned NOT NULL DEFAULT '0',
 		  PRIMARY KEY (id),
