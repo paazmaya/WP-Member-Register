@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.5.6
+ Version: 0.6.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,13 +14,13 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.5.6');
+define ('MEMBER_REGISTER_VERSION', '0.6.0');
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '7';
+$mr_db_version = '8';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -93,7 +93,7 @@ $mr_access_type = array(
 	5 => 'Keskusteluaiheiden poisto', // voi myös päättää keskusteluaiheen näkyvyys tason
 	6 => 'Jäsenten lisääminen ja muokkaus',
 	7 => 'Jäsenten poistaminen',
-	8 => 'Jäsenmaksujen hallinta',
+	8 => 'Jäsenmaksujen ja seurojen hallinta',
 	9 => 'Vyöarvojen hallinta',
 	10 => 'Kaikki mahdollinen mitä täällä ikinä voi tehdä'
 );
@@ -216,6 +216,8 @@ function member_register_admin_menu()
 		__('Vyöarvot'), 'create_users', 'member-grade-list', 'mr_grade_list');
 	add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
 		__('Myönnä vyöarvoja'), 'create_users', 'member-grade-new', 'mr_grade_new');
+	add_submenu_page('member-register-control', __('Seurat'),
+		__('Jäsenseurat'), 'create_users', 'member-club-list', 'mr_club_list');
 
 }
 
@@ -268,7 +270,7 @@ function member_register_wp_loaded()
 
 	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
 	if (isset($userdata->user_login) && (!isset($userdata->mr_access) ||
-		!is_numeric($userdata->mr_access) ||
+		!is_numeric($userdata->mr_access) || 
 		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
 		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
@@ -295,6 +297,13 @@ function mr_member_list()
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
+	/*
+	global $userdata;
+	echo '<pre>';
+	print_r($userdata);
+	echo '</pre>';
+	*/
+
 	echo '<div class="wrap">';
 
 	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
@@ -343,7 +352,6 @@ function mr_payment_list()
 	{
 		// Mark the given payment visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removepayment']);
-		$today = date('Y-m-d');
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id;
 		if ($wpdb->query($sql))
 		{
@@ -366,11 +374,30 @@ function mr_payment_list()
 
 function mr_grade_list()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') && $userdata->mr_access >= 9)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
+	global $wpdb;
+	
+	if (isset($_GET['removegrade']) && is_numeric($_GET['removegrade']))
+	{
+		// Mark the given grade visible=0, so it can be recovered just in case...
+		$id = intval($_GET['removegrade']);
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_grade SET visible = 0 WHERE id = ' . $id;
+		if ($wpdb->query($sql))
+		{
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Vyöarvo poistettu') . ' (' . $id . ')</strong>';
+			echo '</p></div>';
+		}
+		else
+		{
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
+		}
+	}
+	
 	echo '<div class="wrap">';
 	echo '<h2>' . __('Vyöarvot') . '</h2>';
 	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.') . '</p>';
@@ -378,6 +405,69 @@ function mr_grade_list()
 	mr_show_grades();
 	echo '</div>';
 }
+
+
+function mr_club_list()
+{
+	if (!current_user_can('create_users') && $userdata->mr_access >= 8)
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.'));
+	}
+
+	global $wpdb;
+	
+	echo '<div class="wrap">';
+	
+	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']))
+	{
+		// Mark the given club visible=0, so it can be recovered just in case...
+		$id = intval($_GET['removeclub']);
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET visible = 0 WHERE id = ' . $id;
+		if ($wpdb->query($sql))
+		{
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Seura poistettu') . ' (' . $id . ')</strong>';
+			echo '</p></div>';
+		}
+		else
+		{
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
+		}
+	}
+	
+	if (isset($_GET['club']) && is_numeric($_GET['club']))
+	{
+		$id = intval($_GET['club']);
+		$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_club WHERE id = ' . $id . ' LIMIT 1';
+		$res = $wpdb->get_row($sql, ARRAY_A);
+		
+		echo '<h1>' . $res['name'] . '</h1>';
+		echo '<p>' . __('Aktiiviset jäsenet tässä seurassa.') . '</p>';
+		echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&edit-club=' .
+			$id . '" title="' . __('Muokkaa tätä seuraa') . '" class="button-primary">' . __('Muokkaa tätä seuraa') . '</a></p>';
+		mr_show_members(array(
+			'club' => intval($_GET['club']),
+			'active' => true
+		));
+		
+	}
+	else if (isset($_GET['edit-club']) && is_numeric($_GET['edit-club']))
+	{
+		$id = intval($_GET['edit-club']);
+	}
+	else 
+	{
+		echo '<h1>' . __('Jäsenseurat') . '</h1>';
+		echo '<p>' . __('Suomen Yuishinkai-liiton Jäsenseurat.') . '</p>';
+		echo '<p>' . __('Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua.') . '</p>';
+		mr_show_clubs();
+	}
+	
+	echo '</div>';
+}
+
+
+
 
 function mr_member_new()
 {
@@ -546,7 +636,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 		$where . 'ORDER BY A.deadline DESC';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
-	$allowremove = false;
+	$allowremove = true;
 
 	// id member reference type amount deadline paidday validuntil club visible
 	?>
@@ -580,7 +670,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				<?php
 				if ($allowremove)
 				{
-					echo '<th>' . __('Poista') . '</th>';
+					echo '<th class="w8em">' . __('Poista') . '</th>';
 				}
 				?>
 			</tr>
@@ -623,7 +713,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 		if ($allowremove)
 		{
 			echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
-				'&removepayment=' . $payment['id'] . '" title="Poista maksu viitteellä ' .
+				'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
 				$payment['reference'] . '">X</a></td>';
 		}
 		echo '</tr>';
@@ -653,13 +743,15 @@ function mr_show_grades($memberid = null)
 
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
+		'mr_member B ON A.member = B.id AND A.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
+	
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
-	// id member grade type location nominator day
-	$items = array('firstname', 'lastname', 'memberid',
-		'id', 'member', 'grade', 'type', 'location', 'nominator', 'day');
+	// id member grade type location nominator day visible
+	
+	$allowremove = true;
 	?>
 	<table class="wp-list-table widefat tablesorter">
 
@@ -685,6 +777,12 @@ function mr_show_grades($memberid = null)
 		?>
 		><?php echo __('Myöntö PVM'); ?></th>
 		<th><?php echo __('Paikka'); ?></th>
+		<?php
+		if ($allowremove)
+		{
+			echo '<th class="w8em">' . __('Poista') . '</th>';
+		}
+		?>
 	</tr>
 	</thead>
 	<tbody>
@@ -709,6 +807,69 @@ function mr_show_grades($memberid = null)
 		echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
 		echo '<td>' . $grade['day'] . '</td>';
 		echo '<td>' . $grade['location'] . '</td>';
+		// set visible to 0, do not remove for real...
+		if ($allowremove)
+		{
+			echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
+				'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
+				$grade['grade'] . '">X</a></td>';
+		}
+		echo '</tr>';
+	}
+	?>
+	</tbody>
+	</table>
+	<?php
+}
+
+function mr_show_clubs()
+{
+	global $wpdb;
+	
+	// id, name, address, visible
+	
+	$sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix . 
+		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
+		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY B.club ORDER BY A.name ASC';
+
+	echo '<div class="error"><p>' . $sql . '</p></div>';
+	
+	$clubs = $wpdb->get_results($sql, ARRAY_A);
+	
+	$allowremove = true;
+	
+	?>
+	<table class="wp-list-table widefat tablesorter">
+	<thead>
+	<tr>
+		<th class="headerSortDown"><?php echo __('Nimi'); ?></th>
+		<th><?php echo __('Osoite'); ?></th>
+		<th><?php echo __('Aktiivisia jäseniä'); ?></th>
+		<?php
+		if ($allowremove)
+		{
+			echo '<th class="w8em">' . __('Poista') . '</th>';
+		}
+		?>
+	</tr>
+	</thead>
+	<tbody>
+
+	<?php
+	foreach($clubs as $club)
+	{
+		echo '<tr id="user_' . $club['id'] . '">';
+		echo '<td>' . $club['name'] . '</td>';
+		echo '<td>' . $club['address'] . '</td>';
+		echo '<td><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . $club['id'] .
+			'" title="">' . $club['members'] . '</a></td>';
+		// set visible to 0, do not remove for real...
+		if ($allowremove)
+		{
+			echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
+				'&removegrade=' . $club['id'] . '" title="' . __('Poista seura') . ' ' .
+				$club['name'] . '">X</a></td>';
+		}
 		echo '</tr>';
 	}
 	?>
@@ -725,19 +886,35 @@ function mr_show_members($filters = null)
 	global $wpdb;
 	global $mr_access_type;
 	
-	// Possible filter options. TODO
-	$possible = array(
-		'club' => '',
-		'active' => ''
-	);
+	// Possible filter options: club, active
+	
+	$wheres = array();
+	$where = '';
+	if (is_array($filters))
+	{
+		if (isset($filters['club']) && is_numeric($filters['club']))
+		{
+			$wheres[] = ' A.club = ' . intval($filters['club']);
+		}
+		if (isset($filters['active']) && is_bool($filters['active']))
+		{
+			$wheres[] = ' A.active = ' . ($filters['active'] ? 1 : 0);
+		}
+		if (count($wheres) > 0)
+		{
+			$where = ' WHERE ' . implode(' AND', $wheres);
+		}
+	}
 
 	// id access firstname lastname birthdate address zipcode postal phone email nationality
 	// joindate passnro notes lastlogin active club
 
 	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid FROM ' . $wpdb->prefix .
 		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN '
-		. $wpdb->prefix . 'users C ON A.user_login = C.user_login ORDER BY A.lastname ASC';
+		. $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . ' ORDER BY A.lastname ASC';
 
+	echo '<div class="error"><p>' . $sql . '</p></div>';
+	
 	$members = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
@@ -855,7 +1032,7 @@ function mr_show_member_info($id)
 		'nationality', 'joindate', 'passnro', 'notes', 'lastlogin', 'active',
 		'club');
 	$sql = 'SELECT A.*, B.name AS nationalitycountry FROM ' . $wpdb->prefix . 'mr_member A LEFT JOIN ' .
-		$wpdb->prefix . 'mr_country ON A.nationality = B.code WHERE A.id = ' . $id . ' LIMIT 1';
+		$wpdb->prefix . 'mr_country B ON A.nationality = B.code WHERE A.id = ' . $id . ' LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
