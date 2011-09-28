@@ -764,7 +764,12 @@ function mr_show_members()
 		}
 		echo '>' . $url . $member['lastname'] . '</a></td>';
 		echo '<td>' . $url . $member['firstname'] . '</a></td>';
-		echo '<td>' . $member['birthdate'] . '</td>';
+		echo '<td>';
+		if ($member['birthdate'] != '0000-00-00') 
+		{
+			echo $member['birthdate'];
+		}
+		echo '</td>';
 		echo '<td>' . $member['email'] . '</td>';
 		echo '<td>' . $member['phone'] . '</td>';
 		echo '<td>' . $member['passnro'] . '</td>';
@@ -845,6 +850,14 @@ function mr_show_member_info($id)
 		<h3>Henkilötiedot</h3>
 		<table class="wp-list-table widefat users">
 		<tbody>
+			<tr>
+				<th>Sukunimi</th>
+				<td><?php echo $person['lastname']; ?></td>
+			</tr>
+			<tr>
+				<th>Etunimi</th>
+				<td><?php echo $person['firstname']; ?></td>
+			</tr>
 		<?php
 		foreach($items as $item)
 		{

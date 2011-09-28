@@ -134,7 +134,7 @@ function mr_show_info_topic($topic, $access)
 	$items = array('id', 'title', 'member', 'access', 'created');
 	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
-		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
+		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
 		$wpdb->prefix . 'mr_member C ON C.id = A.member WHERE A.access <= ' . intval($access) .
 		' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
 		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
@@ -146,8 +146,12 @@ function mr_show_info_topic($topic, $access)
 	echo '<h3>' . $res['title'] . '</h3>';
 	echo '<p>Tämän aiheen loi ' .  $res['firstname'] . ' ' . $res['lastname'] .
 		', päivämäärällä ' . date('Y-m-d', $res['created']) . '.<br />';
-	echo 'Viestejä yhteensä ' . $res['total'] . ', joista viimeisin ' .
-		date('Y-m-d H:i:s', $res['lastpost']) . '</p>';
+	echo 'Viestejä yhteensä ' . $res['total'];
+	if ($res['total'] > 0)
+	{
+		echo ', joista viimeisin ' . date('Y-m-d H:i:s', $res['lastpost']);
+	}
+	echo '.</p>';
 }
 
 
@@ -161,7 +165,7 @@ function mr_show_list_topics($access)
 	$items = array('id', 'title', 'member', 'access', 'created');
 	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
-		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic LEFT JOIN ' .
+		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
 		$wpdb->prefix . 'mr_member D ON D.id = ' .
 		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
 		' WHERE A.access <= ' . intval($access) . ' AND A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
@@ -224,6 +228,7 @@ function mr_show_posts_for_topic($topic)
 	global $wpdb;
 	global $userdata;
 
+	$topic = intval($topic);
 	// id, topic, content, member, created
 
 	$items = array('id', 'topic', 'content', 'member', 'created');
@@ -231,7 +236,7 @@ function mr_show_posts_for_topic($topic)
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_post A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
-		intval($topic) . ' AND A.visible = 1 ORDER BY A.created DESC';
+		$topic . ' AND A.visible = 1 ORDER BY A.created DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
@@ -261,7 +266,7 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if ($userdata->mr_access >= 4)
 		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
+			echo '<td><a href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
 				'&remove-post=' . $post['id'] . '" title="Poista tämä viesti">X</a></td>';
 		}
 		echo '</tr>';
