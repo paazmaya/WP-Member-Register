@@ -167,6 +167,8 @@ function mr_show_member_info($id)
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
+	echo '<p>' . __('In case you wish to remove a user, first all grades and payments should be removed.') . '</p>';
+	
 	if (isset($_GET['edit']))
 	{
 		mr_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
@@ -187,7 +189,7 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Kirjautumistaso'); ?> <span class="description">()</span></th>
-				<td><?php echo $mr_access_type[$person['access']]; ?></td>
+				<td><?php echo $mr_access_type[$person['access']] . ' ('. $person['access'] . ')'; ?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Syntymäpäivä'); ?></th>
@@ -227,7 +229,7 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Päälaji'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin'); ?>)</span></th>
-				<td><?php echo $mr_martial_arts[$person['martial']]; ?></td>
+				<td><?php echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; ?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Lisätietoja'); ?> <span class="description">(<?php echo __('vapaasti kirjoiteltu'); ?>)</span></th>

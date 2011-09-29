@@ -128,7 +128,7 @@ function mr_install ()
 	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
-		  title varchar(100) COLLATE utf8_swedish_ci NOT NULL,
+		  title varchar(140) COLLATE utf8_swedish_ci NOT NULL,
 		  address tinytext COLLATE utf8_swedish_ci NOT NULL,
 		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  PRIMARY KEY (id)

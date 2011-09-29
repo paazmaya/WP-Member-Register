@@ -13,6 +13,7 @@ function mr_club_list()
 	}
 
 	global $wpdb;
+	global $userdata;
 	
 	echo '<div class="wrap">';
 	
@@ -65,6 +66,7 @@ function mr_club_list()
 		else 
 		{
 			echo '<h1>' . $res['title'] . '</h1>';
+			echo '<p>' . $res['address'] . '</p>';
 			
 		
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
@@ -144,6 +146,7 @@ function mr_club_form($data = null)
 function mr_show_clubs()
 {
 	global $wpdb;
+	global $userdata;
 	
 	// id, title, address, visible
 	
@@ -151,11 +154,15 @@ function mr_show_clubs()
 		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY B.club ORDER BY A.title ASC';
 
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
 	
-	$allowremove = true;
+	$allowremove = false;
+	if ($userdata->mr_access > 9)
+	{
+		$allowremove = true;
+	}
 	
 	?>
 	<table class="wp-list-table widefat tablesorter">
@@ -221,7 +228,7 @@ function mr_update_club($postdata)
 	global $wpdb;
 
 	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
-		'\', address = \'' . mr_htmlent($postdata['address']) . '\'';
+		'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
