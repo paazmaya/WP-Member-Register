@@ -1,8 +1,8 @@
 <?php
 /**
- Plugin Name: Member Register
+ * Plugin Name: Member Register
  * Forum related functions
-*/
+ */
 
 
 /**

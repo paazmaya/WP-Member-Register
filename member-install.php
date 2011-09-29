@@ -1,7 +1,8 @@
 <?php
 /**
- Plugin Name: Member Register
-*/
+ * Plugin Name: Member Register
+ * Installation hook
+ */
 
 
 function mr_install ()
@@ -89,9 +90,11 @@ function mr_install ()
 		  lastlogin int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Unix timestamp',
 		  active tinyint(1) NOT NULL DEFAULT '0',
 		  club mediumint(6) unsigned NOT NULL DEFAULT '0',
+		  martial enum('karate','kobujutsu','taiji','judo') COLLATE utf8_swedish_ci NOT NULL DEFAULT 'karate',
 		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  PRIMARY KEY (id),
 		  KEY user_login (user_login)
+		  KEY visible (martial)
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
@@ -125,7 +128,7 @@ function mr_install ()
 	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
-		  name varchar(100) COLLATE utf8_swedish_ci NOT NULL,
+		  title varchar(100) COLLATE utf8_swedish_ci NOT NULL,
 		  address tinytext COLLATE utf8_swedish_ci NOT NULL,
 		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  PRIMARY KEY (id)

@@ -1,0 +1,1 @@
+xgettext --default-domain=member-register --indent --sort-output --no-wrap --language=PHP --from-code=UTF-8 --copyright-holder="Jukka Paasonen" --package-name=MemberRegister --package-version=0.6.0 --strict --debug --keyword=__  member-forum.php member-functions.php member-install.php member-register.php member-club.php
