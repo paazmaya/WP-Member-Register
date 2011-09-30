@@ -264,7 +264,12 @@ function member_register_profile_update($user_id, $old_user_data)
  */
 function member_register_login()
 {
+	global $wpdb;
 	global $userdata;
+	
+	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET lastlogin = ' . time() .
+		' WHERE user_login = \'' . mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
+	$wpdb->query($sql);
 }
 
 function member_register_logout()
@@ -567,7 +572,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				if ($memberid == null)
 				{
 					?>
-					<th><?php echo __('Sukunimi'); ?></th>
+					<th><?php echo __('Last name'); ?></th>
 					<th><?php echo __('Etunimi'); ?></th>
 					<?php
 				}
@@ -677,7 +682,7 @@ function mr_show_grades($memberid = null)
 		if ($memberid == null)
 		{
 			?>
-			<th class="headerSortDown"><?php echo __('Sukunimi'); ?></th>
+			<th class="headerSortDown"><?php echo __('Last name'); ?></th>
 			<th><?php echo __('Etunimi'); ?></th>
 			<?php
 		}

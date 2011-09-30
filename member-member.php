@@ -49,7 +49,7 @@ function mr_show_members($filters = null)
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="headerSortDown"><?php echo __('Sukunimi'); ?></th>
+		<th class="headerSortDown"><?php echo __('Last name'); ?></th>
 		<th><?php echo __('Etunimi'); ?></th>
 		<th><?php echo __('Syntymäpäivä'); ?></th>
 		<th><?php echo __('Sähköposti'); ?></th>
@@ -180,7 +180,7 @@ function mr_show_member_info($id)
 		<table class="wp-list-table widefat users">
 		<tbody>
 			<tr>
-				<th><?php echo __('Sukunimi'); ?></th>
+				<th><?php echo __('Last name'); ?></th>
 				<td><?php echo $person['lastname']; ?></td>
 			</tr>
 			<tr>
@@ -474,7 +474,7 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="firstname" value="<?php echo $values['firstname']; ?>" /></td>
 			</tr>
 			<tr class="form-field form-required">
-				<th><?php echo __('Sukunimi'); ?></th>
+				<th><?php echo __('Last name'); ?></th>
 				<td><input type="text" name="lastname" value="<?php echo $values['lastname']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
