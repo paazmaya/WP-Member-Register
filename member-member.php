@@ -13,6 +13,7 @@ function mr_show_members($filters = null)
 	global $wpdb;
 	global $mr_access_type;
 	global $mr_martial_arts;
+	global $mr_date_format;
 	
 	// Possible filter options: club, active
 	
@@ -50,14 +51,14 @@ function mr_show_members($filters = null)
 	<thead>
 	<tr>
 		<th class="headerSortDown"><?php echo __('Last name'); ?></th>
-		<th><?php echo __('Etunimi'); ?></th>
-		<th><?php echo __('Syntymäpäivä'); ?></th>
-		<th><?php echo __('Sähköposti'); ?></th>
-		<th><?php echo __('Puhelin'); ?></th>
-		<th><?php echo __('Päälaji'); ?></th>
-		<th><?php echo __('Oikeudet'); ?></th>
-		<th><?php echo __('Viimeksi vieraillut'); ?></th>
-		<th><?php echo __('WP käyttäjä'); ?></th>
+		<th><?php echo __('First name'); ?></th>
+		<th><?php echo __('Birthday'); ?></th>
+		<th><?php echo __('E-mail'); ?></th>
+		<th><?php echo __('Phone number'); ?></th>
+		<th><?php echo __('Main martial art'); ?></th>
+		<th><?php echo __('Access rights'); ?></th>
+		<th><?php echo __('Last login'); ?></th>
+		<th><?php echo __('WP username'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -67,8 +68,8 @@ function mr_show_members($filters = null)
 	{
 		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
 			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
-			' '	. $member['lastname'] . '|' . __('Osoite') . ': ' . $member['address'] . ', ' .
-			$member['zipcode'] . ' ' . $member['postal'] . '|' . __('Kansallisuus') . ': ' .
+			' '	. $member['lastname'] . '|' . __('Address') . ': ' . $member['address'] . ', ' .
+			$member['zipcode'] . ' ' . $member['postal'] . '|' . __('Nationality') . ': ' .
 			$member['nationalityname'] . '|' . __('Liittymispäivä') . ': ' .
 			$member['joindate'] . '" class="tip">';
 
@@ -184,7 +185,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['lastname']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Etunimi'); ?></th>
+				<th><?php echo __('First name'); ?></th>
 				<td><?php echo $person['firstname']; ?></td>
 			</tr>
 			<tr>
@@ -192,11 +193,11 @@ function mr_show_member_info($id)
 				<td><?php echo $mr_access_type[$person['access']] . ' ('. $person['access'] . ')'; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Syntymäpäivä'); ?></th>
+				<th><?php echo __('Birthday'); ?></th>
 				<td><?php echo $person['birthdate']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Osoite'); ?></th>
+				<th><?php echo __('Address'); ?></th>
 				<td><?php echo $person['address']; ?></td>
 			</tr>
 			<tr>
@@ -208,15 +209,15 @@ function mr_show_member_info($id)
 				<td><?php echo $person['postal']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Puhelin'); ?></th>
+				<th><?php echo __('Phone number'); ?></th>
 				<td><?php echo $person['phone']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Sähköposti'); ?></th>
+				<th><?php echo __('E-mail'); ?></th>
 				<td><a href="mailto:<?php echo $person['email']; ?>" title="<?php echo __('Lähetä sähköpostia'); ?>"><?php echo $person['email']; ?></a></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Kansallisuus'); ?></th>
+				<th><?php echo __('Nationality'); ?></th>
 				<td><?php echo $person['nationalitycountry']; ?></td>
 			</tr>
 			<tr>
@@ -228,7 +229,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['passnro']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Päälaji'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin'); ?>)</span></th>
+				<th><?php echo __('Main martial art'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin'); ?>)</span></th>
 				<td><?php echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; ?></td>
 			</tr>
 			<tr>
@@ -248,7 +249,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['clubname']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('WP käyttäjä'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
+				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
 				<td><?php echo $person['user_login']; ?></td>
 			</tr>
 		</tbody>
@@ -425,7 +426,7 @@ function mr_new_member_form($action, $data)
 		<input type="hidden" name="id" value="<?php echo $values['id']; ?>" />
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
-				<th><?php echo __('WP käyttäjä'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
+				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
 				<td><select name="user_login">
 				<option value="">-</option>
 				<?php
@@ -478,7 +479,7 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="lastname" value="<?php echo $values['lastname']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Syntymäpäivä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Birthday'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
@@ -498,11 +499,11 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="phone" value="<?php echo $values['phone']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Sähköposti'); ?></th>
+				<th><?php echo __('E-mail'); ?></th>
 				<td><input type="text" name="email" value="<?php echo $values['email']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Kansallisuus'); ?></th>
+				<th><?php echo __('Nationality'); ?></th>
 				<td><select name="nationality">
 				<option value="">-</option>
 				<?php
@@ -529,7 +530,7 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="passnro" value="<?php echo $values['passnro']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Päälaji'); ?></th>
+				<th><?php echo __('Main martial art'); ?></th>
 				<td><select name="martial">
 					<option value="">-</option>
 					<?php

@@ -267,9 +267,10 @@ function member_register_login()
 	global $wpdb;
 	global $userdata;
 	
-	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET lastlogin = ' . time() .
-		' WHERE user_login = \'' . mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
-	$wpdb->query($sql);
+	
+	echo '<pre>';
+	print_r($userdata);
+	echo '</pre>';
 }
 
 function member_register_logout()
@@ -278,22 +279,31 @@ function member_register_logout()
 }
 
 
-
+/**
+ * As a hack, this function also updates the last login time.
+ */
 function member_register_wp_loaded()
 {
 	global $wpdb;
 	global $userdata;
 
 	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
-	if (isset($userdata->user_login) && (!isset($userdata->mr_access) ||
-		!is_numeric($userdata->mr_access) || 
+	if (isset($userdata->user_login) && $userdata->user_login != '' &&
+		(!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) || 
 		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
 		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
 			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
 		$res = $wpdb->get_row($sql, ARRAY_A);
-		$userdata->mr_access = intval($res['access']);
-		$userdata->mr_memberid = intval($res['id']);
+		if ($wpdb->num_rows == 1)
+		{
+			$userdata->mr_access = intval($res['access']);
+			$userdata->mr_memberid = intval($res['id']);
+			
+			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET lastlogin = ' . time() .
+				' WHERE user_login = \'' . mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
+			$wpdb->query($sql);
+		}
 	}
 
 	date_default_timezone_set('Europe/Helsinki');
@@ -573,7 +583,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				{
 					?>
 					<th><?php echo __('Last name'); ?></th>
-					<th><?php echo __('Etunimi'); ?></th>
+					<th><?php echo __('First name'); ?></th>
 					<?php
 				}
 				?>
@@ -683,7 +693,7 @@ function mr_show_grades($memberid = null)
 		{
 			?>
 			<th class="headerSortDown"><?php echo __('Last name'); ?></th>
-			<th><?php echo __('Etunimi'); ?></th>
+			<th><?php echo __('First name'); ?></th>
 			<?php
 		}
 		?>

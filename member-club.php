@@ -169,7 +169,7 @@ function mr_show_clubs()
 	<thead>
 	<tr>
 		<th class="headerSortDown"><?php echo __('Nimi'); ?></th>
-		<th><?php echo __('Osoite'); ?></th>
+		<th><?php echo __('Address'); ?></th>
 		<th><?php echo __('Aktiivisia jäseniä'); ?></th>
 		<?php
 		if ($allowremove)
