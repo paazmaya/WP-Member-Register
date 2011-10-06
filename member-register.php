@@ -267,10 +267,11 @@ function member_register_login()
 	global $wpdb;
 	global $userdata;
 	
-	
+	/*
 	echo '<pre>';
 	print_r($userdata);
 	echo '</pre>';
+	*/
 }
 
 function member_register_logout()
