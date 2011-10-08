@@ -42,7 +42,7 @@ function mr_show_members($filters = null)
 		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN '
 		. $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . ' ORDER BY A.lastname ASC';
 
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$members = $wpdb->get_results($sql, ARRAY_A);
 
@@ -70,7 +70,7 @@ function mr_show_members($filters = null)
 			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
 			' '	. $member['lastname'] . '|' . __('Address') . ': ' . $member['address'] . ', ' .
 			$member['zipcode'] . ' ' . $member['postal'] . '|' . __('Nationality') . ': ' .
-			$member['nationalityname'] . '|' . __('Liittymispäivä') . ': ' .
+			$member['nationalityname'] . '|' . __('Date of joining') . ': ' .
 			$member['joindate'] . '" class="tip">';
 
 		echo '<tr id="user_' . $member['id'] . '">';
@@ -221,7 +221,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['nationalitycountry']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Liittymispäivä'); ?></th>
+				<th><?php echo __('Date of joining'); ?></th>
 				<td><?php echo $person['joindate']; ?></td>
 			</tr>
 			<tr>
@@ -341,7 +341,7 @@ function mr_insert_new_member($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+	////echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -370,7 +370,7 @@ function mr_update_member_info($postdata)
 
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $set) . 'WHERE id = ' . $id;
 
-		//echo '<div class="error"><p>' . $sql . '</p></div>';
+		////echo '<div class="error"><p>' . $sql . '</p></div>';
 
 		return $wpdb->query($sql);
 	}
@@ -522,7 +522,7 @@ function mr_new_member_form($action, $data)
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Liittymispäivä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Date of joining'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="joindate" class="pickday" value="<?php echo $values['joindate']; ?>" /></td>
 			</tr>
 			<tr class="form-field">

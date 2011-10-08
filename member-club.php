@@ -154,7 +154,7 @@ function mr_show_clubs()
 		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY B.club ORDER BY A.title ASC';
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+	////echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
 	
@@ -218,7 +218,7 @@ function mr_insert_new_club($postdata)
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
 		. implode(', ', $values) . ')';
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+	////echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -230,7 +230,7 @@ function mr_update_club($postdata)
 	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
 		'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+	////echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
