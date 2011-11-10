@@ -7,17 +7,18 @@
 
 function mr_club_list()
 {
+	global $wpdb;
+	global $userdata;
+	
 	if (!current_user_can('create_users') && $userdata->mr_access >= 8)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
-	global $wpdb;
-	global $userdata;
 	
 	echo '<div class="wrap">';
 	
-	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']))
+	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']) && $userdata->mr_access > 9)
 	{
 		// Mark the given club visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removeclub']);
@@ -40,7 +41,7 @@ function mr_club_list()
 		
 		// Was there an update of this club?
 		$hidden_field_name = 'mr_submit_hidden_club';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 3)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 8)
 		{
 			$_POST['id'] = $id;
 			if (mr_update_club($_POST))
@@ -86,7 +87,7 @@ function mr_club_list()
 		
 		// Was there an insert of a new club?
 		$hidden_field_name = 'mr_submit_hidden_club';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 3)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 8)
 		{
 			if (mr_insert_new_club($_POST))
 			{
@@ -99,7 +100,19 @@ function mr_club_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		mr_show_clubs();
+		
+		if (isset($_GET['createclub']))
+		{
+			mr_club_form();
+		}
+		else 
+		{
+			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&createclub"' .
+					' title="' . __('Luo uusi seura') . '" class="button-primary">' .
+					__('Luo uusi seura') . '</a></p>';
+					
+			mr_show_clubs();
+		}
 	}
 	
 	echo '</div>';
@@ -152,9 +165,9 @@ function mr_show_clubs()
 	
 	$sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix . 
 		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
-		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY B.club ORDER BY A.title ASC';
+		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY A.id ORDER BY A.title ASC';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
 	
@@ -194,7 +207,7 @@ function mr_show_clubs()
 		if ($allowremove)
 		{
 			echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
-				'&removegrade=' . $club['id'] . '" title="' . __('Poista seura') . ' ' .
+				'&removeclub=' . $club['id'] . '" title="' . __('Poista seura') . ' ' .
 				$club['title'] . '">X</a></td>';
 		}
 		echo '</tr>';
@@ -218,7 +231,7 @@ function mr_insert_new_club($postdata)
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
 		. implode(', ', $values) . ')';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -230,7 +243,7 @@ function mr_update_club($postdata)
 	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
 		'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }

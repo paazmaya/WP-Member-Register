@@ -129,7 +129,7 @@ function mr_insert_new_payment($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }

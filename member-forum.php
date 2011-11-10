@@ -132,7 +132,7 @@ function mr_show_info_topic($topic, $access)
 		' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
 		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	$res = $wpdb->get_row($sql, ARRAY_A);
 
@@ -164,7 +164,7 @@ function mr_show_list_topics($access)
 		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
 		' WHERE A.access <= ' . intval($access) . ' AND A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
@@ -233,7 +233,7 @@ function mr_show_posts_for_topic($topic)
 		$wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
 		$topic . ' AND A.visible = 1 ORDER BY A.created DESC';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
@@ -296,7 +296,7 @@ function mr_insert_new_topic($postdata)
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, access, member, created) VALUES('
 		. implode(', ', $values) . ')';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -316,7 +316,7 @@ function mr_insert_new_post($postdata)
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_post (content, topic, member, created) VALUES('
 		. implode(', ', $values) . ')';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }

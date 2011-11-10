@@ -89,8 +89,8 @@ function mr_show_members($filters = null)
 		echo '</td>';
 		echo '<td>' . $member['email'] . '</td>';
 		echo '<td>' . $member['phone'] . '</td>';
-		echo '<td title="' . $mr_martial_arts[$member['martial']] . '">' . $member['martial'] . '</td>';
-		echo '<td title="' . $mr_access_type[$member['access']] . '">' . $member['access'] . '</td>';
+		echo '<td title="' . (isset($mr_martial_arts[$member['martial']]) ? $mr_martial_arts[$member['martial']] : '') . '">' . $member['martial'] . '</td>';
+		echo '<td title="' . (isset($mr_access_type[$member['access']]) ? $mr_access_type[$member['access']] : '') . '">' . $member['access'] . '</td>';
 		echo '<td>';
 		if ($member['lastlogin'] > 0)
 		{
@@ -119,6 +119,7 @@ function mr_show_members($filters = null)
 function mr_show_member_info($id)
 {
 	global $wpdb;
+	global $userdata;
 	global $mr_date_format;
 	global $mr_access_type;
 	global $mr_grade_values;
@@ -162,9 +163,11 @@ function mr_show_member_info($id)
 		'birthdate', 'address', 'zipcode', 'postal', 'phone', 'email',
 		'nationality', 'joindate', 'passnro', 'martial', 'notes', 'lastlogin', 'active',
 		'club');
-	$sql = 'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname FROM ' . $wpdb->prefix . 'mr_member A LEFT JOIN ' .
-		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' . $wpdb->prefix .
-		'mr_club C ON A.club = C.id WHERE A.id = ' . $id . ' LIMIT 1';
+	$sql = 'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname, D.id AS wpuserid FROM ' . 
+		$wpdb->prefix . 'mr_member A LEFT JOIN ' .
+		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' . 
+		$wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
+		$wpdb->prefix . 'users D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
@@ -238,7 +241,7 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Viimeksi vieraillut sivuilla'); ?></th>
-				<td><?php echo date($mr_date_format, $person['lastlogin']); ?></td>
+				<td><?php echo ($person['lastlogin'] != 0 ? date($mr_date_format, $person['lastlogin']) : ''); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Aktiivinen'); ?> <span class="description">(<?php echo __('saako kirjautua sivuille'); ?>)</span></th>
@@ -246,11 +249,32 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä harjoittelee'); ?>)</span></th>
-				<td><?php echo $person['clubname']; ?></td>
+				<td><?php 
+				if ($person['clubname'] != '' && $userdata->mr_access >= 8)
+				{
+					echo '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . 
+						$person['club'] . '" title="' . __('List of active members in the club called:') .
+						' ' . $person['clubname'] . '">' . $person['clubname'] . '</a>';
+				}
+				else
+				{
+					echo $person['clubname']; 
+				}
+				?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
-				<td><?php echo $person['user_login']; ?></td>
+				<td><?php 
+					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']))
+					{
+						echo '<a href="' . admin_url('user-edit.php?user_id=') . $person['wpuserid'] .
+							'" title="' . __('Muokkaa WP käyttäjää') . '">' . $person['user_login'] . '</a>';
+					}
+					else 
+					{
+						echo $person['user_login']; 
+					}
+				?></td>
 			</tr>
 		</tbody>
 		</table>
@@ -341,7 +365,7 @@ function mr_insert_new_member($postdata)
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
 
-	////echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 	return $wpdb->query($sql);
 }
@@ -370,7 +394,7 @@ function mr_update_member_info($postdata)
 
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $set) . 'WHERE id = ' . $id;
 
-		////echo '<div class="error"><p>' . $sql . '</p></div>';
+		//echo '<div class="error"><p>' . $sql . '</p></div>';
 
 		return $wpdb->query($sql);
 	}
@@ -396,7 +420,7 @@ function mr_new_member_form($action, $data)
 	// Default values for an empty form
 	$values = array(
 		'id' => 0,
-		'user_login' => 0,
+		'user_login' => '',
 		'access' => 1,
 		'firstname' => '',
 		'lastname' => '',
@@ -416,9 +440,11 @@ function mr_new_member_form($action, $data)
 	);
 	$values = array_merge($values, $data);
 
+	/*
 	echo '<pre>';
 	print_r($values);
 	echo '</pre>';
+	*/
 
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>">
@@ -471,7 +497,7 @@ function mr_new_member_form($action, $data)
 				</td>
 			</tr>
 			<tr class="form-field form-required">
-				<th<?php echo __('>Etunimi'); ?></th>
+				<th><?php echo __('Etunimi'); ?></th>
 				<td><input type="text" name="firstname" value="<?php echo $values['firstname']; ?>" /></td>
 			</tr>
 			<tr class="form-field form-required">

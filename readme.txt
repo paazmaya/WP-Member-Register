@@ -38,11 +38,13 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+
 = 0.6.0 =
-* Released 2011 ?
+* Released 10 November 2011
 * Localisation for English and Finnish done properly with PO files
 * Remove (set hidden) a member, in same way like discussions, grades and payments
 * Club management
+* Bug fixing of those which were found rather easily
 
 = 0.5.6 =
 * Released 28 September 2011
