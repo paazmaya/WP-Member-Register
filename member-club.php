@@ -167,7 +167,7 @@ function mr_show_clubs()
 		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY A.id ORDER BY A.title ASC';
 
-	echo '<div class="error"><p>' . $sql . '</p></div>';
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
 	
