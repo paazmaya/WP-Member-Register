@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.6.0
+ Version: 0.7.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,13 +14,16 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.6.0');
+define ('MEMBER_REGISTER_VERSION', '0.7.0');
+
+global $mr_file_base_directory;
+$mr_file_base_directory = realpath(ABSPATH . '/../member_register_files');
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '8';
+$mr_db_version = '9';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -95,11 +98,11 @@ global $mr_access_type;
 $mr_access_type = array(
 	0 => 'Ei mitään, ei aktiivinen jäsen',
 	1 => 'Omien tietojen katselu ja päivitys',
-	2 => 'Keskusteluun osallistuminen',
+	2 => 'Keskusteluun osallistuminen', // tiedostojen listaus
 	3 => 'Keskusteluaiheiden luominen',
-	4 => 'Keskustelujen poisto',
+	4 => 'Keskustelujen poisto', // voi myös lisätä tiedostoja
 	5 => 'Keskusteluaiheiden poisto', // voi myös päättää keskusteluaiheen näkyvyys tason
-	6 => 'Jäsenten lisääminen ja muokkaus',
+	6 => 'Jäsenten lisääminen ja muokkaus', // tiedostojen näkyvyys
 	7 => 'Jäsenten poistaminen',
 	8 => 'Jäsenmaksujen ja seurojen hallinta',
 	9 => 'Vyöarvojen hallinta',
@@ -111,6 +114,7 @@ require 'member-member.php';
 require 'member-forum.php';
 require 'member-club.php';
 require 'member-install.php';
+require 'member-files.php';
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
@@ -121,6 +125,7 @@ register_activation_hook(__FILE__, 'mr_install');
 add_action('admin_init', 'member_register_admin_init');
 add_action('admin_menu', 'member_register_admin_menu');
 add_action('admin_menu', 'member_register_forum_menu');
+add_action('admin_menu', 'member_register_files_menu');
 add_action('admin_print_styles', 'member_register_admin_print_styles');
 add_action('admin_print_scripts', 'member_register_admin_print_scripts');
 add_action('admin_head', 'member_register_admin_head');
@@ -147,12 +152,14 @@ function member_register_admin_init()
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-ferroslider', plugins_url('/js/jquery.ferroSlider.min.js', __FILE__), array('jquery'));
 
-	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
+	wp_register_style('jquery-ui-theme-blizter', plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style('jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
 	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
 	wp_register_style('jquery-cluetip',  plugins_url('/css/jquery.cluetip.css', __FILE__));
+	wp_register_style('jquery-ferroslider',  plugins_url('/css/jquery.ferroSlider.css', __FILE__)); // 1.1
 	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
 
@@ -168,6 +175,7 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-ui-datepicker-fi');
 	wp_enqueue_script('jquery-cluetip');
 	wp_enqueue_script('jquery-picnet-table-filter');
+	wp_enqueue_script('jquery-ferroslider');
 }
 
 function member_register_admin_print_styles()
@@ -178,6 +186,7 @@ function member_register_admin_print_styles()
 	wp_enqueue_style('jquery-ui-theme-blizter');
 	wp_enqueue_style('jquery-tablesorter');
 	wp_enqueue_style('jquery-cluetip');
+	//wp_enqueue_style('jquery-ferroslider');
 	wp_enqueue_style('mr-styles');
 }
 
@@ -249,9 +258,25 @@ function member_register_forum_menu()
 	}
 }
 
+/**
+ * Any member with login access can use the forum
+ * http://codex.wordpress.org/Roles_and_Capabilities#Subscriber
+ */
+function member_register_files_menu()
+{
+	global $userdata;
+
+	if (isset($userdata->user_login) && isset($userdata->mr_access) && $userdata->mr_access >= 2)
+	{
+		// http://codex.wordpress.org/Adding_Administration_Menus
+		add_menu_page(__('Files'), __('Files'), 'read', 'member-files',
+			'mr_files_list', plugins_url('/images/lock-icon.png', __FILE__)); // $position );
+	}
+}
+
 
 // http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
-function member_register_profile_update($user_id, $old_user_data)
+function member_register_profile_update($user_id = -1, $old_user_data = null)
 {
 	echo '<p>' . $user_id . '</p>';
 	echo '<pre>';

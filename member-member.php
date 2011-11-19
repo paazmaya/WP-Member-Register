@@ -233,7 +233,7 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Main martial art'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin'); ?>)</span></th>
-				<td><?php echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; ?></td>
+				<td><?php echo (isset($mr_martial_arts[$person['martial']]) ? $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')' : '-'); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Lisätietoja'); ?> <span class="description">(<?php echo __('vapaasti kirjoiteltu'); ?>)</span></th>
@@ -347,7 +347,6 @@ function mr_insert_new_member($postdata)
 {
 	global $wpdb;
 
-	$keys = array();
 	$values = array();
 	$required = array('user_login', 'access', 'firstname', 'lastname', 'birthdate',
 		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
@@ -358,16 +357,14 @@ function mr_insert_new_member($postdata)
 		if (in_array($k, $required))
 		{
 			// sanitize
-			$keys[] = mr_urize($k);
-			$values[] = "'" . mr_htmlent($v) . "'";
+			$values[mr_urize($k)] = mr_htmlent($v);
 		}
 	}
-
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-	return $wpdb->query($sql);
+	
+	return $wpdb->insert(
+		$wpdb->prefix . 'mr_member',
+		$values
+	);
 }
 
 function mr_update_member_info($postdata)

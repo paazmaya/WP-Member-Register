@@ -222,18 +222,17 @@ function mr_show_clubs()
 function mr_insert_new_club($postdata)
 {
 	global $wpdb;
-
-	$values = array(
-		"'" . mr_htmlent($postdata['title']) . "'",
-		"'" . mr_htmlent($postdata['address']) . "'"
+	return $wpdb->insert(
+		$wpdb->prefix . 'mr_club',
+		array(
+			'title' => mr_htmlent($postdata['title']),
+			'address' => mr_htmlent($postdata['address'])
+		),
+		array(
+			'%s',
+			'%s'
+		)
 	);
-
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
-		. implode(', ', $values) . ')';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-	return $wpdb->query($sql);
 }
 
 function mr_update_club($postdata)
