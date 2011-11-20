@@ -38,6 +38,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.7.0 =
+* Released 22 November 2011
+* Files can be uploaded and downloaded by active members, but no additional controls
+* Using jQuery plugin called "chosen" (http://harvesthq.github.com/chosen/) for select fields with multiple enabled
+* Proper use of $wpdb->insert instead of self written sql inster phrases
 
 = 0.6.0 =
 * Released 10 November 2011
