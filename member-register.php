@@ -152,14 +152,14 @@ function member_register_admin_init()
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-ferroslider', plugins_url('/js/jquery.ferroSlider.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter', plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style('jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
 	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
 	wp_register_style('jquery-cluetip',  plugins_url('/css/jquery.cluetip.css', __FILE__));
-	wp_register_style('jquery-ferroslider',  plugins_url('/css/jquery.ferroSlider.css', __FILE__)); // 1.1
+	wp_register_style('jquery-chosen',  plugins_url('/css/chosen.css', __FILE__));
 	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
 
@@ -175,7 +175,7 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-ui-datepicker-fi');
 	wp_enqueue_script('jquery-cluetip');
 	wp_enqueue_script('jquery-picnet-table-filter');
-	wp_enqueue_script('jquery-ferroslider');
+	wp_enqueue_script('jquery-chosen');
 }
 
 function member_register_admin_print_styles()
@@ -186,7 +186,7 @@ function member_register_admin_print_styles()
 	wp_enqueue_style('jquery-ui-theme-blizter');
 	wp_enqueue_style('jquery-tablesorter');
 	wp_enqueue_style('jquery-cluetip');
-	//wp_enqueue_style('jquery-ferroslider');
+	wp_enqueue_style('jquery-chosen');
 	wp_enqueue_style('mr-styles');
 }
 
@@ -214,6 +214,7 @@ function member_register_admin_head()
 				closePosition: 'title'
 			});
 			jQuery('table.tablesorter').tableFilter();
+			jQuery('select[multiple]').chosen();
 		});
 
 	</script>
