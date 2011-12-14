@@ -278,28 +278,27 @@ function mr_insert_new_topic($postdata)
 	global $wpdb;
 	global $userdata;
 
-	$values = array(
-		'title' => mr_htmlent($postdata['title']),
-		'access' => 1,
-		'member' => $userdata->mr_memberid,
-		'created' => time()
-	);
+	$values = array("'" . mr_htmlent($postdata['title']) . "'");
 
 	if ($userdata->mr_access >= 5)
 	{
-		$values['access'] = intval($postdata['access']);
+		$values[] = "'" . intval($postdata['access']) . "'";
+	}
+	else
+	{
+		$values[] = "'1'";
 	}
 
-	return $wpdb->insert(
-		$wpdb->prefix . 'mr_forum_topic',
-		$values,
-		array(
-			'%s',
-			'%d',
-			'%d',
-			'%d'
-		)
-	);
+	$values[] = "'" . $userdata->mr_memberid . "'";
+	$values[] = "'" . time() . "'";
+
+
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, access, member, created) VALUES('
+		. implode(', ', $values) . ')';
+
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
+
+	return $wpdb->query($sql);
 }
 
 function mr_insert_new_post($postdata)
@@ -307,22 +306,19 @@ function mr_insert_new_post($postdata)
 	global $wpdb;
 	global $userdata;
 
-	// Possible format values: %s as string; %d as decimal number; and %f as float.
-	return $wpdb->insert(
-		$wpdb->prefix . 'mr_forum_post',
-		array(
-			'content' => mr_htmlent(nl2br($postdata['content'], true)),
-			'topic' => intval($postdata['topic']),
-			'member' => $userdata->mr_memberid,
-			'created' => time()
-		),
-		array(
-			'%s',
-			'%d',
-			'%s',
-			'%d'
-		)
+	$values = array(
+		"'" . mr_htmlent(nl2br($postdata['content'], true)) . "'",
+		"'" . intval($postdata['topic']) . "'",
+		$values[] = "'" . $userdata->mr_memberid . "'",
+		$values[] = "'" . time() . "'"
 	);
+
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_post (content, topic, member, created) VALUES('
+		. implode(', ', $values) . ')';
+
+	//echo '<div class="error"><p>' . $sql . '</p></div>';
+
+	return $wpdb->query($sql);
 }
 
 

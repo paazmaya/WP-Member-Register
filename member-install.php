@@ -395,27 +395,6 @@ function mr_install ()
 	
 		dbDelta($sql);
 	}
-	
-	
-	$table_name = $wpdb->prefix . $mr_prefix . 'file';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE IF NOT EXISTS " . $table_name . " (
-		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
-		  basename varchar(255) COLLATE utf8_swedish_ci NOT NULL COMMENT 'Basename of the file',
-		  bytesize int(12) unsigned NOT NULL COMMENT 'Size in bytes',
-		  directory varchar(120) COLLATE utf8_swedish_ci NOT NULL COMMENT 'Dir under the configured location',
-		  uploader mediumint(6) unsigned NOT NULL COMMENT 'Member id of the uploader',
-		  uploaded int(10) unsigned NOT NULL COMMENT 'Timestamp of the upload event',
-		  access tinyint(1) NOT NULL COMMENT 'All 0, Club 1, Member 2',
-		  visible int(1) NOT NULL DEFAULT '1' COMMENT 'Shown or removed',
-		  PRIMARY KEY (id),
-		  KEY access (access)
-		  KEY visible (visible)
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
-	
 	add_option('mr_db_version', $mr_db_version);
 }
