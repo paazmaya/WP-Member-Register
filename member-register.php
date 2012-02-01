@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.6.0
+ Version: 0.7.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,13 +14,13 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.6.0');
+define ('MEMBER_REGISTER_VERSION', '0.7.0');
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '8';
+$mr_db_version = '9';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -57,59 +57,70 @@ $mr_martial_arts = array(
 	'judo' => 'Goshin Judo'
 );
 
-/*
-// Security permissions:
-$writePost = 1;
-$readPost = 2;
-$deletePost = 4;
-$addUser = 8;
-$deleteUser = 16;
-
-$mr_access_values = (
-	'1' => 'Kirjoittaa viestejä',
-	'2' => 'Lukea viestejä',
-);
-
-// User groups:
-$mr_access_type = array(
-	0 => 0,
-	1 => $readPost,
-	2 => $writePost | $readPost,
-	3 => ,
-	4 => ,
-	5 => ,
-	6 => $readPost | $deletePost | $deleteUser,
-	7 => ,
-	8 => ,
-	9 => ,
-	10 => $writePost | $readPosts | $deletePosts | $addUser | $deleteUser
-);
-// Now we apply all of this!
-if(mr_check_permission($administrator, $deleteUser)) {
-	deleteUser("Some User"); # This is executed because $administrator can $deleteUser
-}
-
-*/
+define('MR_ACCESS_OWN_INFO', 1 << 0); // 1
+define('MR_ACCESS_FILES_VIEW', 1 << 1); // 2
+define('MR_ACCESS_CONVERSATION', 1 << 2); // 4
+define('MR_ACCESS_FORUM_CREATE', 1 << 3); // 8
+define('MR_ACCESS_FORUM_DELETE', 1 << 4); // 16
+define('MR_ACCESS_MEMBERS_VIEW', 1 << 5); // 32
+define('MR_ACCESS_MEMBERS_EDIT', 1 << 6); // 64
+define('MR_ACCESS_GRADE_MANAGE', 1 << 7); // 128
+define('MR_ACCESS_PAYMENT_MANAGE', 1 << 8); // 256
+define('MR_ACCESS_CLUB_MANAGE', 1 << 9); // 512
+define('MR_ACCESS_FILES_MANAGE', 1 << 10); // 1024
 
 global $mr_access_type;
 $mr_access_type = array(
-	0 => 'Ei mitään, ei aktiivinen jäsen',
 	1 => 'Omien tietojen katselu ja päivitys',
-	2 => 'Keskusteluun osallistuminen',
-	3 => 'Keskusteluaiheiden luominen',
-	4 => 'Keskustelujen poisto',
-	5 => 'Keskusteluaiheiden poisto', // voi myös päättää keskusteluaiheen näkyvyys tason
-	6 => 'Jäsenten lisääminen ja muokkaus',
-	7 => 'Jäsenten poistaminen',
-	8 => 'Jäsenmaksujen ja seurojen hallinta',
-	9 => 'Vyöarvojen hallinta',
-	10 => 'Kaikki mahdollinen mitä täällä ikinä voi tehdä'
+	2 => 'Tiedostot jäsenille',
+	4 => 'Keskusteluun osallistuminen',
+	8 => 'Keskusteluaiheiden luominen',
+	16 => 'Keskustelujen ja keskusteluaiheiden poisto',
+	32 => 'Jäsenten listaus ja tietojen näkeminen',
+	64 => 'Jäsenten lisääminen, muokkaus ja poisto',
+	128 => 'Vyöarvojen hallinta',
+	256 => 'Jäsenmaksujen hallinta',
+	512 => 'Seurojen hallinta',
+	1024 => 'Tiedostojen hallinta'
 );
+
+
+function print_access()
+{
+	global $userdata;
+	global $mr_access_type;
+	
+	echo '<p>';
+	
+	foreach ($mr_access_type as $key => $val)
+	{
+		echo 'Key: ' . $key . ', in binary: ' . decbin($key) . ', val: ' . $val . '<br />';
+	}
+	
+	echo 'MR_ACCESS_OWN_INFO: ' . MR_ACCESS_OWN_INFO . '<br />';
+	echo 'MR_ACCESS_FILES_VIEW: ' . MR_ACCESS_FILES_VIEW . '<br />';
+	echo 'MR_ACCESS_CONVERSATION: ' . MR_ACCESS_CONVERSATION . '<br />';
+	echo 'MR_ACCESS_FORUM_CREATE: ' . MR_ACCESS_FORUM_CREATE . '<br />';
+	echo 'MR_ACCESS_FORUM_DELETE: ' . MR_ACCESS_FORUM_DELETE . '<br />';
+	echo 'MR_ACCESS_MEMBERS_VIEW: ' . MR_ACCESS_MEMBERS_VIEW . '<br />';
+	echo 'MR_ACCESS_MEMBERS_EDIT: ' . MR_ACCESS_MEMBERS_EDIT . '<br />';
+	echo 'MR_ACCESS_GRADE_MANAGE: ' . MR_ACCESS_GRADE_MANAGE . '<br />';
+	echo 'MR_ACCESS_PAYMENT_MANAGE: ' . MR_ACCESS_PAYMENT_MANAGE . '<br />';
+	echo 'MR_ACCESS_CLUB_MANAGE: ' . MR_ACCESS_CLUB_MANAGE . '<br />';
+	echo 'MR_ACCESS_FILES_MANAGE: ' . MR_ACCESS_FILES_MANAGE . '<br />';
+	
+	echo '<br />You have: ' . decbin($userdata->mr_access) . ' / ' . $userdata->mr_access;
+	echo '<br />Full rights would be: ' . bindec(11111111111);
+	
+	echo '</p>';
+}
+
 
 require 'member-functions.php';
 require 'member-member.php';
 require 'member-forum.php';
 require 'member-club.php';
+require 'member-files.php';
 require 'member-install.php';
 
 register_activation_hook(__FILE__, 'mr_install');
@@ -121,6 +132,7 @@ register_activation_hook(__FILE__, 'mr_install');
 add_action('admin_init', 'member_register_admin_init');
 add_action('admin_menu', 'member_register_admin_menu');
 add_action('admin_menu', 'member_register_forum_menu');
+add_action('admin_menu', 'member_register_files_menu');
 add_action('admin_print_styles', 'member_register_admin_print_styles');
 add_action('admin_print_scripts', 'member_register_admin_print_scripts');
 add_action('admin_head', 'member_register_admin_head');
@@ -204,7 +216,7 @@ function member_register_admin_head()
 				closeText: 'sulje',
 				closePosition: 'title'
 			});
-			jQuery('table.tablesorter').tableFilter();
+			//jQuery('table.tablesorter').tableFilter();
 		});
 
 	</script>
@@ -241,11 +253,29 @@ function member_register_forum_menu()
 {
 	global $userdata;
 
-	if (isset($userdata->user_login) && isset($userdata->mr_access) && $userdata->mr_access >= 2)
+	if (isset($userdata->user_login) && mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Keskustelu'), __('Keskustelu'), 'read', 'member-forum',
 			'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+	}
+}
+
+function member_register_files_menu()
+{
+	global $userdata;
+
+	if (isset($userdata->user_login) && mr_has_permission(MR_ACCESS_FILES_VIEW))
+	{
+		// http://codex.wordpress.org/Adding_Administration_Menus
+		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
+			'mr_files_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+			
+		if (mr_has_permission(MR_ACCESS_FILES_VIEW))
+		{
+			add_submenu_page('member-files', __('Lisää uusi tiedosto'),
+				__('Lisää uusi tiedosto'), 'create_users', 'member-files-new', 'mr_files_new');
+		}
 	}
 }
 
@@ -320,7 +350,7 @@ function member_register_uninstall()
 
 function mr_member_list()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -332,6 +362,8 @@ function mr_member_list()
 	*/
 
 	echo '<div class="wrap">';
+	
+	print_access();
 
 	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
 	{
@@ -352,7 +384,7 @@ function mr_member_list()
 
 function mr_payment_list()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -401,7 +433,7 @@ function mr_payment_list()
 
 function mr_grade_list()
 {
-	if (!current_user_can('create_users') && $userdata->mr_access >= 9)
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -439,7 +471,7 @@ function mr_grade_list()
 
 function mr_payment_new()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -482,7 +514,7 @@ function mr_payment_new()
 
 function mr_grade_new()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}

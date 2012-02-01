@@ -39,6 +39,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.7.0 =
+* Released 3 February 2012
+* User access level determined by bit wise comparison, in order to add flexibility
+* Removed access levels from forum topics. Everyone can see everything if can access forum
+
 = 0.6.0 =
 * Released 10 November 2011
 * Localisation for English and Finnish done properly with PO files

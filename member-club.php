@@ -4,13 +4,16 @@
  * Club related functions.
  */
 
+ 
+ // TODO: has many calls to access level checking but kept until decided if they are needed...
+ // might be that there will be more levels thus checks needed
 
 function mr_club_list()
 {
 	global $wpdb;
 	global $userdata;
 	
-	if (!current_user_can('create_users') && $userdata->mr_access >= 8)
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -18,7 +21,7 @@ function mr_club_list()
 	
 	echo '<div class="wrap">';
 	
-	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']) && $userdata->mr_access > 9)
+	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']) && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		// Mark the given club visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removeclub']);
@@ -41,7 +44,7 @@ function mr_club_list()
 		
 		// Was there an update of this club?
 		$hidden_field_name = 'mr_submit_hidden_club';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 8)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 		{
 			$_POST['id'] = $id;
 			if (mr_update_club($_POST))
@@ -87,7 +90,7 @@ function mr_club_list()
 		
 		// Was there an insert of a new club?
 		$hidden_field_name = 'mr_submit_hidden_club';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 8)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 		{
 			if (mr_insert_new_club($_POST))
 			{
@@ -172,7 +175,7 @@ function mr_show_clubs()
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
 	
 	$allowremove = false;
-	if ($userdata->mr_access > 9)
+	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		$allowremove = true;
 	}

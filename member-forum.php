@@ -10,7 +10,7 @@
  */
 function mr_forum_list()
 {
-	if (!current_user_can('read'))
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
@@ -26,7 +26,7 @@ function mr_forum_list()
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_post';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 2)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_CONVERSATION))
 		{
 
 			if (mr_insert_new_post($_POST))
@@ -40,7 +40,7 @@ function mr_forum_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		else if (isset($_GET['remove-post']) && is_numeric($_GET['remove-post']) && $userdata->mr_access >= 4)
+		else if (isset($_GET['remove-post']) && is_numeric($_GET['remove-post']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			// In reality just archive the post
 			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_post SET visible = 0 WHERE id = \'' . intval($_GET['remove-post']) . '\'';
@@ -56,10 +56,10 @@ function mr_forum_list()
 			}
 		}
 
-		mr_show_info_topic($_GET['topic'], $userdata->mr_access);
+		mr_show_info_topic($_GET['topic']);
 
 		// New post form to the given topic
-		if ($userdata->mr_access >= 2)
+		if (mr_has_permission(MR_ACCESS_CONVERSATION))
 		{
 			echo '<h3>' . __('Lisää viesti') . '</h3>';
 			mr_show_form_post($_GET['topic']);
@@ -75,7 +75,7 @@ function mr_forum_list()
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_topic';
-		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && $userdata->mr_access >= 3)
+		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_FORUM_CREATE))
 		{
 			if (mr_insert_new_topic($_POST))
 			{
@@ -88,7 +88,7 @@ function mr_forum_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && $userdata->mr_access >= 5)
+		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			// In reality just archive the topic
 			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 0 WHERE id = \'' . intval($_GET['remove-topic']) . '\'';
@@ -105,7 +105,7 @@ function mr_forum_list()
 		}
 
 		// New topic form
-		if ($userdata->mr_access >= 3)
+		if (mr_has_permission(MR_ACCESS_FORUM_CREATE))
 		{
 			echo '<h3>' . __('Luo uusi keskustelun aihe') . '</h3>';
 			mr_show_form_topic();
@@ -119,16 +119,16 @@ function mr_forum_list()
 }
 
 
-function mr_show_info_topic($topic, $access)
+function mr_show_info_topic($topic)
 {
 	global $wpdb;
 	global $mr_date_format;
 
-	$items = array('id', 'title', 'member', 'access', 'created');
+	$items = array('id', 'title', 'member', 'created');
 	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
-		$wpdb->prefix . 'mr_member C ON C.id = A.member WHERE A.access <= ' . intval($access) .
+		$wpdb->prefix . 'mr_member C ON C.id = A.member WHERE' .
 		' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
 		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
 
@@ -148,21 +148,21 @@ function mr_show_info_topic($topic, $access)
 }
 
 
-function mr_show_list_topics($access)
+function mr_show_list_topics()
 {
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
 
 	// Remember that the "created" is a unix timestamp
-	// id, title, member, access, created
-	$items = array('id', 'title', 'member', 'access', 'created');
+	// id, title, member, created
+	$items = array('id', 'title', 'member', 'created');
 	$sql = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
 		$wpdb->prefix . 'mr_member D ON D.id = ' .
 		'(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
-		' WHERE A.access <= ' . intval($access) . ' AND A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
+		' WHERE A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	$res = $wpdb->get_results($sql, ARRAY_A);
@@ -176,7 +176,7 @@ function mr_show_list_topics($access)
 		<th class="w20em"><?php echo __('Viimeisimmän viestin kirjoitti'); ?></th>
 		<th><?php echo __('Viestejä'); ?></th>
 		<?php
-		if ($userdata->mr_access >= 5)
+		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<th class="w4em" filter="false">' . __('Poista') . '</th>';
 		}
@@ -202,7 +202,7 @@ function mr_show_list_topics($access)
 			echo '</td>';
 			echo '<td>' . $topic['firstname'] . ' ' . $topic['lastname'] . '</td>';
 			echo '<td>' . $topic['total'] . '</td>';
-			if ($userdata->mr_access >= 5)
+			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
 				echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
 				'&remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe') . '">X</a></td>';
@@ -244,7 +244,7 @@ function mr_show_posts_for_topic($topic)
 		<th class="w20em"><?php echo __('Jäsen'); ?></th>
 		<th><?php echo __('Viesti'); ?></th>
 		<?php
-		if ($userdata->mr_access >= 4)
+		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<th class="w4em" filter="false">' . __('Poista') . '</th>';
 		}
@@ -259,7 +259,7 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . date($mr_date_format, $post['created']) . '</td>';
 		echo '<td>' . $post['firstname'] . ' ' . $post['lastname'] . '</td>';
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
-		if ($userdata->mr_access >= 4)
+		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<td><a href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
 				'&remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti') . '">X</a></td>';
@@ -278,22 +278,14 @@ function mr_insert_new_topic($postdata)
 	global $wpdb;
 	global $userdata;
 
-	$values = array("'" . mr_htmlent($postdata['title']) . "'");
-
-	if ($userdata->mr_access >= 5)
-	{
-		$values[] = "'" . intval($postdata['access']) . "'";
-	}
-	else
-	{
-		$values[] = "'1'";
-	}
-
-	$values[] = "'" . $userdata->mr_memberid . "'";
-	$values[] = "'" . time() . "'";
+	$values = array(
+		"'" . mr_htmlent($postdata['title']) . "'",
+		"'" . $userdata->mr_memberid . "'",
+		"'" . time() . "'"
+	);
 
 
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, access, member, created) VALUES('
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, member, created) VALUES('
 		. implode(', ', $values) . ')';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
@@ -309,8 +301,8 @@ function mr_insert_new_post($postdata)
 	$values = array(
 		"'" . mr_htmlent(nl2br($postdata['content'], true)) . "'",
 		"'" . intval($postdata['topic']) . "'",
-		$values[] = "'" . $userdata->mr_memberid . "'",
-		$values[] = "'" . time() . "'"
+		"'" . $userdata->mr_memberid . "'",
+		"'" . time() . "'"
 	);
 
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_post (content, topic, member, created) VALUES('
@@ -336,26 +328,6 @@ function mr_show_form_topic()
 				<th><?php echo __('Aihe'); ?> <span class="description">(<?php echo __('otsikko'); ?>)</span></th>
 				<td><input type="text" name="title" value="" /></td>
 			</tr>
-			<?php
-			if ($userdata->mr_access >= 5)
-			{
-				?>
-				<tr class="form-field">
-					<th><?php echo __('Lukuoikeus'); ?> <span class="description">(<?php echo __('mistä tasosta alkaen lukuoikeus myönnetään'); ?>)</span></th>
-					<td>
-						<select name="access">
-						<?php
-						for ($i = 1; $i <= $userdata->mr_access; $i++)
-						{
-							echo '<option value="' . $i . '">' . $mr_access_type[$i] . ' (' . $i . ')</option>';
-						}
-						?>
-						</select>
-					</td>
-				</tr>
-				<?php
-			}
-			?>
 		</table>
 
 		<p class="submit">
@@ -388,10 +360,6 @@ function mr_show_form_post($topic)
 	</form>
 	<?php
 }
-
-
-
-
 
 
 

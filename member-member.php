@@ -192,8 +192,10 @@ function mr_show_member_info($id)
 				<td><?php echo $person['firstname']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Kirjautumistaso'); ?> <span class="description">()</span></th>
-				<td><?php echo $mr_access_type[$person['access']] . ' ('. $person['access'] . ')'; ?></td>
+				<th><?php echo __('Kirjautumisoikeudet'); ?> <span class="description">(lista asioista joita käyttäjä voi tehdä)</span></th>
+				<td><?php
+					list_user_rights($person['access']);
+				?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Birthday'); ?></th>
@@ -250,7 +252,7 @@ function mr_show_member_info($id)
 			<tr>
 				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä harjoittelee'); ?>)</span></th>
 				<td><?php 
-				if ($person['clubname'] != '' && $userdata->mr_access >= 8)
+				if ($person['clubname'] != '' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 				{
 					echo '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . 
 						$person['club'] . '" title="' . __('List of active members in the club called:') .
@@ -265,7 +267,7 @@ function mr_show_member_info($id)
 			<tr>
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
 				<td><?php 
-					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']))
+					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']) && mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 					{
 						echo '<a href="' . admin_url('user-edit.php?user_id=') . $person['wpuserid'] .
 							'" title="' . __('Muokkaa WP käyttäjää') . '">' . $person['user_login'] . '</a>';
@@ -308,7 +310,7 @@ function mr_show_member_info($id)
 
 function mr_member_new()
 {
-	if (!current_user_can('create_users'))
+	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -359,7 +361,22 @@ function mr_insert_new_member($postdata)
 		{
 			// sanitize
 			$keys[] = mr_urize($k);
-			$values[] = "'" . mr_htmlent($v) . "'";
+			if ($k == 'access')
+			{
+				$rights = 0;
+				if (is_array($v))
+				{
+					foreach($v as $level)
+					{
+						$rights += intval($level);
+					}
+				}
+				$values[] = "'" . $rights . "'";
+			}
+			else
+			{
+				$values[] = "'" . mr_htmlent($v) . "'";
+			}
 		}
 	}
 
@@ -374,7 +391,7 @@ function mr_update_member_info($postdata)
 {
 	global $wpdb;
 
-	$set = array();
+	$values = array();
 	$required = array('user_login', 'access', 'firstname', 'lastname', 'birthdate',
 		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
 		'passnro', 'martial', 'notes', 'active', 'club');
@@ -386,13 +403,29 @@ function mr_update_member_info($postdata)
 			if (in_array($k, $required))
 			{
 				// sanitize
-				$set[] = mr_urize($k) . " = '" . mr_htmlent($v) . "'";
+				
+				if ($k == 'access')
+				{
+					$rights = 0;
+					if (is_array($v))
+					{
+						foreach($v as $level)
+						{
+							$rights += intval($level);
+						}
+					}
+					$values[] = mr_urize($k) . " = '" . $rights . "'";
+				}
+				else
+				{
+					$values[] = mr_urize($k) . " = '" . mr_htmlent($v) . "'";
+				}
 			}
 		}
 
 		$id = intval($postdata['id']);
 
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $set) . 'WHERE id = ' . $id;
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . 'WHERE id = ' . $id;
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
 
@@ -462,8 +495,8 @@ function mr_new_member_form($action, $data)
 				}
 				else
 				{
-					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN '
-						. $wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
+					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN ' .
+						$wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
 				}
 
 				$users = $wpdb->get_results($sql, ARRAY_A);
@@ -481,12 +514,12 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field form-required">
 				<th><?php echo __('Kirjautumistaso'); ?></th>
-				<td><select name="access">
+				<td><select name="access[]" multiple="multiple">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
 						echo '<option value="' . $k . '"';
-						if ($values['access'] == $k)
+						if (mr_has_permission($k, $values['access']))
 						{
 							echo ' selected="selected"';
 						}

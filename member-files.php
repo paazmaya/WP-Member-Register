@@ -19,11 +19,11 @@ function mr_files_list()
 	global $mr_date_format;
 	global $mr_file_base_directory;
 	
-	if ($userdata->mr_access > 3)
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_VIEW))
 	{
-		mr_files_new();
+		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-
+	
 	$sql = 'SELECT A.*, B.firstname, B.lastname FROM ' . $wpdb->prefix .
 		'mr_file A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON A.uploader = B.id WHERE A.visible = 1 ORDER BY A.basename ASC';
@@ -40,7 +40,12 @@ function mr_files_list()
 		<th><?php echo __('Uploader'); ?></th>
 		<th><?php echo __('Uploaded'); ?></th>
 		<th><?php echo __('Size'); ?> (KB)</th>
-		<!--<th><?php echo __('Remove'); ?></th>-->
+		<?php
+		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
+		{
+			echo '<th>' . __('Remove') . '</th>';
+		}
+		?>
 	</tr>
 	</thead>
 	<tbody>
@@ -58,8 +63,11 @@ function mr_files_list()
 		echo '<td>' . date($mr_date_format, $file['uploaded']) . '</td>';
 		echo '<td>' . $url . $file['firstname'] . ' ' . $file['lastname'] . '</a></td>';
 		echo '<td>' . round($file['bytesize'] / 1024) . '</td>';
-		//echo '<td>';
-		//echo '</td>';
+		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
+		{
+			echo '<td>';
+			echo '</td>';
+		}
 		echo '</tr>';
 	}
 	?>
@@ -138,7 +146,7 @@ function mr_insert_new_file($filesdata, $dir = '')
 	
 	//if (dir_exists($mr_file_base_directory . '/' . $dir
 
-	if (move_uploaded_file($filesdata['tmp_name'], $mr_file_base_directory . $basename))
+	if (move_uploaded_file($filesdata['tmp_name'], $mr_file_base_directory . '/' . $basename))
 	{
 		$values['bytesize'] = $filesdata['size'];
 	} 
@@ -151,13 +159,13 @@ function mr_insert_new_file($filesdata, $dir = '')
 		$wpdb->prefix . 'mr_file',
 		$values,
 		array(
-			'%s',
-			'%d',
-			'%s',
-			'%d',
-			'%d',
-			'%d',
-			'%d'			
+			'%s', // basename
+			'%d', // bytesize
+			'%s', // directory
+			'%d', // uploader id
+			'%d', // uploaded time
+			'%d', // access
+			'%d' // visible
 		)
 	);
 }

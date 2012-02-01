@@ -5,14 +5,23 @@
 
 /**
  * Check for permission for doing certain things.
- * @param $access int Access level of the current user
- * @param $permission bytes to check against which are for the action that is to be checked
+ * @param $access int Access right that is required
+ * @param $rights int Access rights that the user has, if any
  */
-function mr_check_permission($access, $permission)
+function mr_has_permission($access, $rights = 0)
 {
-	global $mr_access_type;
-
-	if ($mr_access_type[$access] & $permission)
+	global $userdata;
+	
+	if ($rights == 0)
+	{
+		if (!isset($userdata->mr_access))
+		{
+			return false;
+		}
+		$rights = $userdata->mr_access;
+	}
+	
+	if ($access & $rights)
 	{
 		return true;
 	}
@@ -22,6 +31,23 @@ function mr_check_permission($access, $permission)
 	}
 }
 
+/**
+ * Show all rights that the given access has
+ */
+function list_user_rights($rights)
+{
+	global $mr_access_type;
+	
+	echo '<ul>';	
+	foreach ($mr_access_type as $key => $val)
+	{
+		if (mr_has_permission($key, $rights))
+		{
+			echo '<li>' . $val . '</li>';
+		}
+	}
+	echo '</ul>';
+}
 
 function mr_show_access_values()
 {

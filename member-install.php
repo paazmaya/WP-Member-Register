@@ -74,7 +74,7 @@ function mr_install ()
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  user_login varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'wp_users reference',
-		  access tinyint(2) NOT NULL DEFAULT '0',
+		  access mediumint(4) NOT NULL DEFAULT '0',
 		  firstname varchar(40) COLLATE utf8_swedish_ci NOT NULL,
 		  lastname varchar(40) COLLATE utf8_swedish_ci NOT NULL,
 		  birthdate date NOT NULL DEFAULT '0000-00-00',
@@ -398,3 +398,5 @@ function mr_install ()
 
 	add_option('mr_db_version', $mr_db_version);
 }
+
+
