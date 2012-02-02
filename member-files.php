@@ -7,7 +7,8 @@
  * in order to have their name as a watermark.
  */
 
- 
+
+
 /**
  * Show a table of members based on the given filter if any.
  */
@@ -37,9 +38,9 @@ function mr_files_list()
 	<tr>
 		<th class="headerSortDown"><?php echo __('Base name'); ?></th>
 		<th><?php echo __('Directory'); ?></th>
-		<th><?php echo __('Uploader'); ?></th>
-		<th><?php echo __('Uploaded'); ?></th>
 		<th><?php echo __('Size'); ?> (KB)</th>
+		<th><?php echo __('Uploaded'); ?></th>
+		<th><?php echo __('Uploader'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
@@ -51,25 +52,47 @@ function mr_files_list()
 	<tbody>
 
 	<?php
+	$out = '';
 	foreach($files as $file)
 	{
-		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-			'&memberid=' . $file['uploader'] . '" title="' . $file['firstname'] .
-			' '	. $file['lastname'] . '">';
-
-		echo '<tr id="user_' . $file['id'] . '">';
-		echo '<td>' . $file['basename'] . '</td>';
-		echo '<td>' . $file['directory'] . '</td>';
-		echo '<td>' . date($mr_date_format, $file['uploaded']) . '</td>';
-		echo '<td>' . $url . $file['firstname'] . ' ' . $file['lastname'] . '</a></td>';
-		echo '<td>' . round($file['bytesize'] / 1024) . '</td>';
+		$path = realpath($mr_file_base_directory . '/' . $file['directory'] . '/' . $file['basename']);
+		
+		$out .= '<tr id="user_' . $file['id'] . '">';
+		$out .= '<td';
+		if (!file_exists($path))
+		{
+			$out .= ' class="redback" title="Tiedostoa ei löydy">' . $file['basename'];
+		}
+		else
+		{
+			$out .= '><a href="member-files-download.php&amp;download=' . 
+				urlencode($file['directory'] . '/' . $file['basename']) . '" title="Lataa ' . 
+				$file['basename'] . ' koneellesi">' . $file['basename'] . '</a>';
+		}
+		$out .= '</td>';
+		$out .= '<td>' . $file['directory'] . '</td>';
+		$out .= '<td>' . round($file['bytesize'] / 1024) . '</td>';
+		$out .= '<td>' . date($mr_date_format, $file['uploaded']) . '</td>';
+		$out .= '<td>';
+		if (mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
+		{
+			$out.= '<a href="' . admin_url('admin.php?page=member-register-control') .
+				'&amp;memberid=' . $file['uploader'] . '" title="' . $file['firstname'] .
+				' '	. $file['lastname'] . '">' . $file['firstname'] . ' ' . $file['lastname'] . '</a>';
+		}
+		else
+		{
+			$out.= $file['firstname'] . ' ' . $file['lastname'];
+		}
+		$out.= '</td>';
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
-			echo '<td>';
-			echo '</td>';
+			$out .= '<td>';
+			$out .= '</td>';
 		}
-		echo '</tr>';
+		$out .= '</tr>';
 	}
+	echo $out;
 	?>
 	</tbody>
 	</table>

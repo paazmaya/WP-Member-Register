@@ -191,7 +191,7 @@ function mr_new_payment_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Member'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
 				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
-				<option value="">-</option>
+				<option value=""></option>
 				<?php
 				foreach($members as $user)
 				{
@@ -223,7 +223,7 @@ function mr_new_payment_form($members)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php __('Add bills') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php __('Lisää lasku') ?>" />
 		</p>
 
 	</form>
@@ -246,7 +246,7 @@ function mr_grade_form($members)
 				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä'); ?>)</span></th>
 				<td>
 					<select name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
-					<option value="">-</option>
+					<option value=""></option>
 					<?php
 					foreach($members as $user)
 					{
@@ -260,7 +260,7 @@ function mr_grade_form($members)
 				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
 					<select name="grade" data-placeholder="Valitse vyöarvo">
-					<option value="">-</option>
+					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
 					{
@@ -324,7 +324,7 @@ function mr_grade_quick_form($member)
 				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
 					<select name="grade" data-placeholder="Valitse vyöarvo">
-					<option value="">-</option>
+					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
 					{

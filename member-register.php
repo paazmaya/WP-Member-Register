@@ -130,7 +130,7 @@ function member_register_admin_init()
 	wp_register_script('jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core')); // 1.8.9
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery')); // 0.9.7
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
