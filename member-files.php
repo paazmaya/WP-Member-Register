@@ -79,6 +79,11 @@ function mr_files_list()
 
 function mr_files_new()
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_MANAGE))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
 	global $userdata;
 	
@@ -107,7 +112,7 @@ function mr_files_new()
     ?>
 	<div class="wrap">
 		<h2><?php echo __('Lisää uusi tiedosto'); ?></h2>
-		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files'); ?>" enctype="multipart/form-data">
+		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data">
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="createfile">
 				<tr class="form-field">
@@ -133,11 +138,10 @@ function mr_insert_new_file($filesdata, $dir = '')
 	global $userdata;
 	global $mr_file_base_directory;
 
-	$basename = basename($filesdata['name']);
 	$values = array(
-		'basename' => $basename,
+		'basename' => basename($filesdata['name']),
 		'bytesize' => 0,
-		'directory' => '',
+		'directory' => $dir,
 		'uploader' => $userdata->mr_memberid,
 		'uploaded' => time(),
 		'access' => 0,
@@ -145,8 +149,20 @@ function mr_insert_new_file($filesdata, $dir = '')
 	);
 	
 	//if (dir_exists($mr_file_base_directory . '/' . $dir
+	
+	if (!file_exists($mr_file_base_directory))
+	{
+		mkdir($mr_file_base_directory);
+	}
+	
+	$target = realpath($mr_file_base_directory . '/' . str_replace(array('..', '/', '\\', '...'), '', $dir));
+	
+	if (!file_exists($target))
+	{
+		mkdir($target);
+	}
 
-	if (move_uploaded_file($filesdata['tmp_name'], $mr_file_base_directory . '/' . $basename))
+	if (move_uploaded_file($filesdata['tmp_name'], $target . '/' . $values['basename']))
 	{
 		$values['bytesize'] = $filesdata['size'];
 	} 

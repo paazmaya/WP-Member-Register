@@ -16,6 +16,9 @@
 
 define ('MEMBER_REGISTER_VERSION', '0.7.0');
 
+global $mr_file_base_directory;
+$mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
+
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
@@ -85,37 +88,6 @@ $mr_access_type = array(
 );
 
 
-function print_access()
-{
-	global $userdata;
-	global $mr_access_type;
-	
-	echo '<p>';
-	
-	foreach ($mr_access_type as $key => $val)
-	{
-		echo 'Key: ' . $key . ', in binary: ' . decbin($key) . ', val: ' . $val . '<br />';
-	}
-	
-	echo 'MR_ACCESS_OWN_INFO: ' . MR_ACCESS_OWN_INFO . '<br />';
-	echo 'MR_ACCESS_FILES_VIEW: ' . MR_ACCESS_FILES_VIEW . '<br />';
-	echo 'MR_ACCESS_CONVERSATION: ' . MR_ACCESS_CONVERSATION . '<br />';
-	echo 'MR_ACCESS_FORUM_CREATE: ' . MR_ACCESS_FORUM_CREATE . '<br />';
-	echo 'MR_ACCESS_FORUM_DELETE: ' . MR_ACCESS_FORUM_DELETE . '<br />';
-	echo 'MR_ACCESS_MEMBERS_VIEW: ' . MR_ACCESS_MEMBERS_VIEW . '<br />';
-	echo 'MR_ACCESS_MEMBERS_EDIT: ' . MR_ACCESS_MEMBERS_EDIT . '<br />';
-	echo 'MR_ACCESS_GRADE_MANAGE: ' . MR_ACCESS_GRADE_MANAGE . '<br />';
-	echo 'MR_ACCESS_PAYMENT_MANAGE: ' . MR_ACCESS_PAYMENT_MANAGE . '<br />';
-	echo 'MR_ACCESS_CLUB_MANAGE: ' . MR_ACCESS_CLUB_MANAGE . '<br />';
-	echo 'MR_ACCESS_FILES_MANAGE: ' . MR_ACCESS_FILES_MANAGE . '<br />';
-	
-	echo '<br />You have: ' . decbin($userdata->mr_access) . ' / ' . $userdata->mr_access;
-	echo '<br />Full rights would be: ' . bindec(11111111111);
-	
-	echo '</p>';
-}
-
-
 require 'member-functions.php';
 require 'member-member.php';
 require 'member-forum.php';
@@ -158,6 +130,7 @@ function member_register_admin_init()
 	wp_register_script('jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core')); // 1.8.9
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
@@ -165,6 +138,7 @@ function member_register_admin_init()
 	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
 	wp_register_style('jquery-cluetip',  plugins_url('/css/jquery.cluetip.css', __FILE__));
+	wp_register_style('jquery-chosen',  plugins_url('/css/chosen.css', __FILE__));
 	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
 
@@ -179,6 +153,7 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-ui-datepicker');
 	wp_enqueue_script('jquery-ui-datepicker-fi');
 	wp_enqueue_script('jquery-cluetip');
+	wp_enqueue_script('jquery-chosen');
 	wp_enqueue_script('jquery-picnet-table-filter');
 }
 
@@ -190,6 +165,7 @@ function member_register_admin_print_styles()
 	wp_enqueue_style('jquery-ui-theme-blizter');
 	wp_enqueue_style('jquery-tablesorter');
 	wp_enqueue_style('jquery-cluetip');
+	wp_enqueue_style('jquery-chosen');
 	wp_enqueue_style('mr-styles');
 }
 
@@ -216,6 +192,7 @@ function member_register_admin_head()
 				closeText: 'sulje',
 				closePosition: 'title'
 			});
+			jQuery('select').chosen();
 			//jQuery('table.tablesorter').tableFilter();
 		});
 
@@ -271,7 +248,7 @@ function member_register_files_menu()
 		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
 			'mr_files_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
 			
-		if (mr_has_permission(MR_ACCESS_FILES_VIEW))
+		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
 			add_submenu_page('member-files', __('Lisää uusi tiedosto'),
 				__('Lisää uusi tiedosto'), 'create_users', 'member-files-new', 'mr_files_new');

@@ -12,6 +12,27 @@ function mr_install ()
 	$mr_prefix = 'mr_';
 
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	
+	$table_name = $wpdb->prefix . $mr_prefix . 'file';
+	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+	{
+		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
+		  bytesize int(12) unsigned NOT NULL,
+		  basename varchar(255) COLLATE utf8_swedish_ci NOT NULL,
+		  directory varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+		  uploader mediumint(6) unsigned NOT NULL COMMENT 'Member ID',
+		  uploaded int(10) NOT NULL COMMENT 'Unix timestamp',
+		  access tinyint(1) NOT NULL DEFAULT '1',
+		  visible tinyint(1) NOT NULL DEFAULT '1',
+		  PRIMARY KEY (id),
+		  KEY visible (visible),
+		  KEY access (access),
+		  KEY directory (directory)
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
+
+		dbDelta($sql);
+	}
 
 	$table_name = $wpdb->prefix . $mr_prefix . 'forum_post';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)

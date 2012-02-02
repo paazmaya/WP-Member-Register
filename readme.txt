@@ -43,6 +43,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Released 3 February 2012
 * User access level determined by bit wise comparison, in order to add flexibility
 * Removed access levels from forum topics. Everyone can see everything if can access forum
+* File upload for adding to members only list
+* Using "Chosen" jQuery plugin to make select elements more usable
 
 = 0.6.0 =
 * Released 10 November 2011

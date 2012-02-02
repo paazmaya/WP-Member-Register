@@ -486,7 +486,7 @@ function mr_new_member_form($action, $data)
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
-				<td><select name="user_login">
+				<td><select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
 				<option value="">-</option>
 				<?php
 				if (isset($_GET['edit']))
@@ -514,7 +514,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field form-required">
 				<th><?php echo __('Kirjautumistaso'); ?></th>
-				<td><select name="access[]" multiple="multiple">
+				<td><select name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
@@ -563,7 +563,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality'); ?></th>
-				<td><select name="nationality">
+				<td><select name="nationality" data-placeholder="Valitse käyttäjän kansallisuus">
 				<option value="">-</option>
 				<?php
 				$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -590,7 +590,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Main martial art'); ?></th>
-				<td><select name="martial">
+				<td><select name="martial" data-placeholder="Valitse päälaji">
 					<option value="">-</option>
 					<?php
 					foreach ($mr_martial_arts as $k => $v)
@@ -618,7 +618,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä seurassa pääsääntöisesti harjoittelee'); ?>)</span></th>
-				<td><select name="club">
+				<td><select name="club" data-placeholder="Valitse seura">
 				<option value="-1">-</option>
 				<?php
 				$clubs = mr_get_list('club', '', '', 'title ASC');

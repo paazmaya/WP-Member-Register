@@ -190,7 +190,7 @@ function mr_new_payment_form($members)
 		<table class="form-table" id="createuser">
 			<tr class="form-field">
 				<th><?php echo __('Member'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
-				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;">
+				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
 				<option value="">-</option>
 				<?php
 				foreach($members as $user)
@@ -245,7 +245,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä'); ?>)</span></th>
 				<td>
-					<select name="members[]" multiple="multiple" size="8">
+					<select name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
 					<option value="">-</option>
 					<?php
 					foreach($members as $user)
@@ -259,7 +259,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
-					<select name="grade">
+					<select name="grade" data-placeholder="Valitse vyöarvo">
 					<option value="">-</option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
@@ -323,7 +323,7 @@ function mr_grade_quick_form($member)
 				</td>
 				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
 				<td>
-					<select name="grade">
+					<select name="grade" data-placeholder="Valitse vyöarvo">
 					<option value="">-</option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
@@ -363,7 +363,38 @@ function mr_grade_quick_form($member)
 
 
 
-
+/**
+ * Testing purposes....
+ */
+function print_access()
+{
+	global $userdata;
+	global $mr_access_type;
+	
+	echo '<p>';
+	
+	foreach ($mr_access_type as $key => $val)
+	{
+		echo 'Key: ' . $key . ', in binary: ' . decbin($key) . ', val: ' . $val . '<br />';
+	}
+	
+	echo 'MR_ACCESS_OWN_INFO: ' . MR_ACCESS_OWN_INFO . '<br />';
+	echo 'MR_ACCESS_FILES_VIEW: ' . MR_ACCESS_FILES_VIEW . '<br />';
+	echo 'MR_ACCESS_CONVERSATION: ' . MR_ACCESS_CONVERSATION . '<br />';
+	echo 'MR_ACCESS_FORUM_CREATE: ' . MR_ACCESS_FORUM_CREATE . '<br />';
+	echo 'MR_ACCESS_FORUM_DELETE: ' . MR_ACCESS_FORUM_DELETE . '<br />';
+	echo 'MR_ACCESS_MEMBERS_VIEW: ' . MR_ACCESS_MEMBERS_VIEW . '<br />';
+	echo 'MR_ACCESS_MEMBERS_EDIT: ' . MR_ACCESS_MEMBERS_EDIT . '<br />';
+	echo 'MR_ACCESS_GRADE_MANAGE: ' . MR_ACCESS_GRADE_MANAGE . '<br />';
+	echo 'MR_ACCESS_PAYMENT_MANAGE: ' . MR_ACCESS_PAYMENT_MANAGE . '<br />';
+	echo 'MR_ACCESS_CLUB_MANAGE: ' . MR_ACCESS_CLUB_MANAGE . '<br />';
+	echo 'MR_ACCESS_FILES_MANAGE: ' . MR_ACCESS_FILES_MANAGE . '<br />';
+	
+	echo '<br />You have: ' . decbin($userdata->mr_access) . ' / ' . $userdata->mr_access;
+	echo '<br />Full rights would be: ' . bindec(11111111111);
+	
+	echo '</p>';
+}
 
 
 
