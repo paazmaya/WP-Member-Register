@@ -81,8 +81,11 @@ function mr_files_list()
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
+	echo '<div class="wrap">';
+	
 	$files = $wpdb->get_results($sql, ARRAY_A);
 	?>
+	<h2><?php echo __('Jäsenten tiedostot'); ?></h2>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
@@ -147,6 +150,8 @@ function mr_files_list()
 	</tbody>
 	</table>
 	<?php
+	
+	echo '</div>';
 }
 
 
@@ -169,11 +174,12 @@ function mr_files_new()
 		print_r($_FILES);
 		echo '</pre>';
 		*/
+		$dir = isset($_POST['directory']) ? trim($_POST['directory']) : '';
 	
-        if (mr_insert_new_file($_FILES['hoplaa']))
+        if (mr_insert_new_file($_FILES['hoplaa'], $dir))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:') . ' ' . $_FILES['hoplaa']['name'] . '</strong>';
+			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:') . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -187,10 +193,14 @@ function mr_files_new()
 		<h2><?php echo __('Lisää uusi tiedosto'); ?></h2>
 		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data">
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
-			<table class="form-table" id="createfile">
+			<table class="form-table" id="mrform">
 				<tr class="form-field">
 					<th><?php echo __('Valitse tiedosto'); ?></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
+				</tr>
+				<tr class="form-field">
+					<th><?php echo __('Kansio'); ?></th>
+					<td><input type="text" name="directory" value="" disabled="disabled" /></td>
 				</tr>
 			</table>
 

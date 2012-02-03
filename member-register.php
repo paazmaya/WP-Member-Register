@@ -249,7 +249,7 @@ function member_register_forum_menu()
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Keskustelu'), __('Keskustelu'), 'read', 'member-forum',
-			'mr_forum_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+			'mr_forum_list', plugins_url('/images/forum.png', __FILE__)); // $position );
 	}
 }
 
@@ -261,7 +261,7 @@ function member_register_files_menu()
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
-			'mr_files_list', plugins_url('/images/forum-icon-01.gif', __FILE__)); // $position );
+			'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
 			
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
@@ -355,7 +355,6 @@ function mr_member_list()
 
 	echo '<div class="wrap">';
 	
-	print_access();
 
 	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
 	{
