@@ -323,10 +323,10 @@ function mr_show_form_topic()
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Aihe'); ?> <span class="description">(<?php echo __('otsikko'); ?>)</span></th>
-				<td><input type="text" name="title" value="" /></td>
+				<td><input type="text" name="title" class="required" value="" /></td>
 			</tr>
 		</table>
 
@@ -346,10 +346,10 @@ function mr_show_form_post($topic)
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
 		<input type="hidden" name="mr_submit_hidden_post" value="Y" />
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Viesti'); ?> <span class="description">(<?php echo __('vapaasti'); ?>)</span></th>
-				<td><textarea name="content"></textarea></td>
+				<td><textarea name="content" class="required"></textarea></td>
 			</tr>
 		</table>
 

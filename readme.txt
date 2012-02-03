@@ -3,7 +3,7 @@ Contributors: paazmaya
 Donate link: http://paazmaya.com/
 Tags: members, organisation, forum, conversation, users, register
 Requires at least: 3.0.0
-Tested up to: 3.2.1
+Tested up to: 3.3.1
 Stable tag: master
 
 Member register management related to personal information, payments and what is common for martial arts: belt grades.
@@ -45,6 +45,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Removed access levels from forum topics. Everyone can see everything if can access forum
 * File upload for adding to members only list
 * Using "Chosen" jQuery plugin to make select elements more usable
+* Updated jQuery.validate to 1.9.0 and now using it
+* WP 3.3 has now jquery-ui-datepicker, thus using that
 
 = 0.6.0 =
 * Released 10 November 2011

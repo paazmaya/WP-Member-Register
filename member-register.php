@@ -17,7 +17,7 @@
 define ('MEMBER_REGISTER_VERSION', '0.7.0');
 
 global $mr_file_base_directory;
-$mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
+$mr_file_base_directory = realpath(substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files');
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
@@ -95,10 +95,13 @@ require 'member-club.php';
 require 'member-files.php';
 require 'member-install.php';
 
+
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
 
-
+// Check Member Register related access data
+add_action('init', 'member_register_wp_loaded');
+add_action('init', 'member_register_file_download');
 
 // http://codex.wordpress.org/Function_Reference/add_action
 add_action('admin_init', 'member_register_admin_init');
@@ -116,19 +119,18 @@ add_action('profile_update', 'member_register_profile_update');
 add_action('wp_login', 'member_register_login');
 add_action('wp_logout', 'member_register_logout');
 
-// Check Member Register related access data
-add_action('wp_loaded', 'member_register_wp_loaded');
 
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
-	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery'));
+	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery')); // 1.9.0
 	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-ui-datepicker', plugins_url('/js/jquery.ui.datepicker.min.js', __FILE__), array('jquery', 'jquery-ui-core')); // 1.8.9
+	
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
+	
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery')); // 0.9.7
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
@@ -147,11 +149,13 @@ function member_register_admin_print_scripts()
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-datepicker');
+	
+	wp_enqueue_script('jquery-ui-datepicker-fi');
+	
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
-	wp_enqueue_script('jquery-ui-datepicker');
-	wp_enqueue_script('jquery-ui-datepicker-fi');
 	wp_enqueue_script('jquery-cluetip');
 	wp_enqueue_script('jquery-chosen');
 	wp_enqueue_script('jquery-picnet-table-filter');
@@ -167,6 +171,16 @@ function member_register_admin_print_styles()
 	wp_enqueue_style('jquery-cluetip');
 	wp_enqueue_style('jquery-chosen');
 	wp_enqueue_style('mr-styles');
+}
+
+function member_register_file_download()
+{
+	// Before going any further, check if there is a request for a file download
+	if (isset($_GET['download']) && $_GET['download'] != '')
+	{
+		// This might call exit()
+		mr_file_download($_GET['download']);
+	}
 }
 
 function member_register_admin_head()
@@ -193,6 +207,7 @@ function member_register_admin_head()
 				closePosition: 'title'
 			});
 			jQuery('select').chosen();
+			jQuery('form').validate();
 			//jQuery('table.tablesorter').tableFilter();
 		});
 
@@ -579,90 +594,106 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 
 	$allowremove = true;
 
-	// id member reference type amount deadline paidday validuntil visible
-	?>
-	<table class="wp-list-table widefat tablesorter">
-		<thead>
-			<tr>
-				<?php
-				if ($isUnpaidView)
-				{
-					echo '<th filter="false">' . __('Maksettu?') . '</th>';
-				}
-				if ($memberid == null)
-				{
-					?>
-					<th><?php echo __('Last name'); ?></th>
-					<th><?php echo __('First name'); ?></th>
-					<?php
-				}
-				?>
-				<th><?php echo __('Tyyppi'); ?></th>
-				<th class="w8em"><?php echo __('Summa (EUR)'); ?></th>
-				<th class="w8em"><?php echo __('Viite'); ?></th>
-				<th class="headerSortUp"><?php echo __('Eräpäivä'); ?></th>
-				<?php
-				if (!$isUnpaidView)
-				{
-					echo '<th>' . __('Maksu PVM') . '</th>';
-				}
-				?>
-				<th><?php echo __('Voimassaolo'); ?></th>
-				<?php
-				if ($allowremove)
-				{
-					echo '<th class="w8em">' . __('Poista') . '</th>';
-				}
-				?>
-			</tr>
-		</thead>
-	<tbody>
-	<?php
-	foreach($res as $payment)
+	if (count($res) > 0)
 	{
-		echo '<tr id="payment_' . $payment['id'] . '">';
+		// id member reference type amount deadline paidday validuntil visible
+		?>
+		<table class="wp-list-table widefat tablesorter">
+			<thead>
+				<tr>
+					<?php
+					if ($isUnpaidView)
+					{
+						echo '<th filter="false">' . __('Maksettu?') . '</th>';
+					}
+					if ($memberid == null)
+					{
+						?>
+						<th><?php echo __('Last name'); ?></th>
+						<th><?php echo __('First name'); ?></th>
+						<?php
+					}
+					?>
+					<th><?php echo __('Tyyppi'); ?></th>
+					<th class="w8em"><?php echo __('Summa (EUR)'); ?></th>
+					<th class="w8em"><?php echo __('Viite'); ?></th>
+					<th class="headerSortUp"><?php echo __('Eräpäivä'); ?></th>
+					<?php
+					if (!$isUnpaidView)
+					{
+						echo '<th>' . __('Maksu PVM') . '</th>';
+					}
+					?>
+					<th><?php echo __('Voimassaolo'); ?></th>
+					<?php
+					if ($allowremove)
+					{
+						echo '<th class="w8em">' . __('Poista') . '</th>';
+					}
+					?>
+				</tr>
+			</thead>
+		<tbody>
+		<?php
+		foreach($res as $payment)
+		{
+			echo '<tr id="payment_' . $payment['id'] . '">';
+			if ($isUnpaidView)
+			{
+				echo '<td>';
+				if ($payment['paidday'] == '0000-00-00')
+				{
+					echo '<form action="admin.php?page=member-payment-list" method="post">';
+					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
+					echo '<input type="submit" value="OK" /></form>';
+				}
+				echo '</td>';
+			}
+			if ($memberid == null)
+			{
+				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+					'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
+					' ' . $payment['lastname'] . '">';
+				echo '<td>' . $url . $payment['lastname'] . '</a></td>';
+				echo '<td>' . $url . $payment['firstname'] . '</a></td>';
+			}
+			echo '<td>' . $payment['type'] . '</td>';
+			echo '<td>' . $payment['amount'] . '</td>';
+			echo '<td>' . $payment['reference'] . '</td>';
+			echo '<td>' . $payment['deadline'] . '</td>';
+			if (!$isUnpaidView)
+			{
+				echo '<td>' . $payment['paidday'] . '</td>';
+			}
+			echo '<td>' . $payment['validuntil'] . '</td>';
+
+			// set visible to 0, do not remove for real...
+			if ($allowremove)
+			{
+				echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
+					'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
+					$payment['reference'] . '">X</a></td>';
+			}
+			echo '</tr>';
+		}
+		?>
+		</tbody>
+		</table>
+		<?php
+	}
+	else
+	{
+		echo '<p>Ei löytynyt lainkaan ';
 		if ($isUnpaidView)
 		{
-			echo '<td>';
-			if ($payment['paidday'] == '0000-00-00')
-			{
-				echo '<form action="admin.php?page=member-payment-list" method="post">';
-				echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
-				echo '<input type="submit" value="OK" /></form>';
-			}
-			echo '</td>';
+			echo 'maksamattomia';
 		}
-		if ($memberid == null)
+		else 
 		{
-			$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-				'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
-				' ' . $payment['lastname'] . '">';
-			echo '<td>' . $url . $payment['lastname'] . '</a></td>';
-			echo '<td>' . $url . $payment['firstname'] . '</a></td>';
+			echo 'maksettuja';
 		}
-		echo '<td>' . $payment['type'] . '</td>';
-		echo '<td>' . $payment['amount'] . '</td>';
-		echo '<td>' . $payment['reference'] . '</td>';
-		echo '<td>' . $payment['deadline'] . '</td>';
-		if (!$isUnpaidView)
-		{
-			echo '<td>' . $payment['paidday'] . '</td>';
-		}
-		echo '<td>' . $payment['validuntil'] . '</td>';
-
-		// set visible to 0, do not remove for real...
-		if ($allowremove)
-		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
-				'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
-				$payment['reference'] . '">X</a></td>';
-		}
-		echo '</tr>';
+		echo ' maksuja näillä ehdoilla</p>';
 	}
-	?>
-	</tbody>
-	</table>
-	<?php
 }
 
 /**
@@ -693,74 +724,91 @@ function mr_show_grades($memberid = null)
 	// id member grade type location nominator day visible
 	
 	$allowremove = true;
-	?>
-	<table class="wp-list-table widefat tablesorter">
+	
+	if (count($res) > 0)
+	{
+		?>
+		<table class="wp-list-table widefat tablesorter">
 
-	<thead>
-	<tr>
-		<?php
-		if ($memberid == null)
-		{
-			?>
-			<th class="headerSortDown"><?php echo __('Last name'); ?></th>
-			<th><?php echo __('First name'); ?></th>
+		<thead>
+		<tr>
 			<?php
+			if ($memberid == null)
+			{
+				?>
+				<th class="headerSortDown"><?php echo __('Last name'); ?></th>
+				<th><?php echo __('First name'); ?></th>
+				<?php
+			}
+			?>
+			<th><?php echo __('Vyöarvo'); ?></th>
+			<th><?php echo __('Laji'); ?></th>
+			<th
+			<?php
+			if ($memberid != null)
+			{
+				echo ' class="headerSortUp"';
+			}
+			?>
+			><?php echo __('Myöntö PVM'); ?></th>
+			<th><?php echo __('Paikka'); ?></th>
+			<?php
+			if ($allowremove)
+			{
+				echo '<th class="w8em">' . __('Poista') . '</th>';
+			}
+			?>
+		</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach($res as $grade)
+		{
+			echo '<tr id="grade_' . $grade['id'] . '">';
+			if ($memberid == null)
+			{
+				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
+					'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
+					' ' . $grade['lastname'] . '">';
+				echo '<td>' . $url . $grade['lastname'] . '</a></td>';
+				echo '<td>' . $url . $grade['firstname'] . '</a></td>';
+			}
+			echo '<td>';
+			if (array_key_exists($grade['grade'], $mr_grade_values))
+			{
+				echo $mr_grade_values[$grade['grade']];
+			}
+			echo '</td>';
+			echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
+			echo '<td>' . $grade['day'] . '</td>';
+			echo '<td>' . $grade['location'] . '</td>';
+			// set visible to 0, do not remove for real...
+			if ($allowremove)
+			{
+				echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
+					'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
+					$grade['grade'] . '">X</a></td>';
+			}
+			echo '</tr>';
 		}
 		?>
-		<th><?php echo __('Vyöarvo'); ?></th>
-		<th><?php echo __('Laji'); ?></th>
-		<th
+		</tbody>
+		</table>
 		<?php
+	}
+	else
+	{
+		echo '<p>Ei löytynyt lainkaan vyöarvoja ';
 		if ($memberid != null)
 		{
-			echo ' class="headerSortUp"';
+			echo 'tälle henkilölle';
 		}
-		?>
-		><?php echo __('Myöntö PVM'); ?></th>
-		<th><?php echo __('Paikka'); ?></th>
-		<?php
-		if ($allowremove)
+		else
 		{
-			echo '<th class="w8em">' . __('Poista') . '</th>';
+			echo 'näillä ehdoilla';
 		}
-		?>
-	</tr>
-	</thead>
-	<tbody>
-	<?php
-	foreach($res as $grade)
-	{
-		echo '<tr id="grade_' . $grade['id'] . '">';
-		if ($memberid == null)
-		{
-			$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-				'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
-				' ' . $grade['lastname'] . '">';
-			echo '<td>' . $url . $grade['lastname'] . '</a></td>';
-			echo '<td>' . $url . $grade['firstname'] . '</a></td>';
-		}
-		echo '<td>';
-		if (array_key_exists($grade['grade'], $mr_grade_values))
-		{
-			echo $mr_grade_values[$grade['grade']];
-		}
-		echo '</td>';
-		echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
-		echo '<td>' . $grade['day'] . '</td>';
-		echo '<td>' . $grade['location'] . '</td>';
-		// set visible to 0, do not remove for real...
-		if ($allowremove)
-		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
-				'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
-				$grade['grade'] . '">X</a></td>';
-		}
-		echo '</tr>';
+		echo '</p>';
 	}
-	?>
-	</tbody>
-	</table>
-	<?php
 }
 
 

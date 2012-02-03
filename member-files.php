@@ -8,6 +8,56 @@
  */
 
 
+ /**
+  * Called if $_GET['download'] is set
+  */
+function mr_file_download($get)
+{
+	global $mr_file_base_directory;
+	global $wpdb;
+	
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_VIEW))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
+	// $get should contain download: dir / basename
+	// forward slash will be always available
+	
+	$parts = explode('/', str_replace(array('..', '%', ' '), '-', $get));
+	$basename = array_pop($parts);
+	$dir = implode('/', $parts);
+	
+	$sql = 'SELECT access FROM ' . $wpdb->prefix . 'mr_file WHERE visible = 1 AND directory = \'' .
+		$dir . '\' AND basename = \'' . $basename . '\' LIMIT 1';
+	$res = $wpdb->get_results($sql, ARRAY_A);
+	
+	if (count($res) == 1) // && $res['0']['access'] == '1')
+	{
+		$real = realpath($mr_file_base_directory . '/' . $dir . '/' . $basename);
+		if (strpos($real, $mr_file_base_directory) !== false)
+		{
+			$fp = fopen($real, 'r');
+			header("Content-Type: application/force-download");
+			header("Content-Disposition: attachment; filename=" . $basename);
+			header("Content-length: " . filesize($real));
+			header("Expires: ".gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
+			header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+			header("Cache-Control: no-cache, must-revalidate");
+			header("Pragma: no-cache");
+			
+			fpassthru($fp);
+			fclose($fp);
+		}
+	}
+	else
+	{
+		wp_die( __('Not found.') );
+	}
+
+	exit();
+}
+
 
 /**
  * Show a table of members based on the given filter if any.
@@ -65,7 +115,7 @@ function mr_files_list()
 		}
 		else
 		{
-			$out .= '><a href="member-files-download.php&amp;download=' . 
+			$out .= '><a href="' . admin_url('admin.php?page=member-files') . '&amp;download=' . 
 				urlencode($file['directory'] . '/' . $file['basename']) . '" title="Lataa ' . 
 				$file['basename'] . ' koneellesi">' . $file['basename'] . '</a>';
 		}
@@ -139,7 +189,7 @@ function mr_files_new()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="createfile">
 				<tr class="form-field">
-					<th><?php echo __('File'); ?></th>
+					<th><?php echo __('Valitse tiedosto'); ?></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 			</table>
@@ -161,13 +211,15 @@ function mr_insert_new_file($filesdata, $dir = '')
 	global $userdata;
 	global $mr_file_base_directory;
 
+	$dir = strtolower(str_replace(array('..', ' '), '-', str_replace(array('..', '/', '\\', '...', '%'), '', $dir)));
+	
 	$values = array(
-		'basename' => basename($filesdata['name']),
+		'basename' => strtolower(str_replace(array('..', '%', ' '), '-', basename($filesdata['name']))),
 		'bytesize' => 0,
 		'directory' => $dir,
 		'uploader' => $userdata->mr_memberid,
 		'uploaded' => time(),
-		'access' => 0,
+		'access' => 1,
 		'visible' => 1
 	);
 	
@@ -178,7 +230,7 @@ function mr_insert_new_file($filesdata, $dir = '')
 		mkdir($mr_file_base_directory);
 	}
 	
-	$target = realpath($mr_file_base_directory . '/' . str_replace(array('..', '/', '\\', '...'), '', $dir));
+	$target = realpath($mr_file_base_directory . '/' . $dir);
 	
 	if (!file_exists($target))
 	{

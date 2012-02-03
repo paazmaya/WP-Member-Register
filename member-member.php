@@ -230,7 +230,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['joindate']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Yuishinkai passinumero'); ?> <span class="description">()</span></th>
+				<th><?php echo __('Yuishinkai passinumero'); ?> <span class="description">(sinikantinen passi)</span></th>
 				<td><?php echo $person['passnro']; ?></td>
 			</tr>
 			<tr>
@@ -289,12 +289,7 @@ function mr_show_member_info($id)
 	echo '<hr />';
 	echo '<h2>' . __('Vyöarvot') . '</h2>';
 	mr_show_grades($id);
-
-	// Quick add a grade
-	mr_grade_quick_form(array(
-		'id' => $id,
-		'name' => $person['firstname'] . ' ' . $person['lastname']
-	));
+	
 	?>
 
 	<hr />
@@ -483,15 +478,21 @@ function mr_new_member_form($action, $data)
 	<form name="form1" method="post" action="<?php echo $action; ?>">
 		<input type="hidden" name="mr_submit_hidden_member" value="Y" />
 		<input type="hidden" name="id" value="<?php echo $values['id']; ?>" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
 				<td><select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
 				<option value=""></option>
 				<?php
+				// If editing, select all free and the current. If new, select all free
 				if (isset($_GET['edit']))
 				{
-					$sql = 'SELECT user_login, display_name FROM ' . $wpdb->prefix . 'users ORDER BY 2 ASC';
+					$sql = 'SELECT A.user_login, B.display_name FROM ' . $wpdb->prefix . 'users A ' .
+						'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
+						' UNION ' .
+						'SELECT A.user_login, B.display_name FROM ' . $wpdb->prefix . 'users A ' .
+						'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
+						'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
 				}
 				else
 				{
@@ -499,6 +500,16 @@ function mr_new_member_form($action, $data)
 						$wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
 				}
 
+				
+				$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
+					'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
+					' UNION ' .
+					'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
+					'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
+					'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
+					
+				echo '<p>' . $sql . '</p>';
+						
 				$users = $wpdb->get_results($sql, ARRAY_A);
 				foreach($users as $user)
 				{
@@ -512,7 +523,7 @@ function mr_new_member_form($action, $data)
 				?>
 				</select></td>
 			</tr>
-			<tr class="form-field form-required">
+			<tr class="form-field">
 				<th><?php echo __('Kirjautumistaso'); ?></th>
 				<td><select name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
 					<?php
@@ -529,13 +540,13 @@ function mr_new_member_form($action, $data)
 					</select>
 				</td>
 			</tr>
-			<tr class="form-field form-required">
+			<tr class="form-field">
 				<th><?php echo __('Etunimi'); ?></th>
-				<td><input type="text" name="firstname" value="<?php echo $values['firstname']; ?>" /></td>
+				<td><input type="text" name="firstname" class="required" value="<?php echo $values['firstname']; ?>" /></td>
 			</tr>
-			<tr class="form-field form-required">
+			<tr class="form-field">
 				<th><?php echo __('Last name'); ?></th>
-				<td><input type="text" name="lastname" value="<?php echo $values['lastname']; ?>" /></td>
+				<td><input type="text" name="lastname" class="required" value="<?php echo $values['lastname']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Birthday'); ?> <span class="description">(YYYY-MM-DD)</span></th>
@@ -559,7 +570,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('E-mail'); ?></th>
-				<td><input type="text" name="email" value="<?php echo $values['email']; ?>" /></td>
+				<td><input type="text" name="email" class="required email" value="<?php echo $values['email']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality'); ?></th>

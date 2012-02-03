@@ -187,7 +187,7 @@ function mr_new_payment_form($members)
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data">
 		<input type="hidden" name="mr_submit_hidden_payment" value="Y" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Member'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
 				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
@@ -241,7 +241,7 @@ function mr_grade_form($members)
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data">
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä'); ?>)</span></th>
 				<td>
@@ -279,11 +279,11 @@ function mr_grade_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi'); ?>)</span></th>
-				<td><input type="text" name="location" value="Turku" /></td>
+				<td><input type="text" name="location" class="required" value="Turku" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
-				<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
+				<td><input type="text" name="nominator" class="required" value="Ilpo Jalamo, 6 dan" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
@@ -301,66 +301,6 @@ function mr_grade_form($members)
 	</form>
 	<?php
 }
-
-
-/**
- * Print out a form that is used to give a grade to a given member.
- * @param $member Array of member, {id: , name: }
- */
-function mr_grade_quick_form($member)
-{
-	global $mr_grade_values;
-	?>
-	<form name="form1" method="post" action="" enctype="multipart/form-data">
-		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
-		<table class="form-table" id="creategrade">
-			<tr>
-				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valmiiksi valittu'); ?>)</span></th>
-				<td><input name="member" type="hidden" value="<?php echo $member['id']; ?>" />
-				<?php
-				echo $member['name'];
-				?>
-				</td>
-				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
-				<td>
-					<select name="grade" data-placeholder="Valitse vyöarvo">
-					<option value=""></option>
-					<?php
-					foreach($mr_grade_values as $k => $v)
-					{
-						echo '<option value="' . $k . '">' . $v . ' (' . $k . ')</option>';
-					}
-					?>
-					</select>
-				</td>
-				<th><?php echo __('Tyyppi'); ?> <span class="description">(<?php echo __('kummassa lajissa'); ?>)</span></th>
-				<td>
-					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
-					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
-				</td>
-			</tr>
-			<tr>
-				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla'); ?>)</span></th>
-				<td><input type="text" name="location" value="Turku" /></td>
-				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
-				<td><input type="text" name="nominator" value="Ilpo Jalamo, 6 dan" /></td>
-				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="day" class="pickday" value="<?php
-				echo date('Y-m-d', time() - 60*60*24*1);
-				?>" /></td>
-			</tr>
-
-		</table>
-
-		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
-		</p>
-
-	</form>
-	<?php
-}
-
-
 
 
 /**

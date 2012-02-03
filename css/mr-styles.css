@@ -1,11 +1,14 @@
-#createuser .form-field select {
-    width: 25em;
+#mrform .form-field select, #mrform .form-field input  {
+    width: 35em;
 }
-#createuser .form-field select[multiple] {
+#mrform .form-field select[multiple] {
 	height: 10em;
 }
-#createuser .form-field input[type=radio] {
+#mrform .form-field input[type=radio] {
     width: 2em;
+}
+#mrform .form-field input.error {
+    border: 1px solid #F22222;
 }
 .w40em {
 	width: 40em;
@@ -21,4 +24,14 @@
 }
 .redback {
 	background-color: #F42200;
+}
+
+label.error {
+    color: #F22222;
+    font-weight: bold;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+input.required {
+	border: 1px solid #22F422;
 }

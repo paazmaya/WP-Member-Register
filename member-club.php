@@ -139,14 +139,14 @@ function mr_club_form($data = null)
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
 		<input type="hidden" name="mr_submit_hidden_club" value="Y" />
-		<table class="form-table" id="createuser">
+		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Name'); ?> <span class="description">(<?php echo __('otsikko'); ?>)</span></th>
-				<td><input type="text" name="title" value="<?php echo $values['title']; ?>" /></td>
+				<td><input type="text" name="title" class="required" value="<?php echo $values['title']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Address'); ?> <span class="description">(<?php echo __('otsikko'); ?>)</span></th>
-				<td><input type="text" name="address" value="<?php echo $values['address']; ?>" /></td>
+				<td><input type="text" name="address" class="required" value="<?php echo $values['address']; ?>" /></td>
 			</tr>
 		</table>
 
