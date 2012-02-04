@@ -25,7 +25,7 @@ function mr_club_list()
 	{
 		// Mark the given club visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removeclub']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET visible = 0 WHERE id = ' . $id;
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
 		if ($wpdb->query($sql))
 		{
 			echo '<div class="updated"><p>';
@@ -255,7 +255,7 @@ function mr_update_club($postdata)
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
-			'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
+			'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']) . ' LIMIT 1';
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
 

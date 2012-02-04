@@ -39,6 +39,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.7.3 =
+* Released 5 February 2012
+* Fixes after testing done by other people
+* LIMIT 1 on all SQL UPDATE phrases
+
 = 0.7.2 =
 * Released 4 February 2012
 * Plenty more of user access rights checking

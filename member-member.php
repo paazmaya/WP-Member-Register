@@ -243,7 +243,13 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Main martial art'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin'); ?>)</span></th>
-				<td><?php echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; ?></td>
+				<td><?php
+					if (isset($person['martial']) && $person['martial'] != '' && $mr_martial_arts[$person['martial']])
+					{
+						echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; 
+					}
+					?>
+				</td>
 			</tr>
 			<tr>
 				<th><?php echo __('Lisätietoja'); ?> <span class="description">(<?php echo __('vapaasti kirjoiteltu'); ?>)</span></th>
@@ -439,7 +445,7 @@ function mr_update_member_info($postdata)
 
 		$id = intval($postdata['id']);
 
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . 'WHERE id = ' . $id;
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . 'WHERE id = ' . $id . ' LIMIT 1';
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
 

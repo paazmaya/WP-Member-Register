@@ -43,7 +43,7 @@ function mr_forum_list()
 		else if (isset($_GET['remove-post']) && is_numeric($_GET['remove-post']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			// In reality just archive the post
-			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_post SET visible = 0 WHERE id = \'' . intval($_GET['remove-post']) . '\'';
+			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_post SET visible = 0 WHERE id = \'' . intval($_GET['remove-post']) . '\' LIMIT 1';
 			if ($wpdb->query($sql))
 			{
 				echo '<div class="updated"><p>';
@@ -91,7 +91,7 @@ function mr_forum_list()
 		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			// In reality just archive the topic
-			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 0 WHERE id = \'' . intval($_GET['remove-topic']) . '\'';
+			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 0 WHERE id = \'' . intval($_GET['remove-topic']) . '\' LIMIT 1';
 			if ($wpdb->query($sql))
 			{
 				echo '<div class="updated"><p>';

@@ -64,7 +64,7 @@ function mr_payment_list()
 	{
 		$id = intval($_POST['haspaid']);
 		$today = date('Y-m-d');
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id;
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id . ' LIMIT 1';
 		if ($wpdb->query($sql))
 		{
 			echo '<div class="updated"><p>';
@@ -80,7 +80,7 @@ function mr_payment_list()
 	{
 		// Mark the given payment visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removepayment']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id;
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
 		if ($wpdb->query($sql))
 		{
 			echo '<div class="updated"><p>';

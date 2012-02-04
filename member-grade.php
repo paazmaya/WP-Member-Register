@@ -61,7 +61,28 @@ function mr_grade_list()
 	{
 		// Mark the given grade visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removegrade']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_grade SET visible = 0 WHERE id = ' . $id;
+		
+		// http://codex.wordpress.org/Class_Reference/wpdb#UPDATE_rows
+		/*
+		$wpdb->update( $table, $data, $where, $format = null, $where_format = null );
+		$wpdb->update( 
+			'mr_grade', // ? prefix included
+			array( 
+				'visible' => 0
+			), 
+			array( 
+				'id' => $id 
+			), 
+			array( 
+				'%d'
+			), 
+			array( 
+				'%d' 
+			) 
+		);
+		*/
+		
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_grade SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
 		if ($wpdb->query($sql))
 		{
 			echo '<div class="updated"><p>';
@@ -146,6 +167,7 @@ function mr_show_grades($memberid = null)
 			}
 			?>
 			><?php echo __('Myöntö PVM'); ?></th>
+			<th><?php echo __('Myöntäjä'); ?></th>
 			<th><?php echo __('Paikka'); ?></th>
 			<?php
 			if ($allowremove)
@@ -176,6 +198,7 @@ function mr_show_grades($memberid = null)
 			echo '</td>';
 			echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
 			echo '<td>' . $grade['day'] . '</td>';
+			echo '<td>' . $grade['nominator'] . '</td>';
 			echo '<td>' . $grade['location'] . '</td>';
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
