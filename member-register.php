@@ -90,6 +90,8 @@ $mr_access_type = array(
 
 require 'member-functions.php';
 require 'member-member.php';
+require 'member-grade.php';
+require 'member-payment.php';
 require 'member-forum.php';
 require 'member-club.php';
 require 'member-files.php';
@@ -219,7 +221,7 @@ function member_register_admin_head()
 function member_register_admin_menu()
 {
 	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'create_users', 'member-register-control',
+	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'read', 'member-register-control',
 		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
 	add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
 		__('Uusi jäsen'), 'create_users', 'member-register-new', 'mr_member_new');
@@ -243,9 +245,7 @@ function member_register_admin_menu()
  */
 function member_register_forum_menu()
 {
-	global $userdata;
-
-	if (isset($userdata->user_login) && mr_has_permission(MR_ACCESS_CONVERSATION))
+	if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Keskustelu'), __('Keskustelu'), 'read', 'member-forum',
@@ -255,9 +255,7 @@ function member_register_forum_menu()
 
 function member_register_files_menu()
 {
-	global $userdata;
-
-	if (isset($userdata->user_login) && mr_has_permission(MR_ACCESS_FILES_VIEW))
+	if (current_user_can('read') && mr_has_permission(MR_ACCESS_FILES_VIEW))
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
@@ -342,23 +340,27 @@ function member_register_uninstall()
 
 function mr_member_list()
 {
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
+	if (!current_user_can('read'))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
-	/*
+	
 	global $userdata;
-	echo '<pre>';
-	print_r($userdata);
-	echo '</pre>';
-	*/
 
 	echo '<div class="wrap">';
 	
+	// Check for requested member
+	$memberid = isset($_GET['memberid']) && is_numeric($_GET['memberid']) ? intval($_GET['memberid']) : '';
 
-	if (isset($_GET['memberid']) && is_numeric($_GET['memberid']))
+	// But if the current user has no rights, show only their own info, if rights for that exist.
+	if (!mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
 	{
-		mr_show_member_info(intval($_GET['memberid']));
+		$memberid = $userdata->mr_memberid;
+	}
+	
+	if ($memberid != '')
+	{
+		mr_show_member_info($memberid);
 	}
 	else
 	{
@@ -371,443 +373,5 @@ function mr_member_list()
 }
 
 
-
-
-function mr_payment_list()
-{
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
-	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
-	}
-
-	global $wpdb;
-
-	if (isset($_POST['haspaid']) && is_numeric($_POST['haspaid']))
-	{
-		$id = intval($_POST['haspaid']);
-		$today = date('Y-m-d');
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id;
-		if ($wpdb->query($sql))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Maksu merkitty maksetuksi tänään') . ', ' . $today . '</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-	}
-	else if (isset($_GET['removepayment']) && is_numeric($_GET['removepayment']))
-	{
-		// Mark the given payment visible=0, so it can be recovered just in case...
-		$id = intval($_GET['removepayment']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id;
-		if ($wpdb->query($sql))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Maksu poistettu') . ' (' . $id . ')</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-	}
-
-	echo '<div class="wrap">';
-	echo '<h2>' . __('Jäsenmaksut') . '</h2>';
-
-	mr_show_payments_lists(null); // no specific member
-	echo '</div>';
-}
-
-function mr_grade_list()
-{
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
-	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
-	}
-
-	global $wpdb;
-	
-	if (isset($_GET['removegrade']) && is_numeric($_GET['removegrade']))
-	{
-		// Mark the given grade visible=0, so it can be recovered just in case...
-		$id = intval($_GET['removegrade']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_grade SET visible = 0 WHERE id = ' . $id;
-		if ($wpdb->query($sql))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Vyöarvo poistettu') . ' (' . $id . ')</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-	}
-	
-	echo '<div class="wrap">';
-	echo '<h2>' . __('Vyöarvot') . '</h2>';
-	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.') . '</p>';
-	echo '<p>' . __('Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.') . '</p>';
-	mr_show_grades();
-	echo '</div>';
-}
-
-
-
-
-
-function mr_payment_new()
-{
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
-	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
-	}
-
-	global $wpdb;
-
-
-	// Check for possible insert
-    $hidden_field_name = 'mr_submit_hidden_payment';
-    if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' )
-	{
-        if (mr_insert_new_payment($_POST))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi/uudet maksu(t) lisätty') . '</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-    }
-
-    ?>
-	<div class="wrap">
-		<h2><?php echo __('Lisää uusi maksu, useammalle henkilölle jos tarve vaatii'); ?></h2>
-		<p><?php echo __('Pääasia että rahaa tulee, sitä kun menee.'); ?></p>
-		<p><?php echo __('Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.'); ?></p>
-		<?php
-		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
-		$users = $wpdb->get_results($sql, ARRAY_A);
-		mr_new_payment_form($users);
-		?>
-	</div>
-
-	<?php
-
-}
-
-
-function mr_grade_new()
-{
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
-	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
-	}
-
-	global $wpdb;
-	global $mr_grade_values;
-	global $mr_grade_types;
-
-	// Check for possible insert
-    $hidden_field_name = 'mr_submit_hidden_grade';
-    if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' )
-	{
-        if (mr_insert_new_grade($_POST))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi/uudet vyöarvo(t) lisätty') . '</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-    }
-
-    ?>
-	<div class="wrap">
-
-		<h2><?php echo __('Myönnä vyöarvoja'); ?></h2>
-		<?php
-		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
-		$users = $wpdb->get_results($sql, ARRAY_A);
-		mr_grade_form($users);
-		?>
-	</div>
-
-	<?php
-}
-
-/**
- * List all payments for all members.
- */
-function mr_show_payments_lists($memberid)
-{
-	?>
-	<h3><?php echo __('Maksamattomat maksut'); ?></h3>
-	<p><?php echo __('Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.'); ?></p>
-
-	<?php
-	mr_show_payments($memberid, true);
-	?>
-	<hr />
-	<h3><?php echo __('Maksetut maksut'); ?></h3>
-	<?php
-	mr_show_payments($memberid, false);
-}
-
-
-
-/**
- * Show list of payments for a member,
- * for all, unpaid, paid ones.
- */
-function mr_show_payments($memberid = null, $isUnpaidView = false)
-{
-	global $wpdb;
-
-	$where = '';
-	if ($memberid != null && is_numeric($memberid))
-	{
-		$where .= 'AND A.member = \'' . $memberid . '\' ';
-	}
-	if ($isUnpaidView)
-	{
-		$where .= 'AND A.paidday = \'0000-00-00\' ';
-	}
-	else
-	{
-		$where .= 'AND A.paidday != \'0000-00-00\' ';
-	}
-	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
-		'mr_payment A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id WHERE A.visible = 1 ' .
-		$where . 'ORDER BY A.deadline DESC';
-	$res = $wpdb->get_results($sql, ARRAY_A);
-
-	$allowremove = true;
-
-	if (count($res) > 0)
-	{
-		// id member reference type amount deadline paidday validuntil visible
-		?>
-		<table class="wp-list-table widefat tablesorter">
-			<thead>
-				<tr>
-					<?php
-					if ($isUnpaidView)
-					{
-						echo '<th filter="false">' . __('Maksettu?') . '</th>';
-					}
-					if ($memberid == null)
-					{
-						?>
-						<th><?php echo __('Last name'); ?></th>
-						<th><?php echo __('First name'); ?></th>
-						<?php
-					}
-					?>
-					<th><?php echo __('Tyyppi'); ?></th>
-					<th class="w8em"><?php echo __('Summa (EUR)'); ?></th>
-					<th class="w8em"><?php echo __('Viite'); ?></th>
-					<th class="headerSortUp"><?php echo __('Eräpäivä'); ?></th>
-					<?php
-					if (!$isUnpaidView)
-					{
-						echo '<th>' . __('Maksu PVM') . '</th>';
-					}
-					?>
-					<th><?php echo __('Voimassaolo'); ?></th>
-					<?php
-					if ($allowremove)
-					{
-						echo '<th class="w8em">' . __('Poista') . '</th>';
-					}
-					?>
-				</tr>
-			</thead>
-		<tbody>
-		<?php
-		foreach($res as $payment)
-		{
-			echo '<tr id="payment_' . $payment['id'] . '">';
-			if ($isUnpaidView)
-			{
-				echo '<td>';
-				if ($payment['paidday'] == '0000-00-00')
-				{
-					echo '<form action="admin.php?page=member-payment-list" method="post">';
-					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
-					echo '<input type="submit" value="OK" /></form>';
-				}
-				echo '</td>';
-			}
-			if ($memberid == null)
-			{
-				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-					'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
-					' ' . $payment['lastname'] . '">';
-				echo '<td>' . $url . $payment['lastname'] . '</a></td>';
-				echo '<td>' . $url . $payment['firstname'] . '</a></td>';
-			}
-			echo '<td>' . $payment['type'] . '</td>';
-			echo '<td>' . $payment['amount'] . '</td>';
-			echo '<td>' . $payment['reference'] . '</td>';
-			echo '<td>' . $payment['deadline'] . '</td>';
-			if (!$isUnpaidView)
-			{
-				echo '<td>' . $payment['paidday'] . '</td>';
-			}
-			echo '<td>' . $payment['validuntil'] . '</td>';
-
-			// set visible to 0, do not remove for real...
-			if ($allowremove)
-			{
-				echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
-					'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
-					$payment['reference'] . '">X</a></td>';
-			}
-			echo '</tr>';
-		}
-		?>
-		</tbody>
-		</table>
-		<?php
-	}
-	else
-	{
-		echo '<p>Ei löytynyt lainkaan ';
-		if ($isUnpaidView)
-		{
-			echo 'maksamattomia';
-		}
-		else 
-		{
-			echo 'maksettuja';
-		}
-		echo ' maksuja näillä ehdoilla</p>';
-	}
-}
-
-/**
- * Show grades for a single member or for everyone
- */
-function mr_show_grades($memberid = null)
-{
-	global $wpdb;
-	global $mr_grade_values;
-	global $mr_grade_types;
-
-	$where = '';
-	$order = 'B.lastname ASC, ';
-	if ($memberid != null && is_numeric($memberid))
-	{
-		$where = 'WHERE B.id = \'' . $memberid . '\' ';
-		$order = '';
-	}
-
-	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
-		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id AND A.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-	
-	$res = $wpdb->get_results($sql, ARRAY_A);
-
-	// id member grade type location nominator day visible
-	
-	$allowremove = true;
-	
-	if (count($res) > 0)
-	{
-		?>
-		<table class="wp-list-table widefat tablesorter">
-
-		<thead>
-		<tr>
-			<?php
-			if ($memberid == null)
-			{
-				?>
-				<th class="headerSortDown"><?php echo __('Last name'); ?></th>
-				<th><?php echo __('First name'); ?></th>
-				<?php
-			}
-			?>
-			<th><?php echo __('Vyöarvo'); ?></th>
-			<th><?php echo __('Laji'); ?></th>
-			<th
-			<?php
-			if ($memberid != null)
-			{
-				echo ' class="headerSortUp"';
-			}
-			?>
-			><?php echo __('Myöntö PVM'); ?></th>
-			<th><?php echo __('Paikka'); ?></th>
-			<?php
-			if ($allowremove)
-			{
-				echo '<th class="w8em">' . __('Poista') . '</th>';
-			}
-			?>
-		</tr>
-		</thead>
-		<tbody>
-		<?php
-		foreach($res as $grade)
-		{
-			echo '<tr id="grade_' . $grade['id'] . '">';
-			if ($memberid == null)
-			{
-				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
-					'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
-					' ' . $grade['lastname'] . '">';
-				echo '<td>' . $url . $grade['lastname'] . '</a></td>';
-				echo '<td>' . $url . $grade['firstname'] . '</a></td>';
-			}
-			echo '<td>';
-			if (array_key_exists($grade['grade'], $mr_grade_values))
-			{
-				echo $mr_grade_values[$grade['grade']];
-			}
-			echo '</td>';
-			echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
-			echo '<td>' . $grade['day'] . '</td>';
-			echo '<td>' . $grade['location'] . '</td>';
-			// set visible to 0, do not remove for real...
-			if ($allowremove)
-			{
-				echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
-					'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
-					$grade['grade'] . '">X</a></td>';
-			}
-			echo '</tr>';
-		}
-		?>
-		</tbody>
-		</table>
-		<?php
-	}
-	else
-	{
-		echo '<p>Ei löytynyt lainkaan vyöarvoja ';
-		if ($memberid != null)
-		{
-			echo 'tälle henkilölle';
-		}
-		else
-		{
-			echo 'näillä ehdoilla';
-		}
-		echo '</p>';
-	}
-}
 
 

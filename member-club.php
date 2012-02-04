@@ -13,7 +13,7 @@ function mr_club_list()
 	global $wpdb;
 	global $userdata;
 	
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -123,6 +123,11 @@ function mr_club_list()
 
 function mr_club_form($data = null)
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.'));
+	}
+	
 	$values = array(
 		'title' => '',
 		'address' => ''
@@ -226,29 +231,37 @@ function mr_insert_new_club($postdata)
 {
 	global $wpdb;
 
-	$values = array(
-		"'" . mr_htmlent($postdata['title']) . "'",
-		"'" . mr_htmlent($postdata['address']) . "'"
-	);
+	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
+	{
+		$values = array(
+			"'" . mr_htmlent($postdata['title']) . "'",
+			"'" . mr_htmlent($postdata['address']) . "'"
+		);
 
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
-		. implode(', ', $values) . ')';
+		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
+			. implode(', ', $values) . ')';
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+		//echo '<div class="error"><p>' . $sql . '</p></div>';
 
-	return $wpdb->query($sql);
+		return $wpdb->query($sql);
+	}
+	return false;
 }
 
 function mr_update_club($postdata)
 {
 	global $wpdb;
 
-	$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
-		'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
+	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
+	{
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
+			'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']);
 
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
+		//echo '<div class="error"><p>' . $sql . '</p></div>';
 
-	return $wpdb->query($sql);
+		return $wpdb->query($sql);
+	}
+	return false;
 }
 
 

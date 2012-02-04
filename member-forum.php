@@ -121,6 +121,11 @@ function mr_forum_list()
 
 function mr_show_info_topic($topic)
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
 	global $mr_date_format;
 
@@ -150,6 +155,11 @@ function mr_show_info_topic($topic)
 
 function mr_show_list_topics()
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -219,6 +229,11 @@ function mr_show_list_topics()
 
 function mr_show_posts_for_topic($topic)
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -316,6 +331,11 @@ function mr_insert_new_post($postdata)
 
 function mr_show_form_topic()
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FORUM_CREATE))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $mr_access_type;
 	global $userdata;
 
@@ -341,6 +361,11 @@ function mr_show_form_topic()
 
 function mr_show_form_post($topic)
 {
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	$action = admin_url('admin.php?page=member-forum') . '&topic=' . $topic;
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">

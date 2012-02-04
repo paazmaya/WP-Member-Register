@@ -39,6 +39,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.7.2 =
+* Released 4 February 2012
+* Plenty more of user access rights checking
+* Splitting "functions" to "payment" and "grade" PHP files
+
 = 0.7.1 =
 * Released 4 February 2012
 * SQL query phrase fix in forum topic information

@@ -15,6 +15,11 @@ function mr_show_members($filters = null)
 	global $mr_martial_arts;
 	global $mr_date_format;
 	
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	// Possible filter options: club, active
 	
 	$wheres = array();
@@ -118,6 +123,11 @@ function mr_show_members($filters = null)
  */
 function mr_show_member_info($id)
 {
+	if (!current_user_can('read'))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -127,9 +137,21 @@ function mr_show_member_info($id)
 	global $mr_martial_arts;
 
 	$id = intval($id);
+	$usercanedit = false;
+	
+	if (!mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
+	{
+		// id must be of the current user
+		$id = $userdata->mr_memberid;
+	}
+	
+	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT) || $id == $userdata->mr_memberid)
+	{
+		$usercanedit = true;
+	}
 
 	// Check for possible insert
-    if (isset($_POST['mr_submit_hidden_member']) && $_POST['mr_submit_hidden_member'] == 'Y' )
+    if (isset($_POST['mr_submit_hidden_member']) && $_POST['mr_submit_hidden_member'] == 'Y' && $usercanedit)
 	{
         if (mr_update_member_info($_POST))
 		{
@@ -142,20 +164,6 @@ function mr_show_member_info($id)
 			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
     }
-    else if (isset($_POST['mr_submit_hidden_grade']) && $_POST['mr_submit_hidden_grade'] == 'Y' )
-	{
-        if (mr_insert_new_grade($_POST))
-		{
-			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi vyöarvo lisätty') . '</strong>';
-			echo '</p></div>';
-		}
-		else
-		{
-			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-		}
-    }
-
 
 	// ---------------
 
@@ -173,7 +181,7 @@ function mr_show_member_info($id)
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
 	echo '<p>' . __('In case you wish to remove a user, first all grades and payments should be removed.') . '</p>';
 	
-	if (isset($_GET['edit']))
+	if (isset($_GET['edit']) && $usercanedit)
 	{
 		mr_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
 	}
@@ -267,7 +275,7 @@ function mr_show_member_info($id)
 			<tr>
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('mikäli sellainen on'); ?>)</span></th>
 				<td><?php 
-					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']) && mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']) && $usercanedit)
 					{
 						echo '<a href="' . admin_url('user-edit.php?user_id=') . $person['wpuserid'] .
 							'" title="' . __('Muokkaa WP käyttäjää') . '">' . $person['user_login'] . '</a>';
@@ -281,8 +289,11 @@ function mr_show_member_info($id)
 		</tbody>
 		</table>
 		<?php
-		echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid='
-			. $id . '&edit" title="' . __('Muokkaa tätä käyttää') . '" class="button-primary">' . __('Muokkaa tätä käyttää') . '</a></p>';
+		if ($usercanedit)
+		{
+			echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid='
+				. $id . '&edit" title="' . __('Muokkaa tätä käyttää') . '" class="button-primary">' . __('Muokkaa tätä käyttää') . '</a></p>';
+		}
 	}
 
 	// ---------------
@@ -305,7 +316,7 @@ function mr_show_member_info($id)
 
 function mr_member_new()
 {
-	if (!current_user_can('create_users') || !mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
@@ -385,12 +396,20 @@ function mr_insert_new_member($postdata)
 function mr_update_member_info($postdata)
 {
 	global $wpdb;
+	global $userdata;
 
 	$values = array();
 	$required = array('user_login', 'access', 'firstname', 'lastname', 'birthdate',
 		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
 		'passnro', 'martial', 'notes', 'active', 'club');
 
+	
+	if (!mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+	{
+		// id must be of the current user
+		$postdata['id'] = $userdata->mr_memberid;
+	}
+	
 	if (isset($postdata['id']) && is_numeric($postdata['id']))
 	{
 		foreach($postdata as $k => $v)
@@ -441,9 +460,22 @@ function mr_update_member_info($postdata)
  */
 function mr_new_member_form($action, $data)
 {
+	if (!current_user_can('read'))
+	{
+		wp_die( __('You do not have sufficient permissions to access this page.') );
+	}
+	
 	global $wpdb;
+	global $userdata;
 	global $mr_access_type;
 	global $mr_martial_arts;
+	
+	
+	if (!mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+	{
+		// id must be of the current user
+		$data['id'] = $userdata->mr_memberid;
+	}
 
 	// Default values for an empty form
 	$values = array(
@@ -481,51 +513,52 @@ function mr_new_member_form($action, $data)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('WP username'); ?> <span class="description">(<?php echo __('jos on jo olemassa'); ?>)</span></th>
-				<td><select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
-				<option value=""></option>
+				<td>
 				<?php
-				// If editing, select all free and the current. If new, select all free
-				if (isset($_GET['edit']))
+				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
-					$sql = 'SELECT A.user_login, B.display_name FROM ' . $wpdb->prefix . 'users A ' .
+					?>
+					<select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
+					<option value=""></option>
+					<?php
+					// If editing, select all free and the current. If new, select all free				
+					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
 						'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
 						' UNION ' .
-						'SELECT A.user_login, B.display_name FROM ' . $wpdb->prefix . 'users A ' .
+						'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
 						'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
 						'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
+						
+						
+					$users = $wpdb->get_results($sql, ARRAY_A);
+					foreach($users as $user)
+					{
+						echo '<option value="' . $user['user_login']. '"';
+						if ($values['user_login'] == $user['user_login'])
+						{
+							echo ' selected="selected"';
+						}
+						echo '>' . $user['display_name'] . ' (' . $user['user_login'] . ')</option>';
+					}
+					?>
+					</select>
+					<?php
 				}
 				else
 				{
-					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A LEFT JOIN ' .
-						$wpdb->prefix . 'mr_member B ON A.user_login = B.user_login WHERE B.user_login IS NULL ORDER BY 2 ASC';
-				}
-
-				
-				$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
-					'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
-					' UNION ' .
-					'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
-					'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
-					'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
-					
-				echo '<p>' . $sql . '</p>';
-						
-				$users = $wpdb->get_results($sql, ARRAY_A);
-				foreach($users as $user)
-				{
-					echo '<option value="' . $user['user_login']. '"';
-					if ($values['user_login'] == $user['user_login'])
-					{
-						echo ' selected="selected"';
-					}
-					echo '>' . $user['display_name'] . ' (' . $user['user_login'] . ')</option>';
+					echo $userdata->user_login;
 				}
 				?>
-				</select></td>
+				</td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Kirjautumistaso'); ?></th>
-				<td><select name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
+				<td>
+				<?php
+				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+				{
+					?>
+					<select name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
@@ -538,6 +571,13 @@ function mr_new_member_form($action, $data)
 					}
 					?>
 					</select>
+					<?php
+				}
+				else
+				{
+					list_user_rights($values['access']);
+				}
+				?>
 				</td>
 			</tr>
 			<tr class="form-field">
@@ -623,8 +663,19 @@ function mr_new_member_form($action, $data)
 			<tr class="form-field">
 				<th><?php echo __('Aktiivinen'); ?> <span class="description">(<?php echo __('voiko käyttää sivustoa'); ?>)</span></th>
 				<td>
+				<?php
+				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+				{
+					?>
 					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> kyllä</label><br />
 					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> ei</label>
+					<?php
+				}
+				else 
+				{
+					echo ($values['active'] == 1) ? 'kyllä' : 'ei';
+				}
+				?>
 				</td>
 			</tr>
 			<tr class="form-field">
