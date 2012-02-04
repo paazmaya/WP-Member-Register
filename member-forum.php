@@ -129,7 +129,7 @@ function mr_show_info_topic($topic)
 		$wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
 		$wpdb->prefix . 'mr_member C ON C.id = A.member WHERE' .
-		' AND A.id = ' . intval($topic) . ' AND A.visible = 1' .
+		' A.id = ' . intval($topic) . ' AND A.visible = 1' .
 		' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';

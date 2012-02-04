@@ -39,6 +39,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.7.1 =
+* Released 4 February 2012
+* SQL query phrase fix in forum topic information
+
 = 0.7.0 =
 * Released 3 February 2012
 * User access level determined by bit wise comparison, in order to add flexibility
