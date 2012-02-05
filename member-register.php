@@ -130,9 +130,9 @@ function member_register_admin_init()
 	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery')); // 1.9.0
 	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
-	
+
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
-	
+
 	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery')); // 0.9.7
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
@@ -152,9 +152,9 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery');
 	wp_enqueue_script('jquery-ui-core');
 	wp_enqueue_script('jquery-ui-datepicker');
-	
+
 	wp_enqueue_script('jquery-ui-datepicker-fi');
-	
+
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
@@ -211,7 +211,7 @@ function member_register_admin_head()
 			jQuery('select').chosen();
 			jQuery('form').validate();
 			jQuery('table.tablesorter').tableFilter();
-			
+
 			// Removal button should aske the user: are you sure?
 			jQuery('a[rel="remove"]').click(function() {
 				var title = jQuery(this).attr('title');
@@ -266,7 +266,7 @@ function member_register_files_menu()
 		// http://codex.wordpress.org/Adding_Administration_Menus
 		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
 			'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
-			
+
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
 			add_submenu_page('member-files', __('Lisää uusi tiedosto'),
@@ -295,7 +295,7 @@ function member_register_login()
 {
 	global $wpdb;
 	global $userdata;
-	
+
 	/*
 	echo '<pre>';
 	print_r($userdata);
@@ -319,7 +319,7 @@ function member_register_wp_loaded()
 
 	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
 	if (isset($userdata->user_login) && $userdata->user_login != '' &&
-		(!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) || 
+		(!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
 		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
 		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
@@ -329,23 +329,24 @@ function member_register_wp_loaded()
 		{
 			$userdata->mr_access = intval($res['access']);
 			$userdata->mr_memberid = intval($res['id']);
-			
-			/*
+
 			$wpdb->update(
 				$wpdb->prefix . 'mr_member',
-				array( 
-					'lastlogin' => time(),
-					'title' => $untrusted_title
+				array(
+					'lastlogin' => time()
 				),
 				array(
-					'id' => 123 
+					'user_login' => $userdata->user_login,
+					'active' => 1
+				),
+				array(
+					'%d'
+				),
+				array(
+					'%s',
+					'%d'
 				)
 			);
-			*/
-		
-			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET lastlogin = ' . time() .
-				' WHERE user_login = \'' . mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
-			$wpdb->query($sql);
 		}
 	}
 
@@ -366,11 +367,11 @@ function mr_member_list()
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
-	
+
 	global $userdata;
 
 	echo '<div class="wrap">';
-	
+
 	// Check for requested member
 	$memberid = isset($_GET['memberid']) && is_numeric($_GET['memberid']) ? intval($_GET['memberid']) : '';
 
@@ -379,7 +380,7 @@ function mr_member_list()
 	{
 		$memberid = $userdata->mr_memberid;
 	}
-	
+
 	if ($memberid != '')
 	{
 		mr_show_member_info($memberid);

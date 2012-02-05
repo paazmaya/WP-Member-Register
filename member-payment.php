@@ -62,10 +62,25 @@ function mr_payment_list()
 
 	if (isset($_POST['haspaid']) && is_numeric($_POST['haspaid']))
 	{
-		$id = intval($_POST['haspaid']);
 		$today = date('Y-m-d');
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET paidday = \'' . $today . '\' WHERE id = ' . $id . ' LIMIT 1';
-		if ($wpdb->query($sql))
+		
+		$update = $wpdb->update(
+			$wpdb->prefix . 'mr_payment',
+			array(
+				'paidday' => $today
+			),
+			array(
+				'id' => $_POST['haspaid']
+			),
+			array(
+				'%s'
+			),
+			array(
+				'%d'
+			)
+		);
+		
+		if ($update)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Maksu merkitty maksetuksi tänään') . ', ' . $today . '</strong>';
@@ -80,8 +95,23 @@ function mr_payment_list()
 	{
 		// Mark the given payment visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removepayment']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_payment SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
-		if ($wpdb->query($sql))
+		$update = $wpdb->update(
+			$wpdb->prefix . 'mr_payment',
+			array(
+				'visible' => 0
+			),
+			array(
+				'id' => $_GET['removepayment']
+			),
+			array(
+				'%d'
+			),
+			array(
+				'%d'
+			)
+		);
+		
+		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Maksu poistettu') . ' (' . $id . ')</strong>';

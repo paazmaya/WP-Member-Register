@@ -4,7 +4,7 @@
  * Club related functions.
  */
 
- 
+
  // TODO: has many calls to access level checking but kept until decided if they are needed...
  // might be that there will be more levels thus checks needed
 
@@ -12,28 +12,34 @@ function mr_club_list()
 {
 	global $wpdb;
 	global $userdata;
-	
+
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 
-	
+
 	echo '<div class="wrap">';
-	
+
 	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']) && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		// Mark the given club visible=0, so it can be recovered just in case...		
+		// Mark the given club visible=0, so it can be recovered just in case...
 		$update = $wpdb->update(
 			$wpdb->prefix . 'mr_club',
-			array( 
+			array(
 				'visible' => 0
 			),
 			array(
 				'id' => $_GET['removeclub']
+			),
+			array(
+				'%d'
+			),
+			array(
+				'%d'
 			)
 		);
-		
+
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
@@ -45,11 +51,11 @@ function mr_club_list()
 			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
-	
+
 	if (isset($_GET['club']) && is_numeric($_GET['club']))
 	{
 		$id = intval($_GET['club']);
-		
+
 		// Was there an update of this club?
 		$hidden_field_name = 'mr_submit_hidden_club';
 		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
@@ -66,21 +72,21 @@ function mr_club_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-			
+
 		$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_club WHERE id = ' . $id . ' AND visible = 1 LIMIT 1';
 		$res = $wpdb->get_row($sql, ARRAY_A);
-		
+
 		if (isset($_GET['edit']))
 		{
 			echo '<h1>' . __('Modify') . ' ' . $res['title'] . '</h1>';
 			mr_club_form($res);
 		}
-		else 
+		else
 		{
 			echo '<h1>' . $res['title'] . '</h1>';
 			echo '<p>' . $res['address'] . '</p>';
-			
-		
+
+
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
 				$id . '&edit" title="' . __('Muokkaa tätä seuraa') . '" class="button-primary">' . __('Muokkaa tätä seuraa') . '</a></p>';
 			echo '<h2>' . __('Aktiiviset jäsenet tässä seurassa.') . '</h2>';
@@ -88,14 +94,14 @@ function mr_club_list()
 				'club' => intval($_GET['club']),
 				'active' => true
 			));
-		}		
+		}
 	}
-	else 
+	else
 	{
 		echo '<h1>' . __('Jäsenseurat') . '</h1>';
 		echo '<p>' . __('Suomen Yuishinkai-liiton Jäsenseurat.') . '</p>';
 		echo '<p>' . __('Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua.') . '</p>';
-		
+
 		// Was there an insert of a new club?
 		$hidden_field_name = 'mr_submit_hidden_club';
 		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
@@ -111,21 +117,21 @@ function mr_club_list()
 				echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 			}
 		}
-		
+
 		if (isset($_GET['createclub']))
 		{
 			mr_club_form();
 		}
-		else 
+		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&createclub"' .
 					' title="' . __('Luo uusi seura') . '" class="button-primary">' .
 					__('Luo uusi seura') . '</a></p>';
-					
+
 			mr_show_clubs();
 		}
 	}
-	
+
 	echo '</div>';
 }
 
@@ -135,13 +141,13 @@ function mr_club_form($data = null)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
-	
+
 	$values = array(
 		'title' => '',
 		'address' => ''
 	);
 	$action = admin_url('admin.php?page=member-club-list');
-	
+
 	if (is_array($data))
 	{
 		// Assume this to be an edit for existing
@@ -176,23 +182,23 @@ function mr_show_clubs()
 {
 	global $wpdb;
 	global $userdata;
-	
+
 	// id, title, address, visible
-	
-	$sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix . 
-		'mr_club A LEFT JOIN ' . $wpdb->prefix . 
+
+	$sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix .
+		'mr_club A LEFT JOIN ' . $wpdb->prefix .
 		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY A.id ORDER BY A.title ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
-	
+
 	$clubs = $wpdb->get_results($sql, ARRAY_A);
-	
+
 	$allowremove = false;
 	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		$allowremove = true;
 	}
-	
+
 	?>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
@@ -241,16 +247,16 @@ function mr_insert_new_club($postdata)
 
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
-		return $wpdb->insert( 
-			$wpdb->prefix . 'mr_club', 
-			array( 
-				'title' => $postdata['title'], 
-				'address' => $postdata['address'] 
-			), 
-			array( 
-				'%s', 
-				'%s' 
-			) 
+		return $wpdb->insert(
+			$wpdb->prefix . 'mr_club',
+			array(
+				'title' => $postdata['title'],
+				'address' => $postdata['address']
+			),
+			array(
+				'%s',
+				'%s'
+			)
 		);
 	}
 	return false;
@@ -264,12 +270,19 @@ function mr_update_club($postdata)
 	{
 		return $wpdb->update(
 			$wpdb->prefix . 'mr_club',
-			array( 
+			array(
 				'title' => $postdata['title'],
 				'address' => $postdata['address']
 			),
 			array(
-				'id' => $postdata['id'] 
+				'id' => $postdata['id']
+			),
+			array(
+				'%s',
+				'%s'
+			),
+			array(
+				'%d'
 			)
 		);
 	}

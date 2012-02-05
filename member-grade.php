@@ -270,7 +270,7 @@ function mr_insert_new_grade($postdata)
 
 		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_grade (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
-		echo $sql;
+		//echo $sql;
 
 		return $wpdb->query($sql);
 	}

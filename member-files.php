@@ -75,6 +75,34 @@ function mr_files_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
+	if (isset($_GET['remove-file']) && is_numeric($_GET['remove-file']))
+	{
+		$update = $wpdb->update(
+			$wpdb->prefix . 'mr_file',
+			array(
+				'visible' => 0
+			),
+			array(
+				'id' => $_GET['remove-file']
+			),
+			array(
+				'%d'
+			),
+			array(
+				'%d'
+			)
+		);
+		if ($update)
+		{
+			echo '<div class="updated"><p>';
+			echo '<strong>' . __('Valittu tiedosto poistettu.') . '</strong>';
+			echo '</p></div>';
+		}
+		else
+		{
+		}
+	}
+	
 	$sql = 'SELECT A.*, B.firstname, B.lastname FROM ' . $wpdb->prefix .
 		'mr_file A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON A.uploader = B.id WHERE A.visible = 1 ORDER BY A.basename ASC';
@@ -141,6 +169,9 @@ function mr_files_list()
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
 			$out .= '<td>';
+			$out .= '<a rel="remove" href="' . admin_url('admin.php?page=member-files') .
+				'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto') . ': ' .
+				$file['basename'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a>';
 			$out .= '</td>';
 		}
 		$out .= '</tr>';

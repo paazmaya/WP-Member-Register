@@ -42,9 +42,24 @@ function mr_forum_list()
 		}
 		else if (isset($_GET['remove-post']) && is_numeric($_GET['remove-post']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			// In reality just archive the post
-			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_post SET visible = 0 WHERE id = \'' . intval($_GET['remove-post']) . '\' LIMIT 1';
-			if ($wpdb->query($sql))
+			// In reality just archive the post			
+			$update = $wpdb->update(
+				$wpdb->prefix . 'mr_forum_post',
+				array(
+					'visible' => 0
+				),
+				array(
+					'id' => $_GET['remove-post']
+				),
+				array(
+					'%d'
+				),
+				array(
+					'%d'
+				)
+			);
+		
+			if ($update !== false)
 			{
 				echo '<div class="updated"><p>';
 				echo '<strong>' . __('Valittu viesti poistettu.') . '</strong>';
@@ -90,9 +105,24 @@ function mr_forum_list()
 		}
 		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			// In reality just archive the topic
-			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_forum_topic SET visible = 0 WHERE id = \'' . intval($_GET['remove-topic']) . '\' LIMIT 1';
-			if ($wpdb->query($sql))
+			// In reality just archive the topic			
+			$update = $wpdb->update(
+				$wpdb->prefix . 'mr_forum_topic',
+				array(
+					'visible' => 0
+				),
+				array(
+					'id' => $_GET['remove-topic']
+				),
+				array(
+					'%d'
+				),
+				array(
+					'%d'
+				)
+			);
+		
+			if ($update)
 			{
 				echo '<div class="updated"><p>';
 				echo '<strong>' . __('Valittu aihe poistettu.') . '</strong>';
@@ -125,7 +155,7 @@ function mr_show_info_topic($topic)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-	
+
 	global $wpdb;
 	global $mr_date_format;
 
@@ -159,7 +189,7 @@ function mr_show_list_topics()
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-	
+
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -234,7 +264,7 @@ function mr_show_posts_for_topic($topic)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-	
+
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -278,8 +308,8 @@ function mr_show_posts_for_topic($topic)
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
-				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu') . ' ' . 
-				date($mr_date_format, $post['created']) . '"><img src="' . 
+				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu') . ' ' .
+				date($mr_date_format, $post['created']) . '"><img src="' .
 				plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 		}
 		echo '</tr>';
@@ -296,19 +326,19 @@ function mr_insert_new_topic($postdata)
 	global $wpdb;
 	global $userdata;
 
-	$values = array(
-		"'" . mr_htmlent($postdata['title']) . "'",
-		"'" . $userdata->mr_memberid . "'",
-		"'" . time() . "'"
+	return $wpdb->insert(
+		$wpdb->prefix . 'mr_forum_topic',
+		array(
+			'title' => $postdata['title'],
+			'member' => $userdata->mr_memberid,
+			'created' => time()
+		),
+		array(
+			'%s',
+			'%d',
+			'%d',
+		)
 	);
-
-
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_topic (title, member, created) VALUES('
-		. implode(', ', $values) . ')';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-	return $wpdb->query($sql);
 }
 
 function mr_insert_new_post($postdata)
@@ -316,19 +346,21 @@ function mr_insert_new_post($postdata)
 	global $wpdb;
 	global $userdata;
 
-	$values = array(
-		"'" . mr_htmlent(nl2br($postdata['content'], true)) . "'",
-		"'" . intval($postdata['topic']) . "'",
-		"'" . $userdata->mr_memberid . "'",
-		"'" . time() . "'"
+	return $wpdb->insert(
+		$wpdb->prefix . 'mr_forum_post',
+		array(
+			'content' => nl2br(strip_tags($postdata['content']), true),
+			'topic' => $postdata['topic'],
+			'member' => $userdata->mr_memberid,
+			'created' => time()
+		),
+		array(
+			'%s',
+			'%d',
+			'%d',
+			'%d',
+		)
 	);
-
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_forum_post (content, topic, member, created) VALUES('
-		. implode(', ', $values) . ')';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-	return $wpdb->query($sql);
 }
 
 
@@ -338,7 +370,7 @@ function mr_show_form_topic()
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-	
+
 	global $mr_access_type;
 	global $userdata;
 
@@ -368,7 +400,7 @@ function mr_show_form_post($topic)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
-	
+
 	$action = admin_url('admin.php?page=member-forum') . '&topic=' . $topic;
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
