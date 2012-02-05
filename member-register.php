@@ -210,7 +210,13 @@ function member_register_admin_head()
 			});
 			jQuery('select').chosen();
 			jQuery('form').validate();
-			//jQuery('table.tablesorter').tableFilter();
+			jQuery('table.tablesorter').tableFilter();
+			
+			// Removal button should aske the user: are you sure?
+			jQuery('a[rel="remove"]').click(function() {
+				var title = jQuery(this).attr('title');
+				return confirm(title);
+			});
 		});
 
 	</script>
@@ -224,17 +230,17 @@ function member_register_admin_menu()
 	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'read', 'member-register-control',
 		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
 	add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
-		__('Uusi jäsen'), 'create_users', 'member-register-new', 'mr_member_new');
+		__('Uusi jäsen'), 'read', 'member-register-new', 'mr_member_new');
 	add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
-		__('Jäsenmaksut'), 'create_users', 'member-payment-list', 'mr_payment_list');
+		__('Jäsenmaksut'), 'read', 'member-payment-list', 'mr_payment_list');
 	add_submenu_page('member-register-control', __('Uusi maksu'),
-		__('Uusi maksu'), 'create_users', 'member-payment-new', 'mr_payment_new');
+		__('Uusi maksu'), 'read', 'member-payment-new', 'mr_payment_new');
 	add_submenu_page('member-register-control', __('Vyöarvot'),
-		__('Vyöarvot'), 'create_users', 'member-grade-list', 'mr_grade_list');
+		__('Vyöarvot'), 'read', 'member-grade-list', 'mr_grade_list');
 	add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
-		__('Myönnä vyöarvoja'), 'create_users', 'member-grade-new', 'mr_grade_new');
+		__('Myönnä vyöarvoja'), 'read', 'member-grade-new', 'mr_grade_new');
 	add_submenu_page('member-register-control', __('Seurat'),
-		__('Jäsenseurat'), 'create_users', 'member-club-list', 'mr_club_list');
+		__('Jäsenseurat'), 'read', 'member-club-list', 'mr_club_list');
 
 }
 
@@ -264,7 +270,7 @@ function member_register_files_menu()
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
 			add_submenu_page('member-files', __('Lisää uusi tiedosto'),
-				__('Lisää uusi tiedosto'), 'create_users', 'member-files-new', 'mr_files_new');
+				__('Lisää uusi tiedosto'), 'read', 'member-files-new', 'mr_files_new');
 		}
 	}
 }

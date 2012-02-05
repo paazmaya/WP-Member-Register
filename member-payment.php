@@ -241,7 +241,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a href="' . admin_url('admin.php?page=member-payment-list') .
+				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
 					'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
 					$payment['reference'] . '">X</a></td>';
 			}

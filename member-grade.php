@@ -203,7 +203,7 @@ function mr_show_grades($memberid = null)
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
+				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
 					'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
 					$grade['grade'] . '">X</a></td>';
 			}

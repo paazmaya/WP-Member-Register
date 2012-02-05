@@ -616,7 +616,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('E-mail'); ?></th>
-				<td><input type="text" name="email" class="required email" value="<?php echo $values['email']; ?>" /></td>
+				<td><input type="text" name="email" value="<?php echo $values['email']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality'); ?></th>

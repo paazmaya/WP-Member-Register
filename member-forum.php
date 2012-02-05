@@ -214,7 +214,7 @@ function mr_show_list_topics()
 			echo '<td>' . $topic['total'] . '</td>';
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
-				echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
+				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') .
 				'&remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe') . '">X</a></td>';
 			}
 			echo '</tr>';
@@ -276,7 +276,7 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
+			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
 				'&remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti') . '">X</a></td>';
 		}
 		echo '</tr>';
