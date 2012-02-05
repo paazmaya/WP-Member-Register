@@ -23,13 +23,21 @@ function mr_club_list()
 	
 	if (isset($_GET['removeclub']) && is_numeric($_GET['removeclub']) && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		// Mark the given club visible=0, so it can be recovered just in case...
-		$id = intval($_GET['removeclub']);
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
-		if ($wpdb->query($sql))
+		// Mark the given club visible=0, so it can be recovered just in case...		
+		$update = $wpdb->update(
+			$wpdb->prefix . 'mr_club',
+			array( 
+				'visible' => 0
+			),
+			array(
+				'id' => $_GET['removeclub']
+			)
+		);
+		
+		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Seura poistettu') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('Seura poistettu') . ' (' . $_GET['removeclub'] . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -214,9 +222,9 @@ function mr_show_clubs()
 		// set visible to 0, do not remove for real...
 		if ($allowremove)
 		{
-			echo '<td><a href="' . admin_url('admin.php?page=member-grade-list') .
-				'&removeclub=' . $club['id'] . '" title="' . __('Poista seura') . ' ' .
-				$club['title'] . '">X</a></td>';
+			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
+				'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura') . ': ' .
+				$club['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 		}
 		echo '</tr>';
 	}
@@ -233,17 +241,17 @@ function mr_insert_new_club($postdata)
 
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
-		$values = array(
-			"'" . mr_htmlent($postdata['title']) . "'",
-			"'" . mr_htmlent($postdata['address']) . "'"
+		return $wpdb->insert( 
+			$wpdb->prefix . 'mr_club', 
+			array( 
+				'title' => $postdata['title'], 
+				'address' => $postdata['address'] 
+			), 
+			array( 
+				'%s', 
+				'%s' 
+			) 
 		);
-
-		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_club (title, address) VALUES('
-			. implode(', ', $values) . ')';
-
-		//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-		return $wpdb->query($sql);
 	}
 	return false;
 }
@@ -254,12 +262,16 @@ function mr_update_club($postdata)
 
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_club SET title = \'' . mr_htmlent($postdata['title']) .
-			'\', address = \'' . mr_htmlent($postdata['address']) . '\' WHERE id = ' . intval($postdata['id']) . ' LIMIT 1';
-
-		//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-		return $wpdb->query($sql);
+		return $wpdb->update(
+			$wpdb->prefix . 'mr_club',
+			array( 
+				'title' => $postdata['title'],
+				'address' => $postdata['address']
+			),
+			array(
+				'id' => $postdata['id'] 
+			)
+		);
 	}
 	return false;
 }

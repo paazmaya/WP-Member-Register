@@ -330,6 +330,19 @@ function member_register_wp_loaded()
 			$userdata->mr_access = intval($res['access']);
 			$userdata->mr_memberid = intval($res['id']);
 			
+			/*
+			$wpdb->update(
+				$wpdb->prefix . 'mr_member',
+				array( 
+					'lastlogin' => time(),
+					'title' => $untrusted_title
+				),
+				array(
+					'id' => 123 
+				)
+			);
+			*/
+		
 			$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET lastlogin = ' . time() .
 				' WHERE user_login = \'' . mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
 			$wpdb->query($sql);

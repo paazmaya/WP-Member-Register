@@ -204,8 +204,9 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&removegrade=' . $grade['id'] . '" title="' . __('Poista vyöarvo') . ' ' .
-					$grade['grade'] . '">X</a></td>';
+					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Poista henkilön ' . $grade['firstname'] . ' ' . 
+					$grade['lastname'] . 'vyöarvo') . ': ' . $grade['grade'] . '"><img src="' . 
+					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
 		}

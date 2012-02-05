@@ -215,7 +215,8 @@ function mr_show_list_topics()
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') .
-				'&remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe') . '">X</a></td>';
+				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla') . ': ' .
+				$topic['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
 		}
@@ -276,8 +277,10 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&topic=' . $topic .
-				'&remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti') . '">X</a></td>';
+			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
+				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu') . ' ' . 
+				date($mr_date_format, $post['created']) . '"><img src="' . 
+				plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 		}
 		echo '</tr>';
 	}

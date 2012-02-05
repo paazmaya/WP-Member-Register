@@ -242,8 +242,9 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			if ($allowremove)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
-					'&removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä') . ' ' .
-					$payment['reference'] . '">X</a></td>';
+					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista henkilön ' . $payment['firstname'] . ' ' . 
+					$payment['lastname'] . ' maksu viitteellä') . ': ' . $payment['reference'] . '"><img src="' . 
+					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
 		}
@@ -369,7 +370,7 @@ function mr_new_payment_form($members)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php __('Lisää lasku') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="Lisää lasku" />
 		</p>
 
 	</form>
