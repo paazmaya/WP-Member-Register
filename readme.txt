@@ -39,6 +39,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.8.0 =
+* Released 7 February 2012
+* Using as much as possible WP specific database functions like $wpdb->update
+* File management has now access limitations based on club, main art and minimun grade, if needed
+
 = 0.7.3 =
 * Released 5 February 2012
 * Fixes after testing done by other people

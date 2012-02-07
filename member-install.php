@@ -23,14 +23,16 @@ function mr_install ()
 		  directory varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
 		  uploader mediumint(6) unsigned NOT NULL COMMENT 'Member ID',
 		  uploaded int(10) NOT NULL COMMENT 'Unix timestamp',
-		  mingrade varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '$mr_grade_values if any minimum',
+		  mingrade varchar(2) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT '$mr_grade_values if any minimum',
 		  clubonly mediumint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Club ID if not 0',
+		  artonly varchar(10) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'Only shown for those whose main martial',
 		  visible tinyint(1) NOT NULL DEFAULT '0',
 		  PRIMARY KEY (id),
 		  KEY visible (visible),
 		  KEY directory (directory),
 		  KEY mingrade (mingrade),
-		  KEY clubonly (clubonly)
+		  KEY clubonly (clubonly),
+		  KEY artonly (artonly)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
 		dbDelta($sql);

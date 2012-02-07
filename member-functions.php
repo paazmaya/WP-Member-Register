@@ -128,11 +128,26 @@ function mr_htmldec($str)
 	return html_entity_decode(trim($str), ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * Converts a block of text to be suitable for the use in URI.
+ *
+ * @param	string	$str
+ */
 function mr_urize($str)
 {
 	$str = mb_strtolower($str, 'UTF-8');
 	$str = mr_htmldec($str);
-	$str = str_replace(array(' ', ',', '@', '$', '/', '&', '!', '=', '%'), '-', $str);
+	$str = str_replace(array(' ', ',', '@', '$', '/', '\\', '&', '!', '=', '%', '´', '`', '^', '¨'), '-', $str);
 	$str = str_replace(array('--', '---'), '-', $str);
+	$str = str_replace(array('...', '..'), '.', $str);
+	// a...z = ASCII table values 97...122
+	$str = str_replace(array('?', '"', '\'', ':', '(', ')', '*', '[', ']', '{', '}'), '', $str);
+	$str = str_replace(array('ä', 'æ', 'å'), 'a', $str);
+	$str = str_replace(array('ō', 'ö', 'ø'), 'o', $str);
+	$str = str_replace(array('š', 'ß'), 's', $str);
+	$str = str_replace(array('ć', 'č'), 'c', $str);
+	$str = str_replace(array('ž'), 'z', $str);
+	$str = str_replace(array('--', '---', '----'), '-', $str);
+	$str = trim($str, ' -');
 	return $str;
 }

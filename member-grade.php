@@ -14,8 +14,6 @@ function mr_grade_new()
 	}
 
 	global $wpdb;
-	global $mr_grade_values;
-	global $mr_grade_types;
 
 	// Check for possible insert
     $hidden_field_name = 'mr_submit_hidden_grade';

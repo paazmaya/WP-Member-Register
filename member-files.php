@@ -24,15 +24,15 @@ function mr_file_download($get)
 	// $get should contain download: id / dir / basename
 	// forward slash will be always available, but dir not
 	
-	$parts = explode('/', str_replace(array('..', '%', ' '), '-', $get));
+	$parts = explode('/', $get);
 	if (count($parts) < 2)
 	{
 		wp_die( __('Not available.') );
 	}
 	
-	$basename = array_pop($parts);
+	//$basename = array_pop($parts);
 	$id = intval(array_shift($parts));
-	$dir = implode('/', $parts);
+	//$dir = implode('/', $parts);
 	
 	$sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE visible = 1 AND id = \'' .
 		$id . '\' LIMIT 1';
@@ -142,7 +142,8 @@ function mr_files_list()
 	{
 		$where = 'AND (A.clubonly = 0 OR A.clubonly = \'' . $userinfo['club'] . '\') ' .
 			'AND (A.artonly = \'\' OR A.artonly = \'' . $userinfo['martial'] . '\') ' .
-			'AND (A.mingrade = \'\')';
+			'AND (A.mingrade = \'\' OR A.mingrade IN (SELECT grade FROM ' . 
+			$wpdb->prefix . 'mr_grade WHERE member = \'' . $userdata->mr_memberid . '\'))';
 	}
 	$sql = 'SELECT A.*, B.firstname, B.lastname, C.title AS clubname FROM ' . 
 		$wpdb->prefix . 'mr_file A LEFT JOIN ' . $wpdb->prefix . 
@@ -273,7 +274,7 @@ function mr_files_new()
 		print_r($_FILES);
 		echo '</pre>';
 		*/
-		$dir = isset($_POST['directory']) ? trim($_POST['directory']) : '';
+		$dir = isset($_POST['directory']) ? mr_urize($_POST['directory']) : '';
 		$mingrade = (isset($_POST['grade']) && $_POST['grade'] != '' && array_key_exists($_POST['grade'], $mr_grade_values)) ? $_POST['grade'] : '';
 		$clubonly = (isset($_POST['club']) && is_numeric($_POST['club'])) ? $_POST['club'] : 0;
 		$artonly = (isset($_POST['art']) && $_POST['art'] != '' && array_key_exists($_POST['art'], $mr_martial_arts)) ? $_POST['art'] : '';
@@ -309,7 +310,7 @@ function mr_files_new()
 					<td><select name="club" data-placeholder="Valitse seura">
 						<option value=""></option>
 						<?php
-						$clubs = mr_get_list('club', '', '', 'title ASC');
+						$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
 						foreach($clubs as $club)
 						{
 							echo '<option value="' . $club['id'] . '">' . $club['title'] . '</option>';
@@ -361,7 +362,7 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0
 	global $mr_file_base_directory;
 
 	// Should not bewgin with _ nor .
-	$dir = strtolower(str_replace(array('.', ' '), '-', str_replace(array('..', '/', '\\', '...', '%'), '', $dir)));
+	$dir = mr_urize($dir);
 	$first = substr($dir, 0, 1);
 	if ($first == '_' || $first == '.')
 	{
@@ -369,7 +370,7 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0
 	}
 	
 	$values = array(
-		'basename' => strtolower(str_replace(array('..', '%', ' '), '-', basename($filesdata['name']))),
+		'basename' => mr_urize(basename($filesdata['name'])),
 		'bytesize' => $filesdata['size'],
 		'directory' => $dir,
 		'uploader' => $userdata->mr_memberid,
