@@ -73,10 +73,7 @@ function mr_show_members($filters = null)
 	{
 		$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
 			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
-			' '	. $member['lastname'] . '|' . __('Address') . ': ' . $member['address'] . ', ' .
-			$member['zipcode'] . ' ' . $member['postal'] . '|' . __('Nationality') . ': ' .
-			$member['nationalityname'] . '|' . __('Date of joining') . ': ' .
-			$member['joindate'] . '" class="tip">';
+			' '	. $member['lastname'] . '">';
 
 		echo '<tr id="user_' . $member['id'] . '">';
 		echo '<td';
@@ -95,7 +92,9 @@ function mr_show_members($filters = null)
 		echo '<td>' . $member['email'] . '</td>';
 		echo '<td>' . $member['phone'] . '</td>';
 		echo '<td title="' . (isset($mr_martial_arts[$member['martial']]) ? $mr_martial_arts[$member['martial']] : '') . '">' . $member['martial'] . '</td>';
-		echo '<td title="' . (isset($mr_access_type[$member['access']]) ? $mr_access_type[$member['access']] : '') . '">' . $member['access'] . '</td>';
+		echo '<td title="' . $member['access'] . '">';
+		list_user_rights($member['access']);
+		echo '</td>';
 		echo '<td>';
 		if ($member['lastlogin'] > 0)
 		{

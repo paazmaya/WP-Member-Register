@@ -202,12 +202,14 @@ function member_register_admin_head()
 			});
 			jQuery('input.pickday').datepicker();
 			jQuery('table.tablesorter').tablesorter();
+			
 			jQuery('table a.tip').cluetip({
 				splitTitle: '|',
 				sticky: true,
 				closeText: 'sulje',
 				closePosition: 'title'
 			});
+			
 			jQuery('select').chosen({
 				allow_single_deselect: true
 			});

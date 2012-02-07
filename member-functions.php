@@ -38,15 +38,15 @@ function list_user_rights($rights)
 {
 	global $mr_access_type;
 	
-	echo '<ul>';	
+	$list = array();	
 	foreach ($mr_access_type as $key => $val)
 	{
 		if (mr_has_permission($key, $rights))
 		{
-			echo '<li>' . $val . '</li>';
+			$list[] = $val;
 		}
 	}
-	echo '</ul>';
+	echo implode('<br />', $list);
 }
 
 function mr_show_access_values()
