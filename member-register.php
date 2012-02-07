@@ -17,7 +17,7 @@
 define ('MEMBER_REGISTER_VERSION', '0.7.0');
 
 global $mr_file_base_directory;
-$mr_file_base_directory = realpath(substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files');
+$mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
@@ -208,7 +208,9 @@ function member_register_admin_head()
 				closeText: 'sulje',
 				closePosition: 'title'
 			});
-			jQuery('select').chosen();
+			jQuery('select').chosen({
+				allow_single_deselect: true
+			});
 			jQuery('form').validate();
 			jQuery('table.tablesorter').tableFilter();
 
@@ -229,18 +231,42 @@ function member_register_admin_menu()
 	// http://codex.wordpress.org/Adding_Administration_Menus
 	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'read', 'member-register-control',
 		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
-	add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
-		__('Uusi jäsen'), 'read', 'member-register-new', 'mr_member_new');
-	add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
+	
+	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+	{
+		add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
+			__('Uusi jäsen'), 'read', 'member-register-new', 'mr_member_new');
+	}
+	
+	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
 		__('Jäsenmaksut'), 'read', 'member-payment-list', 'mr_payment_list');
-	add_submenu_page('member-register-control', __('Uusi maksu'),
+	}
+	
+	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Uusi maksu'),
 		__('Uusi maksu'), 'read', 'member-payment-new', 'mr_payment_new');
-	add_submenu_page('member-register-control', __('Vyöarvot'),
+	}
+	
+	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Vyöarvot'),
 		__('Vyöarvot'), 'read', 'member-grade-list', 'mr_grade_list');
-	add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
+	}
+	
+	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
 		__('Myönnä vyöarvoja'), 'read', 'member-grade-new', 'mr_grade_new');
-	add_submenu_page('member-register-control', __('Seurat'),
+	}
+	
+	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Seurat'),
 		__('Jäsenseurat'), 'read', 'member-club-list', 'mr_club_list');
+	}
 
 }
 

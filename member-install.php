@@ -15,7 +15,7 @@ function mr_install ()
 	
 	$table_name = $wpdb->prefix . $mr_prefix . 'file';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
+	{		
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  bytesize int(12) unsigned NOT NULL,
@@ -23,12 +23,14 @@ function mr_install ()
 		  directory varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
 		  uploader mediumint(6) unsigned NOT NULL COMMENT 'Member ID',
 		  uploaded int(10) NOT NULL COMMENT 'Unix timestamp',
-		  access tinyint(1) NOT NULL DEFAULT '0',
+		  mingrade varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '$mr_grade_values if any minimum',
+		  clubonly mediumint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Club ID if not 0',
 		  visible tinyint(1) NOT NULL DEFAULT '0',
 		  PRIMARY KEY (id),
 		  KEY visible (visible),
-		  KEY access (access),
-		  KEY directory (directory)
+		  KEY directory (directory),
+		  KEY mingrade (mingrade),
+		  KEY clubonly (clubonly)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
 		dbDelta($sql);

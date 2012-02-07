@@ -21,28 +21,35 @@ function mr_file_download($get)
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	// $get should contain download: dir / basename
-	// forward slash will be always available
+	// $get should contain download: id / dir / basename
+	// forward slash will be always available, but dir not
 	
 	$parts = explode('/', str_replace(array('..', '%', ' '), '-', $get));
+	if (count($parts) < 2)
+	{
+		wp_die( __('Not available.') );
+	}
+	
 	$basename = array_pop($parts);
+	$id = intval(array_shift($parts));
 	$dir = implode('/', $parts);
 	
-	$sql = 'SELECT access FROM ' . $wpdb->prefix . 'mr_file WHERE visible = 1 AND directory = \'' .
-		$dir . '\' AND basename = \'' . $basename . '\' LIMIT 1';
-	$res = $wpdb->get_results($sql, ARRAY_A);
+	$sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE visible = 1 AND id = \'' .
+		$id . '\' LIMIT 1';
+	$res = $wpdb->get_row($sql, ARRAY_A);
 	
-	if (count($res) == 1) // && $res['0']['access'] == '1')
+	if ($res)
 	{
-		$real = realpath($mr_file_base_directory . '/' . $dir . '/' . $basename);
+		$real = realpath($mr_file_base_directory . '/' . $res['directory'] . '/' . $id . '_' . $res['basename']);
 		if (strpos($real, $mr_file_base_directory) !== false)
 		{
 			$fp = fopen($real, 'r');
+			
 			header("Content-Type: application/force-download");
-			header("Content-Disposition: attachment; filename=" . $basename);
+			header("Content-Disposition: attachment; filename=" . $res['basename']);
 			header("Content-length: " . filesize($real));
-			header("Expires: ".gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
-			header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+			header("Expires: " . gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
+			header("Last-Modified: " . gmdate("D, d M Y H:i:s")." GMT");
 			header("Cache-Control: no-cache, must-revalidate");
 			header("Pragma: no-cache");
 			
@@ -67,6 +74,8 @@ function mr_files_list()
 	global $wpdb;
 	global $userdata;
 	global $mr_access_type;
+	global $mr_grade_values;
+	global $mr_martial_arts;
 	global $mr_date_format;
 	global $mr_file_base_directory;
 	
@@ -75,15 +84,17 @@ function mr_files_list()
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	if (isset($_GET['remove-file']) && is_numeric($_GET['remove-file']))
+	if (isset($_GET['remove-file']) && is_numeric($_GET['remove-file']) && mr_has_permission(MR_ACCESS_FILES_MANAGE))
 	{
+		$id = intval($_GET['remove-file']);
+		
 		$update = $wpdb->update(
 			$wpdb->prefix . 'mr_file',
 			array(
 				'visible' => 0
 			),
 			array(
-				'id' => $_GET['remove-file']
+				'id' => $id
 			),
 			array(
 				'%d'
@@ -92,6 +103,22 @@ function mr_files_list()
 				'%d'
 			)
 		);
+		
+		// How about moving the file?
+		$sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE id = ' . $id . ' LIMIT 1';
+		$info = $wpdb->get_row($sql, ARRAY_A);
+		
+		// Because of this _remove directory, the user created dirs cannot begin with _
+		$removed = $mr_file_base_directory . '/_removed';
+		if (!file_exists($removed))
+		{
+			umask(0000);
+			mkdir($removed, 0775);
+		}
+
+		rename($mr_file_base_directory . '/' . $info['directory'] . '/' . $id . '_' . $info['basename'], 
+			$removed . '/' . $id . '_' . $info['basename']);
+		
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
@@ -100,12 +127,27 @@ function mr_files_list()
 		}
 		else
 		{
+			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
 	
-	$sql = 'SELECT A.*, B.firstname, B.lastname FROM ' . $wpdb->prefix .
-		'mr_file A LEFT JOIN ' . $wpdb->prefix . 
-		'mr_member B ON A.uploader = B.id WHERE A.visible = 1 ORDER BY A.basename ASC';
+	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $userdata->mr_memberid . ' LIMIT 1';
+	$userinfo = $wpdb->get_row($sql, ARRAY_A);
+	
+	if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
+	{
+		$where = '';
+	}
+	else
+	{
+		$where = 'AND (A.clubonly = 0 OR A.clubonly = \'' . $userinfo['club'] . '\') ' .
+			'AND (A.artonly = \'\' OR A.artonly = \'' . $userinfo['martial'] . '\') ' .
+			'AND (A.mingrade = \'\')';
+	}
+	$sql = 'SELECT A.*, B.firstname, B.lastname, C.title AS clubname FROM ' . 
+		$wpdb->prefix . 'mr_file A LEFT JOIN ' . $wpdb->prefix . 
+		'mr_member B ON A.uploader = B.id LEFT JOIN ' . $wpdb->prefix . 
+		'mr_club C ON A.clubonly = C.id WHERE A.visible = 1 ' . $where . ' ORDER BY A.basename ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
@@ -125,6 +167,7 @@ function mr_files_list()
 		<?php
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
+			echo '<th>' . __('Restrictions') . '</th>';
 			echo '<th>' . __('Remove') . '</th>';
 		}
 		?>
@@ -136,7 +179,7 @@ function mr_files_list()
 	$out = '';
 	foreach($files as $file)
 	{
-		$path = realpath($mr_file_base_directory . '/' . $file['directory'] . '/' . $file['basename']);
+		$path = realpath($mr_file_base_directory . '/' . $file['directory'] . '/' . $file['id'] . '_' . $file['basename']);
 		
 		$out .= '<tr id="user_' . $file['id'] . '">';
 		$out .= '<td';
@@ -146,8 +189,14 @@ function mr_files_list()
 		}
 		else
 		{
-			$out .= '><a href="' . admin_url('admin.php?page=member-files') . '&amp;download=' . 
-				urlencode($file['directory'] . '/' . $file['basename']) . '" title="Lataa ' . 
+			$a = admin_url('admin.php?page=member-files') . '&amp;download=' . $file['id'];
+			if ($file['directory'] != '')
+			{
+				$a .= urlencode('/' . $file['directory']);
+			}
+			$a .= urlencode('/' . $file['basename']);
+			
+			$out .= '><a href="' . $a . '" title="Lataa ' . 
 				$file['basename'] . ' koneellesi">' . $file['basename'] . '</a>';
 		}
 		$out .= '</td>';
@@ -168,6 +217,23 @@ function mr_files_list()
 		$out.= '</td>';
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
+			$out .= '<td>';
+			$restrictions = array();
+			if ($file['clubonly'] != 0)
+			{
+				$restrictions[] = 'Vain seura: ' . $file['clubname'];
+			}
+			if ($file['mingrade'] != '')
+			{
+				$restrictions[] = 'Alin vyöarvo: ' . $mr_grade_values[$file['mingrade']];
+			}
+			if ($file['artonly'] != '')
+			{
+				$restrictions[] = 'Vain laji: ' . $mr_martial_arts[$file['artonly']];
+			}
+			$out .= implode('<br />', $restrictions);
+			$out .= '</td>';
+			
 			$out .= '<td>';
 			$out .= '<a rel="remove" href="' . admin_url('admin.php?page=member-files') .
 				'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto') . ': ' .
@@ -195,6 +261,8 @@ function mr_files_new()
 	
 	global $wpdb;
 	global $userdata;
+	global $mr_grade_values;
+	global $mr_martial_arts;
 	
 	// Check for possible insert
     $hidden_field_name = 'mr_submit_hidden_file';
@@ -206,8 +274,11 @@ function mr_files_new()
 		echo '</pre>';
 		*/
 		$dir = isset($_POST['directory']) ? trim($_POST['directory']) : '';
+		$mingrade = (isset($_POST['grade']) && $_POST['grade'] != '' && array_key_exists($_POST['grade'], $mr_grade_values)) ? $_POST['grade'] : '';
+		$clubonly = (isset($_POST['club']) && is_numeric($_POST['club'])) ? $_POST['club'] : 0;
+		$artonly = (isset($_POST['art']) && $_POST['art'] != '' && array_key_exists($_POST['art'], $mr_martial_arts)) ? $_POST['art'] : '';
 	
-        if (mr_insert_new_file($_FILES['hoplaa'], $dir))
+        if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly))
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:') . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
@@ -226,12 +297,49 @@ function mr_files_new()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
-					<th><?php echo __('Valitse tiedosto'); ?></th>
+					<th><?php echo __('Valitse tiedosto'); ?><span class="description">(max 10 MB)</span></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Kansio'); ?></th>
-					<td><input type="text" name="directory" value="" disabled="disabled" /></td>
+					<th><?php echo __('Kansio'); ?><span class="description">(parempaa järjestyksenpitoa varten, yksi sana)</span></th>
+					<td><input type="text" name="directory" value="" /></td>
+				</tr>
+				<tr class="form-field">
+					<th><?php echo __('Seura'); ?><span class="description">(rajoita vain tiettyyn seuraan kuuluville)</span></th>
+					<td><select name="club" data-placeholder="Valitse seura">
+						<option value=""></option>
+						<?php
+						$clubs = mr_get_list('club', '', '', 'title ASC');
+						foreach($clubs as $club)
+						{
+							echo '<option value="' . $club['id'] . '">' . $club['title'] . '</option>';
+						}
+						?>
+					</select></td>
+				</tr>
+				<tr class="form-field">
+					<th><?php echo __('Vyöarvo'); ?><span class="description">(rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin)</span></th>
+					<td><select name="grade" data-placeholder="Valitse alin vyöarvo">
+						<option value=""></option>
+						<?php
+						foreach ($mr_grade_values as $key => $val)
+						{
+							echo '<option value="' . $key . '">' . $val . '</option>';
+						}
+						?>
+					</select></td>
+				</tr>
+				<tr class="form-field">
+					<th><?php echo __('Päälaji'); ?><span class="description">(rajoita vain tämän lajin päälajikseen valinneille)</span></th>
+					<td><select name="art" data-placeholder="Valitse laji">
+						<option value=""></option>
+						<?php
+						foreach ($mr_martial_arts as $key => $val)
+						{
+							echo '<option value="' . $key . '">' . $val . '</option>';
+						}
+						?>
+					</select></td>
 				</tr>
 			</table>
 
@@ -246,48 +354,47 @@ function mr_files_new()
 }
  
 
-function mr_insert_new_file($filesdata, $dir = '')
+function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0, $artonly = '')
 {
 	global $wpdb;
 	global $userdata;
 	global $mr_file_base_directory;
 
-	$dir = strtolower(str_replace(array('..', ' '), '-', str_replace(array('..', '/', '\\', '...', '%'), '', $dir)));
+	// Should not bewgin with _ nor .
+	$dir = strtolower(str_replace(array('.', ' '), '-', str_replace(array('..', '/', '\\', '...', '%'), '', $dir)));
+	$first = substr($dir, 0, 1);
+	if ($first == '_' || $first == '.')
+	{
+		$dir = substr($dir, 1);
+	}
 	
 	$values = array(
 		'basename' => strtolower(str_replace(array('..', '%', ' '), '-', basename($filesdata['name']))),
-		'bytesize' => 0,
+		'bytesize' => $filesdata['size'],
 		'directory' => $dir,
 		'uploader' => $userdata->mr_memberid,
 		'uploaded' => time(),
-		'access' => 1,
+		'mingrade' => $mingrade, // if not empty, checked
+		'clubonly' => $clubonly, // if not zero, checked
+		'artonly' => $artonly, // if not empty, checked
 		'visible' => 1
 	);
 	
-	//if (dir_exists($mr_file_base_directory . '/' . $dir
+	umask(0000);
 	
 	if (!file_exists($mr_file_base_directory))
 	{
-		mkdir($mr_file_base_directory);
+		mkdir($mr_file_base_directory, 0775);
 	}
 	
-	$target = realpath($mr_file_base_directory . '/' . $dir);
+	$target = $mr_file_base_directory . '/' . $dir;
 	
 	if (!file_exists($target))
 	{
-		mkdir($target);
+		mkdir($target, 0775);
 	}
 
-	if (move_uploaded_file($filesdata['tmp_name'], $target . '/' . $values['basename']))
-	{
-		$values['bytesize'] = $filesdata['size'];
-	} 
-	else 
-	{
-		return false;
-	}
-	
-	return $wpdb->insert(
+	$insert = $wpdb->insert(
 		$wpdb->prefix . 'mr_file',
 		$values,
 		array(
@@ -296,10 +403,27 @@ function mr_insert_new_file($filesdata, $dir = '')
 			'%s', // directory
 			'%d', // uploader id
 			'%d', // uploaded time
-			'%d', // access
+			'%s', // mingrade
+			'%d', // clubonly
+			'%s', // artonly
 			'%d' // visible
 		)
 	);
+	
+	if ($insert !== false)
+	{
+		$target = $target . '/' . $wpdb->insert_id . '_' . $values['basename'];
+		
+		if (move_uploaded_file($filesdata['tmp_name'], $target))
+		{
+			chmod($target, 0775);
+		} 
+		else 
+		{
+			return false;
+		}
+	}
+	return $insert;
 }
 
  
