@@ -444,7 +444,7 @@ function mr_update_member_info($postdata)
 
 		$id = intval($postdata['id']);
 
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . 'WHERE id = ' . $id . ' LIMIT 1';
+		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . ' WHERE id = ' . $id . ' LIMIT 1';
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
 

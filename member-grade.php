@@ -61,10 +61,8 @@ function mr_grade_list()
 		$id = intval($_GET['removegrade']);
 		
 		// http://codex.wordpress.org/Class_Reference/wpdb#UPDATE_rows
-		/*
-		$wpdb->update( $table, $data, $where, $format = null, $where_format = null );
-		$wpdb->update( 
-			'mr_grade', // ? prefix included
+		$update = $wpdb->update( 
+			$wpdb->prefix . 'mr_grade',
 			array( 
 				'visible' => 0
 			), 
@@ -78,10 +76,8 @@ function mr_grade_list()
 				'%d' 
 			) 
 		);
-		*/
 		
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_grade SET visible = 0 WHERE id = ' . $id . ' LIMIT 1';
-		if ($wpdb->query($sql))
+		if ($update)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Vyöarvo poistettu') . ' (' . $id . ')</strong>';
@@ -96,7 +92,6 @@ function mr_grade_list()
 	echo '<div class="wrap">';
 	echo '<h2>' . __('Vyöarvot') . '</h2>';
 	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.') . '</p>';
-	echo '<p>' . __('Kenties tässä pitäisi olla filtterit vyöarvojen, seurojen ym mukaan.') . '</p>';
 	mr_show_grades();
 	echo '</div>';
 }
@@ -124,13 +119,13 @@ function mr_show_grades($memberid = null)
 	$order = 'B.lastname ASC, ';
 	if ($memberid != null && is_numeric($memberid))
 	{
-		$where = 'WHERE B.id = \'' . $memberid . '\' ';
+		$where = 'AND B.id = \'' . $memberid . '\' ';
 		$order = '';
 	}
 
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id AND A.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
+		'mr_member B ON A.member = B.id WHERE A.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
@@ -202,8 +197,8 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Poista henkilön ' . $grade['firstname'] . ' ' . 
-					$grade['lastname'] . 'vyöarvo') . ': ' . $grade['grade'] . '"><img src="' . 
+					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' . 
+					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '"><img src="' . 
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
@@ -259,7 +254,7 @@ function mr_insert_new_grade($postdata)
 		$postdata['members'] = array($postdata['member']);
 	}
 
-	if (isset($postdata['members']) && is_array($postdata['members']))
+	if (isset($postdata['members']) && is_array($postdata['members']) && count($postdata['members']) > 0)
 	{
 		foreach($postdata['members'] as $member)
 		{
@@ -291,6 +286,7 @@ function mr_grade_form($members)
 		wp_die( __('You do not have sufficient permissions to access this page.'));
 	}
 	
+	global $wpdb;
 	global $mr_grade_values;
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
@@ -333,11 +329,11 @@ function mr_grade_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi'); ?>)</span></th>
-				<td><input type="text" name="location" class="required" value="Turku" /></td>
+				<td><input type="text" name="location" class="required" value="" list="locations" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
-				<td><input type="text" name="nominator" class="required" value="Ilpo Jalamo, 6 dan" /></td>
+				<td><input type="text" name="nominator" class="required" value="" list="nominators" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
@@ -347,6 +343,27 @@ function mr_grade_form($members)
 			</tr>
 
 		</table>
+		
+		<datalist id="locations">
+			<?php
+			$sql = 'SELECT DISTINCT location FROM ' . $wpdb->prefix . 'mr_grade WHERE visible = 1 ORDER BY location ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['location'] . '" />';
+			}
+			?>
+		</datalist>
+		<datalist id="nominators">
+			<?php
+			$sql = 'SELECT DISTINCT nominator FROM ' . $wpdb->prefix . 'mr_grade WHERE visible = 1 ORDER BY nominator ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['nominator'] . '" />';
+			}
+			?>
+		</datalist>
 
 		<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />

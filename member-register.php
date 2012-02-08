@@ -307,6 +307,7 @@ function member_register_files_menu()
 // http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
 function member_register_profile_update($user_id, $old_user_data = null)
 {
+	/*
 	echo '<p>' . $user_id . '</p>';
 	if (isset($old_user_data))
 	{
@@ -314,6 +315,7 @@ function member_register_profile_update($user_id, $old_user_data = null)
 		print_r($old_user_data);
 		echo '</pre>';
 	}
+	*/
 }
 
 /**

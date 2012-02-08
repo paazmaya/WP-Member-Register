@@ -42,6 +42,8 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Released 8 February 2012
 * All forms are now autocomplete=on
 * Datalist for possible directory entries in file upload form
+* Tiny fixes that are found from debug.log, like for example that member info could not be updated due to missing space in SQL phrase
+* Datalist used also in new grade form for nominator and location, as well as in new payment form
 
 = 0.8.0 =
 * Released 7 February 2012

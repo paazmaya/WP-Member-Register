@@ -378,12 +378,12 @@ function mr_new_payment_form($members)
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Type'); ?> <span class="description">(<?php echo __('lienee aina vuosimaksu, Ainaisjäsenmaksu'); ?>)</span></th>
-				<td><input type="text" name="type" value="vuosimaksu" /></td>
+				<th><?php echo __('Type'); ?> <span class="description">(<?php echo __('vuosimaksu, ainaisjäsenmaksu, jne...'); ?>)</span></th>
+				<td><input type="text" name="type" value="" list="types" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Amount'); ?> <span class="description">(<?php echo __('EUR'); ?>)</span></th>
-				<td><input type="text" name="amount" value="10" /></td>
+				<td><input type="text" name="amount" value="" list="amounts" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Deadline'); ?> <span class="description">(<?php echo __('3 viikkoa tulevaisuudessa'); ?>)</span></th>
@@ -398,6 +398,27 @@ function mr_new_payment_form($members)
 				?>" /></td>
 			</tr>
 		</table>
+		
+		<datalist id="types">
+			<?php
+			$sql = 'SELECT DISTINCT type FROM ' . $wpdb->prefix . 'mr_payment WHERE visible = 1 ORDER BY type ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['type'] . '" />';
+			}
+			?>
+		</datalist>
+		<datalist id="amounts">
+			<?php
+			$sql = 'SELECT DISTINCT amount FROM ' . $wpdb->prefix . 'mr_payment WHERE visible = 1 ORDER BY amount ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['amount'] . '" />';
+			}
+			?>
+		</datalist>
 
 		<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="Lisää lasku" />
