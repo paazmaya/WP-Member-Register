@@ -603,11 +603,11 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Postinumero'); ?></th>
-				<td><input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" /></td>
+				<td><input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" list="zipcodes" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Postitoimipaikka'); ?></th>
-				<td><input type="text" name="postal" value="<?php echo $values['postal']; ?>" /></td>
+				<td><input type="text" name="postal" value="<?php echo $values['postal']; ?>" list="postals" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Puhelinnumero'); ?></th>
@@ -702,6 +702,26 @@ function mr_new_member_form($action, $data)
 				</select></td>
 			</tr>
 		</table>
+		<datalist id="postals">
+			<?php
+			$sql = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY postal ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['postal'] . '" />';
+			}
+			?>
+		</datalist>
+		<datalist id="zipcodes">
+			<?php
+			$sql = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY zipcode ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['zipcode'] . '" />';
+			}
+			?>
+		</datalist>
 
 		<p class="submit">
 			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />

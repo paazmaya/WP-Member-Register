@@ -130,18 +130,13 @@ function member_register_admin_init()
 	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery')); // 1.9.0
 	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
-
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
-
-	wp_register_script('jquery-cluetip', plugins_url('/js/jquery.cluetip.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery')); // 0.9.7
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
-	wp_register_style('jquery-ui-core',  plugins_url('/css/jquery.ui.core.css', __FILE__));
 	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
-	wp_register_style('jquery-cluetip',  plugins_url('/css/jquery.cluetip.css', __FILE__));
 	wp_register_style('jquery-chosen',  plugins_url('/css/chosen.css', __FILE__));
 	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
@@ -158,7 +153,6 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
-	wp_enqueue_script('jquery-cluetip');
 	wp_enqueue_script('jquery-chosen');
 	wp_enqueue_script('jquery-picnet-table-filter');
 }
@@ -166,11 +160,9 @@ function member_register_admin_print_scripts()
 function member_register_admin_print_styles()
 {
 	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
-	//wp_enqueue_style('jquery-ui-core');
 	wp_enqueue_style('jquery-ui-datepicker');
 	wp_enqueue_style('jquery-ui-theme-blizter');
 	wp_enqueue_style('jquery-tablesorter');
-	wp_enqueue_style('jquery-cluetip');
 	wp_enqueue_style('jquery-chosen');
 	wp_enqueue_style('mr-styles');
 }
@@ -196,27 +188,21 @@ function member_register_admin_head()
 				showWeek: true,
 				changeMonth: true,
 				changeYear: true,
-				yearRange: '1900:2110',
+				yearRange: '1920:2060',
 				numberOfMonths: 1,
 				dateFormat: 'yy-mm-dd'
 			});
 			jQuery('input.pickday').datepicker();
-			jQuery('table.tablesorter').tablesorter();
-			
-			jQuery('table a.tip').cluetip({
-				splitTitle: '|',
-				sticky: true,
-				closeText: 'sulje',
-				closePosition: 'title'
-			});
-			
+			jQuery('table.tablesorter').tablesorter();			
 			jQuery('select').chosen({
 				allow_single_deselect: true
 			});
 			jQuery('form').validate();
-			jQuery('table.tablesorter').tableFilter();
+			jQuery('table.tablesorter').tableFilter({
+				enableCookies: false
+			});
 
-			// Removal button should aske the user: are you sure?
+			// Removal button should ask the user: are you sure?
 			jQuery('a[rel="remove"]').click(function() {
 				var title = jQuery(this).attr('title');
 				return confirm(title);

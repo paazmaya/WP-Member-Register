@@ -244,6 +244,15 @@ function mr_insert_new_grade($postdata)
 		{
 			// sanitize
 			$keys[] = mr_urize($k);
+			if ($k == 'day')
+			{
+				$v = mr_htmlent($v);
+				if (strlen($v) == 4)
+				{
+					$v = $v . '-01-01';
+				}
+			}
+			
 			$values[] = "'" . mr_htmlent($v) . "'";
 		}
 	}

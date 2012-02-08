@@ -38,6 +38,12 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.8.2 =
+* Released 9 February 2012
+* Grade accepts only a year too, but it is transformed to the first day of that year
+* Removal of jQuery.cluetip
+
 = 0.8.1 = 
 * Released 8 February 2012
 * All forms are now autocomplete=on
