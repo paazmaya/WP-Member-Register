@@ -156,7 +156,7 @@ function mr_club_form($data = null)
 	}
 
 	?>
-	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
+	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data"  autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_club" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">

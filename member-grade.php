@@ -293,7 +293,7 @@ function mr_grade_form($members)
 	
 	global $mr_grade_values;
 	?>
-	<form name="form1" method="post" action="" enctype="multipart/form-data">
+	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">

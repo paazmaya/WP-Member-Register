@@ -244,7 +244,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				echo '<td>';
 				if ($payment['paidday'] == '0000-00-00')
 				{
-					echo '<form action="admin.php?page=member-payment-list" method="post">';
+					echo '<form action="admin.php?page=member-payment-list" method="post" autocomplete="on">';
 					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
 					echo '<input type="submit" value="OK" /></form>';
 				}
@@ -362,7 +362,7 @@ function mr_new_payment_form($members)
 	
 	global $wpdb;
 	?>
-	<form name="form1" method="post" action="" enctype="multipart/form-data">
+	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_payment" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">

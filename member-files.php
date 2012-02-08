@@ -294,7 +294,7 @@ function mr_files_new()
     ?>
 	<div class="wrap">
 		<h2><?php echo __('Lisää uusi tiedosto'); ?></h2>
-		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data">
+		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data" autocomplete="on">
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">

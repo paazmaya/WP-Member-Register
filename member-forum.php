@@ -376,7 +376,7 @@ function mr_show_form_topic()
 
 	$action = admin_url('admin.php?page=member-forum');
 	?>
-	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
+	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
@@ -403,7 +403,7 @@ function mr_show_form_post($topic)
 
 	$action = admin_url('admin.php?page=member-forum') . '&topic=' . $topic;
 	?>
-	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data">
+	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_post" value="Y" />
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
 		<table class="form-table" id="mrform">

@@ -512,7 +512,7 @@ function mr_new_member_form($action, $data)
 	*/
 
 	?>
-	<form name="form1" method="post" action="<?php echo $action; ?>">
+	<form name="form1" method="post" action="<?php echo $action; ?>" autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_member" value="Y" />
 		<input type="hidden" name="id" value="<?php echo $values['id']; ?>" />
 		<table class="form-table" id="mrform">
