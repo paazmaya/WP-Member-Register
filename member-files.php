@@ -264,6 +264,7 @@ function mr_files_new()
 	global $userdata;
 	global $mr_grade_values;
 	global $mr_martial_arts;
+	global $mr_file_base_directory;
 	
 	// Check for possible insert
     $hidden_field_name = 'mr_submit_hidden_file';
@@ -295,6 +296,19 @@ function mr_files_new()
 	<div class="wrap">
 		<h2><?php echo __('Lisää uusi tiedosto'); ?></h2>
 		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data" autocomplete="on">
+			<datalist id="directories">
+				<?php
+				$dirs = glob($mr_file_base_directory . '/*', GLOB_ONLYDIR);
+				foreach ($dirs as $dir)
+				{
+					$base = basename($dir);
+					if ($base != '_removed')
+					{
+						echo '<option value="' . $base . '" />';
+					}
+				}
+				?>
+			</datalist> 
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
@@ -303,7 +317,7 @@ function mr_files_new()
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Kansio'); ?><span class="description">(parempaa järjestyksenpitoa varten, yksi sana)</span></th>
-					<td><input type="text" name="directory" value="" /></td>
+					<td><input type="text" name="directory" value="" list="directories" /></td>
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Seura'); ?><span class="description">(rajoita vain tiettyyn seuraan kuuluville)</span></th>
