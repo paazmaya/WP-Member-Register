@@ -39,6 +39,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.9.0 =
+* Released 14 February 2012
+* Group management. Group contains people who can be listed and have rights to files.
+
 = 0.8.2 =
 * Released 9 February 2012
 * Grade accepts only a year too, but it is transformed to the first day of that year

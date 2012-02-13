@@ -57,7 +57,7 @@ function mr_show_access_values()
 	echo '<ul>';
 	foreach ($mr_access_type as $k => $v)
 	{
-		echo '<li title="' . $v . ' (' . $k . ')">[' . $k . '] ' . $v . '</li>';
+		echo '<li title="' . $v . ' (' . $k . ')">[' . decbin($k) . '] ' . $v . '</li>';
 	}
 	echo '</ul>';
 }

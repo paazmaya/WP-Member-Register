@@ -143,12 +143,15 @@ function mr_files_list()
 		$where = 'AND (A.clubonly = 0 OR A.clubonly = \'' . $userinfo['club'] . '\') ' .
 			'AND (A.artonly = \'\' OR A.artonly = \'' . $userinfo['martial'] . '\') ' .
 			'AND (A.mingrade = \'\' OR A.mingrade IN (SELECT grade FROM ' . 
-			$wpdb->prefix . 'mr_grade WHERE member = \'' . $userdata->mr_memberid . '\'))';
+			$wpdb->prefix . 'mr_grade WHERE member = \'' . $userdata->mr_memberid . '\')) ' .
+			'AND (A.grouponly = \'\' OR A.grouponly IN (SELECT group_id FROM ' . 
+			$wpdb->prefix . 'mr_group_member WHERE member_id = \'' . $userdata->mr_memberid . '\') )';
 	}
-	$sql = 'SELECT A.*, B.firstname, B.lastname, C.title AS clubname FROM ' . 
+	$sql = 'SELECT A.*, B.firstname, B.lastname, C.title AS clubname, D.title AS groupname FROM ' . 
 		$wpdb->prefix . 'mr_file A LEFT JOIN ' . $wpdb->prefix . 
 		'mr_member B ON A.uploader = B.id LEFT JOIN ' . $wpdb->prefix . 
-		'mr_club C ON A.clubonly = C.id WHERE A.visible = 1 ' . $where . ' ORDER BY A.basename ASC';
+		'mr_club C ON A.clubonly = C.id LEFT JOIN ' . $wpdb->prefix . 
+		'mr_group D ON A.grouponly = D.id WHERE A.visible = 1 ' . $where . ' ORDER BY A.basename ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	
@@ -232,6 +235,10 @@ function mr_files_list()
 			{
 				$restrictions[] = 'Vain laji: ' . $mr_martial_arts[$file['artonly']];
 			}
+			if ($file['grouponly'] != '')
+			{
+				$restrictions[] = 'Vain ryhmä: ' . $file['groupname'];
+			}
 			$out .= implode('<br />', $restrictions);
 			$out .= '</td>';
 			
@@ -279,8 +286,9 @@ function mr_files_new()
 		$mingrade = (isset($_POST['grade']) && $_POST['grade'] != '' && array_key_exists($_POST['grade'], $mr_grade_values)) ? $_POST['grade'] : '';
 		$clubonly = (isset($_POST['club']) && is_numeric($_POST['club'])) ? $_POST['club'] : 0;
 		$artonly = (isset($_POST['art']) && $_POST['art'] != '' && array_key_exists($_POST['art'], $mr_martial_arts)) ? $_POST['art'] : '';
+		$grouponly = isset($_POST['group']) && is_numeric($_POST['group']) ? intval($_POST['group']) : '';
 	
-        if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly))
+        if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly, $grouponly))
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:') . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
@@ -356,6 +364,19 @@ function mr_files_new()
 						?>
 					</select></td>
 				</tr>
+				<tr class="form-field">
+					<th><?php echo __('Ryhmä'); ?><span class="description">(rajoita vain tiettyyn ryhmään kuuluville)</span></th>
+					<td><select name="group" data-placeholder="Valitse ryhmä">
+						<option value=""></option>
+						<?php
+						$groups = mr_get_list('group', 'visible = 1', '', 'title ASC');
+						foreach($groups as $group)
+						{
+							echo '<option value="' . $group['id'] . '">' . $group['title'] . '</option>';
+						}
+						?>
+					</select></td>
+				</tr>
 			</table>
 
 			<p class="submit">
@@ -369,7 +390,7 @@ function mr_files_new()
 }
  
 
-function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0, $artonly = '')
+function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0, $artonly = '', $grouponly = '')
 {
 	global $wpdb;
 	global $userdata;
@@ -392,6 +413,7 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0
 		'mingrade' => $mingrade, // if not empty, checked
 		'clubonly' => $clubonly, // if not zero, checked
 		'artonly' => $artonly, // if not empty, checked
+		'grouponly' => $grouponly, // if not empty, checked
 		'visible' => 1
 	);
 	
@@ -421,6 +443,7 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '', $clubonly = 0
 			'%s', // mingrade
 			'%d', // clubonly
 			'%s', // artonly
+			'%d', // grouponly
 			'%d' // visible
 		)
 	);

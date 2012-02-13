@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.8.1
+ Version: 0.9.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.8.1');
+define ('MEMBER_REGISTER_VERSION', '0.9.0');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -23,7 +23,7 @@ global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '10';
+$mr_db_version = '11';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -71,6 +71,7 @@ define('MR_ACCESS_GRADE_MANAGE', 1 << 7); // 128
 define('MR_ACCESS_PAYMENT_MANAGE', 1 << 8); // 256
 define('MR_ACCESS_CLUB_MANAGE', 1 << 9); // 512
 define('MR_ACCESS_FILES_MANAGE', 1 << 10); // 1024
+define('MR_ACCESS_GROUP_MANAGE', 1 << 11); // 2048
 
 global $mr_access_type;
 $mr_access_type = array(
@@ -84,7 +85,8 @@ $mr_access_type = array(
 	128 => 'Vyöarvojen hallinta',
 	256 => 'Jäsenmaksujen hallinta',
 	512 => 'Seurojen hallinta',
-	1024 => 'Tiedostojen hallinta'
+	1024 => 'Tiedostojen hallinta',
+	2048 => 'Ryhmien hallinta'
 );
 
 
@@ -93,6 +95,7 @@ require 'member-member.php';
 require 'member-grade.php';
 require 'member-payment.php';
 require 'member-forum.php';
+require 'member-group.php';
 require 'member-club.php';
 require 'member-files.php';
 require 'member-install.php';
@@ -229,31 +232,37 @@ function member_register_admin_menu()
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
 		add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
-		__('Jäsenmaksut'), 'read', 'member-payment-list', 'mr_payment_list');
+			__('Jäsenmaksut'), 'read', 'member-payment-list', 'mr_payment_list');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
 		add_submenu_page('member-register-control', __('Uusi maksu'),
-		__('Uusi maksu'), 'read', 'member-payment-new', 'mr_payment_new');
+			__('Uusi maksu'), 'read', 'member-payment-new', 'mr_payment_new');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
 		add_submenu_page('member-register-control', __('Vyöarvot'),
-		__('Vyöarvot'), 'read', 'member-grade-list', 'mr_grade_list');
+			__('Vyöarvot'), 'read', 'member-grade-list', 'mr_grade_list');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
 		add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
-		__('Myönnä vyöarvoja'), 'read', 'member-grade-new', 'mr_grade_new');
+			__('Myönnä vyöarvoja'), 'read', 'member-grade-new', 'mr_grade_new');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
 		add_submenu_page('member-register-control', __('Seurat'),
-		__('Jäsenseurat'), 'read', 'member-club-list', 'mr_club_list');
+			__('Jäsenseurat'), 'read', 'member-club-list', 'mr_club_list');
+	}
+	
+	if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
+	{
+		add_submenu_page('member-register-control', __('Ryhmät'),
+			__('Jäsen ryhmät'), 'read', 'member-group-list', 'mr_group_list');
 	}
 
 }

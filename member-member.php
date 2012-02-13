@@ -20,7 +20,7 @@ function mr_show_members($filters = null)
 		wp_die( __('You do not have sufficient permissions to access this page.') );
 	}
 	
-	// Possible filter options: club, active
+	// Possible filter options: club, active, group
 	
 	$wheres = array();
 	$where = '';
@@ -28,15 +28,19 @@ function mr_show_members($filters = null)
 	{
 		if (isset($filters['club']) && is_numeric($filters['club']))
 		{
-			$wheres[] = ' A.club = ' . intval($filters['club']);
+			$wheres[] = 'A.club = ' . intval($filters['club']);
 		}
 		if (isset($filters['active']) && is_bool($filters['active']))
 		{
-			$wheres[] = ' A.active = ' . ($filters['active'] ? 1 : 0);
+			$wheres[] = 'A.active = ' . ($filters['active'] ? 1 : 0);
+		}
+		if (isset($filters['group']) && is_numeric($filters['group']))
+		{
+			$wheres[] = 'A.id IN (SELECT GM.member_id FROM ' . $wpdb->prefix . 'mr_group_member GM WHERE GM.group_id = ' . intval($filters['group']) . ')';
 		}
 		if (count($wheres) > 0)
 		{
-			$where = ' WHERE ' . implode(' AND', $wheres);
+			$where = ' WHERE ' . implode(' AND ', $wheres);
 		}
 	}
 

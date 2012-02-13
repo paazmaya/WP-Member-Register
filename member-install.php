@@ -13,6 +13,35 @@ function mr_install ()
 
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	
+
+	$table_name = $wpdb->prefix . $mr_prefix . 'group';
+	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+	{		
+		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(6) NOT NULL AUTO_INCREMENT,
+		  title varchar(200) COLLATE utf8_swedish_ci NOT NULL,
+		  creator mediumint(6) NOT NULL COMMENT 'Member ID who creted',
+		  modified int(10) NOT NULL COMMENT 'Unix timestamp of last modification',
+		  visible tinyint(1) NOT NULL DEFAULT '1',
+		  PRIMARY KEY (id)
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
+
+		dbDelta($sql);
+	}
+
+	$table_name = $wpdb->prefix . $mr_prefix . 'group_member';
+	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
+	{		
+		$sql = "CREATE TABLE " . $table_name . " (
+		  id mediumint(6) NOT NULL AUTO_INCREMENT,
+		  group_id mediumint(6) NOT NULL COMMENT 'ID of the group',
+		  member_id mediumint(6) NOT NULL COMMENT 'ID of the member',
+		  PRIMARY KEY (id)
+		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
+
+		dbDelta($sql);
+	}
+
 	$table_name = $wpdb->prefix . $mr_prefix . 'file';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
 	{		
@@ -26,6 +55,7 @@ function mr_install ()
 		  mingrade varchar(2) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT '$mr_grade_values if any minimum',
 		  clubonly mediumint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Club ID if not 0',
 		  artonly varchar(10) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'Only shown for those whose main martial',
+		  grouponly mediumint(6) NOT NULL,
 		  visible tinyint(1) NOT NULL DEFAULT '0',
 		  PRIMARY KEY (id),
 		  KEY visible (visible),
