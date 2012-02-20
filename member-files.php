@@ -144,7 +144,7 @@ function mr_files_list()
 			'AND (A.artonly = \'\' OR A.artonly = \'' . $userinfo['martial'] . '\') ' .
 			'AND (A.mingrade = \'\' OR A.mingrade IN (SELECT grade FROM ' . 
 			$wpdb->prefix . 'mr_grade WHERE member = \'' . $userdata->mr_memberid . '\')) ' .
-			'AND (A.grouponly = \'\' OR A.grouponly IN (SELECT group_id FROM ' . 
+			'AND (A.grouponly = 0 OR A.grouponly IN (SELECT group_id FROM ' . 
 			$wpdb->prefix . 'mr_group_member WHERE member_id = \'' . $userdata->mr_memberid . '\') )';
 	}
 	$sql = 'SELECT A.*, B.firstname, B.lastname, C.title AS clubname, D.title AS groupname FROM ' . 
@@ -235,7 +235,7 @@ function mr_files_list()
 			{
 				$restrictions[] = 'Vain laji: ' . $mr_martial_arts[$file['artonly']];
 			}
-			if ($file['grouponly'] != '')
+			if ($file['grouponly'] != 0)
 			{
 				$restrictions[] = 'Vain ryhmä: ' . $file['groupname'];
 			}
