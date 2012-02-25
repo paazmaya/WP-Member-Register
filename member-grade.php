@@ -36,7 +36,7 @@ function mr_grade_new()
 
 		<h2><?php echo __('Myönnä vyöarvoja'); ?></h2>
 		<?php
-		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
+		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
 		mr_grade_form($users);
 		?>

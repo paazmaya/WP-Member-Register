@@ -1,7 +1,7 @@
 === Member Register ===
 Contributors: paazmaya
 Donate link: http://paazmaya.com/
-Tags: members, organisation, forum, conversation, users, register
+Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.0.0
 Tested up to: 3.3.1
 Stable tag: master
@@ -18,18 +18,22 @@ Markdown parsed.
 
 == Installation ==
 
+As any other Wordpress plugin:
+
 1. Upload folder `member-register` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What do you mean 'member'? =
 
-An answer to that question.
+People who are members of a club or a association are called members, thus a member is managed in a member register
 
-= What about foo bar? =
+= What is the focus, target or scope of this plugin? =
 
-Answer to foo bar dilemma.
+To address the need for managing a martial arts club which has several member with payment, grading and other information.
+Ideally this plugin provides most of the things that might be needed by a martial art club.
+As a matter of fact, also clubs can be members, as there are possibilities of having many clubs listed in the register.
 
 == Screenshots ==
 
@@ -38,6 +42,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.9.1 =
+* Released 25 February 2012
+* Reordering PHP files
 
 = 0.9.0 =
 * Released 14 February 2012

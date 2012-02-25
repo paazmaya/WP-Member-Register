@@ -39,7 +39,7 @@ function mr_payment_new()
 		<p><?php echo __('Pääasia että rahaa tulee, sitä kun menee.'); ?></p>
 		<p><?php echo __('Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.'); ?></p>
 		<?php
-		$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
+		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
 		mr_new_payment_form($users);
 		?>

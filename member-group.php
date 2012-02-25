@@ -371,12 +371,12 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php
-				$sql = 'SELECT CONCAT(lastname, " ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE active = 1 ORDER BY lastname ASC';
+				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE active = 1 ORDER BY lastname ASC';
 				$users = $wpdb->get_results($sql, ARRAY_A);
 				foreach($users as $user)
 				{
 					echo '<option value="' . $user['id']. '"';
-					if (in_array($user['id'], $members))
+					if ($members != null && in_array($user['id'], $members))
 					{
 						echo ' selected="selected"';
 					}
