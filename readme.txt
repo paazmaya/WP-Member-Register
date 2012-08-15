@@ -42,6 +42,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.10.0 =
+* Released 14th August 2012
+* Show/hide columns
+* Payment can be marked as paid when creating it
+
 = 0.9.1 =
 * Released 25 February 2012
 * Reordering PHP files

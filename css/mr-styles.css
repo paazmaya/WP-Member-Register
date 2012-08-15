@@ -35,3 +35,16 @@ label.error {
 input.required {
 	border: 1px solid #22F422;
 }
+th.hideable a {
+	display: inline-block;
+	margin: 4px;
+}
+
+table caption {
+	text-align: right;
+}
+table caption a {
+	display: inline-block;
+	margin: 4px;
+	padding: 4px;
+}

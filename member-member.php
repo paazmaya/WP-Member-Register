@@ -57,17 +57,19 @@ function mr_show_members($filters = null)
 
 	?>
 	<table class="wp-list-table widefat tablesorter">
+	<caption></caption>
 	<thead>
 	<tr>
+		<th class="hideable"><?php echo __('Member ID'); ?></th>
 		<th class="headerSortDown"><?php echo __('Last name'); ?></th>
 		<th><?php echo __('First name'); ?></th>
 		<th><?php echo __('Birthday'); ?></th>
 		<th><?php echo __('E-mail'); ?></th>
 		<th><?php echo __('Phone number'); ?></th>
-		<th><?php echo __('Main martial art'); ?></th>
-		<th><?php echo __('Access rights'); ?></th>
-		<th><?php echo __('Last login'); ?></th>
-		<th><?php echo __('WP username'); ?></th>
+		<th class="hideable"><?php echo __('Main martial art'); ?></th>
+		<th class="hideable"><?php echo __('Access rights'); ?></th>
+		<th class="hideable"><?php echo __('Last login'); ?></th>
+		<th class="hideable"><?php echo __('WP username'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -80,6 +82,7 @@ function mr_show_members($filters = null)
 			' '	. $member['lastname'] . '">';
 
 		echo '<tr id="user_' . $member['id'] . '">';
+		echo '<td>' . $member['id'] . '</td>';
 		echo '<td';
 		if (intval($member['active']) == 0)
 		{

@@ -325,8 +325,14 @@ function mr_insert_new_payment($postdata)
 
 		$keys[] = 'member';
 		$keys[] = 'reference';
+		$keys[] = 'paidday';
 
-
+		$paidday = '0000-00-00';
+		if (isset($postdata['alreadypaid']) && ($postdata['alreadypaid'] == 'on' || $postdata['alreadypaid'] == '1'))
+		{
+			$paidday = date('Y-m-d');
+		}
+		
 		$id = intval('2' . $wpdb->get_var('SELECT MAX(id) FROM ' . $wpdb->prefix . 'mr_payment'));
 
 		foreach($postdata['members'] as $member)
@@ -335,7 +341,7 @@ function mr_insert_new_payment($postdata)
 			// calculate reference number
 			$ref = "'" . mr_reference_count($id) . "'";
 
-			$setval[] = '(' . implode(', ', array_merge($values, array('"' . $member . '"', $ref))) . ')';
+			$setval[] = '(' . implode(', ', array_merge($values, array('"' . $member . '"', $ref, '"' . $paidday . '"'))) . ')';
 
 		}
 	}
@@ -396,6 +402,10 @@ function mr_new_payment_form($members)
 				<td><input type="text" name="validuntil" class="pickday" value="<?php
 				echo date('Y') . '-12-31';
 				?>" /></td>
+			</tr>
+			<tr class="form-field">
+				<th><?php echo __('Already paid'); ?> <span class="description">(<?php echo __('maksettu tänään'); ?>)</span></th>
+				<td><input type="checkbox" name="alreadypaid" class="w4em" /></td>
 			</tr>
 		</table>
 		

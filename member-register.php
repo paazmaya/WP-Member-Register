@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.9.0
+ Version: 0.10.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.9.0');
+define ('MEMBER_REGISTER_VERSION', '0.10.0');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -185,6 +185,7 @@ function member_register_admin_head()
 	// jQuery is in noConflict state while in Wordpress...
 	?>
 	<script type="text/javascript">
+		var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="Piilota" /></a>';
 
 		jQuery(document).ready(function(){
 			jQuery.datepicker.setDefaults({
@@ -209,6 +210,41 @@ function member_register_admin_head()
 			jQuery('a[rel="remove"]').click(function() {
 				var title = jQuery(this).attr('title');
 				return confirm(title);
+			});
+			
+			jQuery('th.hideable').prepend(hideLink);
+			
+			// Hide table columns
+			jQuery('th.hideable a[href="#hide"]').click(function() {
+				var inx = jQuery(this).parent().index() + 1;
+				console.log("inx: " + inx);
+				var table = jQuery(this).parentsUntil('table').parent();
+				var text = jQuery(this).parent().text();
+				console.log("text: " + text);
+				
+				var showLink = '<a href="#show" title="' + text + '">' + text + '</a>';
+				jQuery('table caption').append(showLink);
+				
+				table.find('tr td:nth-child(' + inx + ')').hide();
+				table.find('tr th:nth-child(' + inx + ')').hide();
+				
+				return false;
+			});
+			
+			// Show the column again
+			jQuery('table caption a[href="#show"]').live('click', function() {
+				var text = jQuery(this).text();
+				var inx = jQuery('thead th:contains(' + text + ')').index();
+				console.log("show: " + text + ", inx: " + inx);
+				
+				var table = jQuery(this).parentsUntil('table').parent();
+				
+				table.find('tr td:nth-child(' + inx + ')').show();
+				table.find('tr th:nth-child(' + inx + ')').show();
+				
+				jQuery(this).remove();
+				
+				return false;
 			});
 		});
 
