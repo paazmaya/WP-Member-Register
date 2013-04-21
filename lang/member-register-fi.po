@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 15:56+0300\n"
-"PO-Revision-Date: 2013-04-21 18:01+0200\n"
+"POT-Creation-Date: 2013-04-21 18:21+0300\n"
+"PO-Revision-Date: 2013-04-21 18:23+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,6 @@ msgstr ""
 # File: member-payment.php, line: 395
 msgid "3 viikkoa tulevaisuudessa"
 msgstr "3 viikkoa tulevaisuudessa"
-
-#
-# File: member-prf.php, line: 35
-msgid "<strong>ERROR</strong>: You must include a martial art."
-msgstr "<strong>ERROR</strong>: You must include a martial art."
 
 #
 # File: member-member.php, line: 70
@@ -414,6 +409,13 @@ msgstr "Maksu merkitty maksetuksi tänään"
 # File: member-payment.php, line: 117
 msgid "Maksu poistettu"
 msgstr "Maksu poistettu"
+
+#
+# File: member-member.php, line: 69
+# File: member-member.php, line: 251
+# File: member-member.php, line: 655
+msgid "Martial Art"
+msgstr "Päälaji"
 
 #
 # File: member-payment.php, line: 375
@@ -932,6 +934,11 @@ msgstr "WP käyttäjätunnus"
 # File: member-register.php, line: 443
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Sinulla ei ole riittäviä oikeuksia tämän sivun katseluun."
+
+#
+# File: member-prf.php, line: 35
+msgid "You must include a martial art."
+msgstr "Sinun tulee valita päälaji"
 
 #
 # File: member-member.php, line: 247

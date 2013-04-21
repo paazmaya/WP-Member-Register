@@ -9,7 +9,7 @@ function mr_group_list()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 	global $wpdb;
@@ -39,7 +39,7 @@ function mr_group_list()
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Ryhmä poistettu') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('Ryhmä poistettu', 'member-register') . ' (' . $id . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -57,7 +57,7 @@ function mr_group_list()
 
 		if (isset($_GET['edit']))
 		{
-			echo '<h1>' . __('Muokkaa ryhmää') . ' ' . $res['title'] . '</h1>';
+			echo '<h1>' . __('Muokkaa ryhmää', 'member-register') . ' ' . $res['title'] . '</h1>';
 			$sql = 'SELECT member_id FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id . '';
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			$members = array();
@@ -90,9 +90,9 @@ function mr_group_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
-				$id . '&amp;edit" title="' . __('Muokkaa tätä ryhmää') . '" class="button-primary">' . __('Muokkaa tätä ryhmää') . '</a></p>';
+				$id . '&amp;edit" title="' . __('Muokkaa tätä ryhmää', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä ryhmää', 'member-register') . '</a></p>';
 				
-			echo '<h2>' . __('Aktiiviset jäsenet tässä ryhmässä.') . '</h2>';
+			echo '<h2>' . __('Aktiiviset jäsenet tässä ryhmässä.', 'member-register') . '</h2>';
 			mr_show_members(array(
 				'group' => $id,
 				'active' => true
@@ -101,7 +101,7 @@ function mr_group_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Ryhmät') . '</h2>';
+		echo '<h2>' . __('Ryhmät', 'member-register') . '</h2>';
 		
 		
 		// Check for possible insert
@@ -111,7 +111,7 @@ function mr_group_list()
 			if (mr_insert_new_group($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi ryhmä lisätty') . '</strong>';
+				echo '<strong>' . __('Uusi ryhmä lisätty', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -127,8 +127,8 @@ function mr_group_list()
 		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;create-group"' .
-					' title="' . __('Luo uusi ryhmä') . '" class="button-primary">' .
-					__('Luo uusi ryhmä') . '</a></p>';
+					' title="' . __('Luo uusi ryhmä', 'member-register') . '" class="button-primary">' .
+					__('Luo uusi ryhmä', 'member-register') . '</a></p>';
 
 			mr_show_groups(null); // no specific member
 		}
@@ -180,15 +180,15 @@ function mr_show_groups($memberid = null)
 		<table class="wp-list-table widefat tablesorter">
 			<thead>
 				<tr>
-					<th class="headerSortUp"><?php echo __('Title'); ?></th>
-					<th><?php echo __('Created by'); ?></th>
-					<th><?php echo __('Last modification'); ?></th>
-					<th><?php echo __('Jäseniä'); ?></th>
+					<th class="headerSortUp"><?php echo __('Title', 'member-register'); ?></th>
+					<th><?php echo __('Created by', 'member-register'); ?></th>
+					<th><?php echo __('Last modification', 'member-register'); ?></th>
+					<th><?php echo __('Jäseniä', 'member-register'); ?></th>
 					
 					<?php
 					if ($allowremove)
 					{
-						echo '<th class="w8em">' . __('Poista') . '</th>';
+						echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
 					}
 					?>
 				</tr>
@@ -243,7 +243,7 @@ function mr_group_new()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 	global $wpdb;
@@ -252,7 +252,7 @@ function mr_group_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Luo uusi ryhmä, jossa on vähintään yksi jäsen'); ?></h2>
+		<h2><?php echo __('Luo uusi ryhmä, jossa on vähintään yksi jäsen', 'member-register'); ?></h2>
 		<?php
 		mr_new_group_form();
 		?>
@@ -348,7 +348,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 	
 	global $wpdb;
@@ -363,11 +363,11 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		<input type="hidden" name="mr_submit_hidden_group" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Title'); ?> <span class="description">(<?php echo __('nimi jolla ryhmä on helppo tunnistaa'); ?>)</span></th>
+				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('nimi jolla ryhmä on helppo tunnistaa', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" value="<?php echo $title; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Members'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
+				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>
 				<td><select class="chosen" name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php

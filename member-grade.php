@@ -22,7 +22,7 @@ function mr_grade_new()
         if (mr_insert_new_grade($_POST))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi/uudet vyöarvo(t) lisätty') . '</strong>';
+			echo '<strong>' . __('Uusi/uudet vyöarvo(t) lisätty', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -34,7 +34,7 @@ function mr_grade_new()
     ?>
 	<div class="wrap">
 
-		<h2><?php echo __('Myönnä vyöarvoja'); ?></h2>
+		<h2><?php echo __('Myönnä vyöarvoja', 'member-register'); ?></h2>
 		<?php
 		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
@@ -50,7 +50,7 @@ function mr_grade_list()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 	global $wpdb;
@@ -80,7 +80,7 @@ function mr_grade_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Vyöarvo poistettu') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('Vyöarvo poistettu', 'member-register') . ' (' . $id . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -90,8 +90,8 @@ function mr_grade_list()
 	}
 	
 	echo '<div class="wrap">';
-	echo '<h2>' . __('Vyöarvot') . '</h2>';
-	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.') . '</p>';
+	echo '<h2>' . __('Vyöarvot', 'member-register') . '</h2>';
+	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.', 'member-register') . '</p>';
 	mr_show_grades();
 	echo '</div>';
 }
@@ -145,13 +145,13 @@ function mr_show_grades($memberid = null)
 			if ($memberid == null)
 			{
 				?>
-				<th class="headerSortDown"><?php echo __('Last name'); ?></th>
-				<th><?php echo __('First name'); ?></th>
+				<th class="headerSortDown"><?php echo __('Last name', 'member-register'); ?></th>
+				<th><?php echo __('First name', 'member-register'); ?></th>
 				<?php
 			}
 			?>
-			<th><?php echo __('Vyöarvo'); ?></th>
-			<th><?php echo __('Laji'); ?></th>
+			<th><?php echo __('Vyöarvo', 'member-register'); ?></th>
+			<th><?php echo __('Laji', 'member-register'); ?></th>
 			<th
 			<?php
 			if ($memberid != null)
@@ -159,13 +159,13 @@ function mr_show_grades($memberid = null)
 				echo ' class="headerSortUp"';
 			}
 			?>
-			><?php echo __('Myöntö PVM'); ?></th>
-			<th><?php echo __('Myöntäjä'); ?></th>
-			<th><?php echo __('Paikka'); ?></th>
+			><?php echo __('Myöntö PVM', 'member-register'); ?></th>
+			<th><?php echo __('Myöntäjä', 'member-register'); ?></th>
+			<th><?php echo __('Paikka', 'member-register'); ?></th>
 			<?php
 			if ($allowremove)
 			{
-				echo '<th class="w8em">' . __('Poista') . '</th>';
+				echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
 			}
 			?>
 		</tr>
@@ -292,7 +292,7 @@ function mr_grade_form($members)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 	
 	global $wpdb;
@@ -302,9 +302,9 @@ function mr_grade_form($members)
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Jäsen'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä'); ?>)</span></th>
+				<th><?php echo __('Jäsen', 'member-register'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä', 'member-register'); ?>)</span></th>
 				<td>
-					<select name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
+					<select class="chosen" name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
 					<option value=""></option>
 					<?php
 					foreach($members as $user)
@@ -316,7 +316,7 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Vyöarvo'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä'); ?>)</span></th>
+				<th><?php echo __('Vyöarvo', 'member-register'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä', 'member-register'); ?>)</span></th>
 				<td>
 					<select name="grade" data-placeholder="Valitse vyöarvo">
 					<option value=""></option>
@@ -330,22 +330,22 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Tyyppi'); ?> <span class="description">(<?php echo __('kummassa lajissa'); ?>)</span></th>
+				<th><?php echo __('Tyyppi', 'member-register'); ?> <span class="description">(<?php echo __('kummassa lajissa', 'member-register'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
 					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Paikka'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi'); ?>)</span></th>
+				<th><?php echo __('Paikka', 'member-register'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="location" class="required" value="" list="locations" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Myöntäjä'); ?> <span class="description">(<?php echo __('kuka myönsi'); ?>)</span></th>
+				<th><?php echo __('Myöntäjä', 'member-register'); ?> <span class="description">(<?php echo __('kuka myönsi', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="nominator" class="required" value="" list="nominators" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Päivämäärä'); ?> <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Päivämäärä', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="day" class="pickday" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
 				?>" /></td>

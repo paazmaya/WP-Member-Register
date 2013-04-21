@@ -53,8 +53,8 @@ function list_user_rights($rights)
 function mr_show_access_values()
 {
 	global $mr_access_type;
-	echo '<p>' . __('Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet', MR_GT_DOMAIN) . '. ' .
-		__('Pyynnöstä näitä voidaan lisätä tai vähentää.', MR_GT_DOMAIN) . '</p>';
+	echo '<p>' . __('Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet', 'member-register') . '. ' .
+		__('Pyynnöstä näitä voidaan lisätä tai vähentää.', 'member-register') . '</p>';
 	echo '<ul>';
 	foreach ($mr_access_type as $k => $v)
 	{

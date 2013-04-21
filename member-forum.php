@@ -12,7 +12,7 @@ function mr_forum_list()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	global $wpdb;
@@ -22,7 +22,7 @@ function mr_forum_list()
 
 	if (isset($_GET['topic']) && is_numeric($_GET['topic']))
 	{
-		echo '<h2>' . __('Keskustelua aiheesta...', MR_GT_DOMAIN) . '</h2>';
+		echo '<h2>' . __('Keskustelua aiheesta...', 'member-register') . '</h2>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_post';
@@ -32,7 +32,7 @@ function mr_forum_list()
 			if (mr_insert_new_post($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi viesti keskusteluun lisätty', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Uusi viesti keskusteluun lisätty', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -62,7 +62,7 @@ function mr_forum_list()
 			if ($update !== false)
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Valittu viesti poistettu.', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Valittu viesti poistettu.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -76,7 +76,7 @@ function mr_forum_list()
 		// New post form to the given topic
 		if (mr_has_permission(MR_ACCESS_CONVERSATION))
 		{
-			echo '<h3>' . __('Lisää viesti', MR_GT_DOMAIN) . '</h3>';
+			echo '<h3>' . __('Lisää viesti', 'member-register') . '</h3>';
 			mr_show_form_post($_GET['topic']);
 			echo '<hr />';
 		}
@@ -85,8 +85,8 @@ function mr_forum_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Keskustelu', MR_GT_DOMAIN) . '</h2>';
-		echo '<p>' . __('Alempana lista aktiivista keskustelun aiheista', MR_GT_DOMAIN) . '</p>';
+		echo '<h2>' . __('Keskustelu', 'member-register') . '</h2>';
+		echo '<p>' . __('Alempana lista aktiivista keskustelun aiheista', 'member-register') . '</p>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_topic';
@@ -95,7 +95,7 @@ function mr_forum_list()
 			if (mr_insert_new_topic($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun.', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -125,7 +125,7 @@ function mr_forum_list()
 			if ($update)
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Valittu aihe poistettu.', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Valittu aihe poistettu.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -137,11 +137,11 @@ function mr_forum_list()
 		// New topic form
 		if (mr_has_permission(MR_ACCESS_FORUM_CREATE))
 		{
-			echo '<h3>' . __('Luo uusi keskustelun aihe', MR_GT_DOMAIN) . '</h3>';
+			echo '<h3>' . __('Luo uusi keskustelun aihe', 'member-register') . '</h3>';
 			mr_show_form_topic();
 			echo '<hr />';
 		}
-		echo '<h3>' . __('Käynnissä olevat keskustelun aiheet', MR_GT_DOMAIN) . '</h3>';
+		echo '<h3>' . __('Käynnissä olevat keskustelun aiheet', 'member-register') . '</h3>';
 
 		mr_show_list_topics($userdata->mr_access);
 	}
@@ -153,7 +153,7 @@ function mr_show_info_topic($topic)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	global $wpdb;
@@ -172,12 +172,12 @@ function mr_show_info_topic($topic)
 	$res = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h3>' . $res['title'] . '</h3>';
-	echo '<p>' . __('Tämän aiheen loi', MR_GT_DOMAIN) . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
-		', ' . __('päivämäärällä', MR_GT_DOMAIN) . ' ' . date('Y-m-d', $res['created']) . '.<br />';
-	echo __('Viestejä yhteensä', MR_GT_DOMAIN) . ' ' . $res['total'];
+	echo '<p>' . __('Tämän aiheen loi', 'member-register') . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
+		', ' . __('päivämäärällä', 'member-register') . ' ' . date('Y-m-d', $res['created']) . '.<br />';
+	echo __('Viestejä yhteensä', 'member-register') . ' ' . $res['total'];
 	if ($res['total'] > 0)
 	{
-		echo ', ' . __('joista viimeisin', MR_GT_DOMAIN) . ' ' . date($mr_date_format, $res['lastpost']);
+		echo ', ' . __('joista viimeisin', 'member-register') . ' ' . date($mr_date_format, $res['lastpost']);
 	}
 	echo '.</p>';
 }
@@ -187,7 +187,7 @@ function mr_show_list_topics()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	global $wpdb;
@@ -211,14 +211,14 @@ function mr_show_list_topics()
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th><?php echo __('Aihe', MR_GT_DOMAIN); ?></th>
-		<th class="w20em headerSortUp"><?php echo __('Viimeisin viesti', MR_GT_DOMAIN); ?></th>
-		<th class="w20em"><?php echo __('Viimeisimmän viestin kirjoitti', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Viestejä', MR_GT_DOMAIN); ?></th>
+		<th><?php echo __('Aihe', 'member-register'); ?></th>
+		<th class="w20em headerSortUp"><?php echo __('Viimeisin viesti', 'member-register'); ?></th>
+		<th class="w20em"><?php echo __('Viimeisimmän viestin kirjoitti', 'member-register'); ?></th>
+		<th><?php echo __('Viestejä', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<th class="w4em" filter="false">' . __('Poista', MR_GT_DOMAIN) . '</th>';
+			echo '<th class="w4em" filter="false">' . __('Poista', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -245,7 +245,7 @@ function mr_show_list_topics()
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') .
-				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla', MR_GT_DOMAIN) . ': ' .
+				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla', 'member-register') . ': ' .
 				$topic['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
@@ -262,7 +262,7 @@ function mr_show_posts_for_topic($topic)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	global $wpdb;
@@ -286,13 +286,13 @@ function mr_show_posts_for_topic($topic)
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="w20em headerSortUp"><?php echo __('Aika', MR_GT_DOMAIN); ?></th>
-		<th class="w20em"><?php echo __('Jäsen', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Viesti', MR_GT_DOMAIN); ?></th>
+		<th class="w20em headerSortUp"><?php echo __('Aika', 'member-register'); ?></th>
+		<th class="w20em"><?php echo __('Jäsen', 'member-register'); ?></th>
+		<th><?php echo __('Viesti', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<th class="w4em" filter="false">' . __('Poista', MR_GT_DOMAIN) . '</th>';
+			echo '<th class="w4em" filter="false">' . __('Poista', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -308,7 +308,7 @@ function mr_show_posts_for_topic($topic)
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
-				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu', MR_GT_DOMAIN) . ' ' .
+				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu', 'member-register') . ' ' .
 				date($mr_date_format, $post['created']) . '"><img src="' .
 				plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 		}
@@ -368,7 +368,7 @@ function mr_show_form_topic()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FORUM_CREATE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	global $mr_access_type;
@@ -380,7 +380,7 @@ function mr_show_form_topic()
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Aihe', MR_GT_DOMAIN); ?> <span class="description">(<?php echo __('otsikko', MR_GT_DOMAIN); ?>)</span></th>
+				<th><?php echo __('Aihe', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" value="" /></td>
 			</tr>
 		</table>
@@ -398,7 +398,7 @@ function mr_show_form_post($topic)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 
 	$action = admin_url('admin.php?page=member-forum') . '&topic=' . $topic;
@@ -408,7 +408,7 @@ function mr_show_form_post($topic)
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Viesti', MR_GT_DOMAIN); ?> <span class="description">(<?php echo __('vapaasti', MR_GT_DOMAIN); ?>)</span></th>
+				<th><?php echo __('Viesti', 'member-register'); ?> <span class="description">(<?php echo __('vapaasti', 'member-register'); ?>)</span></th>
 				<td><textarea name="content" class="required"></textarea></td>
 			</tr>
 		</table>

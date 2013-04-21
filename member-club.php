@@ -15,7 +15,7 @@ function mr_club_list()
 
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 
@@ -43,7 +43,7 @@ function mr_club_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Seura poistettu', MR_GT_DOMAIN) . ' (' . $_GET['removeclub'] . ')</strong>';
+			echo '<strong>' . __('Seura poistettu', 'member-register') . ' (' . $_GET['removeclub'] . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -64,7 +64,7 @@ function mr_club_list()
 			if (mr_update_club($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Seuran tiedot päivitetty.', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Seuran tiedot päivitetty.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -78,7 +78,7 @@ function mr_club_list()
 
 		if (isset($_GET['edit']))
 		{
-			echo '<h1>' . __('Modify', MR_GT_DOMAIN) . ' ' . $res['title'] . '</h1>';
+			echo '<h1>' . __('Modify', 'member-register') . ' ' . $res['title'] . '</h1>';
 			mr_club_form($res);
 		}
 		else
@@ -88,8 +88,8 @@ function mr_club_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
-				$id . '&edit" title="' . __('Muokkaa tätä seuraa', MR_GT_DOMAIN) . '" class="button-primary">' . __('Muokkaa tätä seuraa', MR_GT_DOMAIN) . '</a></p>';
-			echo '<h2>' . __('Aktiiviset jäsenet tässä seurassa.', MR_GT_DOMAIN) . '</h2>';
+				$id . '&edit" title="' . __('Muokkaa tätä seuraa', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä seuraa', 'member-register') . '</a></p>';
+			echo '<h2>' . __('Aktiiviset jäsenet tässä seurassa.', 'member-register') . '</h2>';
 			mr_show_members(array(
 				'club' => intval($_GET['club']),
 				'active' => true
@@ -98,9 +98,9 @@ function mr_club_list()
 	}
 	else
 	{
-		echo '<h1>' . __('Jäsenseurat', MR_GT_DOMAIN) . '</h1>';
-		echo '<p>' . __('Suomen Yuishinkai-liiton Jäsenseurat.', MR_GT_DOMAIN) . '</p>';
-		echo '<p>' . __('Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua.', MR_GT_DOMAIN) . '</p>';
+		echo '<h1>' . __('Jäsenseurat', 'member-register') . '</h1>';
+		echo '<p>' . __('Suomen Yuishinkai-liiton Jäsenseurat.', 'member-register') . '</p>';
+		echo '<p>' . __('Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua.', 'member-register') . '</p>';
 
 		// Was there an insert of a new club?
 		$hidden_field_name = 'mr_submit_hidden_club';
@@ -109,7 +109,7 @@ function mr_club_list()
 			if (mr_insert_new_club($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi seura lisätty.', MR_GT_DOMAIN) . '</strong>';
+				echo '<strong>' . __('Uusi seura lisätty.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -125,8 +125,8 @@ function mr_club_list()
 		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&createclub"' .
-					' title="' . __('Luo uusi seura', MR_GT_DOMAIN) . '" class="button-primary">' .
-					__('Luo uusi seura', MR_GT_DOMAIN) . '</a></p>';
+					' title="' . __('Luo uusi seura', 'member-register') . '" class="button-primary">' .
+					__('Luo uusi seura', 'member-register') . '</a></p>';
 
 			mr_show_clubs();
 		}
@@ -139,7 +139,7 @@ function mr_club_form($data = null)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN));
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 	$values = array(
@@ -160,11 +160,11 @@ function mr_club_form($data = null)
 		<input type="hidden" name="mr_submit_hidden_club" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Name', MR_GT_DOMAIN); ?> <span class="description">(<?php echo __('otsikko', MR_GT_DOMAIN); ?>)</span></th>
+				<th><?php echo __('Name', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" value="<?php echo $values['title']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Address', MR_GT_DOMAIN); ?> <span class="description">(<?php echo __('otsikko', MR_GT_DOMAIN); ?>)</span></th>
+				<th><?php echo __('Address', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="address" class="required" value="<?php echo $values['address']; ?>" /></td>
 			</tr>
 		</table>
@@ -203,13 +203,13 @@ function mr_show_clubs()
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="headerSortDown"><?php echo __('Nimi', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Address', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Aktiivisia jäseniä', MR_GT_DOMAIN); ?></th>
+		<th class="headerSortDown"><?php echo __('Nimi', 'member-register'); ?></th>
+		<th><?php echo __('Address', 'member-register'); ?></th>
+		<th><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
 		<?php
 		if ($allowremove)
 		{
-			echo '<th class="w8em">' . __('Poista', MR_GT_DOMAIN) . '</th>';
+			echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -220,7 +220,7 @@ function mr_show_clubs()
 	foreach($clubs as $club)
 	{
 		$url = '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . $club['id'] .
-			'" title="' . __('List of active members in the club called:', MR_GT_DOMAIN) . ' ' .$club['title'] . '">';
+			'" title="' . __('List of active members in the club called:', 'member-register') . ' ' .$club['title'] . '">';
 		echo '<tr id="user_' . $club['id'] . '">';
 		echo '<td>' . $url . $club['title'] . '</a></td>';
 		echo '<td>' . $url . $club['address'] . '</a></td>';
@@ -229,9 +229,9 @@ function mr_show_clubs()
 		if ($allowremove)
 		{
 			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
-				'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', MR_GT_DOMAIN) . ': ' .
+				'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', 'member-register') . ': ' .
 				$club['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) .
-				'" alt="' . __('Poista seura', MR_GT_DOMAIN) . '" /></a></td>';
+				'" alt="' . __('Poista seura', 'member-register') . '" /></a></td>';
 		}
 		echo '</tr>';
 	}

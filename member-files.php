@@ -18,7 +18,7 @@ function mr_file_download($get)
 	
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_VIEW))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 	
 	// $get should contain download: id / dir / basename
@@ -27,7 +27,7 @@ function mr_file_download($get)
 	$parts = explode('/', $get);
 	if (count($parts) < 2)
 	{
-		wp_die( __('Not available.', MR_GT_DOMAIN) );
+		wp_die( __('Not available.', 'member-register') );
 	}
 	
 	//$basename = array_pop($parts);
@@ -59,7 +59,7 @@ function mr_file_download($get)
 	}
 	else
 	{
-		wp_die( __('Not found.', MR_GT_DOMAIN) );
+		wp_die( __('Not found.', 'member-register') );
 	}
 
 	exit();
@@ -81,7 +81,7 @@ function mr_files_list()
 	
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_VIEW))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 	
 	if (isset($_GET['remove-file']) && is_numeric($_GET['remove-file']) && mr_has_permission(MR_ACCESS_FILES_MANAGE))
@@ -122,7 +122,7 @@ function mr_files_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Valittu tiedosto poistettu.', MR_GT_DOMAIN) . '</strong>';
+			echo '<strong>' . __('Valittu tiedosto poistettu.', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -159,20 +159,20 @@ function mr_files_list()
 	
 	$files = $wpdb->get_results($sql, ARRAY_A);
 	?>
-	<h2><?php echo __('Jäsenten tiedostot', MR_GT_DOMAIN); ?></h2>
+	<h2><?php echo __('Jäsenten tiedostot', 'member-register'); ?></h2>
 	<table class="wp-list-table widefat tablesorter">
 	<thead>
 	<tr>
-		<th class="headerSortDown"><?php echo __('Base name', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Directory', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Size', MR_GT_DOMAIN); ?> (KB)</th>
-		<th><?php echo __('Uploaded', MR_GT_DOMAIN); ?></th>
-		<th><?php echo __('Uploader', MR_GT_DOMAIN); ?></th>
+		<th class="headerSortDown"><?php echo __('Base name', 'member-register'); ?></th>
+		<th><?php echo __('Directory', 'member-register'); ?></th>
+		<th><?php echo __('Size', 'member-register'); ?> (KB)</th>
+		<th><?php echo __('Uploaded', 'member-register'); ?></th>
+		<th><?php echo __('Uploader', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
-			echo '<th>' . __('Restrictions', MR_GT_DOMAIN) . '</th>';
-			echo '<th>' . __('Remove', MR_GT_DOMAIN) . '</th>';
+			echo '<th>' . __('Restrictions', 'member-register') . '</th>';
+			echo '<th>' . __('Remove', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -244,7 +244,7 @@ function mr_files_list()
 			
 			$out .= '<td>';
 			$out .= '<a rel="remove" href="' . admin_url('admin.php?page=member-files') .
-				'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto', MR_GT_DOMAIN) . ': ' .
+				'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto', 'member-register') . ': ' .
 				$file['basename'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a>';
 			$out .= '</td>';
 		}
@@ -264,7 +264,7 @@ function mr_files_new()
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_FILES_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN) );
+		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
 	
 	global $wpdb;
@@ -291,7 +291,7 @@ function mr_files_new()
         if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly, $grouponly))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:', MR_GT_DOMAIN) . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
+			echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:', 'member-register') . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -302,7 +302,7 @@ function mr_files_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Lisää uusi tiedosto', MR_GT_DOMAIN); ?></h2>
+		<h2><?php echo __('Lisää uusi tiedosto', 'member-register'); ?></h2>
 		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data" autocomplete="on">
 			<datalist id="directories">
 				<?php
@@ -320,15 +320,15 @@ function mr_files_new()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
-					<th><?php echo __('Valitse tiedosto', MR_GT_DOMAIN); ?><span class="description">(max 10 MB)</span></th>
+					<th><?php echo __('Valitse tiedosto', 'member-register'); ?><span class="description">(max 10 MB)</span></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Kansio', MR_GT_DOMAIN); ?><span class="description">(parempaa järjestyksenpitoa varten, yksi sana)</span></th>
+					<th><?php echo __('Kansio', 'member-register'); ?><span class="description">(parempaa järjestyksenpitoa varten, yksi sana)</span></th>
 					<td><input type="text" name="directory" value="" list="directories" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Seura', MR_GT_DOMAIN); ?><span class="description">(rajoita vain tiettyyn seuraan kuuluville)</span></th>
+					<th><?php echo __('Seura', 'member-register'); ?><span class="description">(rajoita vain tiettyyn seuraan kuuluville)</span></th>
 					<td><select name="club" data-placeholder="Valitse seura">
 						<option value=""></option>
 						<?php
@@ -341,7 +341,7 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Vyöarvo', MR_GT_DOMAIN); ?><span class="description">(rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin)</span></th>
+					<th><?php echo __('Vyöarvo', 'member-register'); ?><span class="description">(rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin)</span></th>
 					<td><select name="grade" data-placeholder="Valitse alin vyöarvo">
 						<option value=""></option>
 						<?php
@@ -353,7 +353,7 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Päälaji', MR_GT_DOMAIN); ?><span class="description">(rajoita vain tämän lajin päälajikseen valinneille)</span></th>
+					<th><?php echo __('Päälaji', 'member-register'); ?><span class="description">(rajoita vain tämän lajin päälajikseen valinneille)</span></th>
 					<td><select name="art" data-placeholder="Valitse laji">
 						<option value=""></option>
 						<?php
@@ -365,7 +365,7 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Ryhmä', MR_GT_DOMAIN); ?><span class="description">(rajoita vain tiettyyn ryhmään kuuluville)</span></th>
+					<th><?php echo __('Ryhmä', 'member-register'); ?><span class="description">(rajoita vain tiettyyn ryhmään kuuluville)</span></th>
 					<td><select name="group" data-placeholder="Valitse ryhmä">
 						<option value=""></option>
 						<?php
