@@ -12,7 +12,7 @@ function mr_prf_register_form (){
 	$martial_art = ( isset( $_POST['martial_art'] ) ) ? $_POST['martial_art']: '';
 	?>
 	<p>
-		<label for="martial_art"><?php __('Martial Art') ?><br />
+		<label for="martial_art"><?php __('Martial Art', MR_GT_DOMAIN) ?><br />
 			<input type="text" name="martial_art" id="martial_art" class="input" value="<?php echo esc_attr(stripslashes($martial_art)); ?>" size="25" /></label>
 	</p>
 	<?php
@@ -24,7 +24,7 @@ function mr_prf_register_form (){
 function mr_prf_registration_errors ($errors, $sanitized_user_login, $user_email) {
 
 	if ( empty( $_POST['martial_art'] ) )
-		$errors->add( 'martial_art_error', __('<strong>ERROR</strong>: You must include a martial art.') );
+		$errors->add( 'martial_art_error', __('You must include a martial art.', MR_GT_DOMAIN) );
 
 	return $errors;
 }

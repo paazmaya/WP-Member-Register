@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-21 15:56+0300\n"
-"PO-Revision-Date: 2013-04-21 18:01+0200\n"
+"PO-Revision-Date: 2013-04-21 17:50+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 #
 # File: member-payment.php, line: 395
 msgid "3 viikkoa tulevaisuudessa"
-msgstr "3 viikkoa tulevaisuudessa"
+msgstr "3 weeks in the future"
 
 #
 # File: member-prf.php, line: 35
@@ -29,25 +29,25 @@ msgstr "<strong>ERROR</strong>: You must include a martial art."
 #
 # File: member-member.php, line: 70
 msgid "Access rights"
-msgstr "Kirjautumisoikeudet"
+msgstr "Access rights"
 
 #
 # File: member-club.php, line: 167
 # File: member-club.php, line: 207
 # File: member-member.php, line: 219
 msgid "Address"
-msgstr "Osoite"
+msgstr "Address"
 
 #
 # File: member-forum.php, line: 214
 # File: member-forum.php, line: 383
 msgid "Aihe"
-msgstr "Aihe"
+msgstr "Subject"
 
 #
 # File: member-forum.php, line: 289
 msgid "Aika"
-msgstr "Aika"
+msgstr "Time"
 
 #
 # File: member-member.php, line: 269
@@ -88,52 +88,52 @@ msgstr "Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet"
 #
 # File: member-payment.php, line: 407
 msgid "Already paid"
-msgstr "On jo maksettu"
+msgstr "Already paid"
 
 #
 # File: member-payment.php, line: 391
 msgid "Amount"
-msgstr "Määrä"
+msgstr "Amount"
 
 #
 # File: member-files.php, line: 166
 msgid "Base name"
-msgstr "Perusnimi"
+msgstr "Base name"
 
 #
 # File: member-member.php, line: 66
 # File: member-member.php, line: 215
 # File: member-member.php, line: 604
 msgid "Birthday"
-msgstr "Syntymäpäivä"
+msgstr "Birthday"
 
 #
 # File: member-group.php, line: 184
 msgid "Created by"
-msgstr "Luonut"
+msgstr "Created by"
 
 #
 # File: member-member.php, line: 243
 # File: member-member.php, line: 647
 msgid "Date of joining"
-msgstr "Liittymispäivämäärä"
+msgstr "Date of joining"
 
 #
 # File: member-payment.php, line: 395
 msgid "Deadline"
-msgstr "Eräpäivä"
+msgstr "Deadline"
 
 #
 # File: member-files.php, line: 167
 msgid "Directory"
-msgstr "Kansio"
+msgstr "Directory"
 
 #
 # File: member-member.php, line: 67
 # File: member-member.php, line: 235
 # File: member-member.php, line: 624
 msgid "E-mail"
-msgstr "Sähköposti"
+msgstr "E-mail"
 
 #
 # File: member-payment.php, line: 391
@@ -174,7 +174,8 @@ msgid ""
 "In case you wish to remove a user, first all grades and payments should be "
 "removed."
 msgstr ""
-"Mikäli haluat poistaa käyttäjän, tulee hänen vyöarvot ja maksut poistaa ensin"
+"In case you wish to remove a user, first all grades and payments should be "
+"removed."
 
 #
 # File: member-forum.php, line: 290
@@ -305,7 +306,7 @@ msgstr "Viimeisin kirjautuminen"
 #
 # File: member-group.php, line: 185
 msgid "Last modification"
-msgstr "Viimeisin muokkaus"
+msgstr "Last modification"
 
 #
 # File: member-grade.php, line: 148
@@ -314,13 +315,13 @@ msgstr "Viimeisin muokkaus"
 # File: member-member.php, line: 600
 # File: member-payment.php, line: 213
 msgid "Last name"
-msgstr "Sukunimi"
+msgstr "Last name"
 
 #
 # File: member-club.php, line: 223
 # File: member-member.php, line: 278
 msgid "List of active members in the club called:"
-msgstr "Lista aktiivisista jäsenistä seurassa:"
+msgstr "List of active members in the club called:"
 
 #
 # File: member-member.php, line: 261
@@ -383,7 +384,7 @@ msgstr "Lähetä sähköpostia"
 # File: member-member.php, line: 251
 # File: member-member.php, line: 655
 msgid "Main martial art"
-msgstr "Päälaji"
+msgstr "Main martial art"
 
 #
 # File: member-payment.php, line: 142
@@ -423,12 +424,12 @@ msgstr "Jäsen"
 #
 # File: member-member.php, line: 63
 msgid "Member ID"
-msgstr "Jäsentunnus"
+msgstr "Member ID"
 
 #
 # File: member-group.php, line: 370
 msgid "Members"
-msgstr "Jäsenet"
+msgstr "Members"
 
 #
 # File: member-payment.php, line: 146
@@ -487,13 +488,13 @@ msgstr "Myöntö PVM"
 #
 # File: member-club.php, line: 163
 msgid "Name"
-msgstr "Nimi"
+msgstr "Name"
 
 #
 # File: member-member.php, line: 239
 # File: member-member.php, line: 628
 msgid "Nationality"
-msgstr "Kansallisuus"
+msgstr "Nationality"
 
 #
 # File: member-club.php, line: 206
@@ -629,7 +630,7 @@ msgstr "Poista"
 #
 # File: member-files.php, line: 174
 msgid "Restrictions"
-msgstr "Rajoitteet"
+msgstr "Restrictions"
 
 #
 # File: member-register.php, line: 89
@@ -718,12 +719,12 @@ msgstr "Tiedostot jäsenille"
 # File: member-group.php, line: 183
 # File: member-group.php, line: 366
 msgid "Title"
-msgstr "Otsikko"
+msgstr "Title"
 
 #
 # File: member-payment.php, line: 387
 msgid "Type"
-msgstr "Tyyppi"
+msgstr "Type"
 
 #
 # File: member-grade.php, line: 333
@@ -739,12 +740,12 @@ msgstr "Tämän aiheen loi"
 #
 # File: member-files.php, line: 169
 msgid "Uploaded"
-msgstr "Lisätty"
+msgstr "Uploaded"
 
 #
 # File: member-files.php, line: 170
 msgid "Uploader"
-msgstr "Lisääjä"
+msgstr "Uploader"
 
 #
 # File: member-forum.php, line: 98
@@ -800,7 +801,7 @@ msgstr "Uusi/uudet vyöarvo(t) lisätty"
 #
 # File: member-payment.php, line: 401
 msgid "Valid until"
-msgstr "Voimassa saakka"
+msgstr "Valid until"
 
 #
 # File: member-files.php, line: 323
@@ -931,7 +932,7 @@ msgstr "WP käyttäjätunnus"
 # File: member-payment.php, line: 366
 # File: member-register.php, line: 443
 msgid "You do not have sufficient permissions to access this page."
-msgstr "Sinulla ei ole riittäviä oikeuksia tämän sivun katseluun."
+msgstr "You do not have sufficient permissions to access this page."
 
 #
 # File: member-member.php, line: 247

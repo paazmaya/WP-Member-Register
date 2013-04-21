@@ -15,6 +15,7 @@
 
 
 define ('MEMBER_REGISTER_VERSION', '0.11.0');
+define ('MR_GT_DOMAIN', 'member-register');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -28,15 +29,15 @@ $mr_db_version = '11';
 global $mr_grade_values;
 $mr_grade_values = array(
 	'5K' => '5 kyu',
-	'5h' => '5 kyu + ' . __('raita'),
+	'5h' => '5 kyu + ' . __('raita', MR_GT_DOMAIN),
 	'4K' => '4 kyu',
-	'4h' => '4 kyu + ' . __('raita'),
+	'4h' => '4 kyu + ' . __('raita', MR_GT_DOMAIN),
 	'3K' => '3 kyu',
-	'3h' => '3 kyu + ' . __('raita'),
+	'3h' => '3 kyu + ' . __('raita', MR_GT_DOMAIN),
 	'2K' => '2 kyu',
-	'2h' => '2 kyu + ' . __('raita'),
+	'2h' => '2 kyu + ' . __('raita', MR_GT_DOMAIN),
 	'1K' => '1 kyu',
-	'1h' => '1 kyu + ' . __('raita'),
+	'1h' => '1 kyu + ' . __('raita', MR_GT_DOMAIN),
 	'1D' => '1 dan',
 	'2D' => '2 dan',
 	'3D' => '3 dan',
@@ -75,18 +76,18 @@ define('MR_ACCESS_GROUP_MANAGE', 1 << 11); // 2048
 
 global $mr_access_type;
 $mr_access_type = array(
-	1 => __('Omien tietojen katselu ja päivitys'),
-	2 => __('Tiedostot jäsenille'),
-	4 => __('Keskusteluun osallistuminen'),
-	8 => __('Keskusteluaiheiden luominen'),
-	16 => __('Keskustelujen ja keskusteluaiheiden poisto'),
-	32 => __('Jäsenten listaus ja tietojen näkeminen'),
-	64 => __('Jäsenten lisääminen, muokkaus ja poisto'),
-	128 => __('Vyöarvojen hallinta'),
-	256 => __('Jäsenmaksujen hallinta'),
-	512 => __('Seurojen hallinta'),
-	1024 => __('Tiedostojen hallinta'),
-	2048 => __('Ryhmien hallinta')
+	1 => __('Omien tietojen katselu ja päivitys', MR_GT_DOMAIN),
+	2 => __('Tiedostot jäsenille', MR_GT_DOMAIN),
+	4 => __('Keskusteluun osallistuminen', MR_GT_DOMAIN),
+	8 => __('Keskusteluaiheiden luominen', MR_GT_DOMAIN),
+	16 => __('Keskustelujen ja keskusteluaiheiden poisto', MR_GT_DOMAIN),
+	32 => __('Jäsenten listaus ja tietojen näkeminen', MR_GT_DOMAIN),
+	64 => __('Jäsenten lisääminen, muokkaus ja poisto', MR_GT_DOMAIN),
+	128 => __('Vyöarvojen hallinta', MR_GT_DOMAIN),
+	256 => __('Jäsenmaksujen hallinta', MR_GT_DOMAIN),
+	512 => __('Seurojen hallinta', MR_GT_DOMAIN),
+	1024 => __('Tiedostojen hallinta', MR_GT_DOMAIN),
+	2048 => __('Ryhmien hallinta', MR_GT_DOMAIN)
 );
 
 
@@ -101,7 +102,8 @@ require 'member-files.php';
 require 'member-install.php';
 require 'member-prf.php';
 
-load_plugin_textdomain( 'member-register', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+// http://codex.wordpress.org/Function_Reference/load_plugin_textdomain
+load_plugin_textdomain( MR_GT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
@@ -270,49 +272,49 @@ function member_register_admin_head()
 function member_register_admin_menu()
 {
 	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page(__('Jäsenrekisterin Hallinta'), __('Jäsenrekisteri'), 'read', 'member-register-control',
+	add_menu_page(__('Jäsenrekisterin Hallinta', MR_GT_DOMAIN), __('Jäsenrekisteri', MR_GT_DOMAIN), 'read', 'member-register-control',
 		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
 	
 	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
-		add_submenu_page('member-register-control', __('Lisää uusi jäsen'),
-			__('Uusi jäsen'), 'read', 'member-register-new', 'mr_member_new');
+		add_submenu_page('member-register-control', __('Lisää uusi jäsen', MR_GT_DOMAIN),
+			__('Uusi jäsen', MR_GT_DOMAIN), 'read', 'member-register-new', 'mr_member_new');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja'),
-			__('Jäsenmaksut'), 'read', 'member-payment-list', 'mr_payment_list');
+		add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja', MR_GT_DOMAIN),
+			__('Jäsenmaksut', MR_GT_DOMAIN), 'read', 'member-payment-list', 'mr_payment_list');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Uusi maksu'),
-			__('Uusi maksu'), 'read', 'member-payment-new', 'mr_payment_new');
+		add_submenu_page('member-register-control', __('Uusi maksu', MR_GT_DOMAIN),
+			__('Uusi maksu', MR_GT_DOMAIN), 'read', 'member-payment-new', 'mr_payment_new');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Vyöarvot'),
-			__('Vyöarvot'), 'read', 'member-grade-list', 'mr_grade_list');
+		add_submenu_page('member-register-control', __('Vyöarvot', MR_GT_DOMAIN),
+			__('Vyöarvot', MR_GT_DOMAIN), 'read', 'member-grade-list', 'mr_grade_list');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Myönnä vyöarvoja'),
-			__('Myönnä vyöarvoja'), 'read', 'member-grade-new', 'mr_grade_new');
+		add_submenu_page('member-register-control', __('Myönnä vyöarvoja', MR_GT_DOMAIN),
+			__('Myönnä vyöarvoja', MR_GT_DOMAIN), 'read', 'member-grade-new', 'mr_grade_new');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Seurat'),
-			__('Jäsenseurat'), 'read', 'member-club-list', 'mr_club_list');
+		add_submenu_page('member-register-control', __('Seurat', MR_GT_DOMAIN),
+			__('Jäsenseurat', MR_GT_DOMAIN), 'read', 'member-club-list', 'mr_club_list');
 	}
 	
 	if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 	{
-		add_submenu_page('member-register-control', __('Ryhmät'),
-			__('Jäsen ryhmät'), 'read', 'member-group-list', 'mr_group_list');
+		add_submenu_page('member-register-control', __('Ryhmät', MR_GT_DOMAIN),
+			__('Jäsen ryhmät', MR_GT_DOMAIN), 'read', 'member-group-list', 'mr_group_list');
 	}
 
 }
@@ -327,7 +329,7 @@ function member_register_forum_menu()
 	if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
-		add_menu_page(__('Keskustelu'), __('Keskustelu'), 'read', 'member-forum',
+		add_menu_page(__('Keskustelu', MR_GT_DOMAIN), __('Keskustelu', MR_GT_DOMAIN), 'read', 'member-forum',
 			'mr_forum_list', plugins_url('/images/forum.png', __FILE__)); // $position );
 	}
 }
@@ -337,13 +339,13 @@ function member_register_files_menu()
 	if (current_user_can('read') && mr_has_permission(MR_ACCESS_FILES_VIEW))
 	{
 		// http://codex.wordpress.org/Adding_Administration_Menus
-		add_menu_page(__('Tiedostot'), __('Tiedostot'), 'read', 'member-files',
+		add_menu_page(__('Tiedostot', MR_GT_DOMAIN), __('Tiedostot', MR_GT_DOMAIN), 'read', 'member-files',
 			'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
 
 		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 		{
-			add_submenu_page('member-files', __('Lisää uusi tiedosto'),
-				__('Lisää uusi tiedosto'), 'read', 'member-files-new', 'mr_files_new');
+			add_submenu_page('member-files', __('Lisää uusi tiedosto', MR_GT_DOMAIN),
+				__('Lisää uusi tiedosto', MR_GT_DOMAIN), 'read', 'member-files-new', 'mr_files_new');
 		}
 	}
 }
@@ -441,7 +443,7 @@ function mr_member_list()
 {
 	if (!current_user_can('read'))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.'));
+		wp_die( __('You do not have sufficient permissions to access this page.', MR_GT_DOMAIN));
 	}
 
 	global $userdata;
@@ -463,8 +465,8 @@ function mr_member_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Jäsenrekisteri') . '</h2>';
-		echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä') . '</p>';
+		echo '<h2>' . __('Jäsenrekisteri', MR_GT_DOMAIN) . '</h2>';
+		echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä', MR_GT_DOMAIN) . '</p>';
 		mr_show_members();
 	}
 	echo '</div>';
