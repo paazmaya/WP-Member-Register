@@ -43,7 +43,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 = 0.11.0
-* Released 25th April 2013
+* Released 22th April 2013
 * In case public registration is enabled, additional items are shown in the form and hooked in to the members register
 * Allow to delete users that do not have payments nor grades
 * Localisation fixes, now primarily Finnish but via PO files as originally intented

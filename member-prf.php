@@ -28,6 +28,21 @@ function mr_prf_register_form ()
 
 
 	?>
+	<style>
+		label > select {
+			width: 100%;
+			background: none repeat scroll 0 0 #FBFBFB;
+			border: 1px solid #E5E5E5;
+			box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
+			color: #555555;
+			font-size: 18px;
+			margin-bottom: 16px;
+			margin-right: 6px;
+			margin-top: 2px;
+			outline: 0 none;
+			padding: 3px;
+		}
+	</style>
 	<p>
 		<label><?php echo __('Etunimi', 'member-register'); ?><br />
 			<input type="text" name="firstname" class="required" value="<?php echo $values['firstname']; ?>" />
@@ -86,23 +101,23 @@ function mr_prf_register_form ()
 	<p>
 		<label><?php echo __('Main martial art', 'member-register'); ?><br />
 			<select name="martial" data-placeholder="Valitse päälaji">
-			<option value=""></option>
-			<?php
-			foreach ($mr_martial_arts as $k => $v)
-			{
-				echo '<option value="' . $k . '"';
-				if ($values['martial'] == $k)
+				<option value=""></option>
+				<?php
+				foreach ($mr_martial_arts as $k => $v)
 				{
-					echo ' selected="selected"';
+					echo '<option value="' . $k . '"';
+					if ($values['martial'] == $k)
+					{
+						echo ' selected="selected"';
+					}
+					echo '>' . $v . ' (' . $k . ')</option>';
 				}
-				echo '>' . $v . ' (' . $k . ')</option>';
-			}
-			?>
+				?>
 			</select>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Seura', 'member-register'); ?> <span class="description">(ei pakollinen)</span><br />
+		<label><?php echo __('Seura', 'member-register'); ?> <span class="description">(<?php echo __('ei pakollinen', 'member-register'); ?>)</span><br />
 			<select name="club" data-placeholder="Valitse seura">
 				<option value=""></option>
 				<?php
