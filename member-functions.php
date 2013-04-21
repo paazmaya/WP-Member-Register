@@ -1,6 +1,7 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
+ * General functions and helpers.
  */
 
 /**

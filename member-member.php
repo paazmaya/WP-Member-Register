@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
  * Single member related functions
  */
 
@@ -570,7 +570,7 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<select name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
+					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
@@ -626,7 +626,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality'); ?></th>
-				<td><select name="nationality" data-placeholder="Valitse käyttäjän kansallisuus">
+				<td><select class="chosen" name="nationality" data-placeholder="Valitse käyttäjän kansallisuus">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';

@@ -3,7 +3,7 @@ Contributors: paazmaya
 Donate link: http://paazmaya.com/
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.0.0
-Tested up to: 3.3.1
+Tested up to: 3.5.1
 Stable tag: master
 
 Member register management related to personal information, payments and what is common for martial arts: belt grades.
@@ -42,6 +42,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.11.0
+* Released 25th April 2013
+* In case public registration is enabled, additional items are shown in the form and hooked in to the members register
+* Allow to delete users that do not have payments nor grades
+
 = 0.10.0 =
 * Released 14th August 2012
 * Show/hide columns

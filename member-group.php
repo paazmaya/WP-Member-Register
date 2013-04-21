@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
  * Group related functions
  */
 
@@ -368,7 +368,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members'); ?> <span class="description">(<?php echo __('monivalinta'); ?>)</span></th>
-				<td><select name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
+				<td><select class="chosen" name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE active = 1 ORDER BY lastname ASC';

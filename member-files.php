@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
  * Files for members only
  * - Access can be for all, club, member level
  * All documents such as word, etc are converted to pdf which is transformed for each member separately

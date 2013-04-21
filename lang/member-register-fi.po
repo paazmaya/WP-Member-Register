@@ -1,0 +1,1068 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Jukka Paasonen
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MemberRegister 0.11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-04-21 15:56+0300\n"
+"PO-Revision-Date: 2013-04-21 17:30+0200\n"
+"Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#
+# File: member-payment.php, line: 395
+msgid "3 viikkoa tulevaisuudessa"
+msgstr "3 viikkoa tulevaisuudessa"
+
+#
+# File: member-prf.php, line: 35
+msgid "<strong>ERROR</strong>: You must include a martial art."
+msgstr "<strong>ERROR</strong>: You must include a martial art."
+
+#
+# File: member-member.php, line: 70
+msgid "Access rights"
+msgstr "Kirjatumisoikeudet"
+
+#
+# File: member-club.php, line: 167
+# File: member-club.php, line: 207
+# File: member-member.php, line: 219
+msgid "Address"
+msgstr "Osoite"
+
+#
+# File: member-forum.php, line: 214
+# File: member-forum.php, line: 383
+msgid "Aihe"
+msgstr "Aihe"
+
+#
+# File: member-forum.php, line: 289
+msgid "Aika"
+msgstr "Aika"
+
+#
+# File: member-member.php, line: 269
+# File: member-member.php, line: 676
+msgid "Aktiivinen"
+msgstr "Aktiivinen"
+
+#
+# File: member-group.php, line: 95
+msgid "Aktiiviset jäsenet tässä ryhmässä."
+msgstr "Aktiiviset jäsenet tässä ryhmässä."
+
+#
+# File: member-club.php, line: 92
+msgid "Aktiiviset jäsenet tässä seurassa."
+msgstr "Aktiiviset jäsenet tässä seurassa."
+
+#
+# File: member-club.php, line: 208
+msgid "Aktiivisia jäseniä"
+msgstr "Aktiivisia jäseniä"
+
+#
+# File: member-forum.php, line: 89
+msgid "Alempana lista aktiivista keskustelun aiheista"
+msgstr "Alempana lista aktiivista keskustelun aiheista"
+
+#
+# File: member-register.php, line: 466
+msgid "Alla lista rekisteröidyistä jäsenistä"
+msgstr "Alla lista rekisteröidyistä jäsenistä"
+
+#
+# File: member-functions.php, line: 56
+msgid "Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet"
+msgstr "Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet"
+
+#
+# File: member-payment.php, line: 407
+msgid "Already paid"
+msgstr "Already paid"
+
+#
+# File: member-payment.php, line: 391
+msgid "Amount"
+msgstr "Amount"
+
+#
+# File: member-files.php, line: 166
+msgid "Base name"
+msgstr "Base name"
+
+#
+# File: member-member.php, line: 66
+# File: member-member.php, line: 215
+# File: member-member.php, line: 604
+msgid "Birthday"
+msgstr "Birthday"
+
+#
+# File: member-group.php, line: 184
+msgid "Created by"
+msgstr "Created by"
+
+#
+# File: member-member.php, line: 243
+# File: member-member.php, line: 647
+msgid "Date of joining"
+msgstr "Date of joining"
+
+#
+# File: member-payment.php, line: 395
+msgid "Deadline"
+msgstr "Deadline"
+
+#
+# File: member-files.php, line: 167
+msgid "Directory"
+msgstr "Directory"
+
+#
+# File: member-member.php, line: 67
+# File: member-member.php, line: 235
+# File: member-member.php, line: 624
+msgid "E-mail"
+msgstr "E-mail"
+
+#
+# File: member-payment.php, line: 391
+msgid "EUR"
+msgstr "EUR"
+
+#
+# File: member-payment.php, line: 221
+msgid "Eräpäivä"
+msgstr "Eräpäivä"
+
+#
+# File: member-member.php, line: 596
+msgid "Etunimi"
+msgstr "Etunimi"
+
+#
+# File: member-grade.php, line: 149
+# File: member-member.php, line: 65
+# File: member-member.php, line: 205
+# File: member-payment.php, line: 214
+msgid "First name"
+msgstr "Etunimi"
+
+#
+# File: member-register.php, line: 283
+msgid "Hallinnoi jäsenmaksuja"
+msgstr "Hallinnoi jäsenmaksuja"
+
+#
+# File: member-member.php, line: 197
+msgid "Henkilötiedot"
+msgstr "Henkilötiedot"
+
+#
+# File: member-member.php, line: 188
+msgid ""
+"In case you wish to remove a user, first all grades and payments should be "
+"removed."
+msgstr ""
+"In case you wish to remove a user, first all grades and payments should be "
+"removed."
+
+#
+# File: member-forum.php, line: 290
+# File: member-grade.php, line: 305
+msgid "Jäsen"
+msgstr "Jäsen"
+
+#
+# File: member-register.php, line: 314
+msgid "Jäsen ryhmät"
+msgstr "Jäsen ryhmät"
+
+#
+# File: member-member.php, line: 165
+msgid "Jäsenen tiedot päivitetty"
+msgstr "Jäsenen tiedot päivitetty"
+
+#
+# File: member-grade.php, line: 94
+msgid "Jäsenet heidän viimeisimmän vyöarvon mukaan."
+msgstr "Jäsenet heidän viimeisimmän vyöarvon mukaan."
+
+#
+# File: member-group.php, line: 186
+msgid "Jäseniä"
+msgstr "Jäseniä"
+
+#
+# File: member-register.php, line: 86
+msgid "Jäsenmaksujen hallinta"
+msgstr "Jäsenmaksujen hallinta"
+
+#
+# File: member-member.php, line: 319
+# File: member-payment.php, line: 127
+# File: member-register.php, line: 284
+msgid "Jäsenmaksut"
+msgstr "Jäsenmaksut"
+
+#
+# File: member-register.php, line: 272
+# File: member-register.php, line: 465
+msgid "Jäsenrekisteri"
+msgstr "Jäsenrekisteri"
+
+#
+# File: member-register.php, line: 272
+msgid "Jäsenrekisterin Hallinta"
+msgstr "Jäsenrekisterin Hallinta"
+
+#
+# File: member-club.php, line: 101
+# File: member-register.php, line: 308
+msgid "Jäsenseurat"
+msgstr "Jäsenseurat"
+
+#
+# File: member-register.php, line: 83
+msgid "Jäsenten listaus ja tietojen näkeminen"
+msgstr "Jäsenten listaus ja tietojen näkeminen"
+
+#
+# File: member-register.php, line: 84
+msgid "Jäsenten lisääminen, muokkaus ja poisto"
+msgstr "Jäsenten lisääminen, muokkaus ja poisto"
+
+#
+# File: member-files.php, line: 162
+msgid "Jäsenten tiedostot"
+msgstr "Jäsenten tiedostot"
+
+#
+# File: member-files.php, line: 327
+msgid "Kansio"
+msgstr "Kansio"
+
+#
+# File: member-forum.php, line: 88
+# File: member-register.php, line: 329
+msgid "Keskustelu"
+msgstr "Keskustelu"
+
+#
+# File: member-forum.php, line: 25
+msgid "Keskustelua aiheesta..."
+msgstr "Keskustelua aiheesta..."
+
+#
+# File: member-register.php, line: 81
+msgid "Keskusteluaiheiden luominen"
+msgstr "Keskusteluaiheiden luominen"
+
+#
+# File: member-register.php, line: 82
+msgid "Keskustelujen ja keskusteluaiheiden poisto"
+msgstr "Keskustelujen ja keskusteluaiheiden poisto"
+
+#
+# File: member-register.php, line: 80
+msgid "Keskusteluun osallistuminen"
+msgstr "Keskusteluun osallistuminen"
+
+#
+# File: member-member.php, line: 209
+msgid "Kirjautumisoikeudet"
+msgstr "Kirjautumisoikeudet"
+
+#
+# File: member-member.php, line: 567
+msgid "Kirjautumistaso"
+msgstr "Kirjautumistaso"
+
+#
+# File: member-forum.php, line: 144
+msgid "Käynnissä olevat keskustelun aiheet"
+msgstr "Käynnissä olevat keskustelun aiheet"
+
+#
+# File: member-grade.php, line: 154
+msgid "Laji"
+msgstr "Laji"
+
+#
+# File: member-member.php, line: 71
+msgid "Last login"
+msgstr "Viimeisin kirjautuminen"
+
+#
+# File: member-group.php, line: 185
+msgid "Last modification"
+msgstr "Last modification"
+
+#
+# File: member-grade.php, line: 148
+# File: member-member.php, line: 64
+# File: member-member.php, line: 201
+# File: member-member.php, line: 600
+# File: member-payment.php, line: 213
+msgid "Last name"
+msgstr "Last name"
+
+#
+# File: member-club.php, line: 223
+# File: member-member.php, line: 278
+msgid "List of active members in the club called:"
+msgstr "List of active members in the club called:"
+
+#
+# File: member-member.php, line: 261
+# File: member-member.php, line: 672
+msgid "Lisätietoja"
+msgstr "Lisätietoja"
+
+#
+# File: member-member.php, line: 356
+# File: member-register.php, line: 277
+msgid "Lisää uusi jäsen"
+msgstr "Lisää uusi jäsen"
+
+#
+# File: member-payment.php, line: 38
+msgid "Lisää uusi maksu, useammalle henkilölle jos tarve vaatii"
+msgstr "Lisää uusi maksu, useammalle henkilölle jos tarve vaatii"
+
+#
+# File: member-files.php, line: 305
+# File: member-register.php, line: 344
+# File: member-register.php, line: 345
+msgid "Lisää uusi tiedosto"
+msgstr "Lisää uusi tiedosto"
+
+#
+# File: member-forum.php, line: 79
+msgid "Lisää viesti"
+msgstr "Lisää viesti"
+
+#
+# File: member-forum.php, line: 140
+msgid "Luo uusi keskustelun aihe"
+msgstr "Luo uusi keskustelun aihe"
+
+#
+# File: member-group.php, line: 130
+# File: member-group.php, line: 131
+msgid "Luo uusi ryhmä"
+msgstr "Luo uusi ryhmä"
+
+#
+# File: member-group.php, line: 255
+msgid "Luo uusi ryhmä, jossa on vähintään yksi jäsen"
+msgstr "Luo uusi ryhmä, jossa on vähintään yksi jäsen"
+
+#
+# File: member-club.php, line: 128
+# File: member-club.php, line: 129
+msgid "Luo uusi seura"
+msgstr "Luo uusi seura"
+
+#
+# File: member-member.php, line: 236
+msgid "Lähetä sähköpostia"
+msgstr "Lähetä sähköpostia"
+
+#
+# File: member-member.php, line: 69
+# File: member-member.php, line: 251
+# File: member-member.php, line: 655
+msgid "Main martial art"
+msgstr "Main martial art"
+
+#
+# File: member-payment.php, line: 142
+msgid "Maksamattomat maksut"
+msgstr "Maksamattomat maksut"
+
+#
+# File: member-payment.php, line: 208
+msgid "Maksettu?"
+msgstr "Maksettu?"
+
+#
+# File: member-payment.php, line: 152
+msgid "Maksetut maksut"
+msgstr "Maksetut maksut"
+
+#
+# File: member-payment.php, line: 225
+msgid "Maksu PVM"
+msgstr "Maksu PVM"
+
+#
+# File: member-payment.php, line: 86
+msgid "Maksu merkitty maksetuksi tänään"
+msgstr "Maksu merkitty maksetuksi tänään"
+
+#
+# File: member-payment.php, line: 117
+msgid "Maksu poistettu"
+msgstr "Maksu poistettu"
+
+#
+# File: member-payment.php, line: 375
+msgid "Member"
+msgstr "Jäsen"
+
+#
+# File: member-member.php, line: 63
+msgid "Member ID"
+msgstr "Member ID"
+
+#
+# File: member-group.php, line: 370
+msgid "Members"
+msgstr "Members"
+
+#
+# File: member-payment.php, line: 146
+msgid "Merkitse maksu maksetuksi vasemmalla olevalla \"OK\" painikkeella."
+msgstr "Merkitse maksu maksetuksi vasemmalla olevalla \"OK\" painikkeella."
+
+#
+# File: member-club.php, line: 81
+msgid "Modify"
+msgstr "Muokkaa"
+
+#
+# File: member-member.php, line: 115
+# File: member-member.php, line: 293
+msgid "Muokkaa WP käyttäjää"
+msgstr "Muokkaa WP käyttäjää"
+
+#
+# File: member-group.php, line: 60
+msgid "Muokkaa ryhmää"
+msgstr "Muokkaa ryhmää"
+
+#
+# File: member-member.php, line: 307
+msgid "Muokkaa tätä käyttää"
+msgstr "Muokkaa tätä käyttää"
+
+#
+# File: member-group.php, line: 93
+msgid "Muokkaa tätä ryhmää"
+msgstr "Muokkaa tätä ryhmää"
+
+#
+# File: member-club.php, line: 91
+msgid "Muokkaa tätä seuraa"
+msgstr "Muokkaa tätä seuraa"
+
+#
+# File: member-grade.php, line: 37
+# File: member-register.php, line: 301
+# File: member-register.php, line: 302
+msgid "Myönnä vyöarvoja"
+msgstr "Myönnä vyöarvoja"
+
+#
+# File: member-grade.php, line: 163
+# File: member-grade.php, line: 344
+msgid "Myöntäjä"
+msgstr "Myöntäjä"
+
+#
+# File: member-grade.php, line: 162
+msgid "Myöntö PVM"
+msgstr "Myöntö PVM"
+
+#
+# File: member-club.php, line: 163
+msgid "Name"
+msgstr "Name"
+
+#
+# File: member-member.php, line: 239
+# File: member-member.php, line: 628
+msgid "Nationality"
+msgstr "Nationality"
+
+#
+# File: member-club.php, line: 206
+msgid "Nimi"
+msgstr "Nimi"
+
+#
+# File: member-files.php, line: 30
+msgid "Not available."
+msgstr "Ei saatavilla."
+
+#
+# File: member-files.php, line: 62
+msgid "Not found."
+msgstr "Ei löytynyt."
+
+#
+# File: member-register.php, line: 78
+msgid "Omien tietojen katselu ja päivitys"
+msgstr "Omien tietojen katselu ja päivitys"
+
+#
+# File: member-club.php, line: 103
+msgid ""
+"Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua."
+msgstr ""
+"Paikat joissa harjoitellaan Yuishinkai karatea ja/tai Ryukyu kobujutsua."
+
+#
+# File: member-grade.php, line: 164
+# File: member-grade.php, line: 340
+msgid "Paikka"
+msgstr "Paikka"
+
+#
+# File: member-member.php, line: 68
+# File: member-member.php, line: 231
+msgid "Phone number"
+msgstr "Puhelinnumero"
+
+#
+# File: member-register.php, line: 201
+msgid "Piilota"
+msgstr "Piilota"
+
+#
+# File: member-club.php, line: 212
+# File: member-forum.php, line: 221
+# File: member-forum.php, line: 295
+# File: member-grade.php, line: 168
+# File: member-group.php, line: 191
+# File: member-payment.php, line: 232
+msgid "Poista"
+msgstr "Poista"
+
+#
+# File: member-payment.php, line: 275
+msgid "Poista henkilön "
+msgstr "Poista henkilön "
+
+#
+# File: member-group.php, line: 223
+msgid "Poista ryhmä nimellä "
+msgstr "Poista ryhmä nimellä "
+
+#
+# File: member-club.php, line: 232
+msgid "Poista seura"
+msgstr "Poista seura"
+
+#
+# File: member-forum.php, line: 248
+msgid "Poista tämä aihe, otsikolla"
+msgstr "Poista tämä aihe, otsikolla"
+
+#
+# File: member-files.php, line: 247
+msgid "Poista tämä tiedosto"
+msgstr "Poista tämä tiedosto"
+
+#
+# File: member-forum.php, line: 311
+msgid "Poista tämä viesti joka on kirjoitettu"
+msgstr "Poista tämä viesti joka on kirjoitettu"
+
+#
+# File: member-member.php, line: 223
+# File: member-member.php, line: 612
+msgid "Postinumero"
+msgstr "Postinumero"
+
+#
+# File: member-member.php, line: 608
+msgid "Postiosoite"
+msgstr "Postiosoite"
+
+#
+# File: member-member.php, line: 227
+# File: member-member.php, line: 616
+msgid "Postitoimipaikka"
+msgstr "Postitoimipaikka"
+
+#
+# File: member-member.php, line: 620
+msgid "Puhelinnumero"
+msgstr "Puhelinnumero"
+
+#
+# File: member-functions.php, line: 57
+msgid "Pyynnöstä näitä voidaan lisätä tai vähentää."
+msgstr "Pyynnöstä näitä voidaan lisätä tai vähentää."
+
+#
+# File: member-grade.php, line: 348
+msgid "Päivämäärä"
+msgstr "Päivämäärä"
+
+#
+# File: member-payment.php, line: 39
+msgid "Pääasia että rahaa tulee, sitä kun menee."
+msgstr "Pääasia että rahaa tulee, sitä kun menee."
+
+#
+# File: member-files.php, line: 356
+msgid "Päälaji"
+msgstr "Päälaji"
+
+#
+# File: member-files.php, line: 175
+msgid "Remove"
+msgstr "Poista"
+
+#
+# File: member-files.php, line: 174
+msgid "Restrictions"
+msgstr "Restrictions"
+
+#
+# File: member-register.php, line: 89
+msgid "Ryhmien hallinta"
+msgstr "Ryhmien hallinta"
+
+#
+# File: member-files.php, line: 368
+msgid "Ryhmä"
+msgstr "Ryhmä"
+
+#
+# File: member-group.php, line: 42
+msgid "Ryhmä poistettu"
+msgstr "Ryhmä poistettu"
+
+#
+# File: member-group.php, line: 80
+msgid "Ryhmän tiedot päivitetty"
+msgstr "Ryhmän tiedot päivitetty"
+
+#
+# File: member-group.php, line: 104
+# File: member-register.php, line: 313
+msgid "Ryhmät"
+msgstr "Ryhmät"
+
+#
+# File: member-files.php, line: 331
+# File: member-member.php, line: 273
+# File: member-member.php, line: 694
+msgid "Seura"
+msgstr "Seura"
+
+#
+# File: member-club.php, line: 46
+msgid "Seura poistettu"
+msgstr "Seura poistettu"
+
+#
+# File: member-club.php, line: 67
+msgid "Seuran tiedot päivitetty."
+msgstr "Seuran tiedot päivitetty."
+
+#
+# File: member-register.php, line: 307
+msgid "Seurat"
+msgstr "Seurat"
+
+#
+# File: member-register.php, line: 87
+msgid "Seurojen hallinta"
+msgstr "Seurojen hallinta"
+
+#
+# File: member-files.php, line: 168
+msgid "Size"
+msgstr "Size"
+
+#
+# File: member-payment.php, line: 219
+msgid "Summa (EUR)"
+msgstr "Summa (EUR)"
+
+#
+# File: member-club.php, line: 102
+msgid "Suomen Yuishinkai-liiton Jäsenseurat."
+msgstr "Suomen Yuishinkai-liiton Jäsenseurat."
+
+#
+# File: member-register.php, line: 88
+msgid "Tiedostojen hallinta"
+msgstr "Tiedostojen hallinta"
+
+#
+# File: member-register.php, line: 339
+msgid "Tiedostot"
+msgstr "Tiedostot"
+
+#
+# File: member-register.php, line: 79
+msgid "Tiedostot jäsenille"
+msgstr "Tiedostot jäsenille"
+
+#
+# File: member-group.php, line: 183
+# File: member-group.php, line: 366
+msgid "Title"
+msgstr "Title"
+
+#
+# File: member-payment.php, line: 387
+msgid "Type"
+msgstr "Type"
+
+#
+# File: member-grade.php, line: 333
+# File: member-payment.php, line: 218
+msgid "Tyyppi"
+msgstr "Tyyppi"
+
+#
+# File: member-forum.php, line: 175
+msgid "Tämän aiheen loi"
+msgstr "Tämän aiheen loi"
+
+#
+# File: member-files.php, line: 169
+msgid "Uploaded"
+msgstr "Uploaded"
+
+#
+# File: member-files.php, line: 170
+msgid "Uploader"
+msgstr "Uploader"
+
+#
+# File: member-forum.php, line: 98
+msgid "Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun."
+msgstr "Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun."
+
+#
+# File: member-register.php, line: 278
+msgid "Uusi jäsen"
+msgstr "Uusi jäsen"
+
+#
+# File: member-member.php, line: 345
+msgid "Uusi jäsen lisätty, nimellä:"
+msgstr "Uusi jäsen lisätty, nimellä:"
+
+#
+# File: member-register.php, line: 289
+# File: member-register.php, line: 290
+msgid "Uusi maksu"
+msgstr "Uusi maksu"
+
+#
+# File: member-group.php, line: 114
+msgid "Uusi ryhmä lisätty"
+msgstr "Uusi ryhmä lisätty"
+
+#
+# File: member-club.php, line: 112
+msgid "Uusi seura lisätty."
+msgstr "Uusi seura lisätty."
+
+#
+# File: member-files.php, line: 294
+msgid "Uusi tiedosto lisätty, nimellä:"
+msgstr "Uusi tiedosto lisätty, nimellä:"
+
+#
+# File: member-forum.php, line: 35
+msgid "Uusi viesti keskusteluun lisätty"
+msgstr "Uusi viesti keskusteluun lisätty"
+
+#
+# File: member-payment.php, line: 27
+msgid "Uusi/uudet maksu(t) lisätty"
+msgstr "Uusi/uudet maksu(t) lisätty"
+
+#
+# File: member-grade.php, line: 25
+msgid "Uusi/uudet vyöarvo(t) lisätty"
+msgstr "Uusi/uudet vyöarvo(t) lisätty"
+
+#
+# File: member-payment.php, line: 401
+msgid "Valid until"
+msgstr "Valid until"
+
+#
+# File: member-files.php, line: 323
+msgid "Valitse tiedosto"
+msgstr "Valitse tiedosto"
+
+#
+# File: member-forum.php, line: 128
+msgid "Valittu aihe poistettu."
+msgstr "Valittu aihe poistettu."
+
+#
+# File: member-files.php, line: 125
+msgid "Valittu tiedosto poistettu."
+msgstr "Valittu tiedosto poistettu."
+
+#
+# File: member-forum.php, line: 65
+msgid "Valittu viesti poistettu."
+msgstr "Valittu viesti poistettu."
+
+#
+# File: member-forum.php, line: 217
+msgid "Viestejä"
+msgstr "Viestejä"
+
+#
+# File: member-forum.php, line: 177
+msgid "Viestejä yhteensä"
+msgstr "Viestejä yhteensä"
+
+#
+# File: member-forum.php, line: 291
+# File: member-forum.php, line: 411
+msgid "Viesti"
+msgstr "Viesti"
+
+#
+# File: member-forum.php, line: 216
+msgid "Viimeisimmän viestin kirjoitti"
+msgstr "Viimeisimmän viestin kirjoitti"
+
+#
+# File: member-forum.php, line: 215
+msgid "Viimeisin viesti"
+msgstr "Viimeisin viesti"
+
+#
+# File: member-member.php, line: 265
+msgid "Viimeksi vieraillut sivuilla"
+msgstr "Viimeksi vieraillut sivuilla"
+
+#
+# File: member-payment.php, line: 220
+msgid "Viite"
+msgstr "Viite"
+
+#
+# File: member-payment.php, line: 40
+msgid ""
+"Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on "
+"luotu."
+msgstr ""
+"Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on "
+"luotu."
+
+#
+# File: member-payment.php, line: 228
+msgid "Voimassaolo"
+msgstr "Voimassaolo"
+
+#
+# File: member-files.php, line: 344
+# File: member-grade.php, line: 153
+# File: member-grade.php, line: 319
+msgid "Vyöarvo"
+msgstr "Vyöarvo"
+
+#
+# File: member-grade.php, line: 83
+msgid "Vyöarvo poistettu"
+msgstr "Vyöarvo poistettu"
+
+#
+# File: member-register.php, line: 85
+msgid "Vyöarvojen hallinta"
+msgstr "Vyöarvojen hallinta"
+
+#
+# File: member-grade.php, line: 93
+# File: member-member.php, line: 313
+# File: member-register.php, line: 295
+# File: member-register.php, line: 296
+msgid "Vyöarvot"
+msgstr "Vyöarvot"
+
+#
+# File: member-member.php, line: 72
+# File: member-member.php, line: 288
+# File: member-member.php, line: 527
+msgid "WP username"
+msgstr "WP käyttäjätunnus"
+
+#
+# File: member-club.php, line: 18
+# File: member-club.php, line: 142
+# File: member-files.php, line: 21
+# File: member-files.php, line: 84
+# File: member-files.php, line: 267
+# File: member-forum.php, line: 15
+# File: member-forum.php, line: 156
+# File: member-forum.php, line: 190
+# File: member-forum.php, line: 265
+# File: member-forum.php, line: 371
+# File: member-forum.php, line: 401
+# File: member-grade.php, line: 13
+# File: member-grade.php, line: 53
+# File: member-grade.php, line: 295
+# File: member-group.php, line: 12
+# File: member-group.php, line: 246
+# File: member-group.php, line: 351
+# File: member-member.php, line: 20
+# File: member-member.php, line: 134
+# File: member-member.php, line: 333
+# File: member-member.php, line: 477
+# File: member-payment.php, line: 14
+# File: member-payment.php, line: 58
+# File: member-payment.php, line: 366
+# File: member-register.php, line: 443
+msgid "You do not have sufficient permissions to access this page."
+msgstr "You do not have sufficient permissions to access this page."
+
+#
+# File: member-member.php, line: 247
+# File: member-member.php, line: 651
+msgid "Yuishinkai passinumero"
+msgstr "Yuishinkai passinumero"
+
+#
+# File: member-member.php, line: 227
+msgid "ja maa jos ei Suomi"
+msgstr "ja maa jos ei Suomi"
+
+#
+# File: member-forum.php, line: 180
+msgid "joista viimeisin"
+msgstr "joista viimeisin"
+
+#
+# File: member-member.php, line: 527
+msgid "jos on jo olemassa"
+msgstr "jos on jo olemassa"
+
+#
+# File: member-grade.php, line: 344
+msgid "kuka myönsi"
+msgstr "kuka myönsi"
+
+#
+# File: member-payment.php, line: 401
+msgid "kuluvan vuoden loppuun"
+msgstr "kuluvan vuoden loppuun"
+
+#
+# File: member-grade.php, line: 333
+msgid "kummassa lajissa"
+msgstr "kummassa lajissa"
+
+#
+# File: member-payment.php, line: 407
+msgid "maksettu tänään"
+msgstr "maksettu tänään"
+
+#
+# File: member-member.php, line: 288
+msgid "mikäli sellainen on"
+msgstr "mikäli sellainen on"
+
+#
+# File: member-grade.php, line: 340
+msgid "millä paikkakunnalla ja maassa jos ei Suomi"
+msgstr "millä paikkakunnalla ja maassa jos ei Suomi"
+
+#
+# File: member-member.php, line: 273
+msgid "missä harjoittelee"
+msgstr "missä harjoittelee"
+
+#
+# File: member-member.php, line: 694
+msgid "missä seurassa pääsääntöisesti harjoittelee"
+msgstr "missä seurassa pääsääntöisesti harjoittelee"
+
+#
+# File: member-group.php, line: 370
+# File: member-payment.php, line: 375
+msgid "monivalinta"
+msgstr "monivalinta"
+
+#
+# File: member-group.php, line: 366
+msgid "nimi jolla ryhmä on helppo tunnistaa"
+msgstr "nimi jolla ryhmä on helppo tunnistaa"
+
+#
+# File: member-club.php, line: 163
+# File: member-club.php, line: 167
+# File: member-forum.php, line: 383
+msgid "otsikko"
+msgstr "otsikko"
+
+#
+# File: member-forum.php, line: 176
+msgid "päivämäärällä"
+msgstr "päivämäärällä"
+
+#
+# File: member-register.php, line: 31
+# File: member-register.php, line: 33
+# File: member-register.php, line: 35
+# File: member-register.php, line: 37
+# File: member-register.php, line: 39
+msgid "raita"
+msgstr "raita"
+
+#
+# File: member-member.php, line: 251
+msgid "rekisteröity tähän lajiin"
+msgstr "rekisteröity tähän lajiin"
+
+#
+# File: member-member.php, line: 269
+msgid "saako kirjautua sivuille"
+msgstr "saako kirjautua sivuille"
+
+#
+# File: member-grade.php, line: 319
+msgid "suluissa tietokantamerkintä"
+msgstr "suluissa tietokantamerkintä"
+
+#
+# File: member-grade.php, line: 305
+msgid "valitse useampi painamalla Ctrl-näppäintä"
+msgstr "valitse useampi painamalla Ctrl-näppäintä"
+
+#
+# File: member-forum.php, line: 411
+msgid "vapaasti"
+msgstr "vapaasti"
+
+#
+# File: member-member.php, line: 261
+msgid "vapaasti kirjoiteltu"
+msgstr "vapaasti kirjoiteltu"
+
+#
+# File: member-member.php, line: 676
+msgid "voiko käyttää sivustoa"
+msgstr "voiko käyttää sivustoa"
+
+#
+# File: member-payment.php, line: 387
+msgid "vuosimaksu, ainaisjäsenmaksu, jne..."
+msgstr "vuosimaksu, ainaisjäsenmaksu, jne..."

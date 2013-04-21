@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
  * Installation hook
  */
 

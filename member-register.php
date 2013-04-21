@@ -1,9 +1,9 @@
 <?php
 /**
  Plugin Name: Member Register
- Plugin URI: http://paazio.nanbudo.fi/member-register-wordpress-plugin
+ Plugin URI: http://paazmaya.com/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.10.0
+ Version: 0.11.0
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.10.0');
+define ('MEMBER_REGISTER_VERSION', '0.11.0');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -28,15 +28,15 @@ $mr_db_version = '11';
 global $mr_grade_values;
 $mr_grade_values = array(
 	'5K' => '5 kyu',
-	'5h' => '5 kyu + raita',
+	'5h' => '5 kyu + ' . __('raita'),
 	'4K' => '4 kyu',
-	'4h' => '4 kyu + raita',
+	'4h' => '4 kyu + ' . __('raita'),
 	'3K' => '3 kyu',
-	'3h' => '3 kyu + raita',
+	'3h' => '3 kyu + ' . __('raita'),
 	'2K' => '2 kyu',
-	'2h' => '2 kyu + raita',
+	'2h' => '2 kyu + ' . __('raita'),
 	'1K' => '1 kyu',
-	'1h' => '1 kyu + raita',
+	'1h' => '1 kyu + ' . __('raita'),
 	'1D' => '1 dan',
 	'2D' => '2 dan',
 	'3D' => '3 dan',
@@ -75,18 +75,18 @@ define('MR_ACCESS_GROUP_MANAGE', 1 << 11); // 2048
 
 global $mr_access_type;
 $mr_access_type = array(
-	1 => 'Omien tietojen katselu ja päivitys',
-	2 => 'Tiedostot jäsenille',
-	4 => 'Keskusteluun osallistuminen',
-	8 => 'Keskusteluaiheiden luominen',
-	16 => 'Keskustelujen ja keskusteluaiheiden poisto',
-	32 => 'Jäsenten listaus ja tietojen näkeminen',
-	64 => 'Jäsenten lisääminen, muokkaus ja poisto',
-	128 => 'Vyöarvojen hallinta',
-	256 => 'Jäsenmaksujen hallinta',
-	512 => 'Seurojen hallinta',
-	1024 => 'Tiedostojen hallinta',
-	2048 => 'Ryhmien hallinta'
+	1 => __('Omien tietojen katselu ja päivitys'),
+	2 => __('Tiedostot jäsenille'),
+	4 => __('Keskusteluun osallistuminen'),
+	8 => __('Keskusteluaiheiden luominen'),
+	16 => __('Keskustelujen ja keskusteluaiheiden poisto'),
+	32 => __('Jäsenten listaus ja tietojen näkeminen'),
+	64 => __('Jäsenten lisääminen, muokkaus ja poisto'),
+	128 => __('Vyöarvojen hallinta'),
+	256 => __('Jäsenmaksujen hallinta'),
+	512 => __('Seurojen hallinta'),
+	1024 => __('Tiedostojen hallinta'),
+	2048 => __('Ryhmien hallinta')
 );
 
 
@@ -99,7 +99,9 @@ require 'member-group.php';
 require 'member-club.php';
 require 'member-files.php';
 require 'member-install.php';
+require 'member-prf.php';
 
+load_plugin_textdomain( 'member-register', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
@@ -107,6 +109,7 @@ register_activation_hook(__FILE__, 'mr_install');
 // Check Member Register related access data
 add_action('init', 'member_register_wp_loaded');
 add_action('init', 'member_register_file_download');
+add_action('init', 'member_register_public_reg_form');
 
 // http://codex.wordpress.org/Function_Reference/add_action
 add_action('admin_init', 'member_register_admin_init');
@@ -120,11 +123,22 @@ add_action('admin_head', 'member_register_admin_head');
 // http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
 add_action('profile_update', 'member_register_profile_update');
 
+
 // Login and logout
 add_action('wp_login', 'member_register_login');
 add_action('wp_logout', 'member_register_logout');
 
-
+/**
+ * Hooks for additional items in the public registration form.
+ * http://codex.wordpress.org/Customizing_the_Registration_Form
+ * Member Register plugin uses the 'mr_mr_prf_' prefix for these functions.
+ */
+function member_register_public_reg_form() 
+{
+	add_action('register_form', 'mr_prf_register_form');
+	add_filter('registration_errors', 'mr_prf_registration_errors', 10, 3);
+	add_action('user_register', 'mr_prf_user_register');
+}
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
@@ -185,7 +199,7 @@ function member_register_admin_head()
 	// jQuery is in noConflict state while in Wordpress...
 	?>
 	<script type="text/javascript">
-		var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="Piilota" /></a>';
+		var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Piilota'); ?>" /></a>';
 
 		jQuery(document).ready(function(){
 			jQuery.datepicker.setDefaults({
@@ -198,7 +212,7 @@ function member_register_admin_head()
 			});
 			jQuery('input.pickday').datepicker();
 			jQuery('table.tablesorter').tablesorter();			
-			jQuery('select').chosen({
+			jQuery('select.chosen').chosen({
 				allow_single_deselect: true
 			});
 			jQuery('form').validate();
@@ -339,7 +353,7 @@ function member_register_files_menu()
 function member_register_profile_update($user_id, $old_user_data = null)
 {
 	/*
-	echo '<p>' . $user_id . '</p>';
+	echo '<p>member_register_profile_update, used_id: ' . $user_id . '</p>';
 	if (isset($old_user_data))
 	{
 		echo '<pre>';
@@ -348,6 +362,7 @@ function member_register_profile_update($user_id, $old_user_data = null)
 	}
 	*/
 }
+
 
 /**
  * Check which user logged in to WP and set Session Access variable.

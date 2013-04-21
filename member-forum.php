@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Member Register
+ * Part of Member Register
  * Forum related functions
  */
 
