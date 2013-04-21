@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 18:51+0300\n"
+"POT-Creation-Date: 2013-04-21 23:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,10 @@ msgstr ""
 # File: member-club.php, line: 207
 # File: member-member.php, line: 233
 msgid "Address"
+msgstr ""
+#
+# File: member-prf.php, line: 158
+msgid "Address should not be empty"
 msgstr ""
 #
 # File: member-forum.php, line: 214
@@ -61,7 +65,7 @@ msgstr ""
 msgid "Alempana lista aktiivista keskustelun aiheista"
 msgstr ""
 #
-# File: member-register.php, line: 474
+# File: member-register.php, line: 473
 msgid "Alla lista rekisteröidyistä jäsenistä"
 msgstr ""
 #
@@ -81,9 +85,22 @@ msgstr ""
 msgid "Base name"
 msgstr ""
 #
+# File: member-prf.php, line: 181
+msgid "Birthdate should be a date that exists"
+msgstr ""
+#
+# File: member-prf.php, line: 186
+msgid "Birthdate should be in format shown below"
+msgstr ""
+#
+# File: member-prf.php, line: 157
+msgid "Birthdate should not be empty"
+msgstr ""
+#
 # File: member-member.php, line: 66
 # File: member-member.php, line: 229
 # File: member-member.php, line: 660
+# File: member-prf.php, line: 42
 msgid "Birthday"
 msgstr ""
 #
@@ -119,6 +136,7 @@ msgid "Eräpäivä"
 msgstr ""
 #
 # File: member-member.php, line: 652
+# File: member-prf.php, line: 32
 msgid "Etunimi"
 msgstr ""
 #
@@ -129,7 +147,11 @@ msgstr ""
 msgid "First name"
 msgstr ""
 #
-# File: member-register.php, line: 286
+# File: member-prf.php, line: 155
+msgid "First name should not be empty"
+msgstr ""
+#
+# File: member-register.php, line: 285
 msgid "Hallinnoi jäsenmaksuja"
 msgstr ""
 #
@@ -150,7 +172,7 @@ msgstr ""
 msgid "Jäsen poistettu"
 msgstr ""
 #
-# File: member-register.php, line: 317
+# File: member-register.php, line: 316
 msgid "Jäsen ryhmät"
 msgstr ""
 #
@@ -166,35 +188,35 @@ msgstr ""
 msgid "Jäseniä"
 msgstr ""
 #
-# File: member-register.php, line: 87
+# File: member-register.php, line: 86
 msgid "Jäsenmaksujen hallinta"
 msgstr ""
 #
 # File: member-member.php, line: 333
 # File: member-payment.php, line: 127
-# File: member-register.php, line: 287
+# File: member-register.php, line: 286
 msgid "Jäsenmaksut"
 msgstr ""
 #
-# File: member-register.php, line: 275
-# File: member-register.php, line: 473
+# File: member-register.php, line: 274
+# File: member-register.php, line: 472
 msgid "Jäsenrekisteri"
 msgstr ""
 #
-# File: member-register.php, line: 275
+# File: member-register.php, line: 274
 msgid "Jäsenrekisterin Hallinta"
 msgstr ""
 #
 # File: member-club.php, line: 101
-# File: member-register.php, line: 311
+# File: member-register.php, line: 310
 msgid "Jäsenseurat"
 msgstr ""
 #
-# File: member-register.php, line: 84
+# File: member-register.php, line: 83
 msgid "Jäsenten listaus ja tietojen näkeminen"
 msgstr ""
 #
-# File: member-register.php, line: 85
+# File: member-register.php, line: 84
 msgid "Jäsenten lisääminen, muokkaus ja poisto"
 msgstr ""
 #
@@ -207,7 +229,7 @@ msgid "Kansio"
 msgstr ""
 #
 # File: member-forum.php, line: 88
-# File: member-register.php, line: 332
+# File: member-register.php, line: 331
 msgid "Keskustelu"
 msgstr ""
 #
@@ -215,15 +237,15 @@ msgstr ""
 msgid "Keskustelua aiheesta..."
 msgstr ""
 #
-# File: member-register.php, line: 82
+# File: member-register.php, line: 81
 msgid "Keskusteluaiheiden luominen"
 msgstr ""
 #
-# File: member-register.php, line: 83
+# File: member-register.php, line: 82
 msgid "Keskustelujen ja keskusteluaiheiden poisto"
 msgstr ""
 #
-# File: member-register.php, line: 81
+# File: member-register.php, line: 80
 msgid "Keskusteluun osallistuminen"
 msgstr ""
 #
@@ -256,7 +278,12 @@ msgstr ""
 # File: member-member.php, line: 215
 # File: member-member.php, line: 656
 # File: member-payment.php, line: 213
+# File: member-prf.php, line: 37
 msgid "Last name"
+msgstr ""
+#
+# File: member-prf.php, line: 156
+msgid "Last name should not be empty"
 msgstr ""
 #
 # File: member-club.php, line: 223
@@ -270,7 +297,7 @@ msgid "Lisätietoja"
 msgstr ""
 #
 # File: member-member.php, line: 412
-# File: member-register.php, line: 280
+# File: member-register.php, line: 279
 msgid "Lisää uusi jäsen"
 msgstr ""
 #
@@ -279,8 +306,8 @@ msgid "Lisää uusi maksu, useammalle henkilölle jos tarve vaatii"
 msgstr ""
 #
 # File: member-files.php, line: 305
+# File: member-register.php, line: 346
 # File: member-register.php, line: 347
-# File: member-register.php, line: 348
 msgid "Lisää uusi tiedosto"
 msgstr ""
 #
@@ -313,7 +340,12 @@ msgstr ""
 # File: member-member.php, line: 69
 # File: member-member.php, line: 265
 # File: member-member.php, line: 711
+# File: member-prf.php, line: 87
 msgid "Main martial art"
+msgstr ""
+#
+# File: member-prf.php, line: 163
+msgid "Main martial art should be selected"
 msgstr ""
 #
 # File: member-payment.php, line: 142
@@ -338,10 +370,6 @@ msgstr ""
 #
 # File: member-payment.php, line: 117
 msgid "Maksu poistettu"
-msgstr ""
-#
-# File: member-prf.php, line: 16
-msgid "Martial Art"
 msgstr ""
 #
 # File: member-payment.php, line: 375
@@ -386,8 +414,8 @@ msgid "Muokkaa tätä seuraa"
 msgstr ""
 #
 # File: member-grade.php, line: 37
+# File: member-register.php, line: 303
 # File: member-register.php, line: 304
-# File: member-register.php, line: 305
 msgid "Myönnä vyöarvoja"
 msgstr ""
 #
@@ -406,7 +434,12 @@ msgstr ""
 #
 # File: member-member.php, line: 253
 # File: member-member.php, line: 684
+# File: member-prf.php, line: 67
 msgid "Nationality"
+msgstr ""
+#
+# File: member-prf.php, line: 162
+msgid "Nationality should be selected"
 msgstr ""
 #
 # File: member-club.php, line: 206
@@ -421,7 +454,7 @@ msgstr ""
 msgid "Not found."
 msgstr ""
 #
-# File: member-register.php, line: 79
+# File: member-register.php, line: 78
 msgid "Omien tietojen katselu ja päivitys"
 msgstr ""
 #
@@ -439,7 +472,11 @@ msgstr ""
 msgid "Phone number"
 msgstr ""
 #
-# File: member-register.php, line: 204
+# File: member-prf.php, line: 161
+msgid "Phone number should not be empty"
+msgstr ""
+#
+# File: member-register.php, line: 203
 msgid "Piilota"
 msgstr ""
 #
@@ -453,7 +490,7 @@ msgid "Poista"
 msgstr ""
 #
 # File: member-payment.php, line: 275
-msgid "Poista henkilön "
+msgid "Poista maksu viitteellä"
 msgstr ""
 #
 # File: member-group.php, line: 223
@@ -477,21 +514,29 @@ msgstr ""
 msgid "Poista tämä viesti joka on kirjoitettu"
 msgstr ""
 #
+# File: member-prf.php, line: 160
+msgid "Post region should not be empty"
+msgstr ""
+#
 # File: member-member.php, line: 237
 # File: member-member.php, line: 668
+# File: member-prf.php, line: 52
 msgid "Postinumero"
 msgstr ""
 #
 # File: member-member.php, line: 664
+# File: member-prf.php, line: 47
 msgid "Postiosoite"
 msgstr ""
 #
 # File: member-member.php, line: 241
 # File: member-member.php, line: 672
+# File: member-prf.php, line: 57
 msgid "Postitoimipaikka"
 msgstr ""
 #
 # File: member-member.php, line: 676
+# File: member-prf.php, line: 62
 msgid "Puhelinnumero"
 msgstr ""
 #
@@ -519,7 +564,7 @@ msgstr ""
 msgid "Restrictions"
 msgstr ""
 #
-# File: member-register.php, line: 90
+# File: member-register.php, line: 89
 msgid "Ryhmien hallinta"
 msgstr ""
 #
@@ -536,13 +581,14 @@ msgid "Ryhmän tiedot päivitetty"
 msgstr ""
 #
 # File: member-group.php, line: 104
-# File: member-register.php, line: 316
+# File: member-register.php, line: 315
 msgid "Ryhmät"
 msgstr ""
 #
 # File: member-files.php, line: 331
 # File: member-member.php, line: 287
 # File: member-member.php, line: 750
+# File: member-prf.php, line: 105
 msgid "Seura"
 msgstr ""
 #
@@ -554,11 +600,11 @@ msgstr ""
 msgid "Seuran tiedot päivitetty."
 msgstr ""
 #
-# File: member-register.php, line: 310
+# File: member-register.php, line: 309
 msgid "Seurat"
 msgstr ""
 #
-# File: member-register.php, line: 88
+# File: member-register.php, line: 87
 msgid "Seurojen hallinta"
 msgstr ""
 #
@@ -574,20 +620,24 @@ msgstr ""
 msgid "Suomen Yuishinkai-liiton Jäsenseurat."
 msgstr ""
 #
+# File: member-prf.php, line: 192
+msgid "The main martial art should be one of those available in the list"
+msgstr ""
+#
 # File: member-member.php, line: 199
 # File: member-member.php, line: 200
 msgid "This user can be removed by clicking here"
 msgstr ""
 #
-# File: member-register.php, line: 89
+# File: member-register.php, line: 88
 msgid "Tiedostojen hallinta"
 msgstr ""
 #
-# File: member-register.php, line: 342
+# File: member-register.php, line: 341
 msgid "Tiedostot"
 msgstr ""
 #
-# File: member-register.php, line: 80
+# File: member-register.php, line: 79
 msgid "Tiedostot jäsenille"
 msgstr ""
 #
@@ -621,7 +671,7 @@ msgstr ""
 msgid "Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun."
 msgstr ""
 #
-# File: member-register.php, line: 281
+# File: member-register.php, line: 280
 msgid "Uusi jäsen"
 msgstr ""
 #
@@ -629,8 +679,8 @@ msgstr ""
 msgid "Uusi jäsen lisätty, nimellä:"
 msgstr ""
 #
+# File: member-register.php, line: 291
 # File: member-register.php, line: 292
-# File: member-register.php, line: 293
 msgid "Uusi maksu"
 msgstr ""
 #
@@ -725,14 +775,14 @@ msgstr ""
 msgid "Vyöarvo poistettu"
 msgstr ""
 #
-# File: member-register.php, line: 86
+# File: member-register.php, line: 85
 msgid "Vyöarvojen hallinta"
 msgstr ""
 #
 # File: member-grade.php, line: 93
 # File: member-member.php, line: 327
+# File: member-register.php, line: 297
 # File: member-register.php, line: 298
-# File: member-register.php, line: 299
 msgid "Vyöarvot"
 msgstr ""
 #
@@ -767,17 +817,17 @@ msgstr ""
 # File: member-payment.php, line: 14
 # File: member-payment.php, line: 58
 # File: member-payment.php, line: 366
-# File: member-register.php, line: 446
+# File: member-register.php, line: 445
 msgid "You do not have sufficient permissions to access this page."
-msgstr ""
-#
-# File: member-prf.php, line: 28
-msgid "You must include a martial art."
 msgstr ""
 #
 # File: member-member.php, line: 261
 # File: member-member.php, line: 707
 msgid "Yuishinkai passinumero"
+msgstr ""
+#
+# File: member-prf.php, line: 159
+msgid "Zip code should not be empty"
 msgstr ""
 #
 # File: member-member.php, line: 241
@@ -843,11 +893,11 @@ msgstr ""
 msgid "päivämäärällä"
 msgstr ""
 #
-# File: member-register.php, line: 32
-# File: member-register.php, line: 34
-# File: member-register.php, line: 36
-# File: member-register.php, line: 38
-# File: member-register.php, line: 40
+# File: member-register.php, line: 31
+# File: member-register.php, line: 33
+# File: member-register.php, line: 35
+# File: member-register.php, line: 37
+# File: member-register.php, line: 39
 msgid "raita"
 msgstr ""
 #

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 18:21+0300\n"
-"PO-Revision-Date: 2013-04-21 18:23+0200\n"
+"POT-Creation-Date: 2013-04-21 23:36+0300\n"
+"PO-Revision-Date: 2013-04-21 23:39+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,6 +32,11 @@ msgstr "Kirjautumisoikeudet"
 # File: member-member.php, line: 219
 msgid "Address"
 msgstr "Osoite"
+
+#
+# File: member-prf.php, line: 158
+msgid "Address should not be empty"
+msgstr "Katuosoite tulisi olla täytettynä"
 
 #
 # File: member-forum.php, line: 214
@@ -96,6 +101,21 @@ msgid "Base name"
 msgstr "Perusnimi"
 
 #
+# File: member-prf.php, line: 181
+msgid "Birthdate should be a date that exists"
+msgstr "Syntymäpäivän tulisi olla olemassa oleva päiväys"
+
+#
+# File: member-prf.php, line: 186
+msgid "Birthdate should be in format shown below"
+msgstr "Syntymäpäivä tulisi olla alhaalla esitetyssä muodossa"
+
+#
+# File: member-prf.php, line: 157
+msgid "Birthdate should not be empty"
+msgstr "Syntymäpäivä tulisi olla täytettynä"
+
+#
 # File: member-member.php, line: 66
 # File: member-member.php, line: 215
 # File: member-member.php, line: 604
@@ -154,6 +174,11 @@ msgid "First name"
 msgstr "Etunimi"
 
 #
+# File: member-prf.php, line: 155
+msgid "First name should not be empty"
+msgstr "Etunimi tulisi olla täytettynä"
+
+#
 # File: member-register.php, line: 283
 msgid "Hallinnoi jäsenmaksuja"
 msgstr "Hallinnoi jäsenmaksuja"
@@ -176,6 +201,11 @@ msgstr ""
 # File: member-grade.php, line: 305
 msgid "Jäsen"
 msgstr "Jäsen"
+
+#
+# File: member-group.php, line: 42
+msgid "Jäsen poistettu"
+msgstr "Jäsen poistettu"
 
 #
 # File: member-register.php, line: 314
@@ -312,6 +342,11 @@ msgid "Last name"
 msgstr "Sukunimi"
 
 #
+# File: member-prf.php, line: 156
+msgid "Last name should not be empty"
+msgstr "Sukunimi tulisi olla täytettynä"
+
+#
 # File: member-club.php, line: 223
 # File: member-member.php, line: 278
 msgid "List of active members in the club called:"
@@ -381,6 +416,13 @@ msgid "Main martial art"
 msgstr "Päälaji"
 
 #
+# File: member-member.php, line: 69
+# File: member-member.php, line: 251
+# File: member-member.php, line: 655
+msgid "Main martial art should be selected"
+msgstr "Päälaji tulisi olla valittuna"
+
+#
 # File: member-payment.php, line: 142
 msgid "Maksamattomat maksut"
 msgstr "Maksamattomat maksut"
@@ -409,13 +451,6 @@ msgstr "Maksu merkitty maksetuksi tänään"
 # File: member-payment.php, line: 117
 msgid "Maksu poistettu"
 msgstr "Maksu poistettu"
-
-#
-# File: member-member.php, line: 69
-# File: member-member.php, line: 251
-# File: member-member.php, line: 655
-msgid "Martial Art"
-msgstr "Päälaji"
 
 #
 # File: member-payment.php, line: 375
@@ -498,6 +533,11 @@ msgid "Nationality"
 msgstr "Kansallisuus"
 
 #
+# File: member-prf.php, line: 162
+msgid "Nationality should be selected"
+msgstr "Kansallisuus tulisi olla täytettynä"
+
+#
 # File: member-club.php, line: 206
 msgid "Nimi"
 msgstr "Nimi"
@@ -537,6 +577,11 @@ msgid "Phone number"
 msgstr "Puhelinnumero"
 
 #
+# File: member-prf.php, line: 161
+msgid "Phone number should not be empty"
+msgstr "Puhelinnumero tulisi olla täytettynä"
+
+#
 # File: member-register.php, line: 201
 msgid "Piilota"
 msgstr "Piilota"
@@ -552,9 +597,9 @@ msgid "Poista"
 msgstr "Poista"
 
 #
-# File: member-payment.php, line: 275
-msgid "Poista henkilön "
-msgstr "Poista henkilön "
+# File: member-group.php, line: 223
+msgid "Poista maksu viitteellä"
+msgstr "Poista ryhmä nimellä "
 
 #
 # File: member-group.php, line: 223
@@ -580,6 +625,11 @@ msgstr "Poista tämä tiedosto"
 # File: member-forum.php, line: 311
 msgid "Poista tämä viesti joka on kirjoitettu"
 msgstr "Poista tämä viesti joka on kirjoitettu"
+
+#
+# File: member-prf.php, line: 160
+msgid "Post region should not be empty"
+msgstr "Postitoimipaikka tulisi olla täytettynä"
 
 #
 # File: member-member.php, line: 223
@@ -700,6 +750,17 @@ msgstr "Summa (EUR)"
 # File: member-club.php, line: 102
 msgid "Suomen Yuishinkai-liiton Jäsenseurat."
 msgstr "Suomen Yuishinkai-liiton Jäsenseurat."
+
+#
+# File: member-prf.php, line: 192
+msgid "The main martial art should be one of those available in the list"
+msgstr "Päälajin tulisi olla jokin listatuista"
+
+#
+# File: member-member.php, line: 199
+# File: member-member.php, line: 200
+msgid "This user can be removed by clicking here"
+msgstr "Tämä käyttäjä voidaan poistaa painamalla tästä"
 
 #
 # File: member-register.php, line: 88
@@ -936,15 +997,15 @@ msgid "You do not have sufficient permissions to access this page."
 msgstr "Sinulla ei ole riittäviä oikeuksia tämän sivun katseluun."
 
 #
-# File: member-prf.php, line: 35
-msgid "You must include a martial art."
-msgstr "Sinun tulee valita päälaji"
-
-#
 # File: member-member.php, line: 247
 # File: member-member.php, line: 651
 msgid "Yuishinkai passinumero"
 msgstr "Yuishinkai passinumero"
+
+#
+# File: member-prf.php, line: 159
+msgid "Zip code should not be empty"
+msgstr "Postinumero tulisi olla täytettynä"
 
 #
 # File: member-member.php, line: 227

@@ -10,22 +10,187 @@
  */
 function mr_prf_register_form ()
 {
-	$martial_art = ( isset( $_POST['martial_art'] ) ) ? $_POST['martial_art']: '';
+	global $wpdb;
+	global $mr_martial_arts;
+
+	$values = array(
+		'firstname' => isset($_POST['firstname']) ? mr_htmlent($_POST['firstname']) : '',
+		'lastname' => isset($_POST['lastname']) ? mr_htmlent($_POST['lastname']) : '',
+		'birthdate' => isset($_POST['birthdate']) ? mr_htmlent($_POST['birthdate']) : '',
+		'address' => isset($_POST['address']) ? mr_htmlent($_POST['address']) : '',
+		'zipcode' => isset($_POST['zipcode']) ? mr_htmlent($_POST['zipcode']) : '',
+		'postal' => isset($_POST['postal']) ? mr_htmlent($_POST['postal']) : '',
+		'phone' => isset($_POST['phone']) ? mr_htmlent($_POST['phone']) : '',
+		'nationality' => isset($_POST['nationality']) ? mr_htmlent($_POST['nationality']) : '',
+		'martial' => isset($_POST['martial']) ? mr_htmlent($_POST['martial']) : '',
+		'club' => isset($_POST['club']) ? intval($_POST['club']) : -1
+	);
+
+
 	?>
 	<p>
-		<label for="martial_art"><?php __('Martial Art', 'member-register') ?><br />
-			<input type="text" name="martial_art" id="martial_art" class="input" value="<?php echo esc_attr(stripslashes($martial_art)); ?>" size="25" /></label>
+		<label><?php echo __('Etunimi', 'member-register'); ?><br />
+			<input type="text" name="firstname" class="required" value="<?php echo $values['firstname']; ?>" />
+		</label>
 	</p>
+	<p>
+		<label><?php echo __('Last name', 'member-register'); ?><br />
+			<input type="text" name="lastname" class="required" value="<?php echo $values['lastname']; ?>" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span><br />
+			<input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Postiosoite', 'member-register'); ?><br />
+			<input type="text" name="address" value="<?php echo $values['address']; ?>" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Postinumero', 'member-register'); ?><br />
+			<input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" list="zipcodes" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Postitoimipaikka', 'member-register'); ?><br />
+			<input type="text" name="postal" value="<?php echo $values['postal']; ?>" list="postals" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Puhelinnumero', 'member-register'); ?><br />
+			<input type="text" name="phone" value="<?php echo $values['phone']; ?>" />
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Nationality', 'member-register'); ?><br />
+			<select name="nationality" data-placeholder="Valitse kansallisuus">
+		<option value=""></option>
+		<?php
+		$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
+		$countries = $wpdb->get_results($sql, ARRAY_A);
+		foreach($countries as $cnt)
+		{
+			echo '<option value="' . $cnt['code']. '"';
+			if ($cnt['code'] == $values['nationality'])
+			{
+				echo ' selected="selected"';
+			}
+			echo '>' . $cnt['name'] . '</option>';
+		}
+		?>
+		</select>
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Main martial art', 'member-register'); ?><br />
+			<select name="martial" data-placeholder="Valitse päälaji">
+			<option value=""></option>
+			<?php
+			foreach ($mr_martial_arts as $k => $v)
+			{
+				echo '<option value="' . $k . '"';
+				if ($values['martial'] == $k)
+				{
+					echo ' selected="selected"';
+				}
+				echo '>' . $v . ' (' . $k . ')</option>';
+			}
+			?>
+			</select>
+		</label>
+	</p>
+	<p>
+		<label><?php echo __('Seura', 'member-register'); ?> <span class="description">(ei pakollinen)</span><br />
+			<select name="club" data-placeholder="Valitse seura">
+				<option value=""></option>
+				<?php
+				$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
+				foreach($clubs as $club)
+				{
+					echo '<option value="' . $club['id'] . '"';
+					if ($values['club'] == $club['id'])
+					{
+						echo ' selected="selected"';
+					}
+					echo '>' . $club['title'] . '</option>';
+				}
+				?>
+			</select>
+		</label>
+	</p>
+
+	<datalist id="postals">
+		<?php
+		$sql = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY postal ASC';
+		$results = $wpdb->get_results($sql, ARRAY_A);
+		foreach ($results as $res)
+		{
+			echo '<option value="' . $res['postal'] . '" />';
+		}
+		?>
+	</datalist>
+	<datalist id="zipcodes">
+		<?php
+		$sql = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY zipcode ASC';
+		$results = $wpdb->get_results($sql, ARRAY_A);
+		foreach ($results as $res)
+		{
+			echo '<option value="' . $res['zipcode'] . '" />';
+		}
+		?>
+	</datalist>
 	<?php
 }
 
 /**
  * Public registration. Additional form items validation.
  */
-function mr_prf_registration_errors ($errors, $sanitized_user_login, $user_email) {
+function mr_prf_registration_errors ($errors, $sanitized_user_login, $user_email)
+{
+	global $mr_martial_arts;
 
-	if ( empty( $_POST['martial_art'] ) )
-		$errors->add( 'martial_art_error', __('You must include a martial art.', 'member-register') );
+	$values = array(
+		'firstname' => __('First name should not be empty', 'member-register'),
+		'lastname' => __('Last name should not be empty', 'member-register'),
+		'birthdate' => __('Birthdate should not be empty', 'member-register'),
+		'address' => __('Address should not be empty', 'member-register'),
+		'zipcode' => __('Zip code should not be empty', 'member-register'),
+		'postal' => __('Post region should not be empty', 'member-register'),
+		'phone' => __('Phone number should not be empty', 'member-register'),
+		'nationality' => __('Nationality should be selected', 'member-register'),
+		'martial' => __('Main martial art should be selected', 'member-register')
+	);
+
+	foreach ($values as $key => $message)
+	{
+		if (empty($_POST[$key]))
+		{
+			$errors->add($key . '_error', $message);
+		}
+	}
+
+	// Birth date must exist
+	$test_date  = explode('-', $_POST['birthdate']);
+	if (count($test_date) == 3)
+	{
+		//  checkdate ( int $month , int $day , int $year )
+		if (!checkdate($test_date[1], $test_date[2], $test_date[0]))
+		{
+			$errors->add('birthdate_list_error', __('Birthdate should be a date that exists', 'member-register'));
+		}
+	}
+	else
+	{
+		$errors->add('birthdate_list_error', __('Birthdate should be in format shown below', 'member-register'));
+	}
+
+	// Martial art must be one of those available
+	if (!array_key_exists($_POST['martial'], $mr_martial_arts))
+	{
+		$errors->add('martial_list_error', __('The main martial art should be one of those available in the list', 'member-register'));
+	}
 
 	return $errors;
 }
@@ -35,8 +200,39 @@ function mr_prf_registration_errors ($errors, $sanitized_user_login, $user_email
  */
 function mr_prf_user_register($user_id)
 {
-	if ( isset( $_POST['martial_art'] ) )
-	{
-		update_user_meta($user_id, 'martial_art', $_POST['martial_art']);
-	}
+	global $wpdb;
+
+	// Email address can be fetched now from wp_users.
+	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'users WHERE ID = '. $user_id;
+	$data = $wpdb->get_row($sql, ARRAY_A);
+
+	$values = array(
+		'user_login' => $data['user_login'],
+		'access' => 1,
+		'email' => $data['user_email'],
+		'joindate' => date('Y-m-d'),
+		'passnro' => '',
+		'notes' => '',
+		'active' => 0,
+		'firstname' => isset($_POST['firstname']) ? mr_htmlent($_POST['firstname']) : '',
+		'lastname' => isset($_POST['lastname']) ? mr_htmlent($_POST['lastname']) : '',
+		'birthdate' => isset($_POST['birthdate']) ? mr_htmlent($_POST['birthdate']) : '',
+		'address' => isset($_POST['address']) ? mr_htmlent($_POST['address']) : '',
+		'zipcode' => isset($_POST['zipcode']) ? mr_htmlent($_POST['zipcode']) : '',
+		'postal' => isset($_POST['postal']) ? mr_htmlent($_POST['postal']) : '',
+		'phone' => isset($_POST['phone']) ? mr_htmlent($_POST['phone']) : '',
+		'nationality' => isset($_POST['nationality']) ? mr_htmlent($_POST['nationality']) : '',
+		'martial' => isset($_POST['martial']) ? mr_htmlent($_POST['martial']) : '',
+		'club' => isset($_POST['club']) ? intval($_POST['club']) : -1
+	);
+
+	$keys = implode(', ', array_keys($values));
+	$vals = '\'' . implode('\', \'', array_values($values)) . '\'';
+
+	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . $keys . ') VALUES(' . $vals . ')';
+	$wpdb->query($sql);
+
+	// Finally update few items in the WP_users (display_name)
+	$wpdb->query('UPDATE ' . $wpdb->prefix . 'users SET display_name = \'' .
+		$values['lastname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
 }

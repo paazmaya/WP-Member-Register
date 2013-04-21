@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 15:56+0300\n"
-"PO-Revision-Date: 2013-04-21 17:50+0200\n"
+"POT-Creation-Date: 2013-04-21 23:36+0300\n"
+"PO-Revision-Date: 2013-04-21 23:42+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,6 @@ msgid "3 viikkoa tulevaisuudessa"
 msgstr "3 weeks in the future"
 
 #
-# File: member-prf.php, line: 35
-msgid "<strong>ERROR</strong>: You must include a martial art."
-msgstr "<strong>ERROR</strong>: You must include a martial art."
-
-#
 # File: member-member.php, line: 70
 msgid "Access rights"
 msgstr "Access rights"
@@ -37,6 +32,11 @@ msgstr "Access rights"
 # File: member-member.php, line: 219
 msgid "Address"
 msgstr "Address"
+
+#
+# File: member-prf.php, line: 158
+msgid "Address should not be empty"
+msgstr "Address should not be empty"
 
 #
 # File: member-forum.php, line: 214
@@ -53,22 +53,22 @@ msgstr "Time"
 # File: member-member.php, line: 269
 # File: member-member.php, line: 676
 msgid "Aktiivinen"
-msgstr "Aktiivinen"
+msgstr "Active"
 
 #
 # File: member-group.php, line: 95
 msgid "Aktiiviset jäsenet tässä ryhmässä."
-msgstr "Aktiiviset jäsenet tässä ryhmässä."
+msgstr "Active members in this group."
 
 #
 # File: member-club.php, line: 92
 msgid "Aktiiviset jäsenet tässä seurassa."
-msgstr "Aktiiviset jäsenet tässä seurassa."
+msgstr "Active members in this club."
 
 #
 # File: member-club.php, line: 208
 msgid "Aktiivisia jäseniä"
-msgstr "Aktiivisia jäseniä"
+msgstr "Active members"
 
 #
 # File: member-forum.php, line: 89
@@ -78,7 +78,7 @@ msgstr "Alempana lista aktiivista keskustelun aiheista"
 #
 # File: member-register.php, line: 466
 msgid "Alla lista rekisteröidyistä jäsenistä"
-msgstr "Alla lista rekisteröidyistä jäsenistä"
+msgstr "Below is a list of active members"
 
 #
 # File: member-functions.php, line: 56
@@ -99,6 +99,21 @@ msgstr "Amount"
 # File: member-files.php, line: 166
 msgid "Base name"
 msgstr "Base name"
+
+#
+# File: member-prf.php, line: 181
+msgid "Birthdate should be a date that exists"
+msgstr "Birthdate should be a date that exists"
+
+#
+# File: member-prf.php, line: 186
+msgid "Birthdate should be in format shown below"
+msgstr "Birthdate should be in format shown below"
+
+#
+# File: member-prf.php, line: 157
+msgid "Birthdate should not be empty"
+msgstr "Birthdate should not be empty"
 
 #
 # File: member-member.php, line: 66
@@ -159,6 +174,11 @@ msgid "First name"
 msgstr "Etunimi"
 
 #
+# File: member-prf.php, line: 155
+msgid "First name should not be empty"
+msgstr "First name should not be empty"
+
+#
 # File: member-register.php, line: 283
 msgid "Hallinnoi jäsenmaksuja"
 msgstr "Hallinnoi jäsenmaksuja"
@@ -166,7 +186,7 @@ msgstr "Hallinnoi jäsenmaksuja"
 #
 # File: member-member.php, line: 197
 msgid "Henkilötiedot"
-msgstr "Henkilötiedot"
+msgstr "Personal information"
 
 #
 # File: member-member.php, line: 188
@@ -182,6 +202,11 @@ msgstr ""
 # File: member-grade.php, line: 305
 msgid "Jäsen"
 msgstr "Jäsen"
+
+#
+# File: member-group.php, line: 42
+msgid "Jäsen poistettu"
+msgstr "Jäsen poistettu"
 
 #
 # File: member-register.php, line: 314
@@ -250,7 +275,7 @@ msgstr "Jäsenten tiedostot"
 #
 # File: member-files.php, line: 327
 msgid "Kansio"
-msgstr "Kansio"
+msgstr "Folder"
 
 #
 # File: member-forum.php, line: 88
@@ -318,6 +343,11 @@ msgid "Last name"
 msgstr "Last name"
 
 #
+# File: member-prf.php, line: 156
+msgid "Last name should not be empty"
+msgstr "Last name should not be empty"
+
+#
 # File: member-club.php, line: 223
 # File: member-member.php, line: 278
 msgid "List of active members in the club called:"
@@ -350,7 +380,7 @@ msgstr "Lisää uusi tiedosto"
 #
 # File: member-forum.php, line: 79
 msgid "Lisää viesti"
-msgstr "Lisää viesti"
+msgstr "Add message"
 
 #
 # File: member-forum.php, line: 140
@@ -361,7 +391,7 @@ msgstr "Luo uusi keskustelun aihe"
 # File: member-group.php, line: 130
 # File: member-group.php, line: 131
 msgid "Luo uusi ryhmä"
-msgstr "Luo uusi ryhmä"
+msgstr "Create new group"
 
 #
 # File: member-group.php, line: 255
@@ -372,12 +402,12 @@ msgstr "Luo uusi ryhmä, jossa on vähintään yksi jäsen"
 # File: member-club.php, line: 128
 # File: member-club.php, line: 129
 msgid "Luo uusi seura"
-msgstr "Luo uusi seura"
+msgstr "Create new club"
 
 #
 # File: member-member.php, line: 236
 msgid "Lähetä sähköpostia"
-msgstr "Lähetä sähköpostia"
+msgstr "Send email"
 
 #
 # File: member-member.php, line: 69
@@ -385,6 +415,13 @@ msgstr "Lähetä sähköpostia"
 # File: member-member.php, line: 655
 msgid "Main martial art"
 msgstr "Main martial art"
+
+#
+# File: member-member.php, line: 69
+# File: member-member.php, line: 251
+# File: member-member.php, line: 655
+msgid "Main martial art should be selected"
+msgstr "Main martial art should be selected"
 
 #
 # File: member-payment.php, line: 142
@@ -497,6 +534,11 @@ msgid "Nationality"
 msgstr "Nationality"
 
 #
+# File: member-prf.php, line: 162
+msgid "Nationality should be selected"
+msgstr "Nationality should be selected"
+
+#
 # File: member-club.php, line: 206
 msgid "Nimi"
 msgstr "Nimi"
@@ -536,6 +578,11 @@ msgid "Phone number"
 msgstr "Puhelinnumero"
 
 #
+# File: member-prf.php, line: 161
+msgid "Phone number should not be empty"
+msgstr "Phone number should not be empty"
+
+#
 # File: member-register.php, line: 201
 msgid "Piilota"
 msgstr "Piilota"
@@ -551,9 +598,9 @@ msgid "Poista"
 msgstr "Poista"
 
 #
-# File: member-payment.php, line: 275
-msgid "Poista henkilön "
-msgstr "Poista henkilön "
+# File: member-group.php, line: 223
+msgid "Poista maksu viitteellä"
+msgstr "Poista maksu viitteellä"
 
 #
 # File: member-group.php, line: 223
@@ -579,6 +626,11 @@ msgstr "Poista tämä tiedosto"
 # File: member-forum.php, line: 311
 msgid "Poista tämä viesti joka on kirjoitettu"
 msgstr "Poista tämä viesti joka on kirjoitettu"
+
+#
+# File: member-prf.php, line: 160
+msgid "Post region should not be empty"
+msgstr "Post region should not be empty"
 
 #
 # File: member-member.php, line: 223
@@ -699,6 +751,17 @@ msgstr "Summa (EUR)"
 # File: member-club.php, line: 102
 msgid "Suomen Yuishinkai-liiton Jäsenseurat."
 msgstr "Suomen Yuishinkai-liiton Jäsenseurat."
+
+#
+# File: member-prf.php, line: 192
+msgid "The main martial art should be one of those available in the list"
+msgstr "The main martial art should be one of those available in the list"
+
+#
+# File: member-member.php, line: 199
+# File: member-member.php, line: 200
+msgid "This user can be removed by clicking here"
+msgstr "This user can be removed by clicking here"
 
 #
 # File: member-register.php, line: 88
@@ -939,6 +1002,11 @@ msgstr "You do not have sufficient permissions to access this page."
 # File: member-member.php, line: 651
 msgid "Yuishinkai passinumero"
 msgstr "Yuishinkai passinumero"
+
+#
+# File: member-prf.php, line: 159
+msgid "Zip code should not be empty"
+msgstr "Zip code should not be empty"
 
 #
 # File: member-member.php, line: 227
