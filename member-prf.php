@@ -28,21 +28,6 @@ function mr_prf_register_form ()
 
 
 	?>
-	<style>
-		label > select {
-			width: 100%;
-			background: none repeat scroll 0 0 #FBFBFB;
-			border: 1px solid #E5E5E5;
-			box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
-			color: #555555;
-			font-size: 18px;
-			margin-bottom: 16px;
-			margin-right: 6px;
-			margin-top: 2px;
-			outline: 0 none;
-			padding: 3px;
-		}
-	</style>
 	<p>
 		<label><?php echo __('Etunimi', 'member-register'); ?><br />
 			<input type="text" name="firstname" class="required" value="<?php echo $values['firstname']; ?>" />
