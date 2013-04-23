@@ -30,42 +30,43 @@ function mr_prf_register_form ()
 	?>
 	<p>
 		<label><?php echo __('Etunimi', 'member-register'); ?><br />
-			<input type="text" name="firstname" class="required" value="<?php echo $values['firstname']; ?>" />
+			<input type="text" name="firstname" class="required" required="required" value="<?php echo $values['firstname']; ?>" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Last name', 'member-register'); ?><br />
-			<input type="text" name="lastname" class="required" value="<?php echo $values['lastname']; ?>" />
+			<input type="text" name="lastname" class="required" required="required" value="<?php echo $values['lastname']; ?>" />
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span><br />
-			<input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>" />
+		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(muotoa YYYY-MM-DD, esim 1950-12-31)</span><br />
+			<input type="text" name="birthdate" class="pickday" required="required" value="<?php echo $values['birthdate']; ?>" />
+			<!--  min="1900-01-01" max="<?php echo date('Y-m-d', time() - 60*60*24*365); ?>"  -->
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Postiosoite', 'member-register'); ?><br />
-			<input type="text" name="address" value="<?php echo $values['address']; ?>" />
+			<input type="text" name="address" required="required" value="<?php echo $values['address']; ?>" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Postinumero', 'member-register'); ?><br />
-			<input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" list="zipcodes" />
+			<input type="text" name="zipcode" required="required" value="<?php echo $values['zipcode']; ?>" list="zipcodes" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Postitoimipaikka', 'member-register'); ?><br />
-			<input type="text" name="postal" value="<?php echo $values['postal']; ?>" list="postals" />
+			<input type="text" name="postal" required="required" value="<?php echo $values['postal']; ?>" list="postals" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Puhelinnumero', 'member-register'); ?><br />
-			<input type="text" name="phone" value="<?php echo $values['phone']; ?>" />
+			<input type="text" name="phone" required="required" value="<?php echo $values['phone']; ?>" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Nationality', 'member-register'); ?><br />
-			<select name="nationality" data-placeholder="Valitse kansallisuus">
+			<select name="nationality" required="required" data-placeholder="Valitse kansallisuus">
 		<option value=""></option>
 		<?php
 		$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -85,7 +86,7 @@ function mr_prf_register_form ()
 	</p>
 	<p>
 		<label><?php echo __('Main martial art', 'member-register'); ?><br />
-			<select name="martial" data-placeholder="Valitse päälaji">
+			<select name="martial" required="required" data-placeholder="Valitse päälaji">
 				<option value=""></option>
 				<?php
 				foreach ($mr_martial_arts as $k => $v)
@@ -234,5 +235,9 @@ function mr_prf_user_register($user_id)
 
 	// Finally update few items in the WP_users (display_name)
 	$wpdb->query('UPDATE ' . $wpdb->prefix . 'users SET display_name = \'' .
-		$values['lastname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
+		$values['firstname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
+		
+	// Also add the meta data for name
+	update_user_meta($user_id, 'first_name', $values['firstname']);
+	update_user_meta($user_id, 'last_name', $values['lastname']);
 }
