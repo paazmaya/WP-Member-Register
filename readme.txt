@@ -45,6 +45,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 = 0.11.1
 * Released 28th April 2013
 * Few more required fields and types that make client side validation easier
+* Fix listing where deleted member was still shown (visible == 0)
 
 = 0.11.0
 * Released 22th April 2013

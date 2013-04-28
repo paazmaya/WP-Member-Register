@@ -131,7 +131,7 @@ function mr_files_list()
 		}
 	}
 	
-	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $userdata->mr_memberid . ' LIMIT 1';
+	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $userdata->mr_memberid . ' AND visible = 1 LIMIT 1';
 	$userinfo = $wpdb->get_row($sql, ARRAY_A);
 	
 	if (mr_has_permission(MR_ACCESS_FILES_MANAGE))

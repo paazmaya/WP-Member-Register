@@ -125,7 +125,7 @@ function mr_show_grades($memberid = null)
 
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id WHERE A.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
+		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 	

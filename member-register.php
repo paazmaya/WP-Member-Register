@@ -399,7 +399,7 @@ function member_register_wp_loaded()
 		(!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
 		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
 	{
-		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE user_login = \'' .
+		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND user_login = \'' .
 			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
 		$res = $wpdb->get_row($sql, ARRAY_A);
 		if ($wpdb->num_rows == 1)
