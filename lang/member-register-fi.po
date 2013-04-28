@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 23:36+0300\n"
-"PO-Revision-Date: 2013-04-21 23:39+0200\n"
+"POT-Creation-Date: 2013-04-28 21:35+0300\n"
+"PO-Revision-Date: 2013-04-28 21:36+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -866,6 +866,41 @@ msgid "Valid until"
 msgstr "Voimassa saakka"
 
 #
+# File: member-files.php, line: 345
+msgid "Valitse alin vyöarvo"
+msgstr "Valitse alin vyöarvo"
+
+#
+# File: member-member.php, line: 685
+msgid "Valitse käyttäjän kansallisuus"
+msgstr "Valitse käyttäjän kansallisuus"
+
+#
+# File: member-member.php, line: 629
+msgid "Valitse käyttäjän oikeudet"
+msgstr "Valitse käyttäjän oikeudet"
+
+#
+# File: member-files.php, line: 323
+msgid "Valitse laji"
+msgstr "Valitse laji"
+
+#
+# File: member-files.php, line: 356
+msgid "Valitse päälaji"
+msgstr "Valitse päälaji"
+
+#
+# File: member-register.php, line: 314
+msgid "Valitse ryhmä"
+msgstr "Valitse ryhmä"
+
+#
+# File: member-club.php, line: 232
+msgid "Valitse seura"
+msgstr "Valitse seura"
+
+#
 # File: member-files.php, line: 323
 msgid "Valitse tiedosto"
 msgstr "Valitse tiedosto"
@@ -1008,6 +1043,11 @@ msgid "Zip code should not be empty"
 msgstr "Postinumero tulisi olla täytettynä"
 
 #
+# File: member-prf.php, line: 106
+msgid "ei pakollinen"
+msgstr "ei pakollinen"
+
+#
 # File: member-member.php, line: 227
 msgid "ja maa jos ei Suomi"
 msgstr "ja maa jos ei Suomi"
@@ -1038,9 +1078,19 @@ msgid "kummassa lajissa"
 msgstr "kummassa lajissa"
 
 #
+# File: member-member.php, line: 223
+msgid "lista asioista joita käyttäjä voi tehdä"
+msgstr "lista asioista joita käyttäjä voi tehdä"
+
+#
 # File: member-payment.php, line: 407
 msgid "maksettu tänään"
 msgstr "maksettu tänään"
+
+#
+# File: member-files.php, line: 323
+msgid "max 10 MB"
+msgstr "enintään 10 MB"
 
 #
 # File: member-member.php, line: 288
@@ -1069,9 +1119,20 @@ msgid "monivalinta"
 msgstr "monivalinta"
 
 #
+# File: member-prf.php, line: 42
+msgid "muotoa YYYY-MM-DD, esim 1950-12-31"
+msgstr "muotoa YYYY-MM-DD, esim 1950-12-31"
+
+#
 # File: member-group.php, line: 366
 msgid "nimi jolla ryhmä on helppo tunnistaa"
 msgstr "nimi jolla ryhmä on helppo tunnistaa"
+
+#
+# File: member-member.php, line: 739
+# File: member-member.php, line: 744
+msgid "no"
+msgstr "ei"
 
 #
 # File: member-club.php, line: 163
@@ -1079,6 +1140,11 @@ msgstr "nimi jolla ryhmä on helppo tunnistaa"
 # File: member-forum.php, line: 383
 msgid "otsikko"
 msgstr "otsikko"
+
+#
+# File: member-files.php, line: 327
+msgid "parempaa järjestyksenpitoa varten, yksi sana"
+msgstr "parempaa järjestyksenpitoa varten, yksi sana"
 
 #
 # File: member-forum.php, line: 176
@@ -1095,6 +1161,26 @@ msgid "raita"
 msgstr "raita"
 
 #
+# File: member-files.php, line: 368
+msgid "rajoita vain tiettyyn ryhmään kuuluville"
+msgstr "rajoita vain tiettyyn ryhmään kuuluville"
+
+#
+# File: member-files.php, line: 331
+msgid "rajoita vain tiettyyn seuraan kuuluville"
+msgstr "rajoita vain tiettyyn seuraan kuuluville"
+
+#
+# File: member-files.php, line: 344
+msgid "rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin"
+msgstr "rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin"
+
+#
+# File: member-files.php, line: 356
+msgid "rajoita vain tämän lajin päälajikseen valinneille"
+msgstr "rajoita vain tämän lajin päälajikseen valinneille"
+
+#
 # File: member-member.php, line: 251
 msgid "rekisteröity tähän lajiin"
 msgstr "rekisteröity tähän lajiin"
@@ -1103,6 +1189,12 @@ msgstr "rekisteröity tähän lajiin"
 # File: member-member.php, line: 269
 msgid "saako kirjautua sivuille"
 msgstr "saako kirjautua sivuille"
+
+#
+# File: member-member.php, line: 247
+# File: member-member.php, line: 651
+msgid "sinikantinen passi"
+msgstr "sinikantinen passi"
 
 #
 # File: member-grade.php, line: 319
@@ -1133,3 +1225,9 @@ msgstr "voiko käyttää sivustoa"
 # File: member-payment.php, line: 387
 msgid "vuosimaksu, ainaisjäsenmaksu, jne..."
 msgstr "vuosimaksu, ainaisjäsenmaksu, jne..."
+
+#
+# File: member-member.php, line: 738
+# File: member-member.php, line: 744
+msgid "yes"
+msgstr "kyllä"

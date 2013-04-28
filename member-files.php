@@ -320,16 +320,16 @@ function mr_files_new()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
-					<th><?php echo __('Valitse tiedosto', 'member-register'); ?><span class="description">(max 10 MB)</span></th>
+					<th><?php echo __('Valitse tiedosto', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Kansio', 'member-register'); ?><span class="description">(parempaa järjestyksenpitoa varten, yksi sana)</span></th>
+					<th><?php echo __('Kansio', 'member-register'); ?><span class="description">(<?php echo __('parempaa järjestyksenpitoa varten, yksi sana', 'member-register'); ?>)</span></th>
 					<td><input type="text" name="directory" value="" list="directories" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Seura', 'member-register'); ?><span class="description">(rajoita vain tiettyyn seuraan kuuluville)</span></th>
-					<td><select name="club" data-placeholder="Valitse seura">
+					<th><?php echo __('Seura', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tiettyyn seuraan kuuluville', 'member-register'); ?>)</span></th>
+					<td><select name="club" data-placeholder="<?php echo __('Valitse seura', 'member-register'); ?>">
 						<option value=""></option>
 						<?php
 						$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
@@ -341,8 +341,8 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Vyöarvo', 'member-register'); ?><span class="description">(rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin)</span></th>
-					<td><select name="grade" data-placeholder="Valitse alin vyöarvo">
+					<th><?php echo __('Vyöarvo', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin', 'member-register'); ?>)</span></th>
+					<td><select name="grade" data-placeholder="<?php echo __('Valitse alin vyöarvo', 'member-register'); ?>">
 						<option value=""></option>
 						<?php
 						foreach ($mr_grade_values as $key => $val)
@@ -353,8 +353,8 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Päälaji', 'member-register'); ?><span class="description">(rajoita vain tämän lajin päälajikseen valinneille)</span></th>
-					<td><select name="art" data-placeholder="Valitse laji">
+					<th><?php echo __('Päälaji', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tämän lajin päälajikseen valinneille', 'member-register'); ?>)</span></th>
+					<td><select name="art" data-placeholder="<?php echo __('Valitse laji', 'member-register'); ?>">
 						<option value=""></option>
 						<?php
 						foreach ($mr_martial_arts as $key => $val)
@@ -365,8 +365,8 @@ function mr_files_new()
 					</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Ryhmä', 'member-register'); ?><span class="description">(rajoita vain tiettyyn ryhmään kuuluville)</span></th>
-					<td><select name="group" data-placeholder="Valitse ryhmä">
+					<th><?php echo __('Ryhmä', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tiettyyn ryhmään kuuluville', 'member-register'); ?>)</span></th>
+					<td><select name="group" data-placeholder="<?php echo __('Valitse ryhmä', 'member-register'); ?>">
 						<option value=""></option>
 						<?php
 						$groups = mr_get_list('group', 'visible = 1', '', 'title ASC');

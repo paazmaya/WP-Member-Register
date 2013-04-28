@@ -5,16 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: MemberRegister 0.11.0\n"
+"Project-Id-Version: MemberRegister 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 23:36+0300\n"
-"PO-Revision-Date: 2013-04-21 23:42+0200\n"
+"POT-Creation-Date: 2013-04-28 21:35+0300\n"
+"PO-Revision-Date: 2013-04-28 21:47+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #
 # File: member-payment.php, line: 395
@@ -867,6 +869,41 @@ msgid "Valid until"
 msgstr "Valid until"
 
 #
+# File: member-files.php, line: 345
+msgid "Valitse alin vyöarvo"
+msgstr "Choose the lowest grade"
+
+#
+# File: member-member.php, line: 685
+msgid "Valitse käyttäjän kansallisuus"
+msgstr "Choose nationality"
+
+#
+# File: member-member.php, line: 629
+msgid "Valitse käyttäjän oikeudet"
+msgstr "Choose the access rights"
+
+#
+# File: member-files.php, line: 323
+msgid "Valitse laji"
+msgstr "Choose martial art"
+
+#
+# File: member-files.php, line: 356
+msgid "Valitse päälaji"
+msgstr "Choose main martial art"
+
+#
+# File: member-register.php, line: 314
+msgid "Valitse ryhmä"
+msgstr "Choose group"
+
+#
+# File: member-club.php, line: 232
+msgid "Valitse seura"
+msgstr "Choose club"
+
+#
 # File: member-files.php, line: 323
 msgid "Valitse tiedosto"
 msgstr "Valitse tiedosto"
@@ -1009,6 +1046,11 @@ msgid "Zip code should not be empty"
 msgstr "Zip code should not be empty"
 
 #
+# File: member-prf.php, line: 106
+msgid "ei pakollinen"
+msgstr "not required"
+
+#
 # File: member-member.php, line: 227
 msgid "ja maa jos ei Suomi"
 msgstr "ja maa jos ei Suomi"
@@ -1039,9 +1081,19 @@ msgid "kummassa lajissa"
 msgstr "kummassa lajissa"
 
 #
+# File: member-member.php, line: 223
+msgid "lista asioista joita käyttäjä voi tehdä"
+msgstr "list of rights that the user can use"
+
+#
 # File: member-payment.php, line: 407
 msgid "maksettu tänään"
 msgstr "maksettu tänään"
+
+#
+# File: member-files.php, line: 323
+msgid "max 10 MB"
+msgstr "max 10 MB"
 
 #
 # File: member-member.php, line: 288
@@ -1070,9 +1122,20 @@ msgid "monivalinta"
 msgstr "monivalinta"
 
 #
+# File: member-prf.php, line: 42
+msgid "muotoa YYYY-MM-DD, esim 1950-12-31"
+msgstr "form of YYYY-MM-DD, for example 1950-12-31"
+
+#
 # File: member-group.php, line: 366
 msgid "nimi jolla ryhmä on helppo tunnistaa"
 msgstr "nimi jolla ryhmä on helppo tunnistaa"
+
+#
+# File: member-member.php, line: 739
+# File: member-member.php, line: 744
+msgid "no"
+msgstr "no"
 
 #
 # File: member-club.php, line: 163
@@ -1080,6 +1143,11 @@ msgstr "nimi jolla ryhmä on helppo tunnistaa"
 # File: member-forum.php, line: 383
 msgid "otsikko"
 msgstr "otsikko"
+
+#
+# File: member-files.php, line: 327
+msgid "parempaa järjestyksenpitoa varten, yksi sana"
+msgstr "for better organised inventory, single word"
 
 #
 # File: member-forum.php, line: 176
@@ -1096,6 +1164,26 @@ msgid "raita"
 msgstr "raita"
 
 #
+# File: member-files.php, line: 368
+msgid "rajoita vain tiettyyn ryhmään kuuluville"
+msgstr "limit to member in the given group"
+
+#
+# File: member-files.php, line: 331
+msgid "rajoita vain tiettyyn seuraan kuuluville"
+msgstr "limit to the members in the given club"
+
+#
+# File: member-files.php, line: 344
+msgid "rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin"
+msgstr "limit to the lowest grade found in the register"
+
+#
+# File: member-files.php, line: 356
+msgid "rajoita vain tämän lajin päälajikseen valinneille"
+msgstr "limit to the given main martial art"
+
+#
 # File: member-member.php, line: 251
 msgid "rekisteröity tähän lajiin"
 msgstr "rekisteröity tähän lajiin"
@@ -1104,6 +1192,12 @@ msgstr "rekisteröity tähän lajiin"
 # File: member-member.php, line: 269
 msgid "saako kirjautua sivuille"
 msgstr "saako kirjautua sivuille"
+
+#
+# File: member-member.php, line: 247
+# File: member-member.php, line: 651
+msgid "sinikantinen passi"
+msgstr "passport with blue coloured covers"
 
 #
 # File: member-grade.php, line: 319
@@ -1134,3 +1228,9 @@ msgstr "voiko käyttää sivustoa"
 # File: member-payment.php, line: 387
 msgid "vuosimaksu, ainaisjäsenmaksu, jne..."
 msgstr "vuosimaksu, ainaisjäsenmaksu, jne..."
+
+#
+# File: member-member.php, line: 738
+# File: member-member.php, line: 744
+msgid "yes"
+msgstr "yes"

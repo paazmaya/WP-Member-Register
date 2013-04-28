@@ -220,7 +220,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['firstname']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Kirjautumisoikeudet', 'member-register'); ?> <span class="description">(lista asioista joita käyttäjä voi tehdä)</span></th>
+				<th><?php echo __('Kirjautumisoikeudet', 'member-register'); ?> <span class="description">(<?php echo __('lista asioista joita käyttäjä voi tehdä', 'member-register'); ?>)</span></th>
 				<td><?php
 					list_user_rights($person['access']);
 				?></td>
@@ -258,7 +258,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['joindate']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Yuishinkai passinumero', 'member-register'); ?> <span class="description">(sinikantinen passi)</span></th>
+				<th><?php echo __('Yuishinkai passinumero', 'member-register'); ?> <span class="description">(<?php echo __('sinikantinen passi', 'member-register'); ?>)</span></th>
 				<td><?php echo $person['passnro']; ?></td>
 			</tr>
 			<tr>
@@ -559,7 +559,7 @@ function mr_new_member_form($action, $data)
 		'phone' => '',
 		'email' => '',
 		'nationality' => 'FI',
-		'joindate' => '',
+		'joindate' => date('Y-m-d'),
 		'passnro' => '',
 		'martial' => '',
 		'notes' => '',
@@ -626,7 +626,7 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="Valitse käyttäjän oikeudet">
+					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="<?php echo __('Valitse käyttäjän oikeudet', 'member-register'); ?>">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
@@ -678,11 +678,11 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('E-mail', 'member-register'); ?></th>
-				<td><input type="text" name="email" value="<?php echo $values['email']; ?>" /></td>
+				<td><input type="email" name="email" value="<?php echo $values['email']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality', 'member-register'); ?></th>
-				<td><select class="chosen" name="nationality" data-placeholder="Valitse käyttäjän kansallisuus">
+				<td><select class="chosen" name="nationality" data-placeholder="<?php echo __('Valitse käyttäjän kansallisuus', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -709,7 +709,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Main martial art', 'member-register'); ?></th>
-				<td><select name="martial" data-placeholder="Valitse päälaji">
+				<td><select name="martial" data-placeholder="<?php echo __('Valitse päälaji', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach ($mr_martial_arts as $k => $v)
@@ -735,23 +735,23 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> kyllä</label><br />
-					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> ei</label>
+					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> <?php echo __('yes', 'member-register'); ?></label><br />
+					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> <?php echo __('no', 'member-register'); ?></label>
 					<?php
 				}
 				else 
 				{
-					echo ($values['active'] == 1) ? 'kyllä' : 'ei';
+					echo ($values['active'] == 1) ? __('yes', 'member-register') : __('no', 'member-register');
 				}
 				?>
 				</td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Seura', 'member-register'); ?> <span class="description">(<?php echo __('missä seurassa pääsääntöisesti harjoittelee', 'member-register'); ?>)</span></th>
-				<td><select name="club" data-placeholder="Valitse seura">
+				<td><select name="club" data-placeholder="<?php echo __('Valitse seura', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
-				$clubs = mr_get_list('club', '', '', 'title ASC');
+				$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
 				foreach($clubs as $club)
 				{
 					echo '<option value="' . $club['id'] . '"';

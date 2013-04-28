@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MemberRegister 0.11.0\n"
+"Project-Id-Version: MemberRegister 0.11.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-21 23:36+0300\n"
+"POT-Creation-Date: 2013-04-28 21:35+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Address"
 msgstr ""
 #
-# File: member-prf.php, line: 158
+# File: member-prf.php, line: 159
 msgid "Address should not be empty"
 msgstr ""
 #
@@ -85,15 +85,15 @@ msgstr ""
 msgid "Base name"
 msgstr ""
 #
-# File: member-prf.php, line: 181
+# File: member-prf.php, line: 182
 msgid "Birthdate should be a date that exists"
 msgstr ""
 #
-# File: member-prf.php, line: 186
+# File: member-prf.php, line: 187
 msgid "Birthdate should be in format shown below"
 msgstr ""
 #
-# File: member-prf.php, line: 157
+# File: member-prf.php, line: 158
 msgid "Birthdate should not be empty"
 msgstr ""
 #
@@ -147,7 +147,7 @@ msgstr ""
 msgid "First name"
 msgstr ""
 #
-# File: member-prf.php, line: 155
+# File: member-prf.php, line: 156
 msgid "First name should not be empty"
 msgstr ""
 #
@@ -282,7 +282,7 @@ msgstr ""
 msgid "Last name"
 msgstr ""
 #
-# File: member-prf.php, line: 156
+# File: member-prf.php, line: 157
 msgid "Last name should not be empty"
 msgstr ""
 #
@@ -340,11 +340,11 @@ msgstr ""
 # File: member-member.php, line: 69
 # File: member-member.php, line: 265
 # File: member-member.php, line: 711
-# File: member-prf.php, line: 87
+# File: member-prf.php, line: 88
 msgid "Main martial art"
 msgstr ""
 #
-# File: member-prf.php, line: 163
+# File: member-prf.php, line: 164
 msgid "Main martial art should be selected"
 msgstr ""
 #
@@ -434,11 +434,11 @@ msgstr ""
 #
 # File: member-member.php, line: 253
 # File: member-member.php, line: 684
-# File: member-prf.php, line: 67
+# File: member-prf.php, line: 68
 msgid "Nationality"
 msgstr ""
 #
-# File: member-prf.php, line: 162
+# File: member-prf.php, line: 163
 msgid "Nationality should be selected"
 msgstr ""
 #
@@ -472,7 +472,7 @@ msgstr ""
 msgid "Phone number"
 msgstr ""
 #
-# File: member-prf.php, line: 161
+# File: member-prf.php, line: 162
 msgid "Phone number should not be empty"
 msgstr ""
 #
@@ -514,29 +514,29 @@ msgstr ""
 msgid "Poista tämä viesti joka on kirjoitettu"
 msgstr ""
 #
-# File: member-prf.php, line: 160
+# File: member-prf.php, line: 161
 msgid "Post region should not be empty"
 msgstr ""
 #
 # File: member-member.php, line: 237
 # File: member-member.php, line: 668
-# File: member-prf.php, line: 52
+# File: member-prf.php, line: 53
 msgid "Postinumero"
 msgstr ""
 #
 # File: member-member.php, line: 664
-# File: member-prf.php, line: 47
+# File: member-prf.php, line: 48
 msgid "Postiosoite"
 msgstr ""
 #
 # File: member-member.php, line: 241
 # File: member-member.php, line: 672
-# File: member-prf.php, line: 57
+# File: member-prf.php, line: 58
 msgid "Postitoimipaikka"
 msgstr ""
 #
 # File: member-member.php, line: 676
-# File: member-prf.php, line: 62
+# File: member-prf.php, line: 63
 msgid "Puhelinnumero"
 msgstr ""
 #
@@ -588,7 +588,7 @@ msgstr ""
 # File: member-files.php, line: 331
 # File: member-member.php, line: 287
 # File: member-member.php, line: 750
-# File: member-prf.php, line: 105
+# File: member-prf.php, line: 106
 msgid "Seura"
 msgstr ""
 #
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Suomen Yuishinkai-liiton Jäsenseurat."
 msgstr ""
 #
-# File: member-prf.php, line: 192
+# File: member-prf.php, line: 193
 msgid "The main martial art should be one of those available in the list"
 msgstr ""
 #
@@ -710,6 +710,35 @@ msgstr ""
 #
 # File: member-payment.php, line: 401
 msgid "Valid until"
+msgstr ""
+#
+# File: member-files.php, line: 345
+msgid "Valitse alin vyöarvo"
+msgstr ""
+#
+# File: member-member.php, line: 685
+msgid "Valitse käyttäjän kansallisuus"
+msgstr ""
+#
+# File: member-member.php, line: 629
+msgid "Valitse käyttäjän oikeudet"
+msgstr ""
+#
+# File: member-files.php, line: 357
+msgid "Valitse laji"
+msgstr ""
+#
+# File: member-member.php, line: 712
+msgid "Valitse päälaji"
+msgstr ""
+#
+# File: member-files.php, line: 369
+msgid "Valitse ryhmä"
+msgstr ""
+#
+# File: member-files.php, line: 332
+# File: member-member.php, line: 751
+msgid "Valitse seura"
 msgstr ""
 #
 # File: member-files.php, line: 323
@@ -826,8 +855,12 @@ msgstr ""
 msgid "Yuishinkai passinumero"
 msgstr ""
 #
-# File: member-prf.php, line: 159
+# File: member-prf.php, line: 160
 msgid "Zip code should not be empty"
+msgstr ""
+#
+# File: member-prf.php, line: 106
+msgid "ei pakollinen"
 msgstr ""
 #
 # File: member-member.php, line: 241
@@ -854,8 +887,16 @@ msgstr ""
 msgid "kummassa lajissa"
 msgstr ""
 #
+# File: member-member.php, line: 223
+msgid "lista asioista joita käyttäjä voi tehdä"
+msgstr ""
+#
 # File: member-payment.php, line: 407
 msgid "maksettu tänään"
+msgstr ""
+#
+# File: member-files.php, line: 323
+msgid "max 10 MB"
 msgstr ""
 #
 # File: member-member.php, line: 302
@@ -879,14 +920,27 @@ msgstr ""
 msgid "monivalinta"
 msgstr ""
 #
+# File: member-prf.php, line: 42
+msgid "muotoa YYYY-MM-DD, esim 1950-12-31"
+msgstr ""
+#
 # File: member-group.php, line: 366
 msgid "nimi jolla ryhmä on helppo tunnistaa"
+msgstr ""
+#
+# File: member-member.php, line: 739
+# File: member-member.php, line: 744
+msgid "no"
 msgstr ""
 #
 # File: member-club.php, line: 163
 # File: member-club.php, line: 167
 # File: member-forum.php, line: 383
 msgid "otsikko"
+msgstr ""
+#
+# File: member-files.php, line: 327
+msgid "parempaa järjestyksenpitoa varten, yksi sana"
 msgstr ""
 #
 # File: member-forum.php, line: 176
@@ -901,12 +955,32 @@ msgstr ""
 msgid "raita"
 msgstr ""
 #
+# File: member-files.php, line: 368
+msgid "rajoita vain tiettyyn ryhmään kuuluville"
+msgstr ""
+#
+# File: member-files.php, line: 331
+msgid "rajoita vain tiettyyn seuraan kuuluville"
+msgstr ""
+#
+# File: member-files.php, line: 344
+msgid "rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin"
+msgstr ""
+#
+# File: member-files.php, line: 356
+msgid "rajoita vain tämän lajin päälajikseen valinneille"
+msgstr ""
+#
 # File: member-member.php, line: 265
 msgid "rekisteröity tähän lajiin"
 msgstr ""
 #
 # File: member-member.php, line: 283
 msgid "saako kirjautua sivuille"
+msgstr ""
+#
+# File: member-member.php, line: 261
+msgid "sinikantinen passi"
 msgstr ""
 #
 # File: member-grade.php, line: 319
@@ -931,4 +1005,9 @@ msgstr ""
 #
 # File: member-payment.php, line: 387
 msgid "vuosimaksu, ainaisjäsenmaksu, jne..."
+msgstr ""
+#
+# File: member-member.php, line: 738
+# File: member-member.php, line: 744
+msgid "yes"
 msgstr ""

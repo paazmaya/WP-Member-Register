@@ -304,7 +304,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Jäsen', 'member-register'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä', 'member-register'); ?>)</span></th>
 				<td>
-					<select class="chosen" name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
+					<select class="chosen required" required="required" name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
 					<option value=""></option>
 					<?php
 					foreach($members as $user)
@@ -318,7 +318,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Vyöarvo', 'member-register'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä', 'member-register'); ?>)</span></th>
 				<td>
-					<select name="grade" data-placeholder="Valitse vyöarvo">
+					<select name="grade" class="required" required="required" data-placeholder="Valitse vyöarvo">
 					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
@@ -346,9 +346,9 @@ function mr_grade_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Päivämäärä', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="day" class="pickday" required="required" value="<?php
+				<td><input type="text" name="day" class="pickday required" required="required" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
-				?>" /></td>
+				?>" list="dates" /></td>
 			</tr>
 
 		</table>
@@ -370,6 +370,16 @@ function mr_grade_form($members)
 			foreach ($results as $res)
 			{
 				echo '<option value="' . $res['nominator'] . '" />';
+			}
+			?>
+		</datalist>
+		<datalist id="dates">
+			<?php
+			$sql = 'SELECT DISTINCT day FROM ' . $wpdb->prefix . 'mr_grade WHERE visible = 1 ORDER BY day ASC';
+			$results = $wpdb->get_results($sql, ARRAY_A);
+			foreach ($results as $res)
+			{
+				echo '<option value="' . $res['day'] . '" />';
 			}
 			?>
 		</datalist>
