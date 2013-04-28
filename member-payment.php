@@ -385,21 +385,21 @@ function mr_new_payment_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('vuosimaksu, ainaisjäsenmaksu, jne...', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="type" value="" list="types" /></td>
+				<td><input type="text" name="type" value="" required="required" list="types" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Amount', 'member-register'); ?> <span class="description">(<?php echo __('EUR', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="amount" value="" list="amounts" /></td>
+				<td><input type="text" name="amount" value="" required="required" list="amounts" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('3 viikkoa tulevaisuudessa', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="deadline" class="pickday" value="<?php
+				<td><input type="text" name="deadline" class="pickday" required="required" value="<?php
 				echo date('Y-m-d', time() + 60*60*24*21);
 				?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('kuluvan vuoden loppuun', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="validuntil" class="pickday" value="<?php
+				<td><input type="text" name="validuntil" class="pickday" required="required" value="<?php
 				echo date('Y') . '-12-31';
 				?>" /></td>
 			</tr>

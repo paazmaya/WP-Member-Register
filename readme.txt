@@ -42,6 +42,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.11.1
+* Released 28th April 2013
+* Few more required fields and types that make client side validation easier
+
 = 0.11.0
 * Released 22th April 2013
 * In case public registration is enabled, additional items are shown in the form and hooked in to the members register

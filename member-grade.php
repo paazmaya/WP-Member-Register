@@ -338,15 +338,15 @@ function mr_grade_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Paikka', 'member-register'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="location" class="required" value="" list="locations" /></td>
+				<td><input type="text" name="location" class="required" required="required" value="" list="locations" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Myöntäjä', 'member-register'); ?> <span class="description">(<?php echo __('kuka myönsi', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="nominator" class="required" value="" list="nominators" /></td>
+				<td><input type="text" name="nominator" class="required" required="required" value="" list="nominators" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Päivämäärä', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="day" class="pickday" value="<?php
+				<td><input type="text" name="day" class="pickday" required="required" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
 				?>" /></td>
 			</tr>

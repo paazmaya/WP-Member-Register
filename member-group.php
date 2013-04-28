@@ -364,7 +364,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('nimi jolla ryhmä on helppo tunnistaa', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" value="<?php echo $title; ?>" /></td>
+				<td><input type="text" name="title" required="required" value="<?php echo $title; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>

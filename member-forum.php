@@ -381,7 +381,7 @@ function mr_show_form_topic()
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Aihe', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" class="required" value="" /></td>
+				<td><input type="text" name="title" class="required" required="required" value="" /></td>
 			</tr>
 		</table>
 
@@ -409,7 +409,7 @@ function mr_show_form_post($topic)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Viesti', 'member-register'); ?> <span class="description">(<?php echo __('vapaasti', 'member-register'); ?>)</span></th>
-				<td><textarea name="content" class="required"></textarea></td>
+				<td><textarea name="content" class="required" required="required"></textarea></td>
 			</tr>
 		</table>
 
