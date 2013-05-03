@@ -1,12 +1,11 @@
 <?php
+
 /**
  * Part of Member Register
  * Club related functions.
  */
-
-
- // TODO: has many calls to access level checking but kept until decided if they are needed...
- // might be that there will be more levels thus checks needed
+// TODO: has many calls to access level checking but kept until decided if they are needed...
+// might be that there will be more levels thus checks needed
 
 function mr_club_list()
 {
@@ -15,7 +14,7 @@ function mr_club_list()
 
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
+		wp_die(__('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 
@@ -25,17 +24,13 @@ function mr_club_list()
 	{
 		// Mark the given club visible=0, so it can be recovered just in case...
 		$update = $wpdb->update(
-			$wpdb->prefix . 'mr_club',
-			array(
+			$wpdb->prefix . 'mr_club', array(
 				'visible' => 0
-			),
-			array(
+			), array(
 				'id' => $_GET['removeclub']
-			),
-			array(
+			), array(
 				'%d'
-			),
-			array(
+			), array(
 				'%d'
 			)
 		);
@@ -88,11 +83,12 @@ function mr_club_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
-				$id . '&edit" title="' . __('Muokkaa tätä seuraa', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä seuraa', 'member-register') . '</a></p>';
+				$id . '&edit" title="' . __('Muokkaa tätä seuraa', 'member-register') . '" class="button-primary">' . 
+				__('Muokkaa tätä seuraa', 'member-register') . '</a></p>';
 			echo '<h2>' . __('Aktiiviset jäsenet tässä seurassa.', 'member-register') . '</h2>';
 			mr_show_members(array(
-				'club' => intval($_GET['club']),
-				'active' => true
+					'club' => intval($_GET['club']),
+					'active' => true
 			));
 		}
 	}
@@ -125,8 +121,8 @@ function mr_club_list()
 		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&createclub"' .
-					' title="' . __('Luo uusi seura', 'member-register') . '" class="button-primary">' .
-					__('Luo uusi seura', 'member-register') . '</a></p>';
+			' title="' . __('Luo uusi seura', 'member-register') . '" class="button-primary">' .
+			__('Luo uusi seura', 'member-register') . '</a></p>';
 
 			mr_show_clubs();
 		}
@@ -139,12 +135,12 @@ function mr_club_form($data = null)
 {
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 	{
-		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
+		wp_die(__('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
 	$values = array(
-		'title' => '',
-		'address' => ''
+			'title' => '',
+			'address' => ''
 	);
 	$action = admin_url('admin.php?page=member-club-list');
 
@@ -154,7 +150,6 @@ function mr_club_form($data = null)
 		$values = array_merge($values, $data);
 		$action .= '&club=' . $values['id'];
 	}
-
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data"  autocomplete="on">
 		<input type="hidden" name="mr_submit_hidden_club" value="Y" />
@@ -177,7 +172,6 @@ function mr_club_form($data = null)
 	<?php
 }
 
-
 function mr_show_clubs()
 {
 	global $wpdb;
@@ -198,49 +192,47 @@ function mr_show_clubs()
 	{
 		$allowremove = true;
 	}
-
 	?>
 	<table class="wp-list-table widefat tablesorter">
-	<thead>
-	<tr>
-		<th class="headerSortDown"><?php echo __('Nimi', 'member-register'); ?></th>
-		<th><?php echo __('Address', 'member-register'); ?></th>
-		<th><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
-		<?php
-		if ($allowremove)
-		{
-			echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
-		}
-		?>
-	</tr>
-	</thead>
-	<tbody>
+		<thead>
+			<tr>
+				<th class="headerSortDown"><?php echo __('Nimi', 'member-register'); ?></th>
+				<th><?php echo __('Address', 'member-register'); ?></th>
+				<th><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
+				<?php
+				if ($allowremove)
+				{
+					echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
+				}
+				?>
+			</tr>
+		</thead>
+		<tbody>
 
-	<?php
-	foreach($clubs as $club)
-	{
-		$url = '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . $club['id'] .
-			'" title="' . __('List of active members in the club called:', 'member-register') . ' ' .$club['title'] . '">';
-		echo '<tr id="user_' . $club['id'] . '">';
-		echo '<td>' . $url . $club['title'] . '</a></td>';
-		echo '<td>' . $url . $club['address'] . '</a></td>';
-		echo '<td>' . $url . $club['members'] . '</a></td>';
-		// set visible to 0, do not remove for real...
-		if ($allowremove)
-		{
-			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
-				'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', 'member-register') . ': ' .
-				$club['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) .
-				'" alt="' . __('Poista seura', 'member-register') . '" /></a></td>';
-		}
-		echo '</tr>';
-	}
-	?>
-	</tbody>
+			<?php
+			foreach ($clubs as $club)
+			{
+				$url = '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . $club['id'] .
+					'" title="' . __('List of active members in the club called:', 'member-register') . ' ' . $club['title'] . '">';
+				echo '<tr id="user_' . $club['id'] . '">';
+				echo '<td>' . $url . $club['title'] . '</a></td>';
+				echo '<td>' . $url . $club['address'] . '</a></td>';
+				echo '<td>' . $url . $club['members'] . '</a></td>';
+				// set visible to 0, do not remove for real...
+				if ($allowremove)
+				{
+					echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
+					'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', 'member-register') . ': ' .
+					$club['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) .
+					'" alt="' . __('Poista seura', 'member-register') . '" /></a></td>';
+				}
+				echo '</tr>';
+			}
+			?>
+		</tbody>
 	</table>
 	<?php
 }
-
 
 function mr_insert_new_club($postdata)
 {
@@ -249,15 +241,13 @@ function mr_insert_new_club($postdata)
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
 		return $wpdb->insert(
-			$wpdb->prefix . 'mr_club',
-			array(
-				'title' => $postdata['title'],
-				'address' => $postdata['address']
-			),
-			array(
-				'%s',
-				'%s'
-			)
+				$wpdb->prefix . 'mr_club', array(
+					'title' => $postdata['title'],
+					'address' => $postdata['address']
+				), array(
+					'%s',
+					'%s'
+				)
 		);
 	}
 	return false;
@@ -270,26 +260,19 @@ function mr_update_club($postdata)
 	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
 	{
 		return $wpdb->update(
-			$wpdb->prefix . 'mr_club',
-			array(
-				'title' => $postdata['title'],
-				'address' => $postdata['address']
-			),
-			array(
-				'id' => $postdata['id']
-			),
-			array(
-				'%s',
-				'%s'
-			),
-			array(
-				'%d'
-			)
+				$wpdb->prefix . 'mr_club', array(
+					'title' => $postdata['title'],
+					'address' => $postdata['address']
+				), array(
+					'id' => $postdata['id']
+				), array(
+					'%s',
+					'%s'
+				), array(
+					'%d'
+				)
 		);
 	}
 	return false;
 }
-
-
-
 
