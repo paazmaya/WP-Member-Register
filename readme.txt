@@ -42,6 +42,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.11.2 =
+* Released 4th July 2013
+* Replaced Chosen with Select2
+
 = 0.11.1
 * Released 28th April 2013
 * Few more required fields and types that make client side validation easier

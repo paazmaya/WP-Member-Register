@@ -3,7 +3,7 @@
  Plugin Name: Member Register
  Plugin URI: http://paazmaya.com/member-register-wordpress-plugin
  Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.11.1
+ Version: 0.11.2
  License: Creative Commons Share-Alike-Attribute 3.0
  Author: Jukka Paasonen
  Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.11.1');
+define ('MEMBER_REGISTER_VERSION', '0.11.2');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -149,13 +149,16 @@ function member_register_admin_init()
 	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
 	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-chosen', plugins_url('/js/chosen.jquery.min.js', __FILE__), array('jquery')); // 0.9.7
+	wp_register_script('jquery-select2', plugins_url('/js/select2.js', __FILE__), array('jquery')); // 
+	wp_register_script('jquery-select2-locale-fi', plugins_url('/js/select2_locale_fi.js', __FILE__), array('jquery-select2')); // 
+  
 	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
 
 	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
 	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
 	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
-	wp_register_style('jquery-chosen',  plugins_url('/css/chosen.css', __FILE__));
+	wp_register_style('jquery-select2',  plugins_url('/css/select2.css', __FILE__));
+	wp_register_style('jquery-select2-bootstrap',  plugins_url('/css/select2-bootstrap.css', __FILE__));
 	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
 }
 
@@ -171,7 +174,8 @@ function member_register_admin_print_scripts()
 	wp_enqueue_script('jquery-bassistance-validation');
 	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
 	wp_enqueue_script('jquery-tablesorter');
-	wp_enqueue_script('jquery-chosen');
+	wp_enqueue_script('jquery-select2');
+	wp_enqueue_script('jquery-select2-locale-fi');
 	wp_enqueue_script('jquery-picnet-table-filter');
 }
 
@@ -181,7 +185,8 @@ function member_register_admin_print_styles()
 	wp_enqueue_style('jquery-ui-datepicker');
 	wp_enqueue_style('jquery-ui-theme-blizter');
 	wp_enqueue_style('jquery-tablesorter');
-	wp_enqueue_style('jquery-chosen');
+	wp_enqueue_style('jquery-select2');
+	wp_enqueue_style('jquery-select2-bootstrap');
 	wp_enqueue_style('mr-styles');
 }
 
@@ -213,8 +218,8 @@ function member_register_admin_head()
 			});
 			jQuery('input.pickday').datepicker();
 			jQuery('table.tablesorter').tablesorter();			
-			jQuery('select.chosen').chosen({
-				allow_single_deselect: true
+			jQuery('select.chosen').select2({
+        allowClear: true
 			});
 			jQuery('form').validate();
 			jQuery('table.tablesorter').tableFilter({
