@@ -15,7 +15,7 @@ function mr_group_list()
 	global $wpdb;
 
 	echo '<div class="wrap">';
-	
+
 	if (isset($_GET['remove-group']) && is_numeric($_GET['remove-group']))
 	{
 		// Mark the given group visible=0, so it can be recovered just in case...
@@ -35,7 +35,7 @@ function mr_group_list()
 				'%d'
 			)
 		);
-		
+
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
@@ -47,8 +47,8 @@ function mr_group_list()
 			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
-		
-	
+
+
 	if (isset($_GET['group-member']) && is_numeric($_GET['group-member']))
 	{
 		$id = intval($_GET['group-member']);
@@ -69,7 +69,7 @@ function mr_group_list()
 		}
 		else
 		{
-			
+
 			// Check for possible update
 			$hidden_field_name = 'mr_submit_hidden_group';
 			if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y')
@@ -85,13 +85,13 @@ function mr_group_list()
 					echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 				}
 			}
-		
+
 			echo '<h1>' . $res['title'] . '</h1>';
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
 				$id . '&amp;edit" title="' . __('Muokkaa tätä ryhmää', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä ryhmää', 'member-register') . '</a></p>';
-				
+
 			echo '<h2>' . __('Aktiiviset jäsenet tässä ryhmässä.', 'member-register') . '</h2>';
 			mr_show_members(array(
 				'group' => $id,
@@ -102,8 +102,8 @@ function mr_group_list()
 	else
 	{
 		echo '<h2>' . __('Ryhmät', 'member-register') . '</h2>';
-		
-		
+
+
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_group';
 		if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y')
@@ -133,7 +133,7 @@ function mr_group_list()
 			mr_show_groups(null); // no specific member
 		}
 	}
-	
+
 	echo '</div>';
 }
 
@@ -150,21 +150,21 @@ function mr_show_groups($memberid = null)
 	global $mr_date_format;
 
 	$allowremove = true; // visible = 0
-	
+
 	// If no rights, only own info
 	if (!mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 	{
 		$memberid = $userdata->mr_memberid;
 		$allowremove = false;
 	}
-	
+
 	$where = '';
 	if ($memberid != null && is_numeric($memberid))
 	{
 		$where .= 'AND A.id IN (SELECT D.group FROM ' . $wpdb->prefix .
 			'mr_group_member D WHERE D.member_id = \'' . $memberid . '\') ';
 	}
-	
+
 	$sql = 'SELECT A.*, B.firstname, B.lastname, (SELECT COUNT(C.member_id) FROM ' . $wpdb->prefix .
 		'mr_group_member C WHERE C.group_id = A.id) AS total FROM ' . $wpdb->prefix .
 		'mr_group A LEFT JOIN ' . $wpdb->prefix .
@@ -184,7 +184,7 @@ function mr_show_groups($memberid = null)
 					<th><?php echo __('Created by', 'member-register'); ?></th>
 					<th><?php echo __('Last modification', 'member-register'); ?></th>
 					<th><?php echo __('Jäseniä', 'member-register'); ?></th>
-					
+
 					<?php
 					if ($allowremove)
 					{
@@ -198,7 +198,7 @@ function mr_show_groups($memberid = null)
 		foreach($res as $group)
 		{
 			echo '<tr id="group_' . $group['id'] . '">';
-			echo '<td><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' . 
+			echo '<td><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
 				$group['id'] . '" title="Näytä ryhmän jäsenet">' . $group['title'] . '</a></td>';
 			echo '<td>';
 			if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
@@ -221,7 +221,7 @@ function mr_show_groups($memberid = null)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
 					'&amp;remove-group=' . $group['id'] . '" title="' . __('Poista ryhmä nimellä ' . $group['title'] .
-					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '"><img src="' . 
+					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
@@ -267,12 +267,12 @@ function mr_insert_new_group($postdata)
 	global $wpdb;
 	global $userdata;
 
-	if (isset($postdata['members']) && is_array($postdata['members']) && 
+	if (isset($postdata['members']) && is_array($postdata['members']) &&
 		count($postdata['members']) > 0 && isset($postdata['title']) && $postdata['title'] != '')
 	{
 		$values = array(
 			"'" . mr_htmlent($postdata['title']) . "'",
-			$userdata->mr_memberid, 
+			$userdata->mr_memberid,
 			time()
 		);
 		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_group (title, creator, modified) VALUES (' . implode(', ', $values) . ')';
@@ -299,7 +299,7 @@ function mr_group_update($id, $postdata)
 	global $userdata;
 
 
-	if (isset($postdata['members']) && is_array($postdata['members']) && 
+	if (isset($postdata['members']) && is_array($postdata['members']) &&
 		count($postdata['members']) > 0 && isset($postdata['title']) && $postdata['title'] != '')
 	{
 		// This will fail if title was not changed...
@@ -321,7 +321,7 @@ function mr_group_update($id, $postdata)
 
 		// Remove those that exists
 		$sql = 'DELETE FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id;
-		
+
 		// Insert current
 		if ($wpdb->query($sql))
 		{
@@ -350,9 +350,9 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
-	
+
 	global $wpdb;
-	
+
 	$action = admin_url('admin.php?page=member-group-list');
 	if ($id != null)
 	{
@@ -368,10 +368,12 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
+				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php
-				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE active = 1 ORDER BY lastname ASC';
+				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
+				    FROM ' . $wpdb->prefix . 'mr_member
+				    WHERE active = 1 ORDER BY lastname ASC';
 				$users = $wpdb->get_results($sql, ARRAY_A);
 				foreach($users as $user)
 				{

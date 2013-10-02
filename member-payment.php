@@ -63,7 +63,7 @@ function mr_payment_list()
 	if (isset($_POST['haspaid']) && is_numeric($_POST['haspaid']))
 	{
 		$today = date('Y-m-d');
-		
+
 		$update = $wpdb->update(
 			$wpdb->prefix . 'mr_payment',
 			array(
@@ -79,7 +79,7 @@ function mr_payment_list()
 				'%d'
 			)
 		);
-		
+
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
@@ -110,7 +110,7 @@ function mr_payment_list()
 				'%d'
 			)
 		);
-		
+
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
@@ -145,7 +145,7 @@ function mr_show_payments_lists($memberid)
 	{
 		echo' <p>' . __('Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.', 'member-register') . '</p>';
 	}
-	
+
 	mr_show_payments($memberid, true);
 	?>
 	<hr />
@@ -174,7 +174,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 		$allowremove = false;
 		$allowreview = false;
 	}
-	
+
 	$where = '';
 	if ($memberid != null && is_numeric($memberid))
 	{
@@ -272,8 +272,8 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			if ($allowremove)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
-					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä', 'member-register') . 
-					': ' . $payment['reference'] . '"><img src="' . 
+					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä', 'member-register') .
+					': ' . $payment['reference'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
@@ -290,7 +290,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 		{
 			echo 'maksamattomia';
 		}
-		else 
+		else
 		{
 			echo 'maksettuja';
 		}
@@ -332,7 +332,7 @@ function mr_insert_new_payment($postdata)
 		{
 			$paidday = date('Y-m-d');
 		}
-		
+
 		$id = intval('2' . $wpdb->get_var('SELECT MAX(id) FROM ' . $wpdb->prefix . 'mr_payment'));
 
 		foreach($postdata['members'] as $member)
@@ -365,7 +365,7 @@ function mr_new_payment_form($members)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
-	
+
 	global $wpdb;
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
@@ -373,7 +373,7 @@ function mr_new_payment_form($members)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" style="height: 8em;" data-placeholder="Valitse jäsenet">
+				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php
 				foreach($members as $user)
@@ -408,7 +408,7 @@ function mr_new_payment_form($members)
 				<td><input type="checkbox" name="alreadypaid" class="w4em" /></td>
 			</tr>
 		</table>
-		
+
 		<datalist id="types">
 			<?php
 			$sql = 'SELECT DISTINCT type FROM ' . $wpdb->prefix . 'mr_payment WHERE visible = 1 ORDER BY type ASC';

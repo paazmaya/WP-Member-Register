@@ -1,4 +1,4 @@
-#mrform .form-field select, #mrform .form-field input  {
+#mrform .form-field select, #mrform .form-field input, #mrform .chosen  {
     width: 35em;
 }
 #mrform .form-field select[multiple] {

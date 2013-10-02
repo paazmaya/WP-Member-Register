@@ -36,7 +36,9 @@ function mr_grade_new()
 
 		<h2><?php echo __('Myönnä vyöarvoja', 'member-register'); ?></h2>
 		<?php
-		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member ORDER BY lastname ASC';
+		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
+		    FROM ' . $wpdb->prefix . 'mr_member
+		    WHERE visible = 1 ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
 		mr_grade_form($users);
 		?>
@@ -125,7 +127,8 @@ function mr_show_grades($memberid = null)
 
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
+		'mr_member B ON A.member = B.id
+		WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
@@ -320,7 +323,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Vyöarvo', 'member-register'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä', 'member-register'); ?>)</span></th>
 				<td>
-					<select name="grade" class="required" required="required" data-placeholder="Valitse vyöarvo">
+					<select name="grade" class="required chosen" required="required" data-placeholder="Valitse vyöarvo">
 					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)

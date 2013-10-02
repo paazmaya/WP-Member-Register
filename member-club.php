@@ -83,7 +83,7 @@ function mr_club_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
-				$id . '&edit" title="' . __('Muokkaa tätä seuraa', 'member-register') . '" class="button-primary">' . 
+				$id . '&edit" title="' . __('Muokkaa tätä seuraa', 'member-register') . '" class="button-primary">' .
 				__('Muokkaa tätä seuraa', 'member-register') . '</a></p>';
 			echo '<h2>' . __('Aktiiviset jäsenet tässä seurassa.', 'member-register') . '</h2>';
 			mr_show_members(array(
@@ -181,7 +181,8 @@ function mr_show_clubs()
 
 	$sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix .
 		'mr_club A LEFT JOIN ' . $wpdb->prefix .
-		'mr_member B ON B.club = A.id WHERE A.visible = 1 GROUP BY A.id ORDER BY A.title ASC';
+		'mr_member B ON B.club = A.id WHERE A.visible = 1 AND B.visible = 1
+		GROUP BY A.id ORDER BY A.title ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 

@@ -23,7 +23,7 @@ function mr_show_members($filters = null)
 	// Possible filter options: club, active, group
 
 	$wheres = array();
-	$where = ' WHERE A.visible = 1';
+	$where = ' WHERE A.visible = 1'; // those removed have visible 0
 	if (is_array($filters))
 	{
 		if (isset($filters['club']) && is_numeric($filters['club']))
@@ -47,9 +47,11 @@ function mr_show_members($filters = null)
 	// id access firstname lastname birthdate address zipcode postal phone email nationality
 	// joindate passnro notes lastlogin active club visible
 
-	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid FROM ' . $wpdb->prefix .
-		'mr_member A LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN '
-		. $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . ' ORDER BY A.lastname ASC';
+	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid
+	    FROM ' . $wpdb->prefix . 'mr_member A
+		LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code
+		LEFT JOIN ' . $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . '
+		ORDER BY A.lastname ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
@@ -183,7 +185,7 @@ function mr_show_member_info($id)
 		$wpdb->prefix . 'mr_member A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' .
 		$wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
-		$wpdb->prefix . 'users D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' LIMIT 1';
+		$wpdb->prefix . 'users D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' AND A.visible = 1 LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
@@ -586,7 +588,7 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
+					<select name="user_login" class="chosen" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
 					<option value=""></option>
 					<?php
 					// If editing, select all free and the current. If new, select all free
@@ -709,7 +711,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Main martial art', 'member-register'); ?></th>
-				<td><select name="martial" data-placeholder="<?php echo __('Valitse päälaji', 'member-register'); ?>">
+				<td><select class="chosen" name="martial" data-placeholder="<?php echo __('Valitse päälaji', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach ($mr_martial_arts as $k => $v)
@@ -748,7 +750,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Seura', 'member-register'); ?> <span class="description">(<?php echo __('missä seurassa pääsääntöisesti harjoittelee', 'member-register'); ?>)</span></th>
-				<td><select name="club" data-placeholder="<?php echo __('Valitse seura', 'member-register'); ?>">
+				<td><select class="chosen" name="club" data-placeholder="<?php echo __('Valitse seura', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
