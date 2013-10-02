@@ -6,15 +6,16 @@ Requires at least: 3.0.0
 Tested up to: 3.5.1
 Stable tag: master
 
-Member register management related to personal information, payments and what is common for martial arts: belt grades.
+Member register management related to personal information,
+payments and what is common for martial arts: belt grades.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Member register offers a way to keep the information of the members organised.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
-
+The personal information is stored and if the given member has been registered to use
+Wordpress via Wordpress user, they can change their personal settings.
+Also martial art grades and membership payments are stored.
 
 == Installation ==
 
@@ -42,6 +43,11 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+= 0.11.3 =
+* Released 3rd October 2013
+* Removed members not listed anywhere any longer
+* Select2 update to 3.4.3 and its style fixes
+
 = 0.11.2 =
 * Released 4th July 2013
 * Replaced Chosen with Select2
@@ -75,7 +81,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Grade accepts only a year too, but it is transformed to the first day of that year
 * Removal of jQuery.cluetip
 
-= 0.8.1 = 
+= 0.8.1 =
 * Released 8 February 2012
 * All forms are now autocomplete=on
 * Datalist for possible directory entries in file upload form
