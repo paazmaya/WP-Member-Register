@@ -54,29 +54,29 @@ function mr_grade_list()
 	}
 
 	global $wpdb;
-	
+
 	if (isset($_GET['removegrade']) && is_numeric($_GET['removegrade']))
 	{
 		// Mark the given grade visible=0, so it can be recovered just in case...
 		$id = intval($_GET['removegrade']);
-		
+
 		// http://codex.wordpress.org/Class_Reference/wpdb#UPDATE_rows
-		$update = $wpdb->update( 
+		$update = $wpdb->update(
 			$wpdb->prefix . 'mr_grade',
-			array( 
+			array(
 				'visible' => 0
-			), 
-			array( 
-				'id' => $id 
-			), 
-			array( 
+			),
+			array(
+				'id' => $id
+			),
+			array(
 				'%d'
-			), 
-			array( 
-				'%d' 
-			) 
+			),
+			array(
+				'%d'
+			)
 		);
-		
+
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
@@ -88,7 +88,7 @@ function mr_grade_list()
 			echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
 		}
 	}
-	
+
 	echo '<div class="wrap">';
 	echo '<h2>' . __('Vyöarvot', 'member-register') . '</h2>';
 	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.', 'member-register') . '</p>';
@@ -105,9 +105,9 @@ function mr_show_grades($memberid = null)
 	global $userdata;
 	global $mr_grade_values;
 	global $mr_grade_types;
-	
+
 	$allowremove = true;
-	
+
 	// If no rights, only own info
 	if (!mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
@@ -128,12 +128,12 @@ function mr_show_grades($memberid = null)
 		'mr_member B ON A.member = B.id WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
-	
+
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	// id member grade type location nominator day visible
-	
-	
+
+
 	if (count($res) > 0)
 	{
 		?>
@@ -197,8 +197,8 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' . 
-					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '"><img src="' . 
+					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' .
+					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
 			echo '</tr>';
@@ -223,10 +223,11 @@ function mr_show_grades($memberid = null)
 	}
 }
 
- 
+
 /**
  * Insert the given grade
  * @param $postdata Array
+ * @return bool
  */
 function mr_insert_new_grade($postdata)
 {
@@ -234,6 +235,7 @@ function mr_insert_new_grade($postdata)
 
 	$keys = array();
 	$values = array();
+    $setval = array();
 
 	// Note that member/members are also required.
 	$required = array('grade', 'type', 'location', 'nominator', 'day');
@@ -252,7 +254,7 @@ function mr_insert_new_grade($postdata)
 					$v = $v . '-01-01';
 				}
 			}
-			
+
 			$values[] = "'" . mr_htmlent($v) . "'";
 		}
 	}
@@ -294,7 +296,7 @@ function mr_grade_form($members)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
-	
+
 	global $wpdb;
 	global $mr_grade_values;
 	?>
@@ -352,7 +354,7 @@ function mr_grade_form($members)
 			</tr>
 
 		</table>
-		
+
 		<datalist id="locations">
 			<?php
 			$sql = 'SELECT DISTINCT location FROM ' . $wpdb->prefix . 'mr_grade WHERE visible = 1 ORDER BY location ASC';

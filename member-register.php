@@ -1,13 +1,13 @@
 <?php
 /**
- Plugin Name: Member Register
- Plugin URI: http://paazmaya.com/member-register-wordpress-plugin
- Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- Version: 0.11.2
- License: Creative Commons Share-Alike-Attribute 3.0
- Author: Jukka Paasonen
- Author URI: http://paazmaya.com
-*/
+Plugin Name: Member Register
+Plugin URI: http://paazmaya.com/member-register-wordpress-plugin
+Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
+Version: 0.11.2
+License: Creative Commons Share-Alike-Attribute 3.0
+Author: Jukka Paasonen
+Author URI: http://paazmaya.com
+ */
 
 /**
  * add field to user profiles
@@ -27,37 +27,37 @@ $mr_db_version = '11';
 
 global $mr_grade_values;
 $mr_grade_values = array(
-	'5K' => '5 kyu',
-	'5h' => '5 kyu + ' . __('raita', 'member-register'),
-	'4K' => '4 kyu',
-	'4h' => '4 kyu + ' . __('raita', 'member-register'),
-	'3K' => '3 kyu',
-	'3h' => '3 kyu + ' . __('raita', 'member-register'),
-	'2K' => '2 kyu',
-	'2h' => '2 kyu + ' . __('raita', 'member-register'),
-	'1K' => '1 kyu',
-	'1h' => '1 kyu + ' . __('raita', 'member-register'),
-	'1D' => '1 dan',
-	'2D' => '2 dan',
-	'3D' => '3 dan',
-	'4D' => '4 dan',
-	'5D' => '5 dan',
-	'6D' => '6 dan',
-	'7D' => '7 dan'
+    '5K' => '5 kyu',
+    '5h' => '5 kyu + ' . __('raita', 'member-register'),
+    '4K' => '4 kyu',
+    '4h' => '4 kyu + ' . __('raita', 'member-register'),
+    '3K' => '3 kyu',
+    '3h' => '3 kyu + ' . __('raita', 'member-register'),
+    '2K' => '2 kyu',
+    '2h' => '2 kyu + ' . __('raita', 'member-register'),
+    '1K' => '1 kyu',
+    '1h' => '1 kyu + ' . __('raita', 'member-register'),
+    '1D' => '1 dan',
+    '2D' => '2 dan',
+    '3D' => '3 dan',
+    '4D' => '4 dan',
+    '5D' => '5 dan',
+    '6D' => '6 dan',
+    '7D' => '7 dan'
 );
 
 global $mr_grade_types;
 $mr_grade_types = array(
-	'Yuishinkai' => 'Yuishinkai Karate',
-	'Kobujutsu' => 'Ryukyu Kobujutsu'
+    'Yuishinkai' => 'Yuishinkai Karate',
+    'Kobujutsu'  => 'Ryukyu Kobujutsu'
 );
 
 global $mr_martial_arts;
 $mr_martial_arts = array(
-	'karate' => 'Yuishinkai Karate',
-	'kobujutsu' => 'Ryukyu Kobujutsu',
-	'taiji' => 'Taiji',
-	'judo' => 'Goshin Judo'
+    'karate'    => 'Yuishinkai Karate',
+    'kobujutsu' => 'Ryukyu Kobujutsu',
+    'taiji'     => 'Taiji',
+    'judo'      => 'Goshin Judo'
 );
 
 define('MR_ACCESS_OWN_INFO', 1 << 0); // 1
@@ -75,18 +75,18 @@ define('MR_ACCESS_GROUP_MANAGE', 1 << 11); // 2048
 
 global $mr_access_type;
 $mr_access_type = array(
-	1 => __('Omien tietojen katselu ja päivitys', 'member-register'),
-	2 => __('Tiedostot jäsenille', 'member-register'),
-	4 => __('Keskusteluun osallistuminen', 'member-register'),
-	8 => __('Keskusteluaiheiden luominen', 'member-register'),
-	16 => __('Keskustelujen ja keskusteluaiheiden poisto', 'member-register'),
-	32 => __('Jäsenten listaus ja tietojen näkeminen', 'member-register'),
-	64 => __('Jäsenten lisääminen, muokkaus ja poisto', 'member-register'),
-	128 => __('Vyöarvojen hallinta', 'member-register'),
-	256 => __('Jäsenmaksujen hallinta', 'member-register'),
-	512 => __('Seurojen hallinta', 'member-register'),
-	1024 => __('Tiedostojen hallinta', 'member-register'),
-	2048 => __('Ryhmien hallinta', 'member-register')
+    1    => __('Omien tietojen katselu ja päivitys', 'member-register'),
+    2    => __('Tiedostot jäsenille', 'member-register'),
+    4    => __('Keskusteluun osallistuminen', 'member-register'),
+    8    => __('Keskusteluaiheiden luominen', 'member-register'),
+    16   => __('Keskustelujen ja keskusteluaiheiden poisto', 'member-register'),
+    32   => __('Jäsenten listaus ja tietojen näkeminen', 'member-register'),
+    64   => __('Jäsenten lisääminen, muokkaus ja poisto', 'member-register'),
+    128  => __('Vyöarvojen hallinta', 'member-register'),
+    256  => __('Jäsenmaksujen hallinta', 'member-register'),
+    512  => __('Seurojen hallinta', 'member-register'),
+    1024 => __('Tiedostojen hallinta', 'member-register'),
+    2048 => __('Ryhmien hallinta', 'member-register')
 );
 
 
@@ -102,7 +102,7 @@ require 'member-install.php';
 require 'member-prf.php';
 
 // http://codex.wordpress.org/Function_Reference/load_plugin_textdomain
-load_plugin_textdomain( 'member-register', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+load_plugin_textdomain('member-register', false, dirname(plugin_basename(__FILE__)) . '/lang');
 
 register_activation_hook(__FILE__, 'mr_install');
 //register_uninstall_hook( __FILE__, 'member_register_uninstall');
@@ -134,192 +134,197 @@ add_action('wp_logout', 'member_register_logout');
  * http://codex.wordpress.org/Customizing_the_Registration_Form
  * Member Register plugin uses the 'mr_mr_prf_' prefix for these functions.
  */
-function member_register_public_reg_form() 
+function member_register_public_reg_form()
 {
-	add_action('register_form', 'mr_prf_register_form');
-	add_filter('registration_errors', 'mr_prf_registration_errors', 10, 3);
-	add_action('user_register', 'mr_prf_user_register');
+    add_action('register_form', 'mr_prf_register_form');
+    add_filter('registration_errors', 'mr_prf_registration_errors', 10, 3);
+    add_action('user_register', 'mr_prf_user_register');
 }
 
 // http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
-	wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery')); // 1.9.0
-	wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__), array('jquery'));
-	wp_register_script('jquery-select2', plugins_url('/js/select2.js', __FILE__), array('jquery')); // 
-	wp_register_script('jquery-select2-locale-fi', plugins_url('/js/select2_locale_fi.js', __FILE__), array('jquery-select2')); // 
-  
-	wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__), array('jquery'));
+    wp_register_script('jquery-bassistance-validation', plugins_url('/js/jquery.validate.min.js', __FILE__),
+        array('jquery')); // 1.9.0
+    wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__),
+        array('jquery'));
+    wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
+    wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__),
+        array('jquery'));
+    wp_register_script('jquery-select2', plugins_url('/js/select2.min.js', __FILE__), array('jquery')); //
+    wp_register_script('jquery-select2-locale-fi', plugins_url('/js/select2_locale_fi.js', __FILE__),
+        array('jquery-select2')); //
 
-	wp_register_style('jquery-ui-theme-blizter',  plugins_url('/css/jquery-ui.blizter.css', __FILE__));
-	wp_register_style('jquery-ui-datepicker',  plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
-	wp_register_style('jquery-tablesorter',  plugins_url('/css/jquery.tablesorter.css', __FILE__));
-	wp_register_style('jquery-select2',  plugins_url('/css/select2.css', __FILE__));
-	wp_register_style('jquery-select2-bootstrap',  plugins_url('/css/select2-bootstrap.css', __FILE__));
-	wp_register_style('mr-styles',  plugins_url('/css/mr-styles.css', __FILE__));
+    wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__),
+        array('jquery'));
+
+    wp_register_style('jquery-ui-theme-blizter', plugins_url('/css/jquery-ui.blizter.css', __FILE__));
+    wp_register_style('jquery-ui-datepicker', plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
+    wp_register_style('jquery-tablesorter', plugins_url('/css/jquery.tablesorter.css', __FILE__));
+    wp_register_style('jquery-select2', plugins_url('/css/select2.css', __FILE__));
+    wp_register_style('jquery-select2-bootstrap', plugins_url('/css/select2-bootstrap.css', __FILE__));
+    wp_register_style('mr-styles', plugins_url('/css/mr-styles.css', __FILE__));
 }
 
 function member_register_admin_print_scripts()
 {
-	// http://codex.wordpress.org/Function_Reference/wp_enqueue_script
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('jquery-ui-core');
-	wp_enqueue_script('jquery-ui-datepicker');
+    // http://codex.wordpress.org/Function_Reference/wp_enqueue_script
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('jquery-ui-core');
+    wp_enqueue_script('jquery-ui-datepicker');
 
-	wp_enqueue_script('jquery-ui-datepicker-fi');
+    wp_enqueue_script('jquery-ui-datepicker-fi');
 
-	wp_enqueue_script('jquery-bassistance-validation');
-	wp_enqueue_script('jquery-bassistance-validation-messages-fi');
-	wp_enqueue_script('jquery-tablesorter');
-	wp_enqueue_script('jquery-select2');
-	wp_enqueue_script('jquery-select2-locale-fi');
-	wp_enqueue_script('jquery-picnet-table-filter');
+    wp_enqueue_script('jquery-bassistance-validation');
+    wp_enqueue_script('jquery-bassistance-validation-messages-fi');
+    wp_enqueue_script('jquery-tablesorter');
+    wp_enqueue_script('jquery-select2');
+    wp_enqueue_script('jquery-select2-locale-fi');
+    wp_enqueue_script('jquery-picnet-table-filter');
 }
 
 function member_register_admin_print_styles()
 {
-	// http://codex.wordpress.org/Function_Reference/wp_enqueue_style
-	wp_enqueue_style('jquery-ui-datepicker');
-	wp_enqueue_style('jquery-ui-theme-blizter');
-	wp_enqueue_style('jquery-tablesorter');
-	wp_enqueue_style('jquery-select2');
-	wp_enqueue_style('jquery-select2-bootstrap');
-	wp_enqueue_style('mr-styles');
+    // http://codex.wordpress.org/Function_Reference/wp_enqueue_style
+    wp_enqueue_style('jquery-ui-datepicker');
+    wp_enqueue_style('jquery-ui-theme-blizter');
+    wp_enqueue_style('jquery-tablesorter');
+    wp_enqueue_style('jquery-select2');
+    wp_enqueue_style('jquery-select2-bootstrap');
+    wp_enqueue_style('mr-styles');
 }
 
 function member_register_file_download()
 {
-	// Before going any further, check if there is a request for a file download
-	if (isset($_GET['download']) && $_GET['download'] != '')
-	{
-		// This might call exit()
-		mr_file_download($_GET['download']);
-	}
+    // Before going any further, check if there is a request for a file download
+    if (isset($_GET['download']) && $_GET['download'] != '')
+    {
+        // This might call exit()
+        mr_file_download($_GET['download']);
+    }
 }
 
 function member_register_admin_head()
 {
-	// jQuery is in noConflict state while in Wordpress...
-	?>
-	<script type="text/javascript">
-		var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Piilota', 'member-register'); ?>" /></a>';
+    // jQuery is in noConflict state while in Wordpress...
+    ?>
+    <script type="text/javascript">
+        var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Piilota', 'member-register'); ?>" /></a>';
 
-		jQuery(document).ready(function(){
-			jQuery.datepicker.setDefaults({
-				showWeek: true,
-				changeMonth: true,
-				changeYear: true,
-				yearRange: '1920:2060',
-				numberOfMonths: 1,
-				dateFormat: 'yy-mm-dd'
-			});
-			jQuery('input.pickday').datepicker();
-			jQuery('table.tablesorter').tablesorter();			
-			jQuery('select.chosen').select2({
-        allowClear: true
-			});
-			jQuery('form').validate();
-			jQuery('table.tablesorter').tableFilter({
-				enableCookies: false
-			});
+        jQuery(document).ready(function () {
+            jQuery.datepicker.setDefaults({
+                showWeek: true,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1920:2060',
+                numberOfMonths: 1,
+                dateFormat: 'yy-mm-dd'
+            });
+            jQuery('input.pickday').datepicker();
+            jQuery('table.tablesorter').tablesorter().tableFilter({
+                enableCookies: false
+            });
+            jQuery('select.chosen').select2({
+                allowClear: true
+            });
+            jQuery('form').validate();
 
-			// Removal button should ask the user: are you sure?
-			jQuery('a[rel="remove"]').click(function() {
-				var title = jQuery(this).attr('title');
-				return confirm(title);
-			});
-			
-			jQuery('th.hideable').prepend(hideLink);
-			
-			// Hide table columns
-			jQuery('th.hideable a[href="#hide"]').click(function() {
-				var inx = jQuery(this).parent().index() + 1;
-				console.log("inx: " + inx);
-				var table = jQuery(this).parentsUntil('table').parent();
-				var text = jQuery(this).parent().text();
-				console.log("text: " + text);
-				
-				var showLink = '<a href="#show" title="' + text + '">' + text + '</a>';
-				jQuery('table caption').append(showLink);
-				
-				table.find('tr td:nth-child(' + inx + ')').hide();
-				table.find('tr th:nth-child(' + inx + ')').hide();
-				
-				return false;
-			});
-			
-			// Show the column again
-			jQuery('table caption a[href="#show"]').live('click', function() {
-				var text = jQuery(this).text();
-				var inx = jQuery('thead th:contains(' + text + ')').index();
-				console.log("show: " + text + ", inx: " + inx);
-				
-				var table = jQuery(this).parentsUntil('table').parent();
-				
-				table.find('tr td:nth-child(' + inx + ')').show();
-				table.find('tr th:nth-child(' + inx + ')').show();
-				
-				jQuery(this).remove();
-				
-				return false;
-			});
-		});
+            // Removal button should ask the user: are you sure?
+            jQuery('a[rel="remove"]').click(function () {
+                var title = jQuery(this).attr('title');
+                return confirm(title);
+            });
 
-	</script>
-	<?php
-	// http://www.picnet.com.au/picnet_table_filter.html
+            jQuery('th.hideable').prepend(hideLink);
+
+            // Hide table columns
+            jQuery('th.hideable a[href="#hide"]').click(function () {
+                var inx = jQuery(this).parent().index() + 1;
+                console.log("inx: " + inx);
+                var table = jQuery(this).parentsUntil('table').parent();
+                var text = jQuery(this).parent().text();
+                console.log("text: " + text);
+
+                var showLink = '<a href="#show" title="' + text + '">' + text + '</a>';
+                jQuery('table caption').append(showLink);
+
+                table.find('tr td:nth-child(' + inx + ')').hide();
+                table.find('tr th:nth-child(' + inx + ')').hide();
+
+                return false;
+            });
+
+            // Show the column again
+            jQuery('table caption a[href="#show"]').live('click', function () {
+                var text = jQuery(this).text();
+                var inx = jQuery('thead th:contains(' + text + ')').index();
+                console.log("show: " + text + ", inx: " + inx);
+
+                var table = jQuery(this).parentsUntil('table').parent();
+
+                table.find('tr td:nth-child(' + inx + ')').show();
+                table.find('tr th:nth-child(' + inx + ')').show();
+
+                jQuery(this).remove();
+
+                return false;
+            });
+        });
+
+    </script>
+    <?php
+    // http://www.picnet.com.au/picnet_table_filter.html
 }
 
 function member_register_admin_menu()
 {
-	// http://codex.wordpress.org/Adding_Administration_Menus
-	add_menu_page(__('Jäsenrekisterin Hallinta', 'member-register'), __('Jäsenrekisteri', 'member-register'), 'read', 'member-register-control',
-		'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
-	
-	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
-	{
-		add_submenu_page('member-register-control', __('Lisää uusi jäsen', 'member-register'),
-			__('Uusi jäsen', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja', 'member-register'),
-			__('Jäsenmaksut', 'member-register'), 'read', 'member-payment-list', 'mr_payment_list');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Uusi maksu', 'member-register'),
-			__('Uusi maksu', 'member-register'), 'read', 'member-payment-new', 'mr_payment_new');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Vyöarvot', 'member-register'),
-			__('Vyöarvot', 'member-register'), 'read', 'member-grade-list', 'mr_grade_list');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Myönnä vyöarvoja', 'member-register'),
-			__('Myönnä vyöarvoja', 'member-register'), 'read', 'member-grade-new', 'mr_grade_new');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Seurat', 'member-register'),
-			__('Jäsenseurat', 'member-register'), 'read', 'member-club-list', 'mr_club_list');
-	}
-	
-	if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
-	{
-		add_submenu_page('member-register-control', __('Ryhmät', 'member-register'),
-			__('Jäsen ryhmät', 'member-register'), 'read', 'member-group-list', 'mr_group_list');
-	}
+    // http://codex.wordpress.org/Adding_Administration_Menus
+    add_menu_page(__('Jäsenrekisterin Hallinta', 'member-register'), __('Jäsenrekisteri', 'member-register'), 'read',
+        'member-register-control',
+        'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
+
+    if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
+    {
+        add_submenu_page('member-register-control', __('Lisää uusi jäsen', 'member-register'),
+            __('Uusi jäsen', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
+    }
+
+    if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Hallinnoi jäsenmaksuja', 'member-register'),
+            __('Jäsenmaksut', 'member-register'), 'read', 'member-payment-list', 'mr_payment_list');
+    }
+
+    if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Uusi maksu', 'member-register'),
+            __('Uusi maksu', 'member-register'), 'read', 'member-payment-new', 'mr_payment_new');
+    }
+
+    if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Vyöarvot', 'member-register'),
+            __('Vyöarvot', 'member-register'), 'read', 'member-grade-list', 'mr_grade_list');
+    }
+
+    if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Myönnä vyöarvoja', 'member-register'),
+            __('Myönnä vyöarvoja', 'member-register'), 'read', 'member-grade-new', 'mr_grade_new');
+    }
+
+    if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Seurat', 'member-register'),
+            __('Jäsenseurat', 'member-register'), 'read', 'member-club-list', 'mr_club_list');
+    }
+
+    if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
+    {
+        add_submenu_page('member-register-control', __('Ryhmät', 'member-register'),
+            __('Jäsen ryhmät', 'member-register'), 'read', 'member-group-list', 'mr_group_list');
+    }
 
 }
 
@@ -330,43 +335,43 @@ function member_register_admin_menu()
  */
 function member_register_forum_menu()
 {
-	if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
-	{
-		// http://codex.wordpress.org/Adding_Administration_Menus
-		add_menu_page(__('Keskustelu', 'member-register'), __('Keskustelu', 'member-register'), 'read', 'member-forum',
-			'mr_forum_list', plugins_url('/images/forum.png', __FILE__)); // $position );
-	}
+    if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
+    {
+        // http://codex.wordpress.org/Adding_Administration_Menus
+        add_menu_page(__('Keskustelu', 'member-register'), __('Keskustelu', 'member-register'), 'read', 'member-forum',
+            'mr_forum_list', plugins_url('/images/forum.png', __FILE__)); // $position );
+    }
 }
 
 function member_register_files_menu()
 {
-	if (current_user_can('read') && mr_has_permission(MR_ACCESS_FILES_VIEW))
-	{
-		// http://codex.wordpress.org/Adding_Administration_Menus
-		add_menu_page(__('Tiedostot', 'member-register'), __('Tiedostot', 'member-register'), 'read', 'member-files',
-			'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
+    if (current_user_can('read') && mr_has_permission(MR_ACCESS_FILES_VIEW))
+    {
+        // http://codex.wordpress.org/Adding_Administration_Menus
+        add_menu_page(__('Tiedostot', 'member-register'), __('Tiedostot', 'member-register'), 'read', 'member-files',
+            'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
 
-		if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
-		{
-			add_submenu_page('member-files', __('Lisää uusi tiedosto', 'member-register'),
-				__('Lisää uusi tiedosto', 'member-register'), 'read', 'member-files-new', 'mr_files_new');
-		}
-	}
+        if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
+        {
+            add_submenu_page('member-files', __('Lisää uusi tiedosto', 'member-register'),
+                __('Lisää uusi tiedosto', 'member-register'), 'read', 'member-files-new', 'mr_files_new');
+        }
+    }
 }
 
 
 // http://codex.wordpress.org/Plugin_API/Action_Reference/profile_update
 function member_register_profile_update($user_id, $old_user_data = null)
 {
-	/*
-	echo '<p>member_register_profile_update, used_id: ' . $user_id . '</p>';
-	if (isset($old_user_data))
-	{
-		echo '<pre>';
-		print_r($old_user_data);
-		echo '</pre>';
-	}
-	*/
+    /*
+    echo '<p>member_register_profile_update, used_id: ' . $user_id . '</p>';
+    if (isset($old_user_data))
+    {
+        echo '<pre>';
+        print_r($old_user_data);
+        echo '</pre>';
+    }
+    */
 }
 
 
@@ -375,19 +380,19 @@ function member_register_profile_update($user_id, $old_user_data = null)
  */
 function member_register_login()
 {
-	global $wpdb;
-	global $userdata;
+    global $wpdb;
+    global $userdata;
 
-	/*
-	echo '<pre>';
-	print_r($userdata);
-	echo '</pre>';
-	*/
+    /*
+    echo '<pre>';
+    print_r($userdata);
+    echo '</pre>';
+    */
 }
 
 function member_register_logout()
 {
-	global $userdata;
+    global $userdata;
 }
 
 
@@ -396,43 +401,44 @@ function member_register_logout()
  */
 function member_register_wp_loaded()
 {
-	global $wpdb;
-	global $userdata;
+    global $wpdb;
+    global $userdata;
 
-	// http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
-	if (isset($userdata->user_login) && $userdata->user_login != '' &&
-		(!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
-		!isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid)))
-	{
-		$sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND user_login = \'' .
-			mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
-		$res = $wpdb->get_row($sql, ARRAY_A);
-		if ($wpdb->num_rows == 1)
-		{
-			$userdata->mr_access = intval($res['access']);
-			$userdata->mr_memberid = intval($res['id']);
+    // http://codex.wordpress.org/User:CharlesClarkson/Global_Variables
+    if (isset($userdata->user_login) && $userdata->user_login != '' &&
+        (!isset($userdata->mr_access) || !is_numeric($userdata->mr_access) ||
+            !isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid))
+    )
+    {
+        $sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND user_login = \'' .
+            mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
+        $res = $wpdb->get_row($sql, ARRAY_A);
+        if ($wpdb->num_rows == 1)
+        {
+            $userdata->mr_access = intval($res['access']);
+            $userdata->mr_memberid = intval($res['id']);
 
-			$wpdb->update(
-				$wpdb->prefix . 'mr_member',
-				array(
-					'lastlogin' => time()
-				),
-				array(
-					'user_login' => $userdata->user_login,
-					'active' => 1
-				),
-				array(
-					'%d'
-				),
-				array(
-					'%s',
-					'%d'
-				)
-			);
-		}
-	}
+            $wpdb->update(
+                $wpdb->prefix . 'mr_member',
+                array(
+                    'lastlogin' => time()
+                ),
+                array(
+                    'user_login' => $userdata->user_login,
+                    'active'     => 1
+                ),
+                array(
+                    '%d'
+                ),
+                array(
+                    '%s',
+                    '%d'
+                )
+            );
+        }
+    }
 
-	date_default_timezone_set('Europe/Helsinki');
+    date_default_timezone_set('Europe/Helsinki');
 }
 
 /*
@@ -445,40 +451,43 @@ function member_register_uninstall()
 
 function mr_member_list()
 {
-	if (!current_user_can('read'))
-	{
-		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
-	}
+    if (!current_user_can('read'))
+    {
+        wp_die(__('You do not have sufficient permissions to access this page.', 'member-register'));
+    }
 
-	global $userdata;
+    global $userdata;
 
-	echo '<div class="wrap">';
+    echo '<div class="wrap">';
 
-	// Check for requested member
-	$memberid = isset($_GET['memberid']) && is_numeric($_GET['memberid']) ? intval($_GET['memberid']) : '';
+    // Check for requested member
+    $memberid = isset($_GET['memberid']) && is_numeric($_GET['memberid']) ? intval($_GET['memberid']) : '';
 
-	// But if the current user has no rights, show only their own info, if rights for that exist.
-	if (!mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
-	{
-		$memberid = $userdata->mr_memberid;
-	}
+    // But if the current user has no rights, show only their own info, if rights for that exist.
+    if (!mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
+    {
+        $memberid = $userdata->mr_memberid;
+    }
 
-	if ($memberid != '')
-	{
-		mr_show_member_info($memberid);
-	}
-	else if (isset($_GET['removeid']) && is_numeric($_GET['removeid']))
-	{
-		// Remove this member (hide with visible = 0)
-		mr_remove_member(intval($_GET['removeid']));
-	}
-	else
-	{
-		echo '<h2>' . __('Jäsenrekisteri', 'member-register') . '</h2>';
-		echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä', 'member-register') . '</p>';
-		mr_show_members();
-	}
-	echo '</div>';
+    if ($memberid != '')
+    {
+        mr_show_member_info($memberid);
+    }
+    else
+    {
+        if (isset($_GET['removeid']) && is_numeric($_GET['removeid']))
+        {
+            // Remove this member (hide with visible = 0)
+            mr_remove_member(intval($_GET['removeid']));
+        }
+        else
+        {
+            echo '<h2>' . __('Jäsenrekisteri', 'member-register') . '</h2>';
+            echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä', 'member-register') . '</p>';
+            mr_show_members();
+        }
+    }
+    echo '</div>';
 }
 
 

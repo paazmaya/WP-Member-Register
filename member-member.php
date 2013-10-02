@@ -4,7 +4,7 @@
  * Single member related functions
  */
 
- 
+
 /**
  * Show a table of members based on the given filter if any.
  */
@@ -14,14 +14,14 @@ function mr_show_members($filters = null)
 	global $mr_access_type;
 	global $mr_martial_arts;
 	global $mr_date_format;
-	
+
 	if (!current_user_can('read') || !mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
-	
+
 	// Possible filter options: club, active, group
-	
+
 	$wheres = array();
 	$where = ' WHERE A.visible = 1';
 	if (is_array($filters))
@@ -52,7 +52,7 @@ function mr_show_members($filters = null)
 		. $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . ' ORDER BY A.lastname ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
-	
+
 	$members = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
@@ -91,7 +91,7 @@ function mr_show_members($filters = null)
 		echo '>' . $url . $member['lastname'] . '</a></td>';
 		echo '<td>' . $url . $member['firstname'] . '</a></td>';
 		echo '<td>';
-		if ($member['birthdate'] != '0000-00-00') 
+		if ($member['birthdate'] != '0000-00-00')
 		{
 			echo $member['birthdate'];
 		}
@@ -133,7 +133,7 @@ function mr_show_member_info($id)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
-	
+
 	global $wpdb;
 	global $userdata;
 	global $mr_date_format;
@@ -144,13 +144,13 @@ function mr_show_member_info($id)
 
 	$id = intval($id);
 	$usercanedit = false;
-	
+
 	if (!mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
 	{
 		// id must be of the current user
 		$id = $userdata->mr_memberid;
 	}
-	
+
 	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT) || $id == $userdata->mr_memberid)
 	{
 		$usercanedit = true;
@@ -179,20 +179,20 @@ function mr_show_member_info($id)
 		'club');
 	$sql = 'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname, D.id AS wpuserid, ' .
 		'(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_grade WHERE member = ' . $id . ' AND visible = 1) AS gradecount, '.
-		'(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' . $id . ' AND visible = 1) AS paymentcount FROM ' . 
+		'(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' . $id . ' AND visible = 1) AS paymentcount FROM ' .
 		$wpdb->prefix . 'mr_member A LEFT JOIN ' .
-		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' . 
+		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' .
 		$wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
 		$wpdb->prefix . 'users D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
-	
+
 	if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
-		echo '<p>' . __('In case you wish to remove a user, first all grades and payments should be removed.', 'member-register') . 
+		echo '<p>' . __('In case you wish to remove a user, first all grades and payments should be removed.', 'member-register') .
 			' (' . $person['gradecount'] . ', ' . $person['paymentcount'] . ')</p>';
-		
+
 		if (intval($person['gradecount']) == 0 && intval($person['paymentcount']) == 0)
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&removeid=' . $id .
@@ -200,7 +200,7 @@ function mr_show_member_info($id)
 				__('This user can be removed by clicking here', 'member-register') . ']</a>';
 		}
 	}
-	
+
 	if (isset($_GET['edit']) && $usercanedit)
 	{
 		mr_new_member_form(admin_url('admin.php?page=member-register-control') . '&memberid=' . $id, $person);
@@ -266,7 +266,7 @@ function mr_show_member_info($id)
 				<td><?php
 					if (isset($person['martial']) && $person['martial'] != '' && $mr_martial_arts[$person['martial']])
 					{
-						echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')'; 
+						echo $mr_martial_arts[$person['martial']] . ' (' . $person['martial'] . ')';
 					}
 					?>
 				</td>
@@ -285,30 +285,30 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä harjoittelee', 'member-register'); ?>)</span></th>
-				<td><?php 
+				<td><?php
 				if ($person['clubname'] != '' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 				{
-					echo '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . 
+					echo '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' .
 						$person['club'] . '" title="' . __('List of active members in the club called:', 'member-register') .
 						' ' . $person['clubname'] . '">' . $person['clubname'] . '</a>';
 				}
 				else
 				{
-					echo $person['clubname']; 
+					echo $person['clubname'];
 				}
 				?></td>
 			</tr>
 			<tr>
 				<th><?php echo __('WP username', 'member-register'); ?> <span class="description">(<?php echo __('mikäli sellainen on', 'member-register'); ?>)</span></th>
-				<td><?php 
+				<td><?php
 					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']) && $usercanedit)
 					{
 						echo '<a href="' . admin_url('user-edit.php?user_id=') . $person['wpuserid'] .
 							'" title="' . __('Muokkaa WP käyttäjää', 'member-register') . '">' . $person['user_login'] . '</a>';
 					}
-					else 
+					else
 					{
-						echo $person['user_login']; 
+						echo $person['user_login'];
 					}
 				?></td>
 			</tr>
@@ -326,7 +326,7 @@ function mr_show_member_info($id)
 	echo '<hr />';
 	echo '<h2>' . __('Vyöarvot', 'member-register') . '</h2>';
 	mr_show_grades($id);
-	
+
 	?>
 
 	<hr />
@@ -351,25 +351,25 @@ function mr_remove_member($id)
 	}
 
 	global $wpdb;
-	
-	$removal = $wpdb->update( 
+
+	$removal = $wpdb->update(
 		$wpdb->prefix . 'mr_member',
-		array( 
+		array(
 			'visible' => 0
-		), 
-		array( 
-			'id' => $id 
-		), 
-		array( 
+		),
+		array(
+			'id' => $id
+		),
+		array(
 			'%d'
-		), 
-		array( 
-			'%d' 
-		) 
+		),
+		array(
+			'%d'
+		)
 	);
-	
+
 	// TODO: if 'user_login' is not empty, that WP user should be disabled.
-	
+
 	if ($removal)
 	{
 		echo '<div class="updated"><p>';
@@ -417,7 +417,7 @@ function mr_member_new()
 
 	<?php
 }
- 
+
 
 function mr_insert_new_member($postdata)
 {
@@ -471,13 +471,13 @@ function mr_update_member_info($postdata)
 		'address', 'zipcode', 'postal', 'phone', 'email', 'nationality', 'joindate',
 		'passnro', 'martial', 'notes', 'active', 'club');
 
-	
+
 	if (!mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
 		// id must be of the current user
 		$postdata['id'] = $userdata->mr_memberid;
 	}
-	
+
 	if (isset($postdata['id']) && is_numeric($postdata['id']))
 	{
 		foreach($postdata as $k => $v)
@@ -485,7 +485,7 @@ function mr_update_member_info($postdata)
 			if (in_array($k, $required))
 			{
 				// sanitize
-				
+
 				if ($k == 'access')
 				{
 					$rights = 0;
@@ -519,12 +519,12 @@ function mr_update_member_info($postdata)
 	}
 }
 
- 
- 
+
+
 /**
  * Print out a form for adding new members.
- * @param $action Target page of the form
- * @param $data Array
+ * @param string $action Target page of the form
+ * @param array $data Array of data
  */
 function mr_new_member_form($action, $data)
 {
@@ -532,13 +532,13 @@ function mr_new_member_form($action, $data)
 	{
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register') );
 	}
-	
+
 	global $wpdb;
 	global $userdata;
 	global $mr_access_type;
 	global $mr_martial_arts;
-	
-	
+
+
 	if (!mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 	{
 		// id must be of the current user
@@ -589,15 +589,15 @@ function mr_new_member_form($action, $data)
 					<select name="user_login" data-placeholder="Valitse jo olemassa oleva WP käyttäjä">
 					<option value=""></option>
 					<?php
-					// If editing, select all free and the current. If new, select all free				
+					// If editing, select all free and the current. If new, select all free
 					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
 						'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
 						' UNION ' .
 						'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
 						'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
 						'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
-						
-						
+
+
 					$users = $wpdb->get_results($sql, ARRAY_A);
 					foreach($users as $user)
 					{
@@ -739,7 +739,7 @@ function mr_new_member_form($action, $data)
 					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> <?php echo __('no', 'member-register'); ?></label>
 					<?php
 				}
-				else 
+				else
 				{
 					echo ($values['active'] == 1) ? __('yes', 'member-register') : __('no', 'member-register');
 				}
@@ -793,10 +793,9 @@ function mr_new_member_form($action, $data)
 	</form>
 	<?php
 }
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+

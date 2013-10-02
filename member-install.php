@@ -12,11 +12,11 @@ function mr_install ()
 	$mr_prefix = 'mr_';
 
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	
+
 
 	$table_name = $wpdb->prefix . $mr_prefix . 'group';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{		
+	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) NOT NULL AUTO_INCREMENT,
 		  title varchar(200) COLLATE utf8_swedish_ci NOT NULL,
@@ -31,7 +31,7 @@ function mr_install ()
 
 	$table_name = $wpdb->prefix . $mr_prefix . 'group_member';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{		
+	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) NOT NULL AUTO_INCREMENT,
 		  group_id mediumint(6) NOT NULL COMMENT 'ID of the group',
@@ -44,7 +44,7 @@ function mr_install ()
 
 	$table_name = $wpdb->prefix . $mr_prefix . 'file';
 	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{		
+	{
 		$sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  bytesize int(12) unsigned NOT NULL,
@@ -52,7 +52,7 @@ function mr_install ()
 		  directory varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
 		  uploader mediumint(6) unsigned NOT NULL COMMENT 'Member ID',
 		  uploaded int(10) NOT NULL COMMENT 'Unix timestamp',
-		  mingrade varchar(2) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT '$mr_grade_values if any minimum',
+		  mingrade varchar(2) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'mr_grade_values if any minimum',
 		  clubonly mediumint(6) unsigned NOT NULL DEFAULT '0' COMMENT 'Club ID if not 0',
 		  artonly varchar(10) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'Only shown for those whose main martial',
 		  grouponly mediumint(6) NOT NULL DEFAULT '0' COMMENT 'Group ID if not 0',
@@ -203,7 +203,7 @@ function mr_install ()
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci COMMENT='County codes as per ISO 3166-1 alpha-2';";
 
 		dbDelta($sql);
-	
+
 		$sql = "INSERT INTO wp_mr_country (code, name) VALUES
 		('AF', 'Afghanistan'),
 		('AL', 'Albania'),
@@ -447,7 +447,7 @@ function mr_install ()
 		('ZM', 'Zambia'),
 		('ZW', 'Zimbabwe'),
 		('AX', 'Åland Islands');";
-	
+
 		dbDelta($sql);
 	}
 

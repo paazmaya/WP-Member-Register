@@ -8,11 +8,12 @@
  * Check for permission for doing certain things.
  * @param $access int Access right that is required
  * @param $rights int Access rights that the user has, if any
+ * @return bool
  */
 function mr_has_permission($access, $rights = 0)
 {
 	global $userdata;
-	
+
 	if ($rights == 0)
 	{
 		if (!isset($userdata->mr_access))
@@ -21,7 +22,7 @@ function mr_has_permission($access, $rights = 0)
 		}
 		$rights = $userdata->mr_access;
 	}
-	
+
 	if ($access & $rights)
 	{
 		return true;
@@ -38,8 +39,8 @@ function mr_has_permission($access, $rights = 0)
 function list_user_rights($rights)
 {
 	global $mr_access_type;
-	
-	$list = array();	
+
+	$list = array();
 	foreach ($mr_access_type as $key => $val)
 	{
 		if (mr_has_permission($key, $rights))
@@ -88,14 +89,14 @@ function print_access()
 {
 	global $userdata;
 	global $mr_access_type;
-	
+
 	echo '<p>';
-	
+
 	foreach ($mr_access_type as $key => $val)
 	{
 		echo 'Key: ' . $key . ', in binary: ' . decbin($key) . ', val: ' . $val . '<br />';
 	}
-	
+
 	echo 'MR_ACCESS_OWN_INFO: ' . MR_ACCESS_OWN_INFO . '<br />';
 	echo 'MR_ACCESS_FILES_VIEW: ' . MR_ACCESS_FILES_VIEW . '<br />';
 	echo 'MR_ACCESS_CONVERSATION: ' . MR_ACCESS_CONVERSATION . '<br />';
@@ -107,10 +108,10 @@ function print_access()
 	echo 'MR_ACCESS_PAYMENT_MANAGE: ' . MR_ACCESS_PAYMENT_MANAGE . '<br />';
 	echo 'MR_ACCESS_CLUB_MANAGE: ' . MR_ACCESS_CLUB_MANAGE . '<br />';
 	echo 'MR_ACCESS_FILES_MANAGE: ' . MR_ACCESS_FILES_MANAGE . '<br />';
-	
+
 	echo '<br />You have: ' . decbin($userdata->mr_access) . ' / ' . $userdata->mr_access;
 	echo '<br />Full rights would be: ' . bindec(11111111111);
-	
+
 	echo '</p>';
 }
 
@@ -133,6 +134,7 @@ function mr_htmldec($str)
  * Converts a block of text to be suitable for the use in URI.
  *
  * @param	string	$str
+ * @return string
  */
 function mr_urize($str)
 {
