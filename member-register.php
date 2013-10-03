@@ -3,7 +3,7 @@
 Plugin Name: Member Register
 Plugin URI: http://paazmaya.com/member-register-wordpress-plugin
 Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
-Version: 0.11.2
+Version: 0.11.3
 License: Creative Commons Share-Alike-Attribute 3.0
 Author: Jukka Paasonen
 Author URI: http://paazmaya.com
@@ -14,7 +14,7 @@ Author URI: http://paazmaya.com
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.11.2');
+define ('MEMBER_REGISTER_VERSION', '0.11.3');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
