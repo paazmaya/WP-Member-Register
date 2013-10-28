@@ -4,6 +4,8 @@ Contributors: paazmaya
 Donate link: http://paazmaya.com/
 License: MIT
 License URI: http://opensource.org/licenses/MIT
+Author: Jukka Paasonen
+Author URI: http://paazmaya.com
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.5.0
 Tested up to: 3.7.0

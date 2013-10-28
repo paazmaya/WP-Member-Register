@@ -2,6 +2,8 @@
 
 /**
  * Part of Member Register
+ * License: MIT (http://opensource.org/licenses/MIT)
+ *
  * Club related functions.
  */
 // TODO: has many calls to access level checking but kept until decided if they are needed...

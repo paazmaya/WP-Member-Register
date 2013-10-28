@@ -1,6 +1,8 @@
 <?php
 /**
  * Part of Member Register
+ * License: MIT (http://opensource.org/licenses/MIT)
+ *
  * Files for members only
  * - Access can be for all, club, member level
  * All documents such as word, etc are converted to pdf which is transformed for each member separately

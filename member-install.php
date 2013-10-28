@@ -1,6 +1,8 @@
 <?php
 /**
  * Part of Member Register
+ * License: MIT (http://opensource.org/licenses/MIT)
+ *
  * Installation hook
  */
 
