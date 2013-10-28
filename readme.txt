@@ -1,9 +1,12 @@
 === Member Register ===
+
 Contributors: paazmaya
 Donate link: http://paazmaya.com/
+License: MIT
+License URI: http://opensource.org/licenses/MIT
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
-Requires at least: 3.0.0
-Tested up to: 3.5.1
+Requires at least: 3.5.0
+Tested up to: 3.7.0
 Stable tag: master
 
 Member register management related to personal information,
@@ -36,13 +39,17 @@ To address the need for managing a martial arts club which has several member wi
 Ideally this plugin provides most of the things that might be needed by a martial art club.
 As a matter of fact, also clubs can be members, as there are possibilities of having many clubs listed in the register.
 
+== Upgrade Notice ==
+
+Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be separate method for upgrade handling.
+
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
-2. This is the second screen shot
+1. New payment form, in Finnish
+2. New grade form, in Finnish
 
 == Changelog ==
+
 = 0.11.3 =
 * Released 3rd October 2013
 * Removed members not listed anywhere any longer
@@ -52,16 +59,16 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 * Released 4th July 2013
 * Replaced Chosen with Select2
 
-= 0.11.1
+= 0.11.1 =
 * Released 28th April 2013
 * Few more required fields and types that make client side validation easier
 * Fix listing where deleted member was still shown (visible == 0)
 
-= 0.11.0
+= 0.11.0 =
 * Released 22th April 2013
 * In case public registration is enabled, additional items are shown in the form and hooked in to the members register
 * Allow to delete users that do not have payments nor grades
-* Localisation fixes, now primarily Finnish but via PO files as originally intented
+* Localisation fixes, now primarily Finnish but via PO files as originally intended
 
 = 0.10.0 =
 * Released 14th August 2012
@@ -159,7 +166,7 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.5.0 =
 * Release 17 September 2011
-* Fine tuning and possible bitfails fixed
+* Fine tuning and possible bit falls fixed
 
 = 0.4.0 =
 * Released 10 September 2011
@@ -183,5 +190,5 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 = 0.1.0 =
 * Released 29 March 2011
-* Initial Member Registery available
+* Initial Member Register available
 * List and add members
