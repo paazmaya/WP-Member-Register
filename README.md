@@ -8,3 +8,7 @@ Also martial art grades and membership payments are stored.
 
 For further Wordpress related information, please see `readme.txt`, which also 
 includes the version history and changelog.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paazmaya/wp-member-register/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
