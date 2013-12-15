@@ -210,7 +210,7 @@ function mr_show_list_topics()
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat tablesorter">
+	<table class="wp-list-table widefat fixed pages tablesorter">
 	<thead>
 	<tr>
 		<th><?php echo __('Aihe', 'member-register'); ?></th>
@@ -285,7 +285,7 @@ function mr_show_posts_for_topic($topic)
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat tablesorter">
+	<table class="wp-list-table widefat fixed pages tablesorter">
 	<thead>
 	<tr>
 		<th class="w20em headerSortUp"><?php echo __('Aika', 'member-register'); ?></th>

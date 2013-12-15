@@ -60,7 +60,7 @@ function mr_show_members($filters = null)
 	$members = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat tablesorter">
+	<table class="wp-list-table widefat fixed pages tablesorter">
 	<caption></caption>
 	<thead>
 	<tr>
@@ -213,7 +213,7 @@ function mr_show_member_info($id)
 	{
 		?>
 		<h3><?php echo __('Henkilötiedot', 'member-register'); ?></h3>
-		<table class="wp-list-table widefat users">
+		<table class="wp-list-table widefat fixed pages users">
 		<tbody>
 			<tr>
 				<th><?php echo __('Last name', 'member-register'); ?></th>

@@ -142,7 +142,7 @@ function mr_show_grades($memberid = null)
 	if (count($res) > 0)
 	{
 		?>
-		<table class="wp-list-table widefat tablesorter">
+		<table class="wp-list-table widefat fixed pages tablesorter">
 
 		<thead>
 		<tr>

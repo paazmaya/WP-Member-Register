@@ -8,7 +8,7 @@ Author: Jukka Paasonen
 Author URI: http://paazmaya.com
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.5.0
-Tested up to: 3.7.0
+Tested up to: 3.8.0
 Stable tag: master
 
 Member register management related to personal information,
@@ -51,6 +51,9 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
+= next =
+* Table styling to match general WP Admin styles
+
 
 = 0.11.3 =
 * Released 3rd October 2013

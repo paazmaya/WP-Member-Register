@@ -156,7 +156,7 @@ function mr_files_list()
 	$files = $wpdb->get_results($sql, ARRAY_A);
 	?>
 	<h2><?php echo __('Jäsenten tiedostot', 'member-register'); ?></h2>
-	<table class="wp-list-table widefat tablesorter">
+	<table class="wp-list-table widefat fixed pages tablesorter">
 		<thead>
 			<tr>
 				<th class="headerSortDown"><?php echo __('Base name', 'member-register'); ?></th>

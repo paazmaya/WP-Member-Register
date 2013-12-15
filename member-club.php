@@ -196,7 +196,7 @@ function mr_show_clubs()
 		$allowremove = true;
 	}
 	?>
-	<table class="wp-list-table widefat tablesorter">
+	<table class="wp-list-table widefat fixed pages tablesorter">
 		<thead>
 			<tr>
 				<th class="headerSortDown"><?php echo __('Nimi', 'member-register'); ?></th>

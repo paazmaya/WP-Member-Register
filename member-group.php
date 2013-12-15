@@ -179,7 +179,7 @@ function mr_show_groups($memberid = null)
 	{
 		// id member reference type amount deadline paidday validuntil visible
 		?>
-		<table class="wp-list-table widefat tablesorter">
+		<table class="wp-list-table widefat fixed pages tablesorter">
 			<thead>
 				<tr>
 					<th class="headerSortUp"><?php echo __('Title', 'member-register'); ?></th>
