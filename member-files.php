@@ -156,7 +156,7 @@ function mr_files_list()
 	$files = $wpdb->get_results($sql, ARRAY_A);
 	?>
 	<h2><?php echo __('Jäsenten tiedostot', 'member-register'); ?></h2>
-	<table class="wp-list-table widefat fixed pages tablesorter">
+	<table class="wp-list-table widefat sorter">
 		<thead>
 			<tr>
 				<th class="headerSortDown"><?php echo __('Base name', 'member-register'); ?></th>
@@ -239,7 +239,7 @@ function mr_files_list()
 						$out .= '</td>';
 
 						$out .= '<td>';
-						$out .= '<a rel="remove" href="' . admin_url('admin.php?page=member-files') .
+						$out .= '<a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
 							'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto', 'member-register') . ': ' .
 							$file['basename'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a>';
 						$out .= '</td>';

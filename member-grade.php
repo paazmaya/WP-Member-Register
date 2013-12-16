@@ -142,7 +142,7 @@ function mr_show_grades($memberid = null)
 	if (count($res) > 0)
 	{
 		?>
-		<table class="wp-list-table widefat fixed pages tablesorter">
+		<table class="wp-list-table widefat sorter">
 
 		<thead>
 		<tr>
@@ -201,7 +201,7 @@ function mr_show_grades($memberid = null)
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
+				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
 					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' .
 					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';

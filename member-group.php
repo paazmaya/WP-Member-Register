@@ -179,7 +179,7 @@ function mr_show_groups($memberid = null)
 	{
 		// id member reference type amount deadline paidday validuntil visible
 		?>
-		<table class="wp-list-table widefat fixed pages tablesorter">
+		<table class="wp-list-table widefat sorter">
 			<thead>
 				<tr>
 					<th class="headerSortUp"><?php echo __('Title', 'member-register'); ?></th>
@@ -221,7 +221,7 @@ function mr_show_groups($memberid = null)
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
+				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
 					'&amp;remove-group=' . $group['id'] . '" title="' . __('Poista ryhmä nimellä ' . $group['title'] .
 					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';

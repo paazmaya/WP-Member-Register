@@ -1,13 +1,13 @@
 <?php
 /**
-Plugin Name: Member Register
-Plugin URI: http://paazmaya.com/member-register-a-wordpress-plugin
-Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
-Version: 0.11.3
-License: MIT
-License URI: http://opensource.org/licenses/MIT
-Author: Jukka Paasonen
-Author URI: http://paazmaya.com
+ * Plugin Name: Member Register
+ * Plugin URI: http://paazmaya.com/member-register-a-wordpress-plugin
+ * Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
+ * Version: 0.11.3
+ * License: MIT
+ * License URI: http://opensource.org/licenses/MIT
+ * Author: Jukka Paasonen
+ * Author URI: http://paazmaya.com
  */
 
 /**
@@ -142,7 +142,6 @@ function member_register_public_reg_form()
     add_action('user_register', 'mr_prf_user_register');
 }
 
-// http://tablesorter.com/docs/
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init()
 {
@@ -150,7 +149,7 @@ function member_register_admin_init()
         array('jquery')); // 1.9.0
     wp_register_script('jquery-bassistance-validation-messages-fi', plugins_url('/js/messages_fi.js', __FILE__),
         array('jquery'));
-    wp_register_script('jquery-tablesorter', plugins_url('/js/jquery.tablesorter.min.js', __FILE__), array('jquery'));
+    wp_register_script('jquery-stupidtable', plugins_url('/js/stupidtable.min.js', __FILE__), array('jquery'));
     wp_register_script('jquery-ui-datepicker-fi', plugins_url('/js/jquery.ui.datepicker-fi.js', __FILE__),
         array('jquery'));
     wp_register_script('jquery-select2', plugins_url('/js/select2.min.js', __FILE__), array('jquery')); //
@@ -162,7 +161,6 @@ function member_register_admin_init()
 
     wp_register_style('jquery-ui-theme-blizter', plugins_url('/css/jquery-ui.blizter.css', __FILE__));
     wp_register_style('jquery-ui-datepicker', plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
-    wp_register_style('jquery-tablesorter', plugins_url('/css/jquery.tablesorter.css', __FILE__));
     wp_register_style('jquery-select2', plugins_url('/css/select2.css', __FILE__));
     wp_register_style('jquery-select2-bootstrap', plugins_url('/css/select2-bootstrap.css', __FILE__));
     wp_register_style('mr-styles', plugins_url('/css/mr-styles.css', __FILE__));
@@ -179,7 +177,7 @@ function member_register_admin_print_scripts()
 
     wp_enqueue_script('jquery-bassistance-validation');
     wp_enqueue_script('jquery-bassistance-validation-messages-fi');
-    wp_enqueue_script('jquery-tablesorter');
+    wp_enqueue_script('jquery-stupidtable');
     wp_enqueue_script('jquery-select2');
     wp_enqueue_script('jquery-select2-locale-fi');
     wp_enqueue_script('jquery-picnet-table-filter');
@@ -190,7 +188,7 @@ function member_register_admin_print_styles()
     // http://codex.wordpress.org/Function_Reference/wp_enqueue_style
     wp_enqueue_style('jquery-ui-datepicker');
     wp_enqueue_style('jquery-ui-theme-blizter');
-    wp_enqueue_style('jquery-tablesorter');
+    wp_enqueue_style('jquery-stupidtable');
     wp_enqueue_style('jquery-select2');
     wp_enqueue_style('jquery-select2-bootstrap');
     wp_enqueue_style('mr-styles');
@@ -214,6 +212,10 @@ function member_register_admin_head()
         var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Piilota', 'member-register'); ?>" /></a>';
 
         jQuery(document).ready(function () {
+            jQuery('table.sorter').stupidtable();
+
+
+
             jQuery.datepicker.setDefaults({
                 showWeek: true,
                 changeMonth: true,
@@ -223,7 +225,7 @@ function member_register_admin_head()
                 dateFormat: 'yy-mm-dd'
             });
             jQuery('input.pickday').datepicker();
-            jQuery('table.tablesorter').tablesorter().tableFilter({
+            jQuery('table.tablesorter').tableFilter({
                 enableCookies: false
             });
             jQuery('select.chosen').select2({
@@ -281,12 +283,14 @@ function member_register_admin_head()
 function member_register_admin_menu()
 {
     // http://codex.wordpress.org/Adding_Administration_Menus
+    // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position )
     add_menu_page(__('Jäsenrekisterin Hallinta', 'member-register'), __('Jäsenrekisteri', 'member-register'), 'read',
         'member-register-control',
-        'mr_member_list', plugins_url('/images/people.jpg', __FILE__)); // $position );
+        'mr_member_list', 'dashicons-groups'); // $position );
 
     if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
     {
+        // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
         add_submenu_page('member-register-control', __('Lisää uusi jäsen', 'member-register'),
             __('Uusi jäsen', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
     }
@@ -340,7 +344,7 @@ function member_register_forum_menu()
     {
         // http://codex.wordpress.org/Adding_Administration_Menus
         add_menu_page(__('Keskustelu', 'member-register'), __('Keskustelu', 'member-register'), 'read', 'member-forum',
-            'mr_forum_list', plugins_url('/images/forum.png', __FILE__)); // $position );
+            'mr_forum_list', 'dashicons-format-chat'); // $position );
     }
 }
 
@@ -350,7 +354,7 @@ function member_register_files_menu()
     {
         // http://codex.wordpress.org/Adding_Administration_Menus
         add_menu_page(__('Tiedostot', 'member-register'), __('Tiedostot', 'member-register'), 'read', 'member-files',
-            'mr_files_list', plugins_url('/images/folder.gif', __FILE__)); // $position );
+            'mr_files_list', 'dashicons-portfolio'); // $position );
 
         if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
         {

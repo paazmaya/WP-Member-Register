@@ -53,6 +53,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 == Changelog ==
 = next =
 * Table styling to match general WP Admin styles
+* Replaced Tablesorter with Stupid Table Sorter
 
 
 = 0.11.3 =

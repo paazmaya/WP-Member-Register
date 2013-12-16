@@ -60,7 +60,7 @@ function mr_show_members($filters = null)
 	$members = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat fixed pages tablesorter">
+	<table class="wp-list-table widefat sorter">
 	<caption></caption>
 	<thead>
 	<tr>

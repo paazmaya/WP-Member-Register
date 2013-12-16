@@ -44,23 +44,9 @@ function mr_forum_list()
 		}
 		else if (isset($_GET['remove-post']) && is_numeric($_GET['remove-post']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			// In reality just archive the post			
-			$update = $wpdb->update(
-				$wpdb->prefix . 'mr_forum_post',
-				array(
-					'visible' => 0
-				),
-				array(
-					'id' => $_GET['remove-post']
-				),
-				array(
-					'%d'
-				),
-				array(
-					'%d'
-				)
-			);
-		
+			// In reality just archive the post
+            $update = mr_forum_remove_post($_GET['remove-post']);
+
 			if ($update !== false)
 			{
 				echo '<div class="updated"><p>';
@@ -107,7 +93,7 @@ function mr_forum_list()
 		}
 		else if (isset($_GET['remove-topic']) && is_numeric($_GET['remove-topic']) && mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			// In reality just archive the topic			
+			// In reality just archive the topic
 			$update = $wpdb->update(
 				$wpdb->prefix . 'mr_forum_topic',
 				array(
@@ -123,7 +109,7 @@ function mr_forum_list()
 					'%d'
 				)
 			);
-		
+
 			if ($update)
 			{
 				echo '<div class="updated"><p>';
@@ -210,7 +196,7 @@ function mr_show_list_topics()
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat fixed pages tablesorter">
+	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
 		<th><?php echo __('Aihe', 'member-register'); ?></th>
@@ -246,7 +232,7 @@ function mr_show_list_topics()
 			echo '<td>' . $topic['total'] . '</td>';
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
-				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') .
+				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') .
 				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla', 'member-register') . ': ' .
 				$topic['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
 			}
@@ -285,7 +271,7 @@ function mr_show_posts_for_topic($topic)
 	$res = $wpdb->get_results($sql, ARRAY_A);
 
 	?>
-	<table class="wp-list-table widefat fixed pages tablesorter">
+	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
 		<th class="w20em headerSortUp"><?php echo __('Aika', 'member-register'); ?></th>
@@ -309,7 +295,7 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
+			echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
 				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu', 'member-register') . ' ' .
 				date($mr_date_format, $post['created']) . '"><img src="' .
 				plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
@@ -322,6 +308,41 @@ function mr_show_posts_for_topic($topic)
 	<?php
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function mr_forum_remove_post($postId)
+{
+    global $wpdb;
+
+    return $wpdb->update(
+        $wpdb->prefix . 'mr_forum_post',
+        array(
+            'visible' => 0
+        ),
+        array(
+            'id' => $postId
+        ),
+        array(
+            '%d'
+        ),
+        array(
+            '%d'
+        )
+    );
+}
+
 
 function mr_insert_new_topic($postdata)
 {

@@ -201,7 +201,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 	{
 		// id member reference type amount deadline paidday validuntil visible
 		?>
-		<table class="wp-list-table widefat fixed pages tablesorter">
+		<table class="wp-list-table widefat sorter">
 			<thead>
 				<tr>
 					<?php
@@ -217,9 +217,9 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 						<?php
 					}
 					?>
-					<th><?php echo __('Tyyppi', 'member-register'); ?></th>
-					<th class="w8em"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
-					<th class="w8em"><?php echo __('Viite', 'member-register'); ?></th>
+					<th data-sort="string-ins"><?php echo __('Tyyppi', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Viite', 'member-register'); ?></th>
 					<th class="headerSortUp"><?php echo __('Eräpäivä', 'member-register'); ?></th>
 					<?php
 					if (!$isUnpaidView)
@@ -231,7 +231,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 					<?php
 					if ($allowremove)
 					{
-						echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
+						echo '<th>' . __('Poista', 'member-register') . '</th>';
 					}
 					?>
 				</tr>
@@ -273,7 +273,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
+				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
 					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä', 'member-register') .
 					': ' . $payment['reference'] . '"><img src="' .
 					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
