@@ -51,10 +51,10 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
-= next =
+= 0.11.4 =
+* Released 5th January 2014
 * Table styling to match general WP Admin styles
-* Replaced Tablesorter with Stupid Table Sorter
-
+* Replaced Tablesorter with Stupid Table Sorter (http://joequery.github.io/Stupid-Table-Plugin/)
 
 = 0.11.3 =
 * Released 3rd October 2013

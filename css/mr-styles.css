@@ -48,3 +48,14 @@ table caption a {
 	margin: 4px;
 	padding: 4px;
 }
+
+/** Tables that can be sorted **/
+.sorter .sorting-desc {
+  box-shadow: inset 0 10px 10px -10px rgba(80, 80, 80, 0.5);
+}
+.sorter .sorting-asc {
+  box-shadow: inset 0 -10px 10px -10px rgba(80, 80, 80, 0.5);
+}
+.sorter th {
+  cursor: pointer;
+}

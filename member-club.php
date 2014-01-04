@@ -199,9 +199,9 @@ function mr_show_clubs()
 	<table class="wp-list-table widefat sorter">
 		<thead>
 			<tr>
-				<th class="headerSortDown"><?php echo __('Nimi', 'member-register'); ?></th>
-				<th><?php echo __('Address', 'member-register'); ?></th>
-				<th><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
+				<th data-sort="string" class="sorting-asc"><?php echo __('Nimi', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('Address', 'member-register'); ?></th>
+				<th data-sort="int"><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
 				<?php
 				if ($allowremove)
 				{
@@ -218,16 +218,15 @@ function mr_show_clubs()
 				$url = '<a href="' . admin_url('admin.php?page=member-club-list') . '&club=' . $club['id'] .
 					'" title="' . __('List of active members in the club called:', 'member-register') . ' ' . $club['title'] . '">';
 				echo '<tr id="user_' . $club['id'] . '">';
-				echo '<td>' . $url . $club['title'] . '</a></td>';
-				echo '<td>' . $url . $club['address'] . '</a></td>';
-				echo '<td>' . $url . $club['members'] . '</a></td>';
+				echo '<td data-sort-value="' . $club['title'] . '">' . $url . $club['title'] . '</a></td>';
+				echo '<td data-sort-value="' . $club['address'] . '">' . $url . $club['address'] . '</a></td>';
+				echo '<td data-sort-value="' . $club['members'] . '">' . $url . $club['members'] . '</a></td>';
 				// set visible to 0, do not remove for real...
 				if ($allowremove)
 				{
-					echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
+					echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
 					'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', 'member-register') . ': ' .
-					$club['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) .
-					'" alt="' . __('Poista seura', 'member-register') . '" /></a></td>';
+					$club['title'] . '">_</a></td>';
 				}
 				echo '</tr>';
 			}

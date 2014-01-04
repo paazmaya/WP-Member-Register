@@ -28,7 +28,6 @@ function mr_prf_register_form ()
 		'club' => isset($_POST['club']) ? intval($_POST['club']) : -1
 	);
 
-
 	?>
 	<p>
 		<label><?php echo __('Etunimi', 'member-register'); ?><br />
@@ -238,7 +237,7 @@ function mr_prf_user_register($user_id)
 	// Finally update few items in the WP_users (display_name)
 	$wpdb->query('UPDATE ' . $wpdb->prefix . 'users SET display_name = \'' .
 		$values['firstname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
-		
+
 	// Also add the meta data for name
 	update_user_meta($user_id, 'first_name', $values['firstname']);
 	update_user_meta($user_id, 'last_name', $values['lastname']);

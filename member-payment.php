@@ -207,27 +207,27 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 					<?php
 					if ($isUnpaidView && $allowreview)
 					{
-						echo '<th filter="false">' . __('Maksettu?', 'member-register') . '</th>';
+						echo '<th data-sort="int" filter="false">' . __('Maksettu?', 'member-register') . '</th>';
 					}
 					if ($memberid == null)
 					{
 						?>
-						<th><?php echo __('Last name', 'member-register'); ?></th>
-						<th><?php echo __('First name', 'member-register'); ?></th>
+						<th data-sort="string"><?php echo __('Last name', 'member-register'); ?></th>
+						<th data-sort="string"><?php echo __('First name', 'member-register'); ?></th>
 						<?php
 					}
 					?>
 					<th data-sort="string-ins"><?php echo __('Tyyppi', 'member-register'); ?></th>
-					<th data-sort="int"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
+					<th data-sort="float"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
 					<th data-sort="int"><?php echo __('Viite', 'member-register'); ?></th>
-					<th class="headerSortUp"><?php echo __('Eräpäivä', 'member-register'); ?></th>
+					<th data-sort="int" class="sorting-desc"><?php echo __('Eräpäivä', 'member-register'); ?></th>
 					<?php
 					if (!$isUnpaidView)
 					{
-						echo '<th>' . __('Maksu PVM', 'member-register') . '</th>';
+						echo '<th data-sort="int">' . __('Maksu PVM', 'member-register') . '</th>';
 					}
 					?>
-					<th><?php echo __('Voimassaolo', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Voimassaolo', 'member-register'); ?></th>
 					<?php
 					if ($allowremove)
 					{
@@ -257,26 +257,25 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
 					'&memberid=' . $payment['memberid'] . '" title="' . $payment['firstname'] .
 					' ' . $payment['lastname'] . '">';
-				echo '<td>' . $url . $payment['lastname'] . '</a></td>';
-				echo '<td>' . $url . $payment['firstname'] . '</a></td>';
+				echo '<td data-sort-value="' . $payment['lastname'] . '">' . $url . $payment['lastname'] . '</a></td>';
+				echo '<td data-sort-value="' . $payment['firstname'] . '">' . $url . $payment['firstname'] . '</a></td>';
 			}
 			echo '<td>' . $payment['type'] . '</td>';
 			echo '<td>' . $payment['amount'] . '</td>';
 			echo '<td>' . $payment['reference'] . '</td>';
-			echo '<td>' . $payment['deadline'] . '</td>';
+			echo '<td data-sort-value="' . str_replace('-', '', $payment['deadline']) . '">' . $payment['deadline'] . '</td>';
 			if (!$isUnpaidView)
 			{
-				echo '<td>' . $payment['paidday'] . '</td>';
+				echo '<td data-sort-value="' . str_replace('-', '', $payment['paidday']) . '">' . $payment['paidday'] . '</td>';
 			}
-			echo '<td>' . $payment['validuntil'] . '</td>';
+			echo '<td data-sort-value="' . str_replace('-', '', $payment['validuntil']) . '">' . $payment['validuntil'] . '</td>';
 
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
+				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
 					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä', 'member-register') .
-					': ' . $payment['reference'] . '"><img src="' .
-					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
+					': ' . $payment['reference'] . '">_</a></td>';
 			}
 			echo '</tr>';
 		}

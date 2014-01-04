@@ -64,16 +64,16 @@ function mr_show_members($filters = null)
 	<caption></caption>
 	<thead>
 	<tr>
-		<th class="hideable"><?php echo __('Member ID', 'member-register'); ?></th>
-		<th class="headerSortDown"><?php echo __('Last name', 'member-register'); ?></th>
-		<th><?php echo __('First name', 'member-register'); ?></th>
-		<th><?php echo __('Birthday', 'member-register'); ?></th>
-		<th><?php echo __('E-mail', 'member-register'); ?></th>
-		<th><?php echo __('Phone number', 'member-register'); ?></th>
-		<th class="hideable"><?php echo __('Main martial art', 'member-register'); ?></th>
-		<th class="hideable"><?php echo __('Access rights', 'member-register'); ?></th>
-		<th class="hideable"><?php echo __('Last login', 'member-register'); ?></th>
-		<th class="hideable"><?php echo __('WP username', 'member-register'); ?></th>
+		<th data-sort="int" class="hideable"><?php echo __('Member ID', 'member-register'); ?></th>
+		<th data-sort="string" class="sorting-asc"><?php echo __('Last name', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('First name', 'member-register'); ?></th>
+		<th data-sort="int"><?php echo __('Birthday', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('E-mail', 'member-register'); ?></th>
+		<th data-sort="int"><?php echo __('Phone number', 'member-register'); ?></th>
+		<th data-sort="string" class="hideable"><?php echo __('Main martial art', 'member-register'); ?></th>
+		<th data-sort="int" class="hideable"><?php echo __('Access rights', 'member-register'); ?></th>
+		<th data-sort="int" class="hideable"><?php echo __('Last login', 'member-register'); ?></th>
+		<th data-sort="string" class="hideable"><?php echo __('WP username', 'member-register'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -87,14 +87,14 @@ function mr_show_members($filters = null)
 
 		echo '<tr id="user_' . $member['id'] . '">';
 		echo '<td>' . $member['id'] . '</td>';
-		echo '<td';
+		echo '<td data-sort-value="' . $member['lastname'] . '"';
 		if (intval($member['active']) == 0)
 		{
 			echo ' class="redback"';
 		}
 		echo '>' . $url . $member['lastname'] . '</a></td>';
-		echo '<td>' . $url . $member['firstname'] . '</a></td>';
-		echo '<td>';
+		echo '<td data-sort-value="' . $member['firstname'] . '">' . $url . $member['firstname'] . '</a></td>';
+		echo '<td data-sort-value="' . str_replace('-', '', $member['birthdate']) . '">';
 		if ($member['birthdate'] != '0000-00-00')
 		{
 			echo $member['birthdate'];
@@ -103,16 +103,16 @@ function mr_show_members($filters = null)
 		echo '<td>' . $member['email'] . '</td>';
 		echo '<td>' . $member['phone'] . '</td>';
 		echo '<td title="' . (isset($mr_martial_arts[$member['martial']]) ? $mr_martial_arts[$member['martial']] : '') . '">' . $member['martial'] . '</td>';
-		echo '<td title="' . $member['access'] . '">';
+		echo '<td data-sort-value="' . $member['access'] . '" title="' . $member['access'] . '">';
 		list_user_rights($member['access']);
 		echo '</td>';
-		echo '<td>';
+		echo '<td data-sort-value="' . $member['lastlogin'] . '">';
 		if ($member['lastlogin'] > 0)
 		{
 			echo date($mr_date_format, $member['lastlogin']);
 		}
 		echo '</td>';
-		echo '<td>';
+		echo '<td data-sort-value="' . $member['user_login'] . '">';
 		if ($member['user_login'] != '' && $member['user_login'] != null && is_numeric($member['wpuserid']))
 		{
 			echo '<a href="' . admin_url('user-edit.php?user_id=') . $member['wpuserid'] .

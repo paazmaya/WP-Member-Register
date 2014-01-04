@@ -199,10 +199,10 @@ function mr_show_list_topics()
 	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
-		<th><?php echo __('Aihe', 'member-register'); ?></th>
-		<th class="w20em headerSortUp"><?php echo __('Viimeisin viesti', 'member-register'); ?></th>
-		<th class="w20em"><?php echo __('Viimeisimmän viestin kirjoitti', 'member-register'); ?></th>
-		<th><?php echo __('Viestejä', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Aihe', 'member-register'); ?></th>
+		<th data-sort="int" class="sorting-desc"><?php echo __('Viimeisin viesti', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Viimeisimmän viestin kirjoitti', 'member-register'); ?></th>
+		<th data-sort="int"><?php echo __('Viestejä', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
@@ -218,11 +218,11 @@ function mr_show_list_topics()
 		foreach($res as $topic)
 		{
 			echo '<tr id="topic_' . $topic['id'] . '">';
-			echo '<td><a href="' . admin_url('admin.php?page=member-forum') .
+			echo '<td data-sort-value="' . $topic['title'] .'"><a href="' . admin_url('admin.php?page=member-forum') .
 				'&topic=' . $topic['id'] . '" title="' . $topic['title'] .
 				'">' . $topic['title'] . '</a>';
 			echo '</td>';
-			echo '<td>';
+			echo '<td data-sort-value="' . $topic['lastpost'] .'">';
 			if ($topic['lastpost'] != 0 && $topic['lastpost'] != null)
 			{
 				echo date($mr_date_format, $topic['lastpost']);
@@ -232,9 +232,9 @@ function mr_show_list_topics()
 			echo '<td>' . $topic['total'] . '</td>';
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
-				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') .
+				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') .
 				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla', 'member-register') . ': ' .
-				$topic['title'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
+				$topic['title'] . '">_</a></td>';
 			}
 			echo '</tr>';
 		}
@@ -274,9 +274,9 @@ function mr_show_posts_for_topic($topic)
 	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
-		<th class="w20em headerSortUp"><?php echo __('Aika', 'member-register'); ?></th>
-		<th class="w20em"><?php echo __('Jäsen', 'member-register'); ?></th>
-		<th><?php echo __('Viesti', 'member-register'); ?></th>
+		<th data-sort="int" class="sorting-desc"><?php echo __('Aika', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Jäsen', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Viesti', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
@@ -290,15 +290,14 @@ function mr_show_posts_for_topic($topic)
 	foreach($res as $post)
 	{
 		echo '<tr id="post_' . $post['id'] . '">';
-		echo '<td>' . date($mr_date_format, $post['created']) . '</td>';
+		echo '<td data-sort-value="' . $post['created'] . '">' . date($mr_date_format, $post['created']) . '</td>';
 		echo '<td>' . $post['firstname'] . ' ' . $post['lastname'] . '</td>';
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
+			echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
 				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu', 'member-register') . ' ' .
-				date($mr_date_format, $post['created']) . '"><img src="' .
-				plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
+				date($mr_date_format, $post['created']) . '">_</a></td>';
 		}
 		echo '</tr>';
 	}

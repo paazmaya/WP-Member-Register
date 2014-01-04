@@ -159,15 +159,15 @@ function mr_files_list()
 	<table class="wp-list-table widefat sorter">
 		<thead>
 			<tr>
-				<th class="headerSortDown"><?php echo __('Base name', 'member-register'); ?></th>
-				<th><?php echo __('Directory', 'member-register'); ?></th>
-				<th><?php echo __('Size', 'member-register'); ?> (KB)</th>
-				<th><?php echo __('Uploaded', 'member-register'); ?></th>
-				<th><?php echo __('Uploader', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('Base name', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('Directory', 'member-register'); ?></th>
+				<th data-sort="float"><?php echo __('Size', 'member-register'); ?> (KB)</th>
+				<th data-sort="int" class="sorting-desc"><?php echo __('Uploaded', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('Uploader', 'member-register'); ?></th>
 	<?php
 	if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
 	{
-		echo '<th>' . __('Restrictions', 'member-register') . '</th>';
+		echo '<th data-sort="string">' . __('Restrictions', 'member-register') . '</th>';
 		echo '<th>' . __('Remove', 'member-register') . '</th>';
 	}
 	?>
@@ -201,9 +201,9 @@ function mr_files_list()
 					}
 					$out .= '</td>';
 					$out .= '<td>' . $file['directory'] . '</td>';
-					$out .= '<td>' . round($file['bytesize'] / 1024) . '</td>';
-					$out .= '<td>' . date($mr_date_format, $file['uploaded']) . '</td>';
-					$out .= '<td>';
+					$out .= '<td data-sort-value="' . $file['bytesize'] . '">' . round($file['bytesize'] / 1024) . '</td>';
+					$out .= '<td data-sort-value="' . $file['uploaded'] . '">' . date($mr_date_format, $file['uploaded']) . '</td>';
+					$out .= '<td data-sort-value="' . $file['firstname'] . ' ' . $file['lastname'] . '">';
 					if (mr_has_permission(MR_ACCESS_MEMBERS_VIEW))
 					{
 						$out.= '<a href="' . admin_url('admin.php?page=member-register-control') .
@@ -239,9 +239,9 @@ function mr_files_list()
 						$out .= '</td>';
 
 						$out .= '<td>';
-						$out .= '<a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
+						$out .= '<a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
 							'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto', 'member-register') . ': ' .
-							$file['basename'] . '"><img src="' . plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a>';
+							$file['basename'] . '">_</a>';
 						$out .= '</td>';
 					}
 					$out .= '</tr>';

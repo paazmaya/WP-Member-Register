@@ -120,7 +120,7 @@ function mr_show_grades($memberid = null)
 	}
 
 	$where = '';
-	$order = 'B.lastname ASC, ';
+	$order = ', B.lastname ASC';
 	if ($memberid != null && is_numeric($memberid))
 	{
 		$where = 'AND B.id = \'' . $memberid . '\' ';
@@ -130,7 +130,7 @@ function mr_show_grades($memberid = null)
 	$sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
 		'mr_grade A LEFT JOIN ' . $wpdb->prefix .
 		'mr_member B ON A.member = B.id
-		WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY ' . $order . 'A.day DESC';
+		WHERE A.visible = 1 AND B.visible = 1 ' . $where . 'ORDER BY A.day DESC' . $order . '';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
 
@@ -150,23 +150,16 @@ function mr_show_grades($memberid = null)
 			if ($memberid == null)
 			{
 				?>
-				<th class="headerSortDown"><?php echo __('Last name', 'member-register'); ?></th>
-				<th><?php echo __('First name', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('Last name', 'member-register'); ?></th>
+				<th data-sort="string"><?php echo __('First name', 'member-register'); ?></th>
 				<?php
 			}
 			?>
-			<th><?php echo __('Vyöarvo', 'member-register'); ?></th>
-			<th><?php echo __('Laji', 'member-register'); ?></th>
-			<th
-			<?php
-			if ($memberid != null)
-			{
-				echo ' class="headerSortUp"';
-			}
-			?>
-			><?php echo __('Myöntö PVM', 'member-register'); ?></th>
-			<th><?php echo __('Myöntäjä', 'member-register'); ?></th>
-			<th><?php echo __('Paikka', 'member-register'); ?></th>
+			<th data-sort="int"><?php echo __('Vyöarvo', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Laji', 'member-register'); ?></th>
+			<th data-sort="int" class="sorting-desc"><?php echo __('Myöntö PVM', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Myöntäjä', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Paikka', 'member-register'); ?></th>
 			<?php
 			if ($allowremove)
 			{
@@ -185,26 +178,25 @@ function mr_show_grades($memberid = null)
 				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
 					'&memberid=' . $grade['memberid'] . '" title="' . $grade['firstname'] .
 					' ' . $grade['lastname'] . '">';
-				echo '<td>' . $url . $grade['lastname'] . '</a></td>';
-				echo '<td>' . $url . $grade['firstname'] . '</a></td>';
+				echo '<td data-sort-value="' . $grade['lastname'] . '">' . $url . $grade['lastname'] . '</a></td>';
+				echo '<td data-sort-value="' . $grade['firstname'] . '">' . $url . $grade['firstname'] . '</a></td>';
 			}
-			echo '<td>';
+			echo '<td data-sort-value="' . $grade['grade'] . '">';
 			if (array_key_exists($grade['grade'], $mr_grade_values))
 			{
 				echo $mr_grade_values[$grade['grade']];
 			}
 			echo '</td>';
 			echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
-			echo '<td>' . $grade['day'] . '</td>';
+			echo '<td data-sort-value="' . str_replace('-', '', $grade['day']) . '">' . $grade['day'] . '</td>';
 			echo '<td>' . $grade['nominator'] . '</td>';
 			echo '<td>' . $grade['location'] . '</td>';
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
+				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
 					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' .
-					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '"><img src="' .
-					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
+					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '">_</a></td>';
 			}
 			echo '</tr>';
 		}

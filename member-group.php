@@ -182,10 +182,10 @@ function mr_show_groups($memberid = null)
 		<table class="wp-list-table widefat sorter">
 			<thead>
 				<tr>
-					<th class="headerSortUp"><?php echo __('Title', 'member-register'); ?></th>
-					<th><?php echo __('Created by', 'member-register'); ?></th>
-					<th><?php echo __('Last modification', 'member-register'); ?></th>
-					<th><?php echo __('Jäseniä', 'member-register'); ?></th>
+					<th data-sort="string" class="sorting-asc"><?php echo __('Title', 'member-register'); ?></th>
+					<th data-sort="string"><?php echo __('Created by', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Last modification', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Jäseniä', 'member-register'); ?></th>
 
 					<?php
 					if ($allowremove)
@@ -200,9 +200,9 @@ function mr_show_groups($memberid = null)
 		foreach($res as $group)
 		{
 			echo '<tr id="group_' . $group['id'] . '">';
-			echo '<td><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
+			echo '<td data-sort-value="' . $group['title'] .'"><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
 				$group['id'] . '" title="Näytä ryhmän jäsenet">' . $group['title'] . '</a></td>';
-			echo '<td>';
+			echo '<td data-sort-value="' . $group['firstname'] . ' ' . $group['lastname'] . '">';
 			if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 			{
 				$url = '<a href="' . admin_url('admin.php?page=member-register-control') .
@@ -215,16 +215,15 @@ function mr_show_groups($memberid = null)
 				echo $group['firstname'] . ' ' . $group['lastname'];
 			}
 			echo '</td>';
-			echo '<td>' . date($mr_date_format, $group['modified']) . '</td>';
+			echo '<td data-sort-value="' . $group['modified'] . '">' . date($mr_date_format, $group['modified']) . '</td>';
 			echo '<td>' . $group['total'] . '</td>';
 
 			// set visible to 0, do not remove for real...
 			if ($allowremove)
 			{
-				echo '<td><a class="dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
+				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
 					'&amp;remove-group=' . $group['id'] . '" title="' . __('Poista ryhmä nimellä ' . $group['title'] .
-					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '"><img src="' .
-					plugins_url('/images/delete-1.png', __FILE__) . '" alt="Poista" /></a></td>';
+					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '">_</a></td>';
 			}
 			echo '</tr>';
 		}
