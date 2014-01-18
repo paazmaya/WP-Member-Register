@@ -18,7 +18,7 @@ msgstr ""
 
 #
 # File: member-payment.php, line: 395
-msgid "3 viikkoa tulevaisuudessa"
+msgid "3 weeks in the future"
 msgstr "3 viikkoa tulevaisuudessa"
 
 #
@@ -41,18 +41,18 @@ msgstr "Katuosoite tulisi olla täytettynä"
 #
 # File: member-forum.php, line: 214
 # File: member-forum.php, line: 383
-msgid "Aihe"
+msgid "The Topic"
 msgstr "Aihe"
 
 #
 # File: member-forum.php, line: 289
-msgid "Aika"
+msgid "Time"
 msgstr "Aika"
 
 #
 # File: member-member.php, line: 269
 # File: member-member.php, line: 676
-msgid "Aktiivinen"
+msgid "Active"
 msgstr "Aktiivinen"
 
 #
@@ -72,7 +72,7 @@ msgstr "Aktiivisia jäseniä"
 
 #
 # File: member-forum.php, line: 89
-msgid "Alempana lista aktiivista keskustelun aiheista"
+msgid "Below is a list of active topics of discussion"
 msgstr "Alempana lista aktiivista keskustelun aiheista"
 
 #
@@ -162,7 +162,7 @@ msgstr "Eräpäivä"
 
 #
 # File: member-member.php, line: 596
-msgid "Etunimi"
+msgid "First Name"
 msgstr "Etunimi"
 
 #
@@ -273,13 +273,13 @@ msgstr "Jäsenten tiedostot"
 
 #
 # File: member-files.php, line: 327
-msgid "Kansio"
+msgid "The Folder"
 msgstr "Kansio"
 
 #
 # File: member-forum.php, line: 88
 # File: member-register.php, line: 329
-msgid "Keskustelu"
+msgid "Discussion Of The"
 msgstr "Keskustelu"
 
 #
@@ -289,22 +289,22 @@ msgstr "Keskustelua aiheesta..."
 
 #
 # File: member-register.php, line: 81
-msgid "Keskusteluaiheiden luominen"
+msgid "Create a discussion topic"
 msgstr "Keskusteluaiheiden luominen"
 
 #
 # File: member-register.php, line: 82
-msgid "Keskustelujen ja keskusteluaiheiden poisto"
+msgid "The debates and discussion topics in the removal"
 msgstr "Keskustelujen ja keskusteluaiheiden poisto"
 
 #
 # File: member-register.php, line: 80
-msgid "Keskusteluun osallistuminen"
+msgid "Participate in a discussion"
 msgstr "Keskusteluun osallistuminen"
 
 #
 # File: member-member.php, line: 209
-msgid "Kirjautumisoikeudet"
+msgid "Login Access"
 msgstr "Kirjautumisoikeudet"
 
 #
@@ -319,7 +319,7 @@ msgstr "Käynnissä olevat keskustelun aiheet"
 
 #
 # File: member-grade.php, line: 154
-msgid "Laji"
+msgid "Type"
 msgstr "Laji"
 
 #
@@ -383,7 +383,7 @@ msgstr "Lisää viesti"
 
 #
 # File: member-forum.php, line: 140
-msgid "Luo uusi keskustelun aihe"
+msgid "Create a new discussion topic"
 msgstr "Luo uusi keskustelun aihe"
 
 #
@@ -400,7 +400,7 @@ msgstr "Luo uusi ryhmä, jossa on vähintään yksi jäsen"
 #
 # File: member-club.php, line: 128
 # File: member-club.php, line: 129
-msgid "Luo uusi seura"
+msgid "To create a new Club"
 msgstr "Luo uusi seura"
 
 #
@@ -424,7 +424,7 @@ msgstr "Päälaji tulisi olla valittuna"
 
 #
 # File: member-payment.php, line: 142
-msgid "Maksamattomat maksut"
+msgid "Unpaid fees"
 msgstr "Maksamattomat maksut"
 
 #
@@ -434,12 +434,12 @@ msgstr "Maksettu?"
 
 #
 # File: member-payment.php, line: 152
-msgid "Maksetut maksut"
+msgid "Fees paid to the"
 msgstr "Maksetut maksut"
 
 #
 # File: member-payment.php, line: 225
-msgid "Maksu PVM"
+msgid "The Payment DATE"
 msgstr "Maksu PVM"
 
 #
@@ -449,7 +449,7 @@ msgstr "Maksu merkitty maksetuksi tänään"
 
 #
 # File: member-payment.php, line: 117
-msgid "Maksu poistettu"
+msgid "The payment cleared"
 msgstr "Maksu poistettu"
 
 #
@@ -539,7 +539,7 @@ msgstr "Kansallisuus tulisi olla täytettynä"
 
 #
 # File: member-club.php, line: 206
-msgid "Nimi"
+msgid "In The Name Of The"
 msgstr "Nimi"
 
 #
@@ -567,7 +567,7 @@ msgstr ""
 #
 # File: member-grade.php, line: 164
 # File: member-grade.php, line: 340
-msgid "Paikka"
+msgid "In The Place Of The"
 msgstr "Paikka"
 
 #
@@ -583,7 +583,7 @@ msgstr "Puhelinnumero tulisi olla täytettynä"
 
 #
 # File: member-register.php, line: 201
-msgid "Piilota"
+msgid "Hide"
 msgstr "Piilota"
 
 #
@@ -593,7 +593,7 @@ msgstr "Piilota"
 # File: member-grade.php, line: 168
 # File: member-group.php, line: 191
 # File: member-payment.php, line: 232
-msgid "Poista"
+msgid "Delete"
 msgstr "Poista"
 
 #
@@ -608,7 +608,7 @@ msgstr "Poista ryhmä nimellä "
 
 #
 # File: member-club.php, line: 232
-msgid "Poista seura"
+msgid "Remove effect"
 msgstr "Poista seura"
 
 #
@@ -634,23 +634,23 @@ msgstr "Postitoimipaikka tulisi olla täytettynä"
 #
 # File: member-member.php, line: 223
 # File: member-member.php, line: 612
-msgid "Postinumero"
+msgid "Postal Code"
 msgstr "Postinumero"
 
 #
 # File: member-member.php, line: 608
-msgid "Postiosoite"
+msgid "Postal Address"
 msgstr "Postiosoite"
 
 #
 # File: member-member.php, line: 227
 # File: member-member.php, line: 616
-msgid "Postitoimipaikka"
+msgid "Post Office"
 msgstr "Postitoimipaikka"
 
 #
 # File: member-member.php, line: 620
-msgid "Puhelinnumero"
+msgid "The Telephone Number For The"
 msgstr "Puhelinnumero"
 
 #
@@ -685,7 +685,7 @@ msgstr "Rajoitteet"
 
 #
 # File: member-register.php, line: 89
-msgid "Ryhmien hallinta"
+msgid "Manage groups"
 msgstr "Ryhmien hallinta"
 
 #
@@ -713,12 +713,12 @@ msgstr "Ryhmät"
 # File: member-files.php, line: 331
 # File: member-member.php, line: 273
 # File: member-member.php, line: 694
-msgid "Seura"
+msgid "As A Result Of The"
 msgstr "Seura"
 
 #
 # File: member-club.php, line: 46
-msgid "Seura poistettu"
+msgid "The Club removed"
 msgstr "Seura poistettu"
 
 #
@@ -728,12 +728,12 @@ msgstr "Seuran tiedot päivitetty."
 
 #
 # File: member-register.php, line: 307
-msgid "Seurat"
+msgid "The Clubs"
 msgstr "Seurat"
 
 #
 # File: member-register.php, line: 87
-msgid "Seurojen hallinta"
+msgid "The clubs ' management"
 msgstr "Seurojen hallinta"
 
 #
@@ -764,12 +764,12 @@ msgstr "Tämä käyttäjä voidaan poistaa painamalla tästä"
 
 #
 # File: member-register.php, line: 88
-msgid "Tiedostojen hallinta"
+msgid "File management"
 msgstr "Tiedostojen hallinta"
 
 #
 # File: member-register.php, line: 339
-msgid "Tiedostot"
+msgid "Files"
 msgstr "Tiedostot"
 
 #
@@ -791,7 +791,7 @@ msgstr "Tyyppi"
 #
 # File: member-grade.php, line: 333
 # File: member-payment.php, line: 218
-msgid "Tyyppi"
+msgid "Type"
 msgstr "Tyyppi"
 
 #
@@ -827,7 +827,7 @@ msgstr "Uusi jäsen lisätty, nimellä:"
 #
 # File: member-register.php, line: 289
 # File: member-register.php, line: 290
-msgid "Uusi maksu"
+msgid "New payment"
 msgstr "Uusi maksu"
 
 #
@@ -882,7 +882,7 @@ msgstr "Valitse käyttäjän oikeudet"
 
 #
 # File: member-files.php, line: 323
-msgid "Valitse laji"
+msgid "From the type area, select"
 msgstr "Valitse laji"
 
 #
@@ -897,12 +897,12 @@ msgstr "Valitse ryhmä"
 
 #
 # File: member-club.php, line: 232
-msgid "Valitse seura"
+msgid "Select a Club"
 msgstr "Valitse seura"
 
 #
 # File: member-files.php, line: 323
-msgid "Valitse tiedosto"
+msgid "Select the file in the"
 msgstr "Valitse tiedosto"
 
 #
@@ -933,7 +933,7 @@ msgstr "Viestejä yhteensä"
 #
 # File: member-forum.php, line: 291
 # File: member-forum.php, line: 411
-msgid "Viesti"
+msgid "A Message"
 msgstr "Viesti"
 
 #
@@ -943,17 +943,17 @@ msgstr "Viimeisimmän viestin kirjoitti"
 
 #
 # File: member-forum.php, line: 215
-msgid "Viimeisin viesti"
+msgid "The latest post"
 msgstr "Viimeisin viesti"
 
 #
 # File: member-member.php, line: 265
-msgid "Viimeksi vieraillut sivuilla"
+msgid "Last visited pages"
 msgstr "Viimeksi vieraillut sivuilla"
 
 #
 # File: member-payment.php, line: 220
-msgid "Viite"
+msgid "Reference"
 msgstr "Viite"
 
 #
@@ -967,7 +967,7 @@ msgstr ""
 
 #
 # File: member-payment.php, line: 228
-msgid "Voimassaolo"
+msgid "The Period Of Validity Of The"
 msgstr "Voimassaolo"
 
 #
@@ -1034,7 +1034,7 @@ msgstr "Sinulla ei ole riittäviä oikeuksia tämän sivun katseluun."
 #
 # File: member-member.php, line: 247
 # File: member-member.php, line: 651
-msgid "Yuishinkai passinumero"
+msgid "Beginners first learn Kumite through passport number"
 msgstr "Yuishinkai passinumero"
 
 #
@@ -1044,22 +1044,22 @@ msgstr "Postinumero tulisi olla täytettynä"
 
 #
 # File: member-prf.php, line: 106
-msgid "ei pakollinen"
+msgid "not mandatory"
 msgstr "ei pakollinen"
 
 #
 # File: member-member.php, line: 227
-msgid "ja maa jos ei Suomi"
+msgid "and the country if not Finland"
 msgstr "ja maa jos ei Suomi"
 
 #
 # File: member-forum.php, line: 180
-msgid "joista viimeisin"
+msgid "the most recent of"
 msgstr "joista viimeisin"
 
 #
 # File: member-member.php, line: 527
-msgid "jos on jo olemassa"
+msgid "If there is already a"
 msgstr "jos on jo olemassa"
 
 #
@@ -1069,12 +1069,12 @@ msgstr "kuka myönsi"
 
 #
 # File: member-payment.php, line: 401
-msgid "kuluvan vuoden loppuun"
+msgid "the end of the current year"
 msgstr "kuluvan vuoden loppuun"
 
 #
 # File: member-grade.php, line: 333
-msgid "kummassa lajissa"
+msgid "in either type of"
 msgstr "kummassa lajissa"
 
 #
@@ -1115,7 +1115,7 @@ msgstr "missä seurassa pääsääntöisesti harjoittelee"
 #
 # File: member-group.php, line: 370
 # File: member-payment.php, line: 375
-msgid "monivalinta"
+msgid "multiple choice"
 msgstr "monivalinta"
 
 #
@@ -1138,7 +1138,7 @@ msgstr "ei"
 # File: member-club.php, line: 163
 # File: member-club.php, line: 167
 # File: member-forum.php, line: 383
-msgid "otsikko"
+msgid "the title of"
 msgstr "otsikko"
 
 #
@@ -1157,7 +1157,7 @@ msgstr "päivämäärällä"
 # File: member-register.php, line: 35
 # File: member-register.php, line: 37
 # File: member-register.php, line: 39
-msgid "raita"
+msgid "stripe"
 msgstr "raita"
 
 #
@@ -1167,7 +1167,7 @@ msgstr "rajoita vain tiettyyn ryhmään kuuluville"
 
 #
 # File: member-files.php, line: 331
-msgid "rajoita vain tiettyyn seuraan kuuluville"
+msgid "without prejudice to the specific team members"
 msgstr "rajoita vain tiettyyn seuraan kuuluville"
 
 #
@@ -1187,13 +1187,13 @@ msgstr "rekisteröity tähän lajiin"
 
 #
 # File: member-member.php, line: 269
-msgid "saako kirjautua sivuille"
+msgid "whether to log on to the website"
 msgstr "saako kirjautua sivuille"
 
 #
 # File: member-member.php, line: 247
 # File: member-member.php, line: 651
-msgid "sinikantinen passi"
+msgid "sinikantinen Passport"
 msgstr "sinikantinen passi"
 
 #
@@ -1208,12 +1208,12 @@ msgstr "valitse useampi painamalla Ctrl-näppäintä"
 
 #
 # File: member-forum.php, line: 411
-msgid "vapaasti"
+msgid "feel free to"
 msgstr "vapaasti"
 
 #
 # File: member-member.php, line: 261
-msgid "vapaasti kirjoiteltu"
+msgid "free Qatar"
 msgstr "vapaasti kirjoiteltu"
 
 #

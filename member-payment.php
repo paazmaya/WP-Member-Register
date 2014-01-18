@@ -116,7 +116,7 @@ function mr_payment_list()
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Maksu poistettu', 'member-register') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('The payment cleared', 'member-register') . ' (' . $id . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -141,7 +141,7 @@ function mr_payment_list()
 function mr_show_payments_lists($memberid)
 {
 	?>
-	<h3><?php echo __('Maksamattomat maksut', 'member-register'); ?></h3>
+	<h3><?php echo __('Unpaid fees', 'member-register'); ?></h3>
 	<?php
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
@@ -151,7 +151,7 @@ function mr_show_payments_lists($memberid)
 	mr_show_payments($memberid, true);
 	?>
 	<hr />
-	<h3><?php echo __('Maksetut maksut', 'member-register'); ?></h3>
+	<h3><?php echo __('Fees paid to the', 'member-register'); ?></h3>
 	<?php
 	mr_show_payments($memberid, false);
 }
@@ -217,21 +217,21 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 						<?php
 					}
 					?>
-					<th data-sort="string-ins"><?php echo __('Tyyppi', 'member-register'); ?></th>
+					<th data-sort="string-ins"><?php echo __('Type', 'member-register'); ?></th>
 					<th data-sort="float"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
-					<th data-sort="int"><?php echo __('Viite', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Reference', 'member-register'); ?></th>
 					<th data-sort="int" class="sorting-desc"><?php echo __('Eräpäivä', 'member-register'); ?></th>
 					<?php
 					if (!$isUnpaidView)
 					{
-						echo '<th data-sort="int">' . __('Maksu PVM', 'member-register') . '</th>';
+						echo '<th data-sort="int">' . __('The Payment DATE', 'member-register') . '</th>';
 					}
 					?>
-					<th data-sort="int"><?php echo __('Voimassaolo', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('The Period Of Validity Of The', 'member-register'); ?></th>
 					<?php
 					if ($allowremove)
 					{
-						echo '<th>' . __('Poista', 'member-register') . '</th>';
+						echo '<th>' . __('Delete', 'member-register') . '</th>';
 					}
 					?>
 				</tr>
@@ -373,7 +373,7 @@ function mr_new_payment_form($members)
 		<input type="hidden" name="mr_submit_hidden_payment" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
 				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php
@@ -393,13 +393,13 @@ function mr_new_payment_form($members)
 				<td><input type="number" name="amount" value="" class="required" required="required" list="amounts" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('3 viikkoa tulevaisuudessa', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('3 weeks in the future', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="deadline" class="pickday required" required="required" value="<?php
 				echo date('Y-m-d', time() + 60*60*24*21);
 				?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('kuluvan vuoden loppuun', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('the end of the current year', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="validuntil" class="pickday" required="required" value="<?php
 				echo date('Y') . '-12-31';
 				?>" /></td>

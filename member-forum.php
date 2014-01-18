@@ -73,8 +73,8 @@ function mr_forum_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Keskustelu', 'member-register') . '</h2>';
-		echo '<p>' . __('Alempana lista aktiivista keskustelun aiheista', 'member-register') . '</p>';
+		echo '<h2>' . __('Discussion Of The', 'member-register') . '</h2>';
+		echo '<p>' . __('Below is a list of active topics of discussion', 'member-register') . '</p>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_topic';
@@ -125,7 +125,7 @@ function mr_forum_list()
 		// New topic form
 		if (mr_has_permission(MR_ACCESS_FORUM_CREATE))
 		{
-			echo '<h3>' . __('Luo uusi keskustelun aihe', 'member-register') . '</h3>';
+			echo '<h3>' . __('Create a new discussion topic', 'member-register') . '</h3>';
 			mr_show_form_topic();
 			echo '<hr />';
 		}
@@ -165,7 +165,7 @@ function mr_show_info_topic($topic)
 	echo __('Viestejä yhteensä', 'member-register') . ' ' . $res['total'];
 	if ($res['total'] > 0)
 	{
-		echo ', ' . __('joista viimeisin', 'member-register') . ' ' . date($mr_date_format, $res['lastpost']);
+		echo ', ' . __('the most recent of', 'member-register') . ' ' . date($mr_date_format, $res['lastpost']);
 	}
 	echo '.</p>';
 }
@@ -199,14 +199,14 @@ function mr_show_list_topics()
 	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
-		<th data-sort="string"><?php echo __('Aihe', 'member-register'); ?></th>
-		<th data-sort="int" class="sorting-desc"><?php echo __('Viimeisin viesti', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('The Topic', 'member-register'); ?></th>
+		<th data-sort="int" class="sorting-desc"><?php echo __('The latest post', 'member-register'); ?></th>
 		<th data-sort="string"><?php echo __('Viimeisimmän viestin kirjoitti', 'member-register'); ?></th>
 		<th data-sort="int"><?php echo __('Viestejä', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<th class="w4em" filter="false">' . __('Poista', 'member-register') . '</th>';
+			echo '<th class="w4em" filter="false">' . __('Delete', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -274,13 +274,13 @@ function mr_show_posts_for_topic($topic)
 	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
-		<th data-sort="int" class="sorting-desc"><?php echo __('Aika', 'member-register'); ?></th>
+		<th data-sort="int" class="sorting-desc"><?php echo __('Time', 'member-register'); ?></th>
 		<th data-sort="string"><?php echo __('Jäsen', 'member-register'); ?></th>
-		<th data-sort="string"><?php echo __('Viesti', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('A Message', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<th class="w4em" filter="false">' . __('Poista', 'member-register') . '</th>';
+			echo '<th class="w4em" filter="false">' . __('Delete', 'member-register') . '</th>';
 		}
 		?>
 	</tr>
@@ -402,7 +402,7 @@ function mr_show_form_topic()
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Aihe', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
+				<th><?php echo __('The Topic', 'member-register'); ?> <span class="description">(<?php echo __('the title of', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" required="required" value="" /></td>
 			</tr>
 		</table>
@@ -430,7 +430,7 @@ function mr_show_form_post($topic)
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Viesti', 'member-register'); ?> <span class="description">(<?php echo __('vapaasti', 'member-register'); ?>)</span></th>
+				<th><?php echo __('A Message', 'member-register'); ?> <span class="description">(<?php echo __('feel free to', 'member-register'); ?>)</span></th>
 				<td><textarea name="content" class="required" required="required"></textarea></td>
 			</tr>
 		</table>

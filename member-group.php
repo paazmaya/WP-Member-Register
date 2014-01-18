@@ -190,7 +190,7 @@ function mr_show_groups($memberid = null)
 					<?php
 					if ($allowremove)
 					{
-						echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
+						echo '<th class="w8em">' . __('Delete', 'member-register') . '</th>';
 					}
 					?>
 				</tr>
@@ -368,7 +368,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 				<td><input type="text" name="title" class="required" required="required" value="<?php echo $title; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('monivalinta', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
 				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
 				<option value=""></option>
 				<?php

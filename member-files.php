@@ -313,16 +313,16 @@ function mr_files_list()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
-					<th><?php echo __('Valitse tiedosto', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
+					<th><?php echo __('Select the file in the', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Kansio', 'member-register'); ?><span class="description">(<?php echo __('parempaa järjestyksenpitoa varten, yksi sana', 'member-register'); ?>)</span></th>
+					<th><?php echo __('The Folder', 'member-register'); ?><span class="description">(<?php echo __('parempaa järjestyksenpitoa varten, yksi sana', 'member-register'); ?>)</span></th>
 					<td><input type="text" name="directory" value="" list="directories" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Seura', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tiettyyn seuraan kuuluville', 'member-register'); ?>)</span></th>
-					<td><select name="club" data-placeholder="<?php echo __('Valitse seura', 'member-register'); ?>">
+					<th><?php echo __('As A Result Of The', 'member-register'); ?><span class="description">(<?php echo __('without prejudice to the specific team members', 'member-register'); ?>)</span></th>
+					<td><select name="club" data-placeholder="<?php echo __('Select a Club', 'member-register'); ?>">
 							<option value=""></option>
 	<?php
 	$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
@@ -347,7 +347,7 @@ function mr_files_list()
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Päälaji', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tämän lajin päälajikseen valinneille', 'member-register'); ?>)</span></th>
-					<td><select name="art" data-placeholder="<?php echo __('Valitse laji', 'member-register'); ?>">
+					<td><select name="art" data-placeholder="<?php echo __('From the type area, select', 'member-register'); ?>">
 							<option value=""></option>
 							<?php
 							foreach ($mr_martial_arts as $key => $val)

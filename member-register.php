@@ -29,15 +29,15 @@ $mr_db_version = '11';
 global $mr_grade_values;
 $mr_grade_values = array(
     '5K' => '5 kyu',
-    '5h' => '5 kyu + ' . __('raita', 'member-register'),
+    '5h' => '5 kyu + ' . __('stripe', 'member-register'),
     '4K' => '4 kyu',
-    '4h' => '4 kyu + ' . __('raita', 'member-register'),
+    '4h' => '4 kyu + ' . __('stripe', 'member-register'),
     '3K' => '3 kyu',
-    '3h' => '3 kyu + ' . __('raita', 'member-register'),
+    '3h' => '3 kyu + ' . __('stripe', 'member-register'),
     '2K' => '2 kyu',
-    '2h' => '2 kyu + ' . __('raita', 'member-register'),
+    '2h' => '2 kyu + ' . __('stripe', 'member-register'),
     '1K' => '1 kyu',
-    '1h' => '1 kyu + ' . __('raita', 'member-register'),
+    '1h' => '1 kyu + ' . __('stripe', 'member-register'),
     '1D' => '1 dan',
     '2D' => '2 dan',
     '3D' => '3 dan',
@@ -78,16 +78,16 @@ global $mr_access_type;
 $mr_access_type = array(
     1    => __('Omien tietojen katselu ja päivitys', 'member-register'),
     2    => __('Tiedostot jäsenille', 'member-register'),
-    4    => __('Keskusteluun osallistuminen', 'member-register'),
-    8    => __('Keskusteluaiheiden luominen', 'member-register'),
-    16   => __('Keskustelujen ja keskusteluaiheiden poisto', 'member-register'),
+    4    => __('Participate in a discussion', 'member-register'),
+    8    => __('Create a discussion topic', 'member-register'),
+    16   => __('The debates and discussion topics in the removal', 'member-register'),
     32   => __('Jäsenten listaus ja tietojen näkeminen', 'member-register'),
     64   => __('Jäsenten lisääminen, muokkaus ja poisto', 'member-register'),
     128  => __('Vyöarvojen hallinta', 'member-register'),
     256  => __('Jäsenmaksujen hallinta', 'member-register'),
-    512  => __('Seurojen hallinta', 'member-register'),
-    1024 => __('Tiedostojen hallinta', 'member-register'),
-    2048 => __('Ryhmien hallinta', 'member-register')
+    512  => __('The clubs ' management', 'member-register'),
+    1024 => __('File management', 'member-register'),
+    2048 => __('Manage groups', 'member-register')
 );
 
 
@@ -209,7 +209,7 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
-        var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Piilota', 'member-register'); ?>" /></a>';
+        var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Hide', 'member-register'); ?>" /></a>';
 
         jQuery(document).ready(function () {
             jQuery('table.sorter').stupidtable();
@@ -303,8 +303,8 @@ function member_register_admin_menu()
 
     if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
     {
-        add_submenu_page('member-register-control', __('Uusi maksu', 'member-register'),
-            __('Uusi maksu', 'member-register'), 'read', 'member-payment-new', 'mr_payment_new');
+        add_submenu_page('member-register-control', __('New payment', 'member-register'),
+            __('New payment', 'member-register'), 'read', 'member-payment-new', 'mr_payment_new');
     }
 
     if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
@@ -321,7 +321,7 @@ function member_register_admin_menu()
 
     if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
     {
-        add_submenu_page('member-register-control', __('Seurat', 'member-register'),
+        add_submenu_page('member-register-control', __('The Clubs', 'member-register'),
             __('Jäsenseurat', 'member-register'), 'read', 'member-club-list', 'mr_club_list');
     }
 
@@ -343,7 +343,7 @@ function member_register_forum_menu()
     if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
     {
         // http://codex.wordpress.org/Adding_Administration_Menus
-        add_menu_page(__('Keskustelu', 'member-register'), __('Keskustelu', 'member-register'), 'read', 'member-forum',
+        add_menu_page(__('Discussion Of The', 'member-register'), __('Discussion Of The', 'member-register'), 'read', 'member-forum',
             'mr_forum_list', 'dashicons-format-chat'); // $position );
     }
 }
@@ -353,7 +353,7 @@ function member_register_files_menu()
     if (current_user_can('read') && mr_has_permission(MR_ACCESS_FILES_VIEW))
     {
         // http://codex.wordpress.org/Adding_Administration_Menus
-        add_menu_page(__('Tiedostot', 'member-register'), __('Tiedostot', 'member-register'), 'read', 'member-files',
+        add_menu_page(__('Files', 'member-register'), __('Files', 'member-register'), 'read', 'member-files',
             'mr_files_list', 'dashicons-portfolio'); // $position );
 
         if (mr_has_permission(MR_ACCESS_FILES_MANAGE))

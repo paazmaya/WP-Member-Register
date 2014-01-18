@@ -30,7 +30,7 @@ function mr_prf_register_form ()
 
 	?>
 	<p>
-		<label><?php echo __('Etunimi', 'member-register'); ?><br />
+		<label><?php echo __('First Name', 'member-register'); ?><br />
 			<input type="text" name="firstname" class="required" required="required" value="<?php echo $values['firstname']; ?>" />
 		</label>
 	</p>
@@ -46,22 +46,22 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Postiosoite', 'member-register'); ?><br />
+		<label><?php echo __('Postal Address', 'member-register'); ?><br />
 			<input type="text" name="address" class="required" required="required" value="<?php echo $values['address']; ?>" />
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Postinumero', 'member-register'); ?><br />
+		<label><?php echo __('Postal Code', 'member-register'); ?><br />
 			<input type="text" name="zipcode" class="required" required="required" value="<?php echo $values['zipcode']; ?>" list="zipcodes" />
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Postitoimipaikka', 'member-register'); ?><br />
+		<label><?php echo __('Post Office', 'member-register'); ?><br />
 			<input type="text" name="postal" class="required" required="required" value="<?php echo $values['postal']; ?>" list="postals" />
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Puhelinnumero', 'member-register'); ?><br />
+		<label><?php echo __('The Telephone Number For The', 'member-register'); ?><br />
 			<input type="text" name="phone" class="required" required="required" value="<?php echo $values['phone']; ?>" />
 		</label>
 	</p>
@@ -104,7 +104,7 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Seura', 'member-register'); ?> <span class="description">(<?php echo __('ei pakollinen', 'member-register'); ?>)</span><br />
+		<label><?php echo __('As A Result Of The', 'member-register'); ?> <span class="description">(<?php echo __('not mandatory', 'member-register'); ?>)</span><br />
 			<select name="club" data-placeholder="Valitse seura">
 				<option value=""></option>
 				<?php

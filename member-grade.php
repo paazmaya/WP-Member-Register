@@ -156,14 +156,14 @@ function mr_show_grades($memberid = null)
 			}
 			?>
 			<th data-sort="int"><?php echo __('Vyöarvo', 'member-register'); ?></th>
-			<th data-sort="string"><?php echo __('Laji', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Type', 'member-register'); ?></th>
 			<th data-sort="int" class="sorting-desc"><?php echo __('Myöntö PVM', 'member-register'); ?></th>
 			<th data-sort="string"><?php echo __('Myöntäjä', 'member-register'); ?></th>
-			<th data-sort="string"><?php echo __('Paikka', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('In The Place Of The', 'member-register'); ?></th>
 			<?php
 			if ($allowremove)
 			{
-				echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
+				echo '<th class="w8em">' . __('Delete', 'member-register') . '</th>';
 			}
 			?>
 		</tr>
@@ -329,14 +329,14 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Tyyppi', 'member-register'); ?> <span class="description">(<?php echo __('kummassa lajissa', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('in either type of', 'member-register'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
 					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Paikka', 'member-register'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi', 'member-register'); ?>)</span></th>
+				<th><?php echo __('In The Place Of The', 'member-register'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="location" class="required" required="required" value="" list="locations" /></td>
 			</tr>
 			<tr class="form-field">

@@ -40,7 +40,7 @@ function mr_club_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Seura poistettu', 'member-register') . ' (' . $_GET['removeclub'] . ')</strong>';
+			echo '<strong>' . __('The Club removed', 'member-register') . ' (' . $_GET['removeclub'] . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -123,8 +123,8 @@ function mr_club_list()
 		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-club-list') . '&createclub"' .
-			' title="' . __('Luo uusi seura', 'member-register') . '" class="button-primary">' .
-			__('Luo uusi seura', 'member-register') . '</a></p>';
+			' title="' . __('To create a new Club', 'member-register') . '" class="button-primary">' .
+			__('To create a new Club', 'member-register') . '</a></p>';
 
 			mr_show_clubs();
 		}
@@ -157,11 +157,11 @@ function mr_club_form($data = null)
 		<input type="hidden" name="mr_submit_hidden_club" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Name', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Name', 'member-register'); ?> <span class="description">(<?php echo __('the title of', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" required="required" value="<?php echo $values['title']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Address', 'member-register'); ?> <span class="description">(<?php echo __('otsikko', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Address', 'member-register'); ?> <span class="description">(<?php echo __('the title of', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="address" class="required" required="required" value="<?php echo $values['address']; ?>" /></td>
 			</tr>
 		</table>
@@ -199,13 +199,13 @@ function mr_show_clubs()
 	<table class="wp-list-table widefat sorter">
 		<thead>
 			<tr>
-				<th data-sort="string" class="sorting-asc"><?php echo __('Nimi', 'member-register'); ?></th>
+				<th data-sort="string" class="sorting-asc"><?php echo __('In The Name Of The', 'member-register'); ?></th>
 				<th data-sort="string"><?php echo __('Address', 'member-register'); ?></th>
 				<th data-sort="int"><?php echo __('Aktiivisia jäseniä', 'member-register'); ?></th>
 				<?php
 				if ($allowremove)
 				{
-					echo '<th class="w8em">' . __('Poista', 'member-register') . '</th>';
+					echo '<th class="w8em">' . __('Delete', 'member-register') . '</th>';
 				}
 				?>
 			</tr>
@@ -225,7 +225,7 @@ function mr_show_clubs()
 				if ($allowremove)
 				{
 					echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
-					'&amp;removeclub=' . $club['id'] . '" title="' . __('Poista seura', 'member-register') . ': ' .
+					'&amp;removeclub=' . $club['id'] . '" title="' . __('Remove effect', 'member-register') . ': ' .
 					$club['title'] . '">_</a></td>';
 				}
 				echo '</tr>';
