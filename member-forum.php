@@ -24,7 +24,7 @@ function mr_forum_list()
 
 	if (isset($_GET['topic']) && is_numeric($_GET['topic']))
 	{
-		echo '<h2>' . __('Keskustelua aiheesta...', 'member-register') . '</h2>';
+		echo '<h2>' . __('Discussion about topic...', 'member-register') . '</h2>';
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_post';
@@ -34,7 +34,7 @@ function mr_forum_list()
 			if (mr_insert_new_post($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi viesti keskusteluun lisätty', 'member-register') . '</strong>';
+				echo '<strong>' . __('New message was added', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -50,7 +50,7 @@ function mr_forum_list()
 			if ($update !== false)
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Valittu viesti poistettu.', 'member-register') . '</strong>';
+				echo '<strong>' . __('Message was removed.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -64,7 +64,7 @@ function mr_forum_list()
 		// New post form to the given topic
 		if (mr_has_permission(MR_ACCESS_CONVERSATION))
 		{
-			echo '<h3>' . __('Lisää viesti', 'member-register') . '</h3>';
+			echo '<h3>' . __('Add message', 'member-register') . '</h3>';
 			mr_show_form_post($_GET['topic']);
 			echo '<hr />';
 		}
@@ -73,7 +73,7 @@ function mr_forum_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Discussion Of The', 'member-register') . '</h2>';
+		echo '<h2>' . __('Discussion', 'member-register') . '</h2>';
 		echo '<p>' . __('Below is a list of active topics of discussion', 'member-register') . '</p>';
 
 		// Check for possible insert
@@ -83,7 +83,7 @@ function mr_forum_list()
 			if (mr_insert_new_topic($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi aihe lisätty. Nyt voit aloittaa sen piirissä keskustelun.', 'member-register') . '</strong>';
+				echo '<strong>' . __('New topic was added. Now you can start conversation.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -113,7 +113,7 @@ function mr_forum_list()
 			if ($update)
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Valittu aihe poistettu.', 'member-register') . '</strong>';
+				echo '<strong>' . __('Topic removed.', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -129,7 +129,7 @@ function mr_forum_list()
 			mr_show_form_topic();
 			echo '<hr />';
 		}
-		echo '<h3>' . __('Käynnissä olevat keskustelun aiheet', 'member-register') . '</h3>';
+		echo '<h3>' . __('Topics of the active discussions', 'member-register') . '</h3>';
 
 		mr_show_list_topics($userdata->mr_access);
 	}
@@ -160,9 +160,9 @@ function mr_show_info_topic($topic)
 	$res = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h3>' . $res['title'] . '</h3>';
-	echo '<p>' . __('Tämän aiheen loi', 'member-register') . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
-		', ' . __('päivämäärällä', 'member-register') . ' ' . date('Y-m-d', $res['created']) . '.<br />';
-	echo __('Viestejä yhteensä', 'member-register') . ' ' . $res['total'];
+	echo '<p>' . __('This topic was created by', 'member-register') . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
+		', ' . __('at date', 'member-register') . ' ' . date('Y-m-d', $res['created']) . '.<br />';
+	echo __('Total of messages', 'member-register') . ' ' . $res['total'];
 	if ($res['total'] > 0)
 	{
 		echo ', ' . __('the most recent of', 'member-register') . ' ' . date($mr_date_format, $res['lastpost']);
@@ -199,10 +199,10 @@ function mr_show_list_topics()
 	<table class="wp-list-table widefat sorter">
 	<thead>
 	<tr>
-		<th data-sort="string"><?php echo __('The Topic', 'member-register'); ?></th>
-		<th data-sort="int" class="sorting-desc"><?php echo __('The latest post', 'member-register'); ?></th>
-		<th data-sort="string"><?php echo __('Viimeisimmän viestin kirjoitti', 'member-register'); ?></th>
-		<th data-sort="int"><?php echo __('Viestejä', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Topic', 'member-register'); ?></th>
+		<th data-sort="int" class="sorting-desc"><?php echo __('Latest post', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Latest message was written by', 'member-register'); ?></th>
+		<th data-sort="int"><?php echo __('Messages', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
@@ -233,7 +233,7 @@ function mr_show_list_topics()
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') .
-				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Poista tämä aihe, otsikolla', 'member-register') . ': ' .
+				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Remove this topic', 'member-register') . ': ' .
 				$topic['title'] . '">_</a></td>';
 			}
 			echo '</tr>';
@@ -275,8 +275,8 @@ function mr_show_posts_for_topic($topic)
 	<thead>
 	<tr>
 		<th data-sort="int" class="sorting-desc"><?php echo __('Time', 'member-register'); ?></th>
-		<th data-sort="string"><?php echo __('Jäsen', 'member-register'); ?></th>
-		<th data-sort="string"><?php echo __('A Message', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Member', 'member-register'); ?></th>
+		<th data-sort="string"><?php echo __('Message', 'member-register'); ?></th>
 		<?php
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
@@ -296,8 +296,7 @@ function mr_show_posts_for_topic($topic)
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
 			echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
-				'&amp;remove-post=' . $post['id'] . '" title="' . __('Poista tämä viesti joka on kirjoitettu', 'member-register') . ' ' .
-				date($mr_date_format, $post['created']) . '">_</a></td>';
+				'&amp;remove-post=' . $post['id'] . '" title="' . __('Remove this message', 'member-register') . '">_</a></td>';
 		}
 		echo '</tr>';
 	}
@@ -307,15 +306,6 @@ function mr_show_posts_for_topic($topic)
 	<?php
 
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -402,7 +392,7 @@ function mr_show_form_topic()
 		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('The Topic', 'member-register'); ?> <span class="description">(<?php echo __('the title of', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Topic', 'member-register'); ?> <span class="description">(<?php echo __('title', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" required="required" value="" /></td>
 			</tr>
 		</table>
@@ -430,7 +420,7 @@ function mr_show_form_post($topic)
 		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('A Message', 'member-register'); ?> <span class="description">(<?php echo __('feel free to', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Message', 'member-register'); ?> <span class="description">(<?php echo __('feel free to write', 'member-register'); ?>)</span></th>
 				<td><textarea name="content" class="required" required="required"></textarea></td>
 			</tr>
 		</table>

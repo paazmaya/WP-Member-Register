@@ -51,6 +51,10 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
+= 0.11.5 =
+* Released 19th January 2014
+* Translations fixed
+
 = 0.11.4 =
 * Released 5th January 2014
 * Table styling to match general WP Admin styles

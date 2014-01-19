@@ -261,12 +261,12 @@ msgstr "Jäsenseurat"
 
 #
 # File: member-register.php, line: 83
-msgid "Jäsenten listaus ja tietojen näkeminen"
+msgid "Members listing and viewing their infomation"
 msgstr "Jäsenten listaus ja tietojen näkeminen"
 
 #
 # File: member-register.php, line: 84
-msgid "Jäsenten lisääminen, muokkaus ja poisto"
+msgid "Adding, editing and removal of members"
 msgstr "Jäsenten lisääminen, muokkaus ja poisto"
 
 #
@@ -557,7 +557,7 @@ msgstr "Ei löytynyt."
 
 #
 # File: member-register.php, line: 78
-msgid "Omien tietojen katselu ja päivitys"
+msgid "Own information view and update"
 msgstr "Omien tietojen katselu ja päivitys"
 
 #
@@ -777,7 +777,7 @@ msgstr "Tiedostot"
 
 #
 # File: member-register.php, line: 79
-msgid "Tiedostot jäsenille"
+msgid "Files for members"
 msgstr "Tiedostot jäsenille"
 
 #
@@ -982,20 +982,20 @@ msgstr "Vyöarvo"
 
 #
 # File: member-grade.php, line: 83
-msgid "Vyöarvo poistettu"
-msgstr "Vyöarvo poistettu"
+msgid "Grade removed"
+msgstr "Grade removed"
 
 #
 # File: member-register.php, line: 85
-msgid "Vyöarvojen hallinta"
-msgstr "Vyöarvojen hallinta"
+msgid "Grade management"
+msgstr "Grade management"
 
 #
 # File: member-grade.php, line: 93
 # File: member-member.php, line: 313
 # File: member-register.php, line: 295
 # File: member-register.php, line: 296
-msgid "Vyöarvot"
+msgid "Grades"
 msgstr "Vyöarvot"
 
 #

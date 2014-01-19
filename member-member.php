@@ -116,7 +116,7 @@ function mr_show_members($filters = null)
 		if ($member['user_login'] != '' && $member['user_login'] != null && is_numeric($member['wpuserid']))
 		{
 			echo '<a href="' . admin_url('user-edit.php?user_id=') . $member['wpuserid'] .
-				'" title="' . __('Muokkaa WP käyttäjää', 'member-register') . '">' . $member['user_login'] . '</a>';
+				'" title="' . __('Modify WordPress user', 'member-register') . '">' . $member['user_login'] . '</a>';
 		}
 		echo  '</td>';
 
@@ -166,7 +166,7 @@ function mr_show_member_info($id)
         if (mr_update_member_info($_POST))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Jäsenen tiedot päivitetty', 'member-register') . '</strong>';
+			echo '<strong>' . __('Member information updated', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -212,7 +212,7 @@ function mr_show_member_info($id)
 	else
 	{
 		?>
-		<h3><?php echo __('Henkilötiedot', 'member-register'); ?></h3>
+		<h3><?php echo __('Personal information', 'member-register'); ?></h3>
 		<table class="wp-list-table widefat fixed pages users">
 		<tbody>
 			<tr>
@@ -224,7 +224,7 @@ function mr_show_member_info($id)
 				<td><?php echo $person['firstname']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Login Access', 'member-register'); ?> <span class="description">(<?php echo __('lista asioista joita käyttäjä voi tehdä', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Login Access', 'member-register'); ?> <span class="description">(<?php echo __('list of actions the member can make on this web site', 'member-register'); ?>)</span></th>
 				<td><?php
 					list_user_rights($person['access']);
 				?></td>
@@ -251,7 +251,7 @@ function mr_show_member_info($id)
 			</tr>
 			<tr>
 				<th><?php echo __('E-mail', 'member-register'); ?></th>
-				<td><a href="mailto:<?php echo $person['email']; ?>" title="<?php echo __('Lähetä sähköpostia', 'member-register'); ?>"><?php echo $person['email']; ?></a></td>
+				<td><a href="mailto:<?php echo $person['email']; ?>" title="<?php echo __('send email', 'member-register'); ?>"><?php echo $person['email']; ?></a></td>
 			</tr>
 			<tr>
 				<th><?php echo __('Nationality', 'member-register'); ?></th>
@@ -262,11 +262,11 @@ function mr_show_member_info($id)
 				<td><?php echo $person['joindate']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Beginners first learn Kumite through passport number', 'member-register'); ?> <span class="description">(<?php echo __('sinikantinen Passport', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Association passport number', 'member-register'); ?> <span class="description">(<?php echo __('blue cover passport', 'member-register'); ?>)</span></th>
 				<td><?php echo $person['passnro']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Main martial art', 'member-register'); ?> <span class="description">(<?php echo __('rekisteröity tähän lajiin', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Main martial art', 'member-register'); ?> <span class="description">(<?php echo __('registered this as the main martial art', 'member-register'); ?>)</span></th>
 				<td><?php
 					if (isset($person['martial']) && $person['martial'] != '' && $mr_martial_arts[$person['martial']])
 					{
@@ -276,7 +276,7 @@ function mr_show_member_info($id)
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo __('Lisätietoja', 'member-register'); ?> <span class="description">(<?php echo __('free Qatar', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Additional information', 'member-register'); ?> <span class="description">(<?php echo __('freely written', 'member-register'); ?>)</span></th>
 				<td><?php echo $person['notes']; ?></td>
 			</tr>
 			<tr>
@@ -284,11 +284,11 @@ function mr_show_member_info($id)
 				<td><?php echo ($person['lastlogin'] != 0 ? date($mr_date_format, $person['lastlogin']) : ''); ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Active', 'member-register'); ?> <span class="description">(<?php echo __('whether to log on to the website', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Active', 'member-register'); ?> <span class="description">(<?php echo __('whether to be able to log on this the website', 'member-register'); ?>)</span></th>
 				<td><?php echo $person['active']; ?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('Seura'); ?> <span class="description">(<?php echo __('missä harjoittelee', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Club'); ?> <span class="description">(<?php echo __('main training place', 'member-register'); ?>)</span></th>
 				<td><?php
 				if ($person['clubname'] != '' && mr_has_permission(MR_ACCESS_CLUB_MANAGE))
 				{
@@ -303,12 +303,12 @@ function mr_show_member_info($id)
 				?></td>
 			</tr>
 			<tr>
-				<th><?php echo __('WP username', 'member-register'); ?> <span class="description">(<?php echo __('mikäli sellainen on', 'member-register'); ?>)</span></th>
+				<th><?php echo __('WordPress username', 'member-register'); ?> <span class="description">(<?php echo __('in case the member has linked to such', 'member-register'); ?>)</span></th>
 				<td><?php
 					if ($person['user_login'] != '' && $person['user_login'] != null && is_numeric($person['wpuserid']) && $usercanedit)
 					{
 						echo '<a href="' . admin_url('user-edit.php?user_id=') . $person['wpuserid'] .
-							'" title="' . __('Muokkaa WP käyttäjää', 'member-register') . '">' . $person['user_login'] . '</a>';
+							'" title="' . __('Modify this WordPress user', 'member-register') . '">' . $person['user_login'] . '</a>';
 					}
 					else
 					{
@@ -322,19 +322,19 @@ function mr_show_member_info($id)
 		if ($usercanedit)
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&memberid='
-				. $id . '&edit" title="' . __('Muokkaa tätä käyttää', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä käyttää', 'member-register') . '</a></p>';
+				. $id . '&edit" title="' . __('Modify this member', 'member-register') . '" class="button-primary">' . __('Modify this member', 'member-register') . '</a></p>';
 		}
 	}
 
 	// ---------------
 	echo '<hr />';
-	echo '<h2>' . __('Vyöarvot', 'member-register') . '</h2>';
+	echo '<h2>' . __('Grades', 'member-register') . '</h2>';
 	mr_show_grades($id);
 
 	?>
 
 	<hr />
-	<h2><?php echo __('Jäsenmaksut', 'member-register'); ?></h2>
+	<h2><?php echo __('Payments', 'member-register'); ?></h2>
 	<?php
 
 	// ---------------
@@ -377,7 +377,7 @@ function mr_remove_member($id)
 	if ($removal)
 	{
 		echo '<div class="updated"><p>';
-		echo '<strong>' . __('Jäsen poistettu', 'member-register') . ' (' . $id . ')</strong>';
+		echo '<strong>' . __('Member removed', 'member-register') . ' (' . $id . ')</strong>';
 		echo '</p></div>';
 	}
 	else
@@ -402,7 +402,7 @@ function mr_member_new()
         if (mr_insert_new_member($_POST))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi jäsen lisätty, nimellä:', 'member-register') . ' ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong>';
+			echo '<strong>' . __('New member added.', 'member-register') . ' ' . $_POST['firstname'] . ' ' . $_POST['lastname'] . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -413,7 +413,7 @@ function mr_member_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Lisää uusi jäsen', 'member-register'); ?></h2>
+		<h2><?php echo __('Add new member', 'member-register'); ?></h2>
 		<?php
 		mr_new_member_form(admin_url('admin.php?page=member-register-new'), array());
 		?>
@@ -624,13 +624,13 @@ function mr_new_member_form($action, $data)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Kirjautumistaso', 'member-register'); ?></th>
+				<th><?php echo __('Access level', 'member-register'); ?></th>
 				<td>
 				<?php
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="<?php echo __('Valitse käyttäjän oikeudet', 'member-register'); ?>">
+					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="<?php echo __('Choose all actions', 'member-register'); ?>">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
@@ -686,7 +686,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality', 'member-register'); ?></th>
-				<td><select class="chosen" name="nationality" data-placeholder="<?php echo __('Valitse käyttäjän kansallisuus', 'member-register'); ?>">
+				<td><select class="chosen" name="nationality" data-placeholder="<?php echo __('Choose the nationality', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -708,12 +708,12 @@ function mr_new_member_form($action, $data)
 				<td><input type="text" name="joindate" class="pickday" value="<?php echo $values['joindate']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Beginners first learn Kumite through passport number', 'member-register'); ?></th>
+				<th><?php echo __('Association passport number', 'member-register'); ?></th>
 				<td><input type="text" name="passnro" value="<?php echo $values['passnro']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Main martial art', 'member-register'); ?></th>
-				<td><select class="chosen" name="martial" data-placeholder="<?php echo __('Valitse päälaji', 'member-register'); ?>">
+				<td><select class="chosen" name="martial" data-placeholder="<?php echo __('Choose the main martial art', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach ($mr_martial_arts as $k => $v)
@@ -729,11 +729,11 @@ function mr_new_member_form($action, $data)
 					</select></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Lisätietoja', 'member-register'); ?></th>
+				<th><?php echo __('Additional information', 'member-register'); ?></th>
 				<td><input type="text" name="notes" value="<?php echo $values['notes']; ?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Active', 'member-register'); ?> <span class="description">(<?php echo __('voiko käyttää sivustoa', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Active', 'member-register'); ?> <span class="description">(<?php echo __('can login if enabled', 'member-register'); ?>)</span></th>
 				<td>
 				<?php
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
@@ -751,7 +751,7 @@ function mr_new_member_form($action, $data)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('As A Result Of The', 'member-register'); ?> <span class="description">(<?php echo __('missä seurassa pääsääntöisesti harjoittelee', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Club', 'member-register'); ?> <span class="description">(<?php echo __('training place', 'member-register'); ?>)</span></th>
 				<td><select class="chosen" name="club" data-placeholder="<?php echo __('Select a Club', 'member-register'); ?>">
 				<option value=""></option>
 				<?php

@@ -35,8 +35,8 @@ function mr_file_download($get)
 	$id = intval(array_shift($parts));
 	//$dir = implode('/', $parts);
 
-	$sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE visible = 1 AND id = \'' .
-		$id . '\' LIMIT 1';
+	$sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file
+	    WHERE visible = 1 AND id = \'' . $id . '\' LIMIT 1';
 	$res = $wpdb->get_row($sql, ARRAY_A);
 
 	if ($res)
@@ -117,7 +117,7 @@ function mr_files_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Valittu tiedosto poistettu.', 'member-register') . '</strong>';
+			echo '<strong>' . __('The file has been removed.', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -155,7 +155,7 @@ function mr_files_list()
 
 	$files = $wpdb->get_results($sql, ARRAY_A);
 	?>
-	<h2><?php echo __('Jäsenten tiedostot', 'member-register'); ?></h2>
+	<h2><?php echo __('Files for members', 'member-register'); ?></h2>
 	<table class="wp-list-table widefat sorter">
 		<thead>
 			<tr>
@@ -185,7 +185,7 @@ function mr_files_list()
 					$out .= '<td';
 					if (!file_exists($path))
 					{
-						$out .= ' class="redback" title="Tiedostoa ei löydy">' . $file['basename'];
+						$out .= ' class="redback" title="' . __('File not found', 'member-register') . '">' . $file['basename'];
 					}
 					else
 					{
@@ -196,8 +196,8 @@ function mr_files_list()
 						}
 						$a .= urlencode('/' . $file['basename']);
 
-						$out .= '><a href="' . $a . '" title="Lataa ' .
-							$file['basename'] . ' koneellesi">' . $file['basename'] . '</a>';
+						$out .= '><a href="' . $a . '" title="' . __('Download', 'member-register') . ' ' .
+							$file['basename'] . '">' . $file['basename'] . '</a>';
 					}
 					$out .= '</td>';
 					$out .= '<td>' . $file['directory'] . '</td>';
@@ -221,26 +221,26 @@ function mr_files_list()
 						$restrictions = array();
 						if ($file['clubonly'] != 0)
 						{
-							$restrictions[] = 'Vain seura: ' . $file['clubname'];
+							$restrictions[] = __('Only club', 'member-register') . ': ' . $file['clubname'];
 						}
 						if ($file['mingrade'] != '')
 						{
-							$restrictions[] = 'Alin vyöarvo: ' . $mr_grade_values[$file['mingrade']];
+							$restrictions[] = __('Lowest grade', 'member-register') . ': ' . $mr_grade_values[$file['mingrade']];
 						}
 						if ($file['artonly'] != '')
 						{
-							$restrictions[] = 'Vain laji: ' . $mr_martial_arts[$file['artonly']];
+							$restrictions[] = __('Only martial art', 'member-register') . ': ' . $mr_martial_arts[$file['artonly']];
 						}
 						if ($file['grouponly'] != 0)
 						{
-							$restrictions[] = 'Vain ryhmä: ' . $file['groupname'];
+							$restrictions[] = __('Only group', 'member-register') . ': ' . $file['groupname'];
 						}
 						$out .= implode('<br />', $restrictions);
 						$out .= '</td>';
 
 						$out .= '<td>';
 						$out .= '<a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
-							'&amp;remove-file=' . $file['id'] . '" title="' . __('Poista tämä tiedosto', 'member-register') . ': ' .
+							'&amp;remove-file=' . $file['id'] . '" title="' . __('Remove', 'member-register') . ': ' .
 							$file['basename'] . '">_</a>';
 						$out .= '</td>';
 					}
@@ -285,7 +285,7 @@ function mr_files_list()
 				if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly, $grouponly))
 				{
 					echo '<div class="updated"><p>';
-					echo '<strong>' . __('Uusi tiedosto lisätty, nimellä:', 'member-register') . ' ' . $_FILES['hoplaa']['name'] . ', kansioon: ' . $dir . '.</strong>';
+					echo '<strong>' . __('New file added.', 'member-register') . ' <em>' . $dir . '/' . $_FILES['hoplaa']['name'] . '</em></strong>';
 					echo '</p></div>';
 				}
 				else
@@ -295,7 +295,7 @@ function mr_files_list()
 			}
 			?>
 	<div class="wrap">
-		<h2><?php echo __('Lisää uusi tiedosto', 'member-register'); ?></h2>
+		<h2><?php echo __('Add new file', 'member-register'); ?></h2>
 		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data" autocomplete="on">
 			<datalist id="directories">
 	<?php
@@ -313,29 +313,31 @@ function mr_files_list()
 			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
-					<th><?php echo __('Select the file in the', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
+					<th><?php echo __('Choose file', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
 					<td><input type="file" name="hoplaa" value="" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('The Folder', 'member-register'); ?><span class="description">(<?php echo __('parempaa järjestyksenpitoa varten, yksi sana', 'member-register'); ?>)</span></th>
+					<th><?php echo __('Folder', 'member-register'); ?><span class="description">(<?php echo __('single word, no spaces', 'member-register'); ?>)</span></th>
 					<td><input type="text" name="directory" value="" list="directories" /></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('As A Result Of The', 'member-register'); ?><span class="description">(<?php echo __('without prejudice to the specific team members', 'member-register'); ?>)</span></th>
-					<td><select name="club" data-placeholder="<?php echo __('Select a Club', 'member-register'); ?>">
-							<option value=""></option>
-	<?php
-	$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
-	foreach ($clubs as $club)
-	{
-		echo '<option value="' . $club['id'] . '">' . $club['title'] . '</option>';
-	}
-	?>
-						</select></td>
+					<th><?php echo __('Club', 'member-register'); ?><span class="description">(<?php echo __('limited to the members of the given club', 'member-register'); ?>)</span></th>
+					<td>
+                        <select name="club" data-placeholder="<?php echo __('Select a Club', 'member-register'); ?>">
+                            <option value=""></option>
+                            <?php
+                            $clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');
+                            foreach ($clubs as $club)
+                            {
+                                echo '<option value="' . $club['id'] . '">' . $club['title'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Vyöarvo', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tietyn vyön suorittaneille, joka on merkitty rekisteriin', 'member-register'); ?>)</span></th>
-					<td><select name="grade" data-placeholder="<?php echo __('Valitse alin vyöarvo', 'member-register'); ?>">
+					<th><?php echo __('Grade', 'member-register'); ?><span class="description">(<?php echo __('limited to members having at least the grade', 'member-register'); ?>)</span></th>
+					<td><select name="grade" data-placeholder="<?php echo __('Lowest grade', 'member-register'); ?>">
 							<option value=""></option>
 							<?php
 							foreach ($mr_grade_values as $key => $val)
@@ -346,8 +348,8 @@ function mr_files_list()
 						</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Päälaji', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tämän lajin päälajikseen valinneille', 'member-register'); ?>)</span></th>
-					<td><select name="art" data-placeholder="<?php echo __('From the type area, select', 'member-register'); ?>">
+					<th><?php echo __('Martial art', 'member-register'); ?><span class="description">(<?php echo __('limit only to member who are registered to the given martial art', 'member-register'); ?>)</span></th>
+					<td><select name="art" data-placeholder="<?php echo __('Martial art', 'member-register'); ?>">
 							<option value=""></option>
 							<?php
 							foreach ($mr_martial_arts as $key => $val)
@@ -358,8 +360,8 @@ function mr_files_list()
 						</select></td>
 				</tr>
 				<tr class="form-field">
-					<th><?php echo __('Ryhmä', 'member-register'); ?><span class="description">(<?php echo __('rajoita vain tiettyyn ryhmään kuuluville', 'member-register'); ?>)</span></th>
-					<td><select name="group" data-placeholder="<?php echo __('Valitse ryhmä', 'member-register'); ?>">
+					<th><?php echo __('Group', 'member-register'); ?><span class="description">(<?php echo __('limit to members belonging to a group', 'member-register'); ?>)</span></th>
+					<td><select name="group" data-placeholder="<?php echo __('Choose group', 'member-register'); ?>">
 							<option value=""></option>
 							<?php
 							$groups = mr_get_list('group', 'visible = 1', '', 'title ASC');

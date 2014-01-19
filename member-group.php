@@ -41,7 +41,7 @@ function mr_group_list()
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Ryhmä poistettu', 'member-register') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('Group removed', 'member-register') . ' (' . $id . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -59,7 +59,7 @@ function mr_group_list()
 
 		if (isset($_GET['edit']))
 		{
-			echo '<h1>' . __('Muokkaa ryhmää', 'member-register') . ' ' . $res['title'] . '</h1>';
+			echo '<h1>' . __('Edit this group', 'member-register') . ' ' . $res['title'] . '</h1>';
 			$sql = 'SELECT member_id FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id . '';
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			$members = array();
@@ -79,7 +79,7 @@ function mr_group_list()
 				if (mr_group_update($id, $_POST))
 				{
 					echo '<div class="updated"><p>';
-					echo '<strong>' . __('Ryhmän tiedot päivitetty') . '</strong>';
+					echo '<strong>' . __('Group updated') . '</strong>';
 					echo '</p></div>';
 				}
 				else
@@ -92,9 +92,9 @@ function mr_group_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
-				$id . '&amp;edit" title="' . __('Muokkaa tätä ryhmää', 'member-register') . '" class="button-primary">' . __('Muokkaa tätä ryhmää', 'member-register') . '</a></p>';
+				$id . '&amp;edit" title="' . __('Modify this group', 'member-register') . '" class="button-primary">' . __('Modify this group', 'member-register') . '</a></p>';
 
-			echo '<h2>' . __('Aktiiviset jäsenet tässä ryhmässä.', 'member-register') . '</h2>';
+			echo '<h2>' . __('Members in this group.', 'member-register') . '</h2>';
 			mr_show_members(array(
 				'group' => $id,
 				'active' => true
@@ -103,7 +103,7 @@ function mr_group_list()
 	}
 	else
 	{
-		echo '<h2>' . __('Ryhmät', 'member-register') . '</h2>';
+		echo '<h2>' . __('Groups', 'member-register') . '</h2>';
 
 
 		// Check for possible insert
@@ -113,7 +113,7 @@ function mr_group_list()
 			if (mr_insert_new_group($_POST))
 			{
 				echo '<div class="updated"><p>';
-				echo '<strong>' . __('Uusi ryhmä lisätty', 'member-register') . '</strong>';
+				echo '<strong>' . __('New group added', 'member-register') . '</strong>';
 				echo '</p></div>';
 			}
 			else
@@ -129,8 +129,8 @@ function mr_group_list()
 		else
 		{
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;create-group"' .
-					' title="' . __('Luo uusi ryhmä', 'member-register') . '" class="button-primary">' .
-					__('Luo uusi ryhmä', 'member-register') . '</a></p>';
+					' title="' . __('Create new group', 'member-register') . '" class="button-primary">' .
+					__('Create new group', 'member-register') . '</a></p>';
 
 			mr_show_groups(null); // no specific member
 		}
@@ -185,7 +185,7 @@ function mr_show_groups($memberid = null)
 					<th data-sort="string" class="sorting-asc"><?php echo __('Title', 'member-register'); ?></th>
 					<th data-sort="string"><?php echo __('Created by', 'member-register'); ?></th>
 					<th data-sort="int"><?php echo __('Last modification', 'member-register'); ?></th>
-					<th data-sort="int"><?php echo __('Jäseniä', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Member count', 'member-register'); ?></th>
 
 					<?php
 					if ($allowremove)
@@ -201,7 +201,7 @@ function mr_show_groups($memberid = null)
 		{
 			echo '<tr id="group_' . $group['id'] . '">';
 			echo '<td data-sort-value="' . $group['title'] .'"><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
-				$group['id'] . '" title="Näytä ryhmän jäsenet">' . $group['title'] . '</a></td>';
+				$group['id'] . '" title="' . __('Show members', 'member-register') . '">' . $group['title'] . '</a></td>';
 			echo '<td data-sort-value="' . $group['firstname'] . ' ' . $group['lastname'] . '">';
 			if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
 			{
@@ -222,8 +222,7 @@ function mr_show_groups($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
-					'&amp;remove-group=' . $group['id'] . '" title="' . __('Poista ryhmä nimellä ' . $group['title'] .
-					', jonka loi ') . $group['firstname'] . ' ' . $group['lastname'] . '">_</a></td>';
+					'&amp;remove-group=' . $group['id'] . '" title="' . __('Remove this group', 'member-register') . '">_</a></td>';
 			}
 			echo '</tr>';
 		}
@@ -234,7 +233,7 @@ function mr_show_groups($memberid = null)
 	}
 	else
 	{
-		echo '<p>Ei löytynyt lainkaan ryhmiä näillä ehdoilla</p>';
+		echo '<p>' . __('Could not find any group with this request', 'member-register') . '.</p>';
 	}
 }
 
@@ -253,7 +252,7 @@ function mr_group_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Luo uusi ryhmä, jossa on vähintään yksi jäsen', 'member-register'); ?></h2>
+		<h2><?php echo __('Create new group that must have at least one member', 'member-register'); ?></h2>
 		<?php
 		mr_new_group_form();
 		?>
@@ -364,12 +363,12 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		<input type="hidden" name="mr_submit_hidden_group" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('nimi jolla ryhmä on helppo tunnistaa', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('name for easy recognition', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="title" class="required" required="required" value="<?php echo $title; ?>" /></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
+				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
@@ -391,7 +390,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="Lisää ryhmä" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php echo __('Create group', 'member-register'); ?>" />
 		</p>
 
 	</form>

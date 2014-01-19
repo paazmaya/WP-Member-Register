@@ -40,7 +40,7 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(<?php echo __('muotoa YYYY-MM-DD, esim 1950-12-31', 'member-register'); ?>)</span><br />
+		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(<?php echo __('format YYYY-MM-DD, for example 1950-12-31', 'member-register'); ?>)</span><br />
 			<input type="text" name="birthdate" class="pickday required" required="required" value="<?php echo $values['birthdate']; ?>" />
 			<!--  min="1900-01-01" max="<?php echo date('Y-m-d', time() - 60*60*24*365); ?>"  -->
 		</label>
@@ -61,13 +61,13 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('The Telephone Number For The', 'member-register'); ?><br />
+		<label><?php echo __('Telephone', 'member-register'); ?><br />
 			<input type="text" name="phone" class="required" required="required" value="<?php echo $values['phone']; ?>" />
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Nationality', 'member-register'); ?><br />
-			<select name="nationality" class="required" required="required" data-placeholder="Valitse kansallisuus">
+			<select name="nationality" class="required" required="required" data-placeholder="<?php echo __('Choose nationality', 'member-register'); ?>">
 		<option value=""></option>
 		<?php
 		$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -87,7 +87,7 @@ function mr_prf_register_form ()
 	</p>
 	<p>
 		<label><?php echo __('Main martial art', 'member-register'); ?><br />
-			<select name="martial" class="required" required="required" data-placeholder="Valitse päälaji">
+			<select name="martial" class="required" required="required" data-placeholder="<?php echo __('Choose main martial art', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				foreach ($mr_martial_arts as $k => $v)
@@ -104,8 +104,8 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('As A Result Of The', 'member-register'); ?> <span class="description">(<?php echo __('not mandatory', 'member-register'); ?>)</span><br />
-			<select name="club" data-placeholder="Valitse seura">
+		<label><?php echo __('Club', 'member-register'); ?> <span class="description">(<?php echo __('not mandatory', 'member-register'); ?>)</span><br />
+			<select name="club" data-placeholder="<?php echo __('Choose club', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$clubs = mr_get_list('club', 'visible = 1', '', 'title ASC');

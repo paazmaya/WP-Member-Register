@@ -9,7 +9,7 @@ xgettext \
  --from-code=UTF-8 \
  --copyright-holder="Jukka Paasonen" \
  --package-name=MemberRegister \
- --package-version=0.11.1 \
+ --package-version=0.11.4 \
  --strict \
  --debug \
  --keyword=__ \

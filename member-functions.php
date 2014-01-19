@@ -56,8 +56,8 @@ function list_user_rights($rights)
 function mr_show_access_values()
 {
 	global $mr_access_type;
-	echo '<p>' . __('Alla lyhyesti selostettuna kunkin käyttäjätason (access) oikeudet', 'member-register') . '. ' .
-		__('Pyynnöstä näitä voidaan lisätä tai vähentää.', 'member-register') . '</p>';
+	echo '<p>' . __('Below is a short explanation for each access level', 'member-register') . '. ' .
+		__('They can be added or removed if needed.', 'member-register') . '</p>';
 	echo '<ul>';
 	foreach ($mr_access_type as $k => $v)
 	{

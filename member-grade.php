@@ -24,7 +24,7 @@ function mr_grade_new()
         if (mr_insert_new_grade($_POST))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi/uudet vyöarvo(t) lisätty', 'member-register') . '</strong>';
+			echo '<strong>' . __('Grade added', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -36,7 +36,7 @@ function mr_grade_new()
     ?>
 	<div class="wrap">
 
-		<h2><?php echo __('Myönnä vyöarvoja', 'member-register'); ?></h2>
+		<h2><?php echo __('Nominate grades', 'member-register'); ?></h2>
 		<?php
 		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
 		    FROM ' . $wpdb->prefix . 'mr_member
@@ -84,7 +84,7 @@ function mr_grade_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Vyöarvo poistettu', 'member-register') . ' (' . $id . ')</strong>';
+			echo '<strong>' . __('Grade removed', 'member-register') . ' (' . $id . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -94,8 +94,8 @@ function mr_grade_list()
 	}
 
 	echo '<div class="wrap">';
-	echo '<h2>' . __('Vyöarvot', 'member-register') . '</h2>';
-	echo '<p>' . __('Jäsenet heidän viimeisimmän vyöarvon mukaan.', 'member-register') . '</p>';
+	echo '<h2>' . __('Grades', 'member-register') . '</h2>';
+	echo '<p>' . __('Members listed with their latest grade.', 'member-register') . '</p>';
 	mr_show_grades();
 	echo '</div>';
 }
@@ -155,11 +155,11 @@ function mr_show_grades($memberid = null)
 				<?php
 			}
 			?>
-			<th data-sort="int"><?php echo __('Vyöarvo', 'member-register'); ?></th>
+			<th data-sort="int"><?php echo __('Grade', 'member-register'); ?></th>
 			<th data-sort="string"><?php echo __('Type', 'member-register'); ?></th>
-			<th data-sort="int" class="sorting-desc"><?php echo __('Myöntö PVM', 'member-register'); ?></th>
-			<th data-sort="string"><?php echo __('Myöntäjä', 'member-register'); ?></th>
-			<th data-sort="string"><?php echo __('In The Place Of The', 'member-register'); ?></th>
+			<th data-sort="int" class="sorting-desc"><?php echo __('Nomination date', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Nominator', 'member-register'); ?></th>
+			<th data-sort="string"><?php echo __('Location', 'member-register'); ?></th>
 			<?php
 			if ($allowremove)
 			{
@@ -195,8 +195,7 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&amp;removegrade=' . $grade['id'] . '" title="Poista henkilön ' . $grade['firstname'] . ' ' .
-					$grade['lastname'] . ' vyöarvo: ' . $grade['grade'] . '">_</a></td>';
+					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Delete grade', 'member-register') . '">_</a></td>';
 			}
 			echo '</tr>';
 		}
@@ -207,16 +206,7 @@ function mr_show_grades($memberid = null)
 	}
 	else
 	{
-		echo '<p>Ei löytynyt lainkaan vyöarvoja ';
-		if ($memberid != null)
-		{
-			echo 'tälle henkilölle';
-		}
-		else
-		{
-			echo 'näillä ehdoilla';
-		}
-		echo '</p>';
+		echo '<p>' . __('There were no grades available with the given request', 'member-register') . '.</p>';
 	}
 }
 
@@ -301,9 +291,9 @@ function mr_grade_form($members)
 		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
-				<th><?php echo __('Jäsen', 'member-register'); ?> <span class="description">(<?php echo __('valitse useampi painamalla Ctrl-näppäintä', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('select multiple members if needed', 'member-register'); ?>)</span></th>
 				<td>
-					<select class="chosen required" required="required" name="members[]" multiple="multiple" size="8" data-placeholder="Valitse jäsenet">
+					<select class="chosen required" required="required" name="members[]" multiple="multiple" size="8" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach($members as $user)
@@ -315,9 +305,9 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Vyöarvo', 'member-register'); ?> <span class="description">(<?php echo __('suluissa tietokantamerkintä', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Grade', 'member-register'); ?> <span class="description">(<?php echo __('key in parenthesis', 'member-register'); ?>)</span></th>
 				<td>
-					<select name="grade" class="required chosen" required="required" data-placeholder="Valitse vyöarvo">
+					<select name="grade" class="required chosen" required="required" data-placeholder="<?php echo __('Choose a grade', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
@@ -329,22 +319,22 @@ function mr_grade_form($members)
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('in either type of', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Martial art', 'member-register'); ?> <span class="description">(<?php echo __('choose the martial art', 'member-register'); ?>)</span></th>
 				<td>
 					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
 					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('In The Place Of The', 'member-register'); ?> <span class="description">(<?php echo __('millä paikkakunnalla ja maassa jos ei Suomi', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Location', 'member-register'); ?> <span class="description">(<?php echo __('city and country if not native', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="location" class="required" required="required" value="" list="locations" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Myöntäjä', 'member-register'); ?> <span class="description">(<?php echo __('kuka myönsi', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Nominator', 'member-register'); ?> <span class="description">(<?php echo __('who nominated', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="nominator" class="required" required="required" value="" list="nominators" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Päivämäärä', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
+				<th><?php echo __('Date', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
 				<td><input type="text" name="day" class="pickday required" required="required" value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
 				?>" list="dates" /></td>

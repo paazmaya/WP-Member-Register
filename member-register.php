@@ -3,7 +3,7 @@
  * Plugin Name: Member Register
  * Plugin URI: http://paazmaya.com/member-register-a-wordpress-plugin
  * Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- * Version: 0.11.4
+ * Version: 0.11.5
  * License: MIT
  * License URI: http://opensource.org/licenses/MIT
  * Author: Jukka Paasonen
@@ -15,7 +15,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.11.4');
+define ('MEMBER_REGISTER_VERSION', '0.11.5');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -76,16 +76,16 @@ define('MR_ACCESS_GROUP_MANAGE', 1 << 11); // 2048
 
 global $mr_access_type;
 $mr_access_type = array(
-    1    => __('Omien tietojen katselu ja päivitys', 'member-register'),
-    2    => __('Tiedostot jäsenille', 'member-register'),
+    1    => __('Own information view and update', 'member-register'),
+    2    => __('Files for members', 'member-register'),
     4    => __('Participate in a discussion', 'member-register'),
     8    => __('Create a discussion topic', 'member-register'),
     16   => __('The debates and discussion topics in the removal', 'member-register'),
-    32   => __('Jäsenten listaus ja tietojen näkeminen', 'member-register'),
-    64   => __('Jäsenten lisääminen, muokkaus ja poisto', 'member-register'),
-    128  => __('Vyöarvojen hallinta', 'member-register'),
-    256  => __('Jäsenmaksujen hallinta', 'member-register'),
-    512  => __('The clubs ' management', 'member-register'),
+    32   => __('Members listing and viewing their infomation', 'member-register'),
+    64   => __('Adding, editing and removal of members', 'member-register'),
+    128  => __('Grade management', 'member-register'),
+    256  => __('Payment management', 'member-register'),
+    512  => __('The clubs management', 'member-register'),
     1024 => __('File management', 'member-register'),
     2048 => __('Manage groups', 'member-register')
 );
@@ -284,15 +284,15 @@ function member_register_admin_menu()
 {
     // http://codex.wordpress.org/Adding_Administration_Menus
     // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position )
-    add_menu_page(__('Jäsenrekisterin Hallinta', 'member-register'), __('Jäsenrekisteri', 'member-register'), 'read',
+    add_menu_page(__('Member Register', 'member-register'), __('Member Register', 'member-register'), 'read',
         'member-register-control',
         'mr_member_list', 'dashicons-groups'); // $position );
 
     if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
     {
         // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
-        add_submenu_page('member-register-control', __('Lisää uusi jäsen', 'member-register'),
-            __('Uusi jäsen', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
+        add_submenu_page('member-register-control', __('Add new member', 'member-register'),
+            __('Add new member', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
     }
 
     if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
@@ -309,26 +309,26 @@ function member_register_admin_menu()
 
     if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
     {
-        add_submenu_page('member-register-control', __('Vyöarvot', 'member-register'),
-            __('Vyöarvot', 'member-register'), 'read', 'member-grade-list', 'mr_grade_list');
+        add_submenu_page('member-register-control', __('Grades', 'member-register'),
+            __('Grades', 'member-register'), 'read', 'member-grade-list', 'mr_grade_list');
     }
 
     if (mr_has_permission(MR_ACCESS_GRADE_MANAGE))
     {
-        add_submenu_page('member-register-control', __('Myönnä vyöarvoja', 'member-register'),
-            __('Myönnä vyöarvoja', 'member-register'), 'read', 'member-grade-new', 'mr_grade_new');
+        add_submenu_page('member-register-control', __('Nominate grades', 'member-register'),
+            __('Nominate grades', 'member-register'), 'read', 'member-grade-new', 'mr_grade_new');
     }
 
     if (mr_has_permission(MR_ACCESS_CLUB_MANAGE))
     {
-        add_submenu_page('member-register-control', __('The Clubs', 'member-register'),
-            __('Jäsenseurat', 'member-register'), 'read', 'member-club-list', 'mr_club_list');
+        add_submenu_page('member-register-control', __('Clubs', 'member-register'),
+            __('Clubs', 'member-register'), 'read', 'member-club-list', 'mr_club_list');
     }
 
     if (mr_has_permission(MR_ACCESS_GROUP_MANAGE))
     {
-        add_submenu_page('member-register-control', __('Ryhmät', 'member-register'),
-            __('Jäsen ryhmät', 'member-register'), 'read', 'member-group-list', 'mr_group_list');
+        add_submenu_page('member-register-control', __('Groups', 'member-register'),
+            __('Groups', 'member-register'), 'read', 'member-group-list', 'mr_group_list');
     }
 
 }
@@ -343,7 +343,7 @@ function member_register_forum_menu()
     if (current_user_can('read') && mr_has_permission(MR_ACCESS_CONVERSATION))
     {
         // http://codex.wordpress.org/Adding_Administration_Menus
-        add_menu_page(__('Discussion Of The', 'member-register'), __('Discussion Of The', 'member-register'), 'read', 'member-forum',
+        add_menu_page(__('Discussions', 'member-register'), __('Discussions', 'member-register'), 'read', 'member-forum',
             'mr_forum_list', 'dashicons-format-chat'); // $position );
     }
 }
@@ -358,8 +358,8 @@ function member_register_files_menu()
 
         if (mr_has_permission(MR_ACCESS_FILES_MANAGE))
         {
-            add_submenu_page('member-files', __('Lisää uusi tiedosto', 'member-register'),
-                __('Lisää uusi tiedosto', 'member-register'), 'read', 'member-files-new', 'mr_files_new');
+            add_submenu_page('member-files', __('Add new file', 'member-register'),
+                __('Add new file', 'member-register'), 'read', 'member-files-new', 'mr_files_new');
         }
     }
 }
@@ -487,8 +487,8 @@ function mr_member_list()
         }
         else
         {
-            echo '<h2>' . __('Jäsenrekisteri', 'member-register') . '</h2>';
-            echo '<p>' . __('Alla lista rekisteröidyistä jäsenistä', 'member-register') . '</p>';
+            echo '<h2>' . __('Member Register', 'member-register') . '</h2>';
+            echo '<p>' . __('A list of registered members', 'member-register') . '</p>';
             mr_show_members();
         }
     }

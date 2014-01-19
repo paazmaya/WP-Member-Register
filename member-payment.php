@@ -26,7 +26,7 @@ function mr_payment_new()
         if (mr_insert_new_payment($_POST))
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Uusi/uudet maksu(t) lisätty', 'member-register') . '</strong>';
+			echo '<strong>' . __('New payment added', 'member-register') . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -37,9 +37,8 @@ function mr_payment_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Lisää uusi maksu, useammalle henkilölle jos tarve vaatii', 'member-register'); ?></h2>
-		<p><?php echo __('Pääasia että rahaa tulee, sitä kun menee.', 'member-register'); ?></p>
-		<p><?php echo __('Viitenumero on automaattisesti laskettu ja näkyy listauksessa kun maksu on luotu.', 'member-register'); ?></p>
+		<h2><?php echo __('Create new payments for multiple members at a time', 'member-register'); ?></h2>
+		<p><?php echo __('Reference number will be calculated and shown once the payment is created and shown in the list.', 'member-register'); ?></p>
 		<?php
 		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
@@ -85,7 +84,7 @@ function mr_payment_list()
 		if ($update)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('Maksu merkitty maksetuksi tänään', 'member-register') . ', ' . $today . '</strong>';
+			echo '<strong>' . __('Mark the payment as paid today', 'member-register') . ', ' . $today . '</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -126,7 +125,7 @@ function mr_payment_list()
 	}
 
 	echo '<div class="wrap">';
-	echo '<h2>' . __('Jäsenmaksut', 'member-register') . '</h2>';
+	echo '<h2>' . __('Payments', 'member-register') . '</h2>';
 
 	mr_show_payments_lists(null); // no specific member
 	echo '</div>';
@@ -145,7 +144,7 @@ function mr_show_payments_lists($memberid)
 	<?php
 	if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
 	{
-		echo' <p>' . __('Merkitse maksu maksetuksi vasemmalla olevalla "OK" painikkeella.', 'member-register') . '</p>';
+		echo' <p>' . __('Mark as paid with the OK button.', 'member-register') . '</p>';
 	}
 
 	mr_show_payments($memberid, true);
@@ -207,7 +206,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 					<?php
 					if ($isUnpaidView && $allowreview)
 					{
-						echo '<th data-sort="int" filter="false">' . __('Maksettu?', 'member-register') . '</th>';
+						echo '<th data-sort="int" filter="false">' . __('Paid?', 'member-register') . '</th>';
 					}
 					if ($memberid == null)
 					{
@@ -220,14 +219,14 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 					<th data-sort="string-ins"><?php echo __('Type', 'member-register'); ?></th>
 					<th data-sort="float"><?php echo __('Summa (EUR)', 'member-register'); ?></th>
 					<th data-sort="int"><?php echo __('Reference', 'member-register'); ?></th>
-					<th data-sort="int" class="sorting-desc"><?php echo __('Eräpäivä', 'member-register'); ?></th>
+					<th data-sort="int" class="sorting-desc"><?php echo __('Due date', 'member-register'); ?></th>
 					<?php
 					if (!$isUnpaidView)
 					{
-						echo '<th data-sort="int">' . __('The Payment DATE', 'member-register') . '</th>';
+						echo '<th data-sort="int">' . __('The Payment date', 'member-register') . '</th>';
 					}
 					?>
-					<th data-sort="int"><?php echo __('The Period Of Validity Of The', 'member-register'); ?></th>
+					<th data-sort="int"><?php echo __('Payment valid until', 'member-register'); ?></th>
 					<?php
 					if ($allowremove)
 					{
@@ -274,8 +273,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
-					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Poista maksu viitteellä', 'member-register') .
-					': ' . $payment['reference'] . '">_</a></td>';
+					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Remove this payment', 'member-register') . '">_</a></td>';
 			}
 			echo '</tr>';
 		}
@@ -286,16 +284,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 	}
 	else
 	{
-		echo '<p>Ei löytynyt lainkaan ';
-		if ($isUnpaidView)
-		{
-			echo 'maksamattomia';
-		}
-		else
-		{
-			echo 'maksettuja';
-		}
-		echo ' maksuja näillä ehdoilla</p>';
+		echo '<p>' . __('Could not find any payments', 'member-register') . '</p>';
 	}
 }
 
@@ -374,7 +363,7 @@ function mr_new_payment_form($members)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="Valitse jäsenet">
+				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				foreach($members as $user)
@@ -385,7 +374,7 @@ function mr_new_payment_form($members)
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('vuosimaksu, ainaisjäsenmaksu, jne...', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('annual, lifetime, etc...', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="type" value="" class="required" required="required" list="types" /></td>
 			</tr>
 			<tr class="form-field">
@@ -393,19 +382,19 @@ function mr_new_payment_form($members)
 				<td><input type="number" name="amount" value="" class="required" required="required" list="amounts" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('3 weeks in the future', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('Three weeks in the future by default', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="deadline" class="pickday required" required="required" value="<?php
 				echo date('Y-m-d', time() + 60*60*24*21);
 				?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('the end of the current year', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('end of the current year', 'member-register'); ?>)</span></th>
 				<td><input type="text" name="validuntil" class="pickday" required="required" value="<?php
 				echo date('Y') . '-12-31';
 				?>" /></td>
 			</tr>
 			<tr class="form-field">
-				<th><?php echo __('Already paid', 'member-register'); ?> <span class="description">(<?php echo __('maksettu tänään', 'member-register'); ?>)</span></th>
+				<th><?php echo __('Already paid', 'member-register'); ?> <span class="description">(<?php echo __('paid today', 'member-register'); ?>)</span></th>
 				<td><input type="checkbox" name="alreadypaid" class="w4em" /></td>
 			</tr>
 		</table>
