@@ -3,7 +3,7 @@
  * Plugin Name: Member Register
  * Plugin URI: http://paazmaya.com/member-register-a-wordpress-plugin
  * Description: A register of member which can be linked to a WP users. Includes payment (and martial art belt grade) information.
- * Version: 0.11.5
+ * Version: 0.12.0
  * License: MIT
  * License URI: http://opensource.org/licenses/MIT
  * Author: Jukka Paasonen
@@ -15,7 +15,7 @@
  */
 
 
-define ('MEMBER_REGISTER_VERSION', '0.11.5');
+define ('MEMBER_REGISTER_VERSION', '0.12.0');
 
 global $mr_file_base_directory;
 $mr_file_base_directory = substr(__DIR__, 0, strpos(__DIR__, '/public_html')) . '/member_register_files';
@@ -24,7 +24,7 @@ global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '11';
+$mr_db_version = '12';
 
 global $mr_grade_values;
 $mr_grade_values = array(
@@ -54,11 +54,13 @@ $mr_grade_types = array(
 );
 
 global $mr_martial_arts;
+// Should match the enum of martial in mr_member table.
 $mr_martial_arts = array(
     'karate'    => 'Yuishinkai Karate',
     'kobujutsu' => 'Ryukyu Kobujutsu',
     'taiji'     => 'Taiji',
-    'judo'      => 'Goshin Judo'
+    'judo'      => 'Goshin Judo',
+    'mma'       => 'Mixed Martial Arts'
 );
 
 define('MR_ACCESS_OWN_INFO', 1 << 0); // 1
@@ -156,10 +158,6 @@ function member_register_admin_init()
     wp_register_script('jquery-select2-locale-fi', plugins_url('/js/select2_locale_fi.js', __FILE__),
         array('jquery-select2')); //
 
-    wp_register_script('jquery-picnet-table-filter', plugins_url('/js/picnet.table.filter.min.js', __FILE__),
-        array('jquery'));
-
-    wp_register_style('jquery-ui-theme-blizter', plugins_url('/css/jquery-ui.blizter.css', __FILE__));
     wp_register_style('jquery-ui-datepicker', plugins_url('/css/jquery.ui.datepicker.css', __FILE__));
     wp_register_style('jquery-select2', plugins_url('/css/select2.css', __FILE__));
     wp_register_style('jquery-select2-bootstrap', plugins_url('/css/select2-bootstrap.css', __FILE__));
@@ -180,14 +178,12 @@ function member_register_admin_print_scripts()
     wp_enqueue_script('jquery-stupidtable');
     wp_enqueue_script('jquery-select2');
     wp_enqueue_script('jquery-select2-locale-fi');
-    wp_enqueue_script('jquery-picnet-table-filter');
 }
 
 function member_register_admin_print_styles()
 {
     // http://codex.wordpress.org/Function_Reference/wp_enqueue_style
     wp_enqueue_style('jquery-ui-datepicker');
-    wp_enqueue_style('jquery-ui-theme-blizter');
     wp_enqueue_style('jquery-stupidtable');
     wp_enqueue_style('jquery-select2');
     wp_enqueue_style('jquery-select2-bootstrap');
@@ -209,11 +205,10 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
-        var hideLink = '<a href="#hide"><img src="<?php echo plugins_url('/images/hide_icon.png', __FILE__); ?>" alt="<?php echo __('Hide', 'member-register'); ?>" /></a>';
+        var hideLink = '<a href="#hide"><?php echo __('Hide', 'member-register'); ?></a>';
 
         jQuery(document).ready(function () {
             jQuery('table.sorter').stupidtable();
-
 
 
             jQuery.datepicker.setDefaults({
@@ -225,9 +220,6 @@ function member_register_admin_head()
                 dateFormat: 'yy-mm-dd'
             });
             jQuery('input.pickday').datepicker();
-            jQuery('table.tablesorter').tableFilter({
-                enableCookies: false
-            });
             jQuery('select.chosen').select2({
                 allowClear: true
             });
@@ -277,7 +269,6 @@ function member_register_admin_head()
 
     </script>
     <?php
-    // http://www.picnet.com.au/picnet_table_filter.html
 }
 
 function member_register_admin_menu()

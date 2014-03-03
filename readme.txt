@@ -51,13 +51,17 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
-= 0.11.5 =
-* Released 19th January 2014
+= 0.12.0 =
+* Released 4th March 2014
 * Translations fixed
+* Fixed database queries to use WP database class instance
+* Added MMA to the available martial arts list
+* Added EditorConfig, see http://EditorConfig.org
 
 = 0.11.4 =
 * Released 5th January 2014
 * Table styling to match general WP Admin styles
+* Using dashicons for whatever icons are needed
 * Replaced Tablesorter with Stupid Table Sorter (http://joequery.github.io/Stupid-Table-Plugin/)
 
 = 0.11.3 =

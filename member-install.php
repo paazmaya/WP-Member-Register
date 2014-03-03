@@ -147,7 +147,7 @@ function mr_install ()
 		  lastlogin int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Unix timestamp',
 		  active tinyint(1) NOT NULL DEFAULT '0',
 		  club mediumint(6) unsigned NOT NULL DEFAULT '0',
-		  martial enum('karate','kobujutsu','taiji','judo') COLLATE utf8_swedish_ci NOT NULL DEFAULT 'karate',
+		  martial enum('karate','kobujutsu','taiji','judo','mma') COLLATE utf8_swedish_ci NOT NULL DEFAULT 'karate',
 		  visible tinyint(1) NOT NULL DEFAULT '1',
 		  PRIMARY KEY (id),
 		  KEY user_login (user_login)
