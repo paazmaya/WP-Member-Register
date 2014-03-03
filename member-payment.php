@@ -335,7 +335,16 @@ function mr_insert_new_payment($postdata)
 
 		}
 	}
-
+    /*
+    $wpdb->insert( 
+        $wpdb->prefix . 'mr_payment', 
+        $values, 
+        array(
+            '%s',
+            '%d',
+        )
+    );
+    */
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';

@@ -205,7 +205,7 @@ function mr_prf_user_register($user_id)
 	global $wpdb;
 
 	// Email address can be fetched now from wp_users.
-	$sql = 'SELECT * FROM ' . $wpdb->prefix . 'users WHERE ID = '. $user_id;
+	$sql = 'SELECT * FROM ' . $wpdb->users . ' WHERE ID = '. $user_id;
 	$data = $wpdb->get_row($sql, ARRAY_A);
 
 	$values = array(
@@ -231,11 +231,49 @@ function mr_prf_user_register($user_id)
 	$keys = implode(', ', array_keys($values));
 	$vals = '\'' . implode('\', \'', array_values($values)) . '\'';
 
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . $keys . ') VALUES(' . $vals . ')';
-	$wpdb->query($sql);
+    $wpdb->insert( 
+        $wpdb->prefix . 'mr_member', 
+        $values, 
+        array(
+            '%s', // user_login
+            '%d',
+            '%s', // email
+            '%d',
+            '%s', // passnro
+            '%s',
+            '%d', // active
+            '%s',
+            '%s', // lastname
+            '%s',
+            '%s', // address
+            '%s',
+            '%s', // postal
+            '%s',
+            '%s', // nationality
+            '%s',
+            '%d' // club
+        )
+    );
 
 	// Finally update few items in the WP_users (display_name)
-	$wpdb->query('UPDATE ' . $wpdb->prefix . 'users SET display_name = \'' .
+    /*
+    $wpdb->update(
+        $wpdb->users,
+        array(
+            'display_name' => $values['firstname'] . ' ' . $values['lastname']
+        ),
+        array(
+            'ID' => $user_id
+        ),
+        array(
+            '%s'
+        ),
+        array(
+            '%d'
+        )
+    );
+    */
+	$wpdb->query('UPDATE ' . $wpdb->users . ' SET display_name = \'' .
 		$values['firstname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
 
 	// Also add the meta data for name

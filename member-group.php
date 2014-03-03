@@ -271,12 +271,20 @@ function mr_insert_new_group($postdata)
 		count($postdata['members']) > 0 && isset($postdata['title']) && $postdata['title'] != '')
 	{
 		$values = array(
-			"'" . mr_htmlent($postdata['title']) . "'",
-			$userdata->mr_memberid,
-			time()
+			title => mr_htmlent($postdata['title']),
+			creator => $userdata->mr_memberid,
+			modified => time()
 		);
-		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_group (title, creator, modified) VALUES (' . implode(', ', $values) . ')';
-		if ($wpdb->query($sql))
+        $insert = $wpdb->insert(
+            $wpdb->prefix . 'mr_group',
+            $values,
+            array(
+                '%s',
+                '%d',
+                '%d'
+            )
+        );
+		if ($insert)
 		{
 			$id = $wpdb->insert_id;
 			$setval = array();
@@ -320,10 +328,18 @@ function mr_group_update($id, $postdata)
 		);
 
 		// Remove those that exists
-		$sql = 'DELETE FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id;
+        $deletion = $wpdb->delete(
+            $wpdb->prefix . 'mr_group_member',
+            array(
+                'group_id' => $id
+            ),
+            array(
+                '%d'
+            )
+        );
 
 		// Insert current
-		if ($wpdb->query($sql))
+		if ($deletion !== false)
 		{
 			$setval = array();
 
@@ -331,6 +347,16 @@ function mr_group_update($id, $postdata)
 			{
 				$setval[] = '(' . $id . ', ' . intval($member) . ')';
 			}
+            /*
+            $wpdb->insert(
+                $wpdb->prefix . 'mr_group_member',
+                $values,
+                array(
+                    '%s', // user_login
+                    '%d',
+                )
+            );
+            */
 			$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_group_member (group_id, member_id) VALUES ' . implode(', ', $setval);
 			return $wpdb->query($sql);
 		}

@@ -240,16 +240,17 @@ function mr_insert_new_club($postdata)
 {
 	global $wpdb;
 
-	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
+	if (isset($postdata['title']) && $postdata['title'] != '' && 
+        isset($postdata['address']) && $postdata['address'] != '')
 	{
 		return $wpdb->insert(
-				$wpdb->prefix . 'mr_club', array(
-					'title' => $postdata['title'],
-					'address' => $postdata['address']
-				), array(
-					'%s',
-					'%s'
-				)
+            $wpdb->prefix . 'mr_club', array(
+                'title' => $postdata['title'],
+                'address' => $postdata['address']
+            ), array(
+                '%s',
+                '%s'
+            )
 		);
 	}
 	return false;
@@ -259,20 +260,21 @@ function mr_update_club($postdata)
 {
 	global $wpdb;
 
-	if (isset($postdata['title']) && $postdata['title'] != '' && isset($postdata['address']) && $postdata['address'] != '')
+	if (isset($postdata['title']) && $postdata['title'] != '' && 
+        isset($postdata['address']) && $postdata['address'] != '')
 	{
 		return $wpdb->update(
-				$wpdb->prefix . 'mr_club', array(
-					'title' => $postdata['title'],
-					'address' => $postdata['address']
-				), array(
-					'id' => $postdata['id']
-				), array(
-					'%s',
-					'%s'
-				), array(
-					'%d'
-				)
+            $wpdb->prefix . 'mr_club', array(
+                'title' => $postdata['title'],
+                'address' => $postdata['address']
+            ), array(
+                'id' => $postdata['id']
+            ), array(
+                '%s',
+                '%s'
+            ), array(
+                '%d'
+            )
 		);
 	}
 	return false;

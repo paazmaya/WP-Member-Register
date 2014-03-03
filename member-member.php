@@ -38,7 +38,9 @@ function mr_show_members($filters = null)
 		}
 		if (isset($filters['group']) && is_numeric($filters['group']))
 		{
-			$wheres[] = 'A.id IN (SELECT GM.member_id FROM ' . $wpdb->prefix . 'mr_group_member GM WHERE GM.group_id = ' . intval($filters['group']) . ')';
+			$wheres[] = 'A.id IN (SELECT GM.member_id 
+                FROM ' . $wpdb->prefix . 'mr_group_member GM 
+                WHERE GM.group_id = ' . intval($filters['group']) . ')';
 		}
 		if (count($wheres) > 0)
 		{
@@ -52,7 +54,7 @@ function mr_show_members($filters = null)
 	$sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid
 	    FROM ' . $wpdb->prefix . 'mr_member A
 		LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code
-		LEFT JOIN ' . $wpdb->prefix . 'users C ON A.user_login = C.user_login' . $where . '
+		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login' . $where . '
 		ORDER BY A.lastname ASC';
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';
@@ -187,7 +189,7 @@ function mr_show_member_info($id)
 		$wpdb->prefix . 'mr_member A LEFT JOIN ' .
 		$wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' .
 		$wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
-		$wpdb->prefix . 'users D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' AND A.visible = 1 LIMIT 1';
+		$wpdb->users . ' D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' AND A.visible = 1 LIMIT 1';
 	$person = $wpdb->get_row($sql, ARRAY_A);
 
 	echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
@@ -438,8 +440,8 @@ function mr_insert_new_member($postdata)
 		if (in_array($k, $required))
 		{
 			// sanitize
-			$keys[] = mr_urize($k);
-			if ($k == 'access')
+			$key = mr_urize($k);
+			if ($key == 'access')
 			{
 				$rights = 0;
 				if (is_array($v))
@@ -449,20 +451,19 @@ function mr_insert_new_member($postdata)
 						$rights += intval($level);
 					}
 				}
-				$values[] = "'" . $rights . "'";
+				$values[$key] = $rights;
 			}
 			else
 			{
-				$values[] = "'" . mr_htmlent($v) . "'";
+				$values[$key] = mr_htmlent($v);
 			}
 		}
 	}
 
-	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_member (' . implode(', ', $keys) . ') VALUES(' . implode(', ', $values) . ')';
-
-	//echo '<div class="error"><p>' . $sql . '</p></div>';
-
-	return $wpdb->query($sql);
+    return $wpdb->insert( 
+        $wpdb->prefix . 'mr_member', 
+        $values
+    );
 }
 
 function mr_update_member_info($postdata)
@@ -514,7 +515,24 @@ function mr_update_member_info($postdata)
 		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . ' WHERE id = ' . $id . ' LIMIT 1';
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
-
+        /*
+        return $wpdb->update(
+			$wpdb->prefix . 'mr_member',
+			array(
+				'paidday' => $today
+			),
+			array(
+				'id' => $id
+			),
+			array(
+				'%s'
+			),
+			array(
+				'%d'
+			)
+		);
+        */
+        
 		return $wpdb->query($sql);
 	}
 	else
@@ -594,13 +612,13 @@ function mr_new_member_form($action, $data)
 					<option value=""></option>
 					<?php
 					// If editing, select all free and the current. If new, select all free
-					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
+					$sql = 'SELECT A.user_login, A.display_name FROM ' . $wpdb->users  . ' A ' .
 						'WHERE A.user_login = \'' . $values['user_login'] . '\' LIMIT 1' .
 						' UNION ' .
-						'SELECT A.user_login, A.display_name FROM ' . $wpdb->prefix . 'users A ' .
+						'SELECT A.user_login, A.display_name FROM ' . $wpdb->users  . ' A ' .
 						'WHERE A.user_login NOT IN (SELECT B.user_login FROM ' . $wpdb->prefix .
-						'mr_member B WHERE B.user_login IS NOT NULL) ORDER BY 2 ASC';
-
+						'mr_member B WHERE B.user_login IS NOT NULL AND B.visible = 1) ORDER BY 2 ASC';
+                    echo '\n<!--\n' . $sql . '\n-->\n';
 
 					$users = $wpdb->get_results($sql, ARRAY_A);
 					foreach($users as $user)
