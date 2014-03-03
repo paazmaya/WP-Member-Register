@@ -231,9 +231,9 @@ function mr_prf_user_register($user_id)
 	$keys = implode(', ', array_keys($values));
 	$vals = '\'' . implode('\', \'', array_values($values)) . '\'';
 
-    $wpdb->insert( 
-        $wpdb->prefix . 'mr_member', 
-        $values, 
+    $wpdb->insert(
+        $wpdb->prefix . 'mr_member',
+        $values,
         array(
             '%s', // user_login
             '%d',
@@ -256,7 +256,6 @@ function mr_prf_user_register($user_id)
     );
 
 	// Finally update few items in the WP_users (display_name)
-    /*
     $wpdb->update(
         $wpdb->users,
         array(
@@ -272,9 +271,6 @@ function mr_prf_user_register($user_id)
             '%d'
         )
     );
-    */
-	$wpdb->query('UPDATE ' . $wpdb->users . ' SET display_name = \'' .
-		$values['firstname'] . ' ' . $values['lastname'] . '\' WHERE ID = '. $user_id);
 
 	// Also add the meta data for name
 	update_user_meta($user_id, 'first_name', $values['firstname']);

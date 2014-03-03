@@ -205,7 +205,7 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
-        var hideLink = '<a href="#hide"><?php echo __('Hide', 'member-register'); ?></a>';
+        var hideLink = '<a href="#hide" class="dashicons dashicons-upload"><?php echo __('Hide', 'member-register'); ?></a>';
 
         jQuery(document).ready(function () {
             jQuery('table.sorter').stupidtable();
@@ -406,7 +406,8 @@ function member_register_wp_loaded()
             !isset($userdata->mr_memberid) || !is_numeric($userdata->mr_memberid))
     )
     {
-        $sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND user_login = \'' .
+        $sql = 'SELECT id, access FROM ' . $wpdb->prefix . 'mr_member
+            WHERE visible = 1 AND user_login = \'' .
             mr_htmlent($userdata->user_login) . '\' AND active = 1 LIMIT 1';
         $res = $wpdb->get_row($sql, ARRAY_A);
         if ($wpdb->num_rows == 1)

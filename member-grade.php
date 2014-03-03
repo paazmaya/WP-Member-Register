@@ -81,7 +81,7 @@ function mr_grade_list()
 			)
 		);
 
-		if ($update)
+		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Grade removed', 'member-register') . ' (' . $id . ')</strong>';
@@ -259,14 +259,6 @@ function mr_insert_new_grade($postdata)
 			$setval[] = '(' . implode(', ', array_merge($values, array('"' . intval($member) . '"'))) . ')';
 		}
 
-        $wpdb->insert( 
-            $wpdb->prefix . 'mr_grade', 
-            $values, 
-            array(
-                '%s',
-                '%d',
-            )
-        );
 		$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_grade (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
 		//echo $sql;

@@ -38,8 +38,8 @@ function mr_show_members($filters = null)
 		}
 		if (isset($filters['group']) && is_numeric($filters['group']))
 		{
-			$wheres[] = 'A.id IN (SELECT GM.member_id 
-                FROM ' . $wpdb->prefix . 'mr_group_member GM 
+			$wheres[] = 'A.id IN (SELECT GM.member_id
+                FROM ' . $wpdb->prefix . 'mr_group_member GM
                 WHERE GM.group_id = ' . intval($filters['group']) . ')';
 		}
 		if (count($wheres) > 0)
@@ -460,8 +460,8 @@ function mr_insert_new_member($postdata)
 		}
 	}
 
-    return $wpdb->insert( 
-        $wpdb->prefix . 'mr_member', 
+    return $wpdb->insert(
+        $wpdb->prefix . 'mr_member',
         $values
     );
 }
@@ -485,11 +485,14 @@ function mr_update_member_info($postdata)
 
 	if (isset($postdata['id']) && is_numeric($postdata['id']))
 	{
+        $memberId = intval($postdata['id']);
+
 		foreach($postdata as $k => $v)
 		{
 			if (in_array($k, $required))
 			{
 				// sanitize
+                $key = mr_urize($k);
 
 				if ($k == 'access')
 				{
@@ -501,28 +504,23 @@ function mr_update_member_info($postdata)
 							$rights += intval($level);
 						}
 					}
-					$values[] = mr_urize($k) . " = '" . $rights . "'";
+					$values[$key] =  $rights;
 				}
 				else
 				{
-					$values[] = mr_urize($k) . " = '" . mr_htmlent($v) . "'";
+					$values[$key] = mr_htmlent($v);
 				}
 			}
 		}
 
-		$id = intval($postdata['id']);
-
-		$sql = 'UPDATE ' . $wpdb->prefix . 'mr_member SET ' . implode(', ', $values) . ' WHERE id = ' . $id . ' LIMIT 1';
 
 		//echo '<div class="error"><p>' . $sql . '</p></div>';
-        /*
+
         return $wpdb->update(
 			$wpdb->prefix . 'mr_member',
+            $values,
 			array(
-				'paidday' => $today
-			),
-			array(
-				'id' => $id
+				'id' => $memberId
 			),
 			array(
 				'%s'
@@ -531,9 +529,6 @@ function mr_update_member_info($postdata)
 				'%d'
 			)
 		);
-        */
-        
-		return $wpdb->query($sql);
 	}
 	else
 	{

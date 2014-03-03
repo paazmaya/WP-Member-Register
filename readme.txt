@@ -57,6 +57,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 * Fixed database queries to use WP database class instance
 * Added MMA to the available martial arts list
 * Added EditorConfig, see http://EditorConfig.org
+* Fix listing Clubs that have no members registered to them
 
 = 0.11.4 =
 * Released 5th January 2014

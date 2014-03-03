@@ -40,7 +40,9 @@ function mr_payment_new()
 		<h2><?php echo __('Create new payments for multiple members at a time', 'member-register'); ?></h2>
 		<p><?php echo __('Reference number will be calculated and shown once the payment is created and shown in the list.', 'member-register'); ?></p>
 		<?php
-		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY lastname ASC';
+		$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
+		    FROM ' . $wpdb->prefix . 'mr_member
+		    WHERE visible = 1 ORDER BY lastname ASC';
 		$users = $wpdb->get_results($sql, ARRAY_A);
 		mr_new_payment_form($users);
 		?>
@@ -81,7 +83,7 @@ function mr_payment_list()
 			)
 		);
 
-		if ($update)
+		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('Mark the payment as paid today', 'member-register') . ', ' . $today . '</strong>';
@@ -102,7 +104,7 @@ function mr_payment_list()
 				'visible' => 0
 			),
 			array(
-				'id' => $_GET['removepayment']
+				'id' => $id
 			),
 			array(
 				'%d'
@@ -247,7 +249,7 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				{
 					echo '<form action="admin.php?page=member-payment-list" method="post" autocomplete="on">';
 					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
-					echo '<input type="submit" value="OK" /></form>';
+					echo '<input type="submit" class="button" value="OK" /></form>';
 				}
 				echo '</td>';
 			}
@@ -335,16 +337,6 @@ function mr_insert_new_payment($postdata)
 
 		}
 	}
-    /*
-    $wpdb->insert( 
-        $wpdb->prefix . 'mr_payment', 
-        $values, 
-        array(
-            '%s',
-            '%d',
-        )
-    );
-    */
 	$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_payment (' . implode(', ', $keys) . ') VALUES ' . implode(', ', $setval);
 
 	//echo '<div class="error"><p>' . $sql . '</p></div>';

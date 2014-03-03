@@ -84,7 +84,9 @@ function mr_files_list()
 		wp_die(__('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
-	if (isset($_GET['remove-file']) && is_numeric($_GET['remove-file']) && mr_has_permission(MR_ACCESS_FILES_MANAGE))
+	if (isset($_GET['remove-file']) &&
+        is_numeric($_GET['remove-file']) &&
+        mr_has_permission(MR_ACCESS_FILES_MANAGE))
 	{
 		$id = intval($_GET['remove-file']);
 
@@ -114,7 +116,7 @@ function mr_files_list()
 
 		rename($mr_file_base_directory . '/' . $info['directory'] . '/' . $id . '_' . $info['basename'], $removed . '/' . $id . '_' . $info['basename']);
 
-		if ($update)
+		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
 			echo '<strong>' . __('The file has been removed.', 'member-register') . '</strong>';
@@ -427,7 +429,9 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '',
 	}
 
 	$insert = $wpdb->insert(
-		$wpdb->prefix . 'mr_file', $values, array(
+		$wpdb->prefix . 'mr_file',
+        $values,
+        array(
 			'%s', // basename
 			'%d', // bytesize
 			'%s', // directory

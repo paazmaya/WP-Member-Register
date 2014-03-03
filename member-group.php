@@ -271,9 +271,9 @@ function mr_insert_new_group($postdata)
 		count($postdata['members']) > 0 && isset($postdata['title']) && $postdata['title'] != '')
 	{
 		$values = array(
-			title => mr_htmlent($postdata['title']),
-			creator => $userdata->mr_memberid,
-			modified => time()
+			'title' => mr_htmlent($postdata['title']),
+			'creator' => $userdata->mr_memberid,
+			'modified' => time()
 		);
         $insert = $wpdb->insert(
             $wpdb->prefix . 'mr_group',
@@ -284,7 +284,7 @@ function mr_insert_new_group($postdata)
                 '%d'
             )
         );
-		if ($insert)
+		if ($insert !== false)
 		{
 			$id = $wpdb->insert_id;
 			$setval = array();
@@ -347,16 +347,7 @@ function mr_group_update($id, $postdata)
 			{
 				$setval[] = '(' . $id . ', ' . intval($member) . ')';
 			}
-            /*
-            $wpdb->insert(
-                $wpdb->prefix . 'mr_group_member',
-                $values,
-                array(
-                    '%s', // user_login
-                    '%d',
-                )
-            );
-            */
+
 			$sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_group_member (group_id, member_id) VALUES ' . implode(', ', $setval);
 			return $wpdb->query($sql);
 		}

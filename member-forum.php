@@ -110,7 +110,7 @@ function mr_forum_list()
 				)
 			);
 
-			if ($update)
+			if ($update !== false)
 			{
 				echo '<div class="updated"><p>';
 				echo '<strong>' . __('Topic removed.', 'member-register') . '</strong>';
