@@ -8,7 +8,7 @@
     width: 2em;
 }
 #mrform .form-field input.error {
-    border: 1px solid #F22222;
+    border: 1px solid #d54e21;
 }
 .w40em {
 	width: 40em;
@@ -22,12 +22,9 @@
 .w4em {
 	width: 4em;
 }
-.redback {
-	background-color: #F42200;
-}
 
 label.error {
-    color: #F22222;
+    color: #d54e21;
     font-weight: bold;
     margin-left: 10px;
     vertical-align: middle;
@@ -58,4 +55,9 @@ table caption a {
 }
 .sorter th {
   cursor: pointer;
+}
+
+/* Show red marker on inactive member in the list */
+.member-list .inactive td:first-child {
+  border-left: 4px solid #d54e21;
 }
