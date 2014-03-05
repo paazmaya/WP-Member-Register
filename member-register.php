@@ -205,7 +205,7 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
-        var hideLink = '<a href="#hide" class="dashicons dashicons-upload"><?php echo __('Hide', 'member-register'); ?></a>';
+        var hideLink = '<a href="#hide" class="dashicons dashicons-upload" title="<?php echo __('Hide', 'member-register'); ?>">_</a>';
 
         jQuery(document).ready(function () {
             jQuery('table.sorter').stupidtable();

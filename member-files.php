@@ -242,8 +242,8 @@ function mr_files_list()
 
 						$out .= '<td>';
 						$out .= '<a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
-							'&amp;remove-file=' . $file['id'] . '" title="' . __('Remove', 'member-register') . ': ' .
-							$file['basename'] . '">_</a>';
+							'&amp;remove-file=' . $file['id'] . '" title="' . __('Remove file', 'member-register') . ': ' .
+							$file['directory'] . '/' . $file['basename'] . '">_</a>';
 						$out .= '</td>';
 					}
 					$out .= '</tr>';

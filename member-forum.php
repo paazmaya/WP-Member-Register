@@ -233,7 +233,7 @@ function mr_show_list_topics()
 			if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') .
-				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Remove this topic', 'member-register') . ': ' .
+				'&amp;remove-topic=' . $topic['id'] . '" title="' . __('Remove topic', 'member-register') . ': ' .
 				$topic['title'] . '">_</a></td>';
 			}
 			echo '</tr>';
@@ -295,8 +295,9 @@ function mr_show_posts_for_topic($topic)
 		echo '<td>' . mr_htmldec($post['content']) . '</td>';
 		if (mr_has_permission(MR_ACCESS_FORUM_DELETE))
 		{
-			echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . '&amp;topic=' . $topic .
-				'&amp;remove-post=' . $post['id'] . '" title="' . __('Remove this message', 'member-register') . '">_</a></td>';
+			echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-forum') . 
+                '&amp;topic=' . $topic . '&amp;remove-post=' . $post['id'] . '" title="' . 
+                __('Remove message written by', 'member-register') . ' ' . $post['firstname'] . ' ' . $post['lastname'] . '">_</a></td>';
 		}
 		echo '</tr>';
 	}

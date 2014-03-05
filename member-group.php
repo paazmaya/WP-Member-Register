@@ -222,7 +222,8 @@ function mr_show_groups($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-group-list') .
-					'&amp;remove-group=' . $group['id'] . '" title="' . __('Remove this group', 'member-register') . '">_</a></td>';
+					'&amp;remove-group=' . $group['id'] . '" title="' .
+                    __('Remove this group', 'member-register') . ', ' . $group['title'] . '">_</a></td>';
 			}
 			echo '</tr>';
 		}

@@ -275,7 +275,8 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-payment-list') .
-					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Remove this payment', 'member-register') . '">_</a></td>';
+					'&amp;removepayment=' . $payment['id'] . '" title="' . __('Remove this payment', 'member-register') . ', ' . 
+                    $payment['firstname'] .	' ' . $payment['lastname'] . ' (' . $payment['amount'] . ' EUR)">_</a></td>';
 			}
 			echo '</tr>';
 		}

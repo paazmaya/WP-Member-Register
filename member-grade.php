@@ -172,6 +172,7 @@ function mr_show_grades($memberid = null)
 		<?php
 		foreach($res as $grade)
 		{
+            $gradeName = array_key_exists($grade['grade'], $mr_grade_values) ? $mr_grade_values[$grade['grade']] : $grade['grade'];
 			echo '<tr id="grade_' . $grade['id'] . '">';
 			if ($memberid == null)
 			{
@@ -181,12 +182,7 @@ function mr_show_grades($memberid = null)
 				echo '<td data-sort-value="' . $grade['lastname'] . '">' . $url . $grade['lastname'] . '</a></td>';
 				echo '<td data-sort-value="' . $grade['firstname'] . '">' . $url . $grade['firstname'] . '</a></td>';
 			}
-			echo '<td data-sort-value="' . $grade['grade'] . '">';
-			if (array_key_exists($grade['grade'], $mr_grade_values))
-			{
-				echo $mr_grade_values[$grade['grade']];
-			}
-			echo '</td>';
+			echo '<td data-sort-value="' . $grade['grade'] . '">' . $gradeName . '</td>';
 			echo '<td title="' . $mr_grade_types[$grade['type']] . '">' . $grade['type'] . '</td>';
 			echo '<td data-sort-value="' . str_replace('-', '', $grade['day']) . '">' . $grade['day'] . '</td>';
 			echo '<td>' . $grade['nominator'] . '</td>';
@@ -195,7 +191,8 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Delete grade', 'member-register') . '">_</a></td>';
+					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Delete grade', 'member-register') . ' ' . 
+                    $grade['type'] . ' ' . $gradeName . '">_</a></td>';
 			}
 			echo '</tr>';
 		}

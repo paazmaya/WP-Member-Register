@@ -233,7 +233,7 @@ function mr_show_clubs()
             if ($allowremove)
             {
                 echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
-                    '&amp;removeclub=' . $club['id'] . '" title="' . __('Delete', 'member-register') . ': ' .
+                    '&amp;removeclub=' . $club['id'] . '" title="' . __('Delete club', 'member-register') . ': ' .
                     $club['title'] . '">_</a></td>';
             }
             echo '</tr>';
