@@ -156,24 +156,24 @@ function mr_club_form($data = null)
     }
     ?>
     <form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="on">
-        <input type="hidden" name="mr_submit_hidden_club" value="Y" />
+        <input type="hidden" name="mr_submit_hidden_club" value="Y"/>
         <table class="form-table" id="mrform">
             <tr class="form-field">
                 <th><?php echo __('Name', 'member-register'); ?> <span
                         class="description">(<?php echo __('official title', 'member-register'); ?>)</span></th>
-                <td><input type="text" name="title" class="required" required="required"
-                           value="<?php echo $values['title']; ?>" /></td>
+                <td><input type="text" name="title" class="required" required
+                           value="<?php echo $values['title']; ?>"/></td>
             </tr>
             <tr class="form-field">
                 <th><?php echo __('Address', 'member-register'); ?> <span
                         class="description">(<?php echo __('main training place', 'member-register'); ?>)</span></th>
-                <td><input type="text" name="address" class="required" required="required"
-                           value="<?php echo $values['address']; ?>" /></td>
+                <td><input type="text" name="address" class="required" required
+                           value="<?php echo $values['address']; ?>"/></td>
             </tr>
         </table>
 
         <p class="submit">
-            <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>" />
+            <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>"/>
         </p>
 
     </form>

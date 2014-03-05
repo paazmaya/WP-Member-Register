@@ -237,7 +237,7 @@ function mr_files_list()
 						{
 							$restrictions[] = __('Only group', 'member-register') . ': ' . $file['groupname'];
 						}
-						$out .= implode('<br />', $restrictions);
+						$out .= implode('<br/>', $restrictions);
 						$out .= '</td>';
 
 						$out .= '<td>';
@@ -307,20 +307,20 @@ function mr_files_list()
 		$base = basename($dir);
 		if ($base != '_removed')
 		{
-			echo '<option value="' . $base . '" />';
+			echo '<option value="' . $base . '"/>';
 		}
 	}
 	?>
 			</datalist>
-			<input type="hidden" name="mr_submit_hidden_file" value="Y" />
+			<input type="hidden" name="mr_submit_hidden_file" value="Y"/>
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
 					<th><?php echo __('Choose file', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
-					<td><input type="file" name="hoplaa" value="" /></td>
+					<td><input type="file" name="hoplaa" value=""/></td>
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Folder', 'member-register'); ?><span class="description">(<?php echo __('single word, no spaces', 'member-register'); ?>)</span></th>
-					<td><input type="text" name="directory" value="" list="directories" /></td>
+					<td><input type="text" name="directory" value="" list="directories"/></td>
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Club', 'member-register'); ?><span class="description">(<?php echo __('limited to the members of the given club', 'member-register'); ?>)</span></th>
@@ -377,7 +377,7 @@ function mr_files_list()
 			</table>
 
 			<p class="submit">
-				<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+				<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>"/>
 			</p>
 
 		</form>

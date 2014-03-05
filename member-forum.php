@@ -66,7 +66,7 @@ function mr_forum_list()
 		{
 			echo '<h3>' . __('Add message', 'member-register') . '</h3>';
 			mr_show_form_post($_GET['topic']);
-			echo '<hr />';
+			echo '<hr/>';
 		}
 
 		mr_show_posts_for_topic($_GET['topic']);
@@ -127,7 +127,7 @@ function mr_forum_list()
 		{
 			echo '<h3>' . __('Create a new discussion topic', 'member-register') . '</h3>';
 			mr_show_form_topic();
-			echo '<hr />';
+			echo '<hr/>';
 		}
 		echo '<h3>' . __('Topics of the active discussions', 'member-register') . '</h3>';
 
@@ -161,7 +161,7 @@ function mr_show_info_topic($topic)
 
 	echo '<h3>' . $res['title'] . '</h3>';
 	echo '<p>' . __('This topic was created by', 'member-register') . ' ' .  $res['firstname'] . ' ' . $res['lastname'] .
-		', ' . __('at date', 'member-register') . ' ' . date('Y-m-d', $res['created']) . '.<br />';
+		', ' . __('at date', 'member-register') . ' ' . date('Y-m-d', $res['created']) . '.<br/>';
 	echo __('Total of messages', 'member-register') . ' ' . $res['total'];
 	if ($res['total'] > 0)
 	{
@@ -389,16 +389,16 @@ function mr_show_form_topic()
 	$action = admin_url('admin.php?page=member-forum');
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="on">
-		<input type="hidden" name="mr_submit_hidden_topic" value="Y" />
+		<input type="hidden" name="mr_submit_hidden_topic" value="Y"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Topic', 'member-register'); ?> <span class="description">(<?php echo __('title', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" class="required" required="required" value="" /></td>
+				<td><input type="text" name="title" class="required" required value=""/></td>
 			</tr>
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>"/>
 		</p>
 
 	</form>
@@ -416,17 +416,17 @@ function mr_show_form_post($topic)
 	$action = admin_url('admin.php?page=member-forum') . '&topic=' . $topic;
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="on">
-		<input type="hidden" name="mr_submit_hidden_post" value="Y" />
-		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>" />
+		<input type="hidden" name="mr_submit_hidden_post" value="Y"/>
+		<input type="hidden" name="topic" value="<?php echo intval($topic); ?>"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Message', 'member-register'); ?> <span class="description">(<?php echo __('feel free to write', 'member-register'); ?>)</span></th>
-				<td><textarea name="content" class="required" required="required"></textarea></td>
+				<td><textarea name="content" class="required" required></textarea></td>
 			</tr>
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Publish') ?>"/>
 		</p>
 
 	</form>

@@ -288,12 +288,12 @@ function mr_grade_form($members)
 	global $mr_grade_values;
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
-		<input type="hidden" name="mr_submit_hidden_grade" value="Y" />
+		<input type="hidden" name="mr_submit_hidden_grade" value="Y"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('select multiple members if needed', 'member-register'); ?>)</span></th>
 				<td>
-					<select class="chosen required" required="required" name="members[]" multiple="multiple" size="8" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
+					<select class="chosen required" required name="members[]" multiple size="8" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach($members as $user)
@@ -307,7 +307,7 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Grade', 'member-register'); ?> <span class="description">(<?php echo __('key in parenthesis', 'member-register'); ?>)</span></th>
 				<td>
-					<select name="grade" class="required chosen" required="required" data-placeholder="<?php echo __('Choose a grade', 'member-register'); ?>">
+					<select name="grade" class="required chosen" required data-placeholder="<?php echo __('Choose a grade', 'member-register'); ?>">
 					<option value=""></option>
 					<?php
 					foreach($mr_grade_values as $k => $v)
@@ -321,23 +321,23 @@ function mr_grade_form($members)
 			<tr class="form-field">
 				<th><?php echo __('Martial art', 'member-register'); ?> <span class="description">(<?php echo __('choose the martial art', 'member-register'); ?>)</span></th>
 				<td>
-					<label><input type="radio" name="type" value="Yuishinkai" checked="checked" /> Yuishinkai</label><br />
-					<label><input type="radio" name="type" value="Kobujutsu" /> Kobujutsu</label>
+					<label><input type="radio" name="type" value="Yuishinkai" checked/> Yuishinkai</label><br/>
+					<label><input type="radio" name="type" value="Kobujutsu"/> Kobujutsu</label>
 				</td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Location', 'member-register'); ?> <span class="description">(<?php echo __('city and country if not native', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="location" class="required" required="required" value="" list="locations" /></td>
+				<td><input type="text" name="location" class="required" required value="" list="locations"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nominator', 'member-register'); ?> <span class="description">(<?php echo __('who nominated', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="nominator" class="required" required="required" value="" list="nominators" /></td>
+				<td><input type="text" name="nominator" class="required" required value="" list="nominators"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Date', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="day" class="pickday required" required="required" value="<?php
+				<td><input type="text" name="day" class="pickday required" required value="<?php
 				echo date('Y-m-d', time() - 60*60*24*1);
-				?>" list="dates" /></td>
+				?>" list="dates"/></td>
 			</tr>
 
 		</table>
@@ -348,7 +348,7 @@ function mr_grade_form($members)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['location'] . '" />';
+				echo '<option value="' . $res['location'] . '"/>';
 			}
 			?>
 		</datalist>
@@ -358,7 +358,7 @@ function mr_grade_form($members)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['nominator'] . '" />';
+				echo '<option value="' . $res['nominator'] . '"/>';
 			}
 			?>
 		</datalist>
@@ -368,13 +368,13 @@ function mr_grade_form($members)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['day'] . '" />';
+				echo '<option value="' . $res['day'] . '"/>';
 			}
 			?>
 		</datalist>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>"/>
 		</p>
 
 	</form>

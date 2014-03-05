@@ -30,44 +30,44 @@ function mr_prf_register_form ()
 
 	?>
 	<p>
-		<label><?php echo __('First Name', 'member-register'); ?><br />
-			<input type="text" name="firstname" class="required" required="required" value="<?php echo $values['firstname']; ?>" />
+		<label><?php echo __('First Name', 'member-register'); ?><br/>
+			<input type="text" name="firstname" class="required" required value="<?php echo $values['firstname']; ?>"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Last name', 'member-register'); ?><br />
-			<input type="text" name="lastname" class="required" required="required" value="<?php echo $values['lastname']; ?>" />
+		<label><?php echo __('Last name', 'member-register'); ?><br/>
+			<input type="text" name="lastname" class="required" required value="<?php echo $values['lastname']; ?>"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(<?php echo __('format YYYY-MM-DD, for example 1950-12-31', 'member-register'); ?>)</span><br />
-			<input type="text" name="birthdate" class="pickday required" required="required" value="<?php echo $values['birthdate']; ?>" />
+		<label><?php echo __('Birthday', 'member-register'); ?> <span class="description">(<?php echo __('format YYYY-MM-DD, for example 1950-12-31', 'member-register'); ?>)</span><br/>
+			<input type="text" name="birthdate" class="pickday required" required value="<?php echo $values['birthdate']; ?>"/>
 			<!--  min="1900-01-01" max="<?php echo date('Y-m-d', time() - 60*60*24*365); ?>"  -->
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Postal Address', 'member-register'); ?><br />
-			<input type="text" name="address" class="required" required="required" value="<?php echo $values['address']; ?>" />
+		<label><?php echo __('Postal Address', 'member-register'); ?><br/>
+			<input type="text" name="address" class="required" required value="<?php echo $values['address']; ?>"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Postal Code', 'member-register'); ?><br />
-			<input type="text" name="zipcode" class="required" required="required" value="<?php echo $values['zipcode']; ?>" list="zipcodes" />
+		<label><?php echo __('Postal Code', 'member-register'); ?><br/>
+			<input type="text" name="zipcode" class="required" required value="<?php echo $values['zipcode']; ?>" list="zipcodes"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Post Office', 'member-register'); ?><br />
-			<input type="text" name="postal" class="required" required="required" value="<?php echo $values['postal']; ?>" list="postals" />
+		<label><?php echo __('Post Office', 'member-register'); ?><br/>
+			<input type="text" name="postal" class="required" required value="<?php echo $values['postal']; ?>" list="postals"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Telephone', 'member-register'); ?><br />
-			<input type="text" name="phone" class="required" required="required" value="<?php echo $values['phone']; ?>" />
+		<label><?php echo __('Telephone', 'member-register'); ?><br/>
+			<input type="text" name="phone" class="required" required value="<?php echo $values['phone']; ?>"/>
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Nationality', 'member-register'); ?><br />
-			<select name="nationality" class="required" required="required" data-placeholder="<?php echo __('Choose nationality', 'member-register'); ?>">
+		<label><?php echo __('Nationality', 'member-register'); ?><br/>
+			<select name="nationality" class="required" required data-placeholder="<?php echo __('Choose nationality', 'member-register'); ?>">
 		<option value=""></option>
 		<?php
 		$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -77,7 +77,7 @@ function mr_prf_register_form ()
 			echo '<option value="' . $cnt['code']. '"';
 			if ($cnt['code'] == $values['nationality'])
 			{
-				echo ' selected="selected"';
+				echo ' selected';
 			}
 			echo '>' . $cnt['name'] . '</option>';
 		}
@@ -86,8 +86,8 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Main martial art', 'member-register'); ?><br />
-			<select name="martial" class="required" required="required" data-placeholder="<?php echo __('Choose main martial art', 'member-register'); ?>">
+		<label><?php echo __('Main martial art', 'member-register'); ?><br/>
+			<select name="martial" class="required" required data-placeholder="<?php echo __('Choose main martial art', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				foreach ($mr_martial_arts as $k => $v)
@@ -95,7 +95,7 @@ function mr_prf_register_form ()
 					echo '<option value="' . $k . '"';
 					if ($values['martial'] == $k)
 					{
-						echo ' selected="selected"';
+						echo ' selected';
 					}
 					echo '>' . $v . ' (' . $k . ')</option>';
 				}
@@ -104,7 +104,7 @@ function mr_prf_register_form ()
 		</label>
 	</p>
 	<p>
-		<label><?php echo __('Club', 'member-register'); ?> <span class="description">(<?php echo __('not mandatory', 'member-register'); ?>)</span><br />
+		<label><?php echo __('Club', 'member-register'); ?> <span class="description">(<?php echo __('not mandatory', 'member-register'); ?>)</span><br/>
 			<select name="club" data-placeholder="<?php echo __('Choose club', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
@@ -114,7 +114,7 @@ function mr_prf_register_form ()
 					echo '<option value="' . $club['id'] . '"';
 					if ($values['club'] == $club['id'])
 					{
-						echo ' selected="selected"';
+						echo ' selected';
 					}
 					echo '>' . $club['title'] . '</option>';
 				}
@@ -129,7 +129,7 @@ function mr_prf_register_form ()
 		$results = $wpdb->get_results($sql, ARRAY_A);
 		foreach ($results as $res)
 		{
-			echo '<option value="' . $res['postal'] . '" />';
+			echo '<option value="' . $res['postal'] . '"/>';
 		}
 		?>
 	</datalist>
@@ -139,7 +139,7 @@ function mr_prf_register_form ()
 		$results = $wpdb->get_results($sql, ARRAY_A);
 		foreach ($results as $res)
 		{
-			echo '<option value="' . $res['zipcode'] . '" />';
+			echo '<option value="' . $res['zipcode'] . '"/>';
 		}
 		?>
 	</datalist>

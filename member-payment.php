@@ -151,7 +151,7 @@ function mr_show_payments_lists($memberid)
 
 	mr_show_payments($memberid, true);
 	?>
-	<hr />
+	<hr/>
 	<h3><?php echo __('Fees paid to the', 'member-register'); ?></h3>
 	<?php
 	mr_show_payments($memberid, false);
@@ -248,8 +248,8 @@ function mr_show_payments($memberid = null, $isUnpaidView = false)
 				if ($payment['paidday'] == '0000-00-00')
 				{
 					echo '<form action="admin.php?page=member-payment-list" method="post" autocomplete="on">';
-					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '" />';
-					echo '<input type="submit" class="button" value="OK" /></form>';
+					echo '<input type="hidden" name="haspaid" value="' . $payment['id'] . '"/>';
+					echo '<input type="submit" class="button" value="OK"/></form>';
 				}
 				echo '</td>';
 			}
@@ -360,11 +360,11 @@ function mr_new_payment_form($members)
 	global $wpdb;
 	?>
 	<form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
-		<input type="hidden" name="mr_submit_hidden_payment" value="Y" />
+		<input type="hidden" name="mr_submit_hidden_payment" value="Y"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Member', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
+				<td><select class="chosen" name="members[]" multiple size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				foreach($members as $user)
@@ -376,27 +376,27 @@ function mr_new_payment_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('annual, lifetime, etc...', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="type" value="" class="required" required="required" list="types" /></td>
+				<td><input type="text" name="type" value="" class="required" required list="types"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Amount', 'member-register'); ?> <span class="description">(<?php echo __('EUR', 'member-register'); ?>)</span></th>
-				<td><input type="number" name="amount" value="" class="required" required="required" list="amounts" /></td>
+				<td><input type="number" name="amount" value="" class="required" required list="amounts"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('Three weeks in the future by default', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="deadline" class="pickday required" required="required" value="<?php
+				<td><input type="text" name="deadline" class="pickday required" required value="<?php
 				echo date('Y-m-d', time() + 60*60*24*21);
-				?>" /></td>
+				?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Valid until', 'member-register'); ?> <span class="description">(<?php echo __('end of the current year', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="validuntil" class="pickday" required="required" value="<?php
+				<td><input type="text" name="validuntil" class="pickday" required value="<?php
 				echo date('Y') . '-12-31';
-				?>" /></td>
+				?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Already paid', 'member-register'); ?> <span class="description">(<?php echo __('paid today', 'member-register'); ?>)</span></th>
-				<td><input type="checkbox" name="alreadypaid" class="w4em" /></td>
+				<td><input type="checkbox" name="alreadypaid" class="w4em"/></td>
 			</tr>
 		</table>
 
@@ -406,7 +406,7 @@ function mr_new_payment_form($members)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['type'] . '" />';
+				echo '<option value="' . $res['type'] . '"/>';
 			}
 			?>
 		</datalist>
@@ -416,13 +416,13 @@ function mr_new_payment_form($members)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['amount'] . '" />';
+				echo '<option value="' . $res['amount'] . '"/>';
 			}
 			?>
 		</datalist>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="Lisää lasku" />
+			<input type="submit" name="Submit" class="button-primary" value="Lisää lasku"/>
 		</p>
 
 	</form>

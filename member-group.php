@@ -359,7 +359,7 @@ function mr_group_update($id, $postdata)
 
 /**
  * Print out a form for creating new groups
- * $members array of pre selcted members by id
+ * $members array of pre selected members by id
  */
 function mr_new_group_form($members = null, $title = '', $id = null)
 {
@@ -377,15 +377,15 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 	}
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="off">
-		<input type="hidden" name="mr_submit_hidden_group" value="Y" />
+		<input type="hidden" name="mr_submit_hidden_group" value="Y"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('name for easy recognition', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" class="required" required="required" value="<?php echo $title; ?>" /></td>
+				<td><input type="text" name="title" class="required" required value="<?php echo $title; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple="multiple" size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
+				<td><select class="chosen" name="members[]" multiple size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
@@ -397,7 +397,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 					echo '<option value="' . $user['id']. '"';
 					if ($members != null && in_array($user['id'], $members))
 					{
-						echo ' selected="selected"';
+						echo ' selected';
 					}
 					echo '>' . $user['name'] . ' (' . $user['id']. ')</option>';
 				}
@@ -407,7 +407,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php echo __('Create group', 'member-register'); ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php echo __('Create group', 'member-register'); ?>"/>
 		</p>
 
 	</form>

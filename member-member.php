@@ -329,13 +329,13 @@ function mr_show_member_info($id)
 	}
 
 	// ---------------
-	echo '<hr />';
+	echo '<hr/>';
 	echo '<h2>' . __('Grades', 'member-register') . '</h2>';
 	mr_show_grades($id);
 
 	?>
 
-	<hr />
+	<hr/>
 	<h2><?php echo __('Payments', 'member-register'); ?></h2>
 	<?php
 
@@ -593,8 +593,8 @@ function mr_new_member_form($action, $data)
 
 	?>
 	<form name="form1" method="post" action="<?php echo $action; ?>" autocomplete="on">
-		<input type="hidden" name="mr_submit_hidden_member" value="Y" />
-		<input type="hidden" name="id" value="<?php echo $values['id']; ?>" />
+		<input type="hidden" name="mr_submit_hidden_member" value="Y"/>
+		<input type="hidden" name="id" value="<?php echo $values['id']; ?>"/>
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('WP username', 'member-register'); ?> <span class="description">(<?php echo __('If there is already a', 'member-register'); ?>)</span></th>
@@ -621,7 +621,7 @@ function mr_new_member_form($action, $data)
 						echo '<option value="' . $user['user_login']. '"';
 						if ($values['user_login'] == $user['user_login'])
 						{
-							echo ' selected="selected"';
+							echo ' selected';
 						}
 						echo '>' . $user['display_name'] . ' (' . $user['user_login'] . ')</option>';
 					}
@@ -643,14 +643,14 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<select class="chosen" name="access[]" multiple="multiple" data-placeholder="<?php echo __('Choose all actions', 'member-register'); ?>">
+					<select class="chosen" name="access[]" multiple data-placeholder="<?php echo __('Choose all actions', 'member-register'); ?>">
 					<?php
 					foreach ($mr_access_type as $k => $v)
 					{
 						echo '<option value="' . $k . '"';
 						if (mr_has_permission($k, $values['access']))
 						{
-							echo ' selected="selected"';
+							echo ' selected';
 						}
 						echo '>' . $v . ' (' . $k . ')</option>';
 					}
@@ -667,35 +667,35 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('First Name', 'member-register'); ?></th>
-				<td><input type="text" name="firstname" class="required" required="required" value="<?php echo $values['firstname']; ?>" /></td>
+				<td><input type="text" name="firstname" class="required" required value="<?php echo $values['firstname']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Last name', 'member-register'); ?></th>
-				<td><input type="text" name="lastname" class="required" required="required" value="<?php echo $values['lastname']; ?>" /></td>
+				<td><input type="text" name="lastname" class="required" required value="<?php echo $values['lastname']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Birthday', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>" /></td>
+				<td><input type="text" name="birthdate" class="pickday" value="<?php echo $values['birthdate']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Postal Address', 'member-register'); ?></th>
-				<td><input type="text" name="address" value="<?php echo $values['address']; ?>" /></td>
+				<td><input type="text" name="address" value="<?php echo $values['address']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Postal Code', 'member-register'); ?></th>
-				<td><input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" list="zipcodes" /></td>
+				<td><input type="text" name="zipcode" value="<?php echo $values['zipcode']; ?>" list="zipcodes"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Post Office', 'member-register'); ?></th>
-				<td><input type="text" name="postal" value="<?php echo $values['postal']; ?>" list="postals" /></td>
+				<td><input type="text" name="postal" value="<?php echo $values['postal']; ?>" list="postals"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('The Telephone Number For The', 'member-register'); ?></th>
-				<td><input type="text" name="phone" value="<?php echo $values['phone']; ?>" /></td>
+				<td><input type="text" name="phone" value="<?php echo $values['phone']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('E-mail', 'member-register'); ?></th>
-				<td><input type="email" name="email" value="<?php echo $values['email']; ?>" /></td>
+				<td><input type="email" name="email" value="<?php echo $values['email']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nationality', 'member-register'); ?></th>
@@ -709,7 +709,7 @@ function mr_new_member_form($action, $data)
 					echo '<option value="' . $cnt['code']. '"';
 					if ($cnt['code'] == $values['nationality'])
 					{
-						echo ' selected="selected"';
+						echo ' selected';
 					}
 					echo '>' . $cnt['name'] . '</option>';
 				}
@@ -718,11 +718,11 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Date of joining', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>
-				<td><input type="text" name="joindate" class="pickday" value="<?php echo $values['joindate']; ?>" /></td>
+				<td><input type="text" name="joindate" class="pickday" value="<?php echo $values['joindate']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Association passport number', 'member-register'); ?></th>
-				<td><input type="text" name="passnro" value="<?php echo $values['passnro']; ?>" /></td>
+				<td><input type="text" name="passnro" value="<?php echo $values['passnro']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Main martial art', 'member-register'); ?></th>
@@ -734,7 +734,7 @@ function mr_new_member_form($action, $data)
 						echo '<option value="' . $k . '"';
 						if ($values['martial'] == $k)
 						{
-							echo ' selected="selected"';
+							echo ' selected';
 						}
 						echo '>' . $v . ' (' . $k . ')</option>';
 					}
@@ -743,7 +743,7 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Additional information', 'member-register'); ?></th>
-				<td><input type="text" name="notes" value="<?php echo $values['notes']; ?>" /></td>
+				<td><input type="text" name="notes" value="<?php echo $values['notes']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Active', 'member-register'); ?> <span class="description">(<?php echo __('can login if enabled', 'member-register'); ?>)</span></th>
@@ -752,8 +752,8 @@ function mr_new_member_form($action, $data)
 				if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
 				{
 					?>
-					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked="checked"'; ?> /> <?php echo __('yes', 'member-register'); ?></label><br />
-					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked="checked"'; ?> /> <?php echo __('no', 'member-register'); ?></label>
+					<label><input type="radio" name="active" value="1" <?php if ($values['active'] == 1) echo 'checked'; ?>/> <?php echo __('yes', 'member-register'); ?></label><br/>
+					<label><input type="radio" name="active" value="0" <?php if ($values['active'] == 0) echo 'checked'; ?>/> <?php echo __('no', 'member-register'); ?></label>
 					<?php
 				}
 				else
@@ -774,7 +774,7 @@ function mr_new_member_form($action, $data)
 					echo '<option value="' . $club['id'] . '"';
 					if ($values['club'] == $club['id'])
 					{
-						echo ' selected="selected"';
+						echo ' selected';
 					}
 					echo '>' . $club['title'] . '</option>';
 				}
@@ -788,7 +788,7 @@ function mr_new_member_form($action, $data)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['postal'] . '" />';
+				echo '<option value="' . $res['postal'] . '"/>';
 			}
 			?>
 		</datalist>
@@ -798,13 +798,13 @@ function mr_new_member_form($action, $data)
 			$results = $wpdb->get_results($sql, ARRAY_A);
 			foreach ($results as $res)
 			{
-				echo '<option value="' . $res['zipcode'] . '" />';
+				echo '<option value="' . $res['zipcode'] . '"/>';
 			}
 			?>
 		</datalist>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
+			<input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>"/>
 		</p>
 
 	</form>
