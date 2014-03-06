@@ -423,7 +423,7 @@ function mr_new_payment_form($members)
 		</datalist>
 
 		<p class="submit">
-			<input type="submit" name="Submit" class="button-primary" value="Lisää lasku"/>
+			<input type="submit" name="Submit" class="button-primary" value="<?php echo __('Create payment', 'member-register'); ?>"/>
 		</p>
 
 	</form>

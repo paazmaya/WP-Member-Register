@@ -51,6 +51,10 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
+= 0.13.0 =
+* Released 2014
+* User Interface testing with CasperJS, http://casperjs.org
+
 = 0.12.0 =
 * Released 4th March 2014
 * Translations fixed

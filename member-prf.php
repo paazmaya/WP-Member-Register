@@ -213,7 +213,7 @@ function mr_prf_user_register($user_id)
 		'access' => 1,
 		'email' => $data['user_email'],
 		'joindate' => date('Y-m-d'),
-		'passnro' => '',
+		'passnro' => isset($_POST['passnro']) ? mr_htmlent($_POST['passnro']) : '', // not used at the moment, but perhaps should?
 		'notes' => '',
 		'active' => 0,
 		'firstname' => isset($_POST['firstname']) ? mr_htmlent($_POST['firstname']) : '',
