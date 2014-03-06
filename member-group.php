@@ -92,7 +92,8 @@ function mr_group_list()
 
 
 			echo '<p><a href="' . admin_url('admin.php?page=member-group-list') . '&amp;group-member=' .
-				$id . '&amp;edit" title="' . __('Modify this group', 'member-register') . '" class="button-primary">' . __('Modify this group', 'member-register') . '</a></p>';
+				$id . '&amp;edit" title="' . __('Modify this group', 'member-register') . '" class="button-primary">' .
+                __('Modify this group', 'member-register') . '</a></p>';
 
 			echo '<h2>' . __('Members in this group.', 'member-register') . '</h2>';
 			mr_show_members(array(
@@ -104,7 +105,6 @@ function mr_group_list()
 	else
 	{
 		echo '<h2>' . __('Groups', 'member-register') . '</h2>';
-
 
 		// Check for possible insert
 		$hidden_field_name = 'mr_submit_hidden_group';

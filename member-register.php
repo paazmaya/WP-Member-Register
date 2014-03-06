@@ -281,14 +281,15 @@ function member_register_admin_menu()
     // http://codex.wordpress.org/Adding_Administration_Menus
     // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position )
     add_menu_page(__('Member Register', 'member-register'), __('Member Register', 'member-register'), 'read',
-        'member-register-control',
-        'mr_member_list', 'dashicons-groups'); // $position );
+        'member-register-control', 'mr_member_list_active', 'dashicons-groups'); // $position );
 
     if (mr_has_permission(MR_ACCESS_MEMBERS_EDIT))
     {
         // add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function )
         add_submenu_page('member-register-control', __('Add new member', 'member-register'),
             __('Add new member', 'member-register'), 'read', 'member-register-new', 'mr_member_new');
+        add_submenu_page('member-register-control', __('List inactive members', 'member-register'),
+            __('List non active members', 'member-register'), 'read', 'member-register-inactive', 'mr_member_list_inactive');
     }
 
     if (mr_has_permission(MR_ACCESS_PAYMENT_MANAGE))
@@ -451,7 +452,7 @@ function member_register_uninstall()
 */
 
 
-function mr_member_list()
+function mr_member_list_page($showActiveMembers)
 {
     if (!current_user_can('read'))
     {
@@ -477,6 +478,7 @@ function mr_member_list()
     }
     else
     {
+        echo '<h2>' . __('Member Register', 'member-register') . '</h2>';
         if (isset($_GET['removeid']) && is_numeric($_GET['removeid']))
         {
             // Remove this member (hide with visible = 0)
@@ -484,14 +486,20 @@ function mr_member_list()
         }
         else
         {
-            echo '<h2>' . __('Member Register', 'member-register') . '</h2>';
-            echo '<p>' . __('A list of registered members', 'member-register') . '</p>';
-            mr_show_members();
+            echo '<p>' . __('A list of registered active members', 'member-register') . '</p>';
+            mr_show_members(array('active' => $showActiveMembers));
         }
     }
     echo '</div>';
 }
 
+function mr_member_list_active()
+{
+    mr_member_list_page(true);
+}
 
-
+function mr_member_list_inactive()
+{
+    mr_member_list_page(false);
+}
 

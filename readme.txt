@@ -54,6 +54,8 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 = 0.13.0 =
 * Released 2014
 * User Interface testing with CasperJS, http://casperjs.org
+* Members listed in two lists based on their active state, so that recently registered users will be easier to find
+* Fixed showing hidden columns of member list
 
 = 0.12.0 =
 * Released 4th March 2014

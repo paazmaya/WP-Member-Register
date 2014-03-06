@@ -87,13 +87,10 @@ function mr_show_members($filters = null)
 			'&memberid=' . $member['id'] . '" title="' . $member['firstname'] .
 			' '	. $member['lastname'] . '">';
 
-		echo '<tr id="user_' . $member['id'] . '">';
+		echo '<tr id="user_' . $member['id'] . '"' . (intval($member['active']) === 0 ? ' class="inactive"' : '') . '>';
 		echo '<td>' . $member['id'] . '</td>';
 		echo '<td data-sort-value="' . $member['lastname'] . '"';
-		if (intval($member['active']) == 0)
-		{
-			echo ' class="redback"';
-		}
+
 		echo '>' . $url . $member['lastname'] . '</a></td>';
 		echo '<td data-sort-value="' . $member['firstname'] . '">' . $url . $member['firstname'] . '</a></td>';
 		echo '<td data-sort-value="' . str_replace('-', '', $member['birthdate']) . '">';
@@ -201,9 +198,9 @@ function mr_show_member_info($id)
 
 		if (intval($person['gradecount']) == 0 && intval($person['paymentcount']) == 0)
 		{
-			echo '<p><a href="' . admin_url('admin.php?page=member-register-control') . '&removeid=' . $id .
-				'" title="' . __('This user can be removed by clicking here', 'member-register') . '">[' .
-				__('This user can be removed by clicking here', 'member-register') . ']</a>';
+			echo '<p><a rel="remove" class="button" href="' . admin_url('admin.php?page=member-register-control') . '&removeid=' . $id .
+				'" title="' . __('Remove this user', 'member-register') . ' ' . $person['firstname'] . ' ' . $person['lastname'] . '">' .
+				__('This user can be removed by clicking here', 'member-register') . '</a>';
 		}
 	}
 
@@ -356,7 +353,11 @@ function mr_remove_member($id)
 		wp_die( __('You do not have sufficient permissions to access this page.', 'member-register'));
 	}
 
+    $id = intval($id);
+
 	global $wpdb;
+
+    $info = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $id . ' LIMIT 1', ARRAY_A);
 
 	$removal = $wpdb->update(
 		$wpdb->prefix . 'mr_member',
@@ -379,7 +380,8 @@ function mr_remove_member($id)
 	if ($removal)
 	{
 		echo '<div class="updated"><p>';
-		echo '<strong>' . __('Member removed', 'member-register') . ' (' . $id . ')</strong>';
+		echo '<strong>' . __('Member removed', 'member-register') . ' ' .$info['firstname'] .
+            ' ' .$info['lastname'] . '  (' . $id . ')</strong>';
 		echo '</p></div>';
 	}
 	else

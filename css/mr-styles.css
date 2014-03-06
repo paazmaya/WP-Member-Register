@@ -58,6 +58,6 @@ table caption a {
 }
 
 /* Show red marker on inactive member in the list */
-.member-list .inactive td:first-child {
+.inactive td:first-child {
   border-left: 4px solid #d54e21;
 }
