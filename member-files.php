@@ -243,7 +243,7 @@ function mr_files_list()
 						$out .= '<td>';
 						$out .= '<a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-files') .
 							'&amp;remove-file=' . $file['id'] . '" title="' . __('Remove file', 'member-register') . ': ' .
-							$file['directory'] . '/' . $file['basename'] . '">_</a>';
+							$file['directory'] . '/' . $file['basename'] . '">&nbsp;</a>';
 						$out .= '</td>';
 					}
 					$out .= '</tr>';
@@ -300,17 +300,17 @@ function mr_files_list()
 		<h2><?php echo __('Add new file', 'member-register'); ?></h2>
 		<form name="form1" method="post" action="<?php echo admin_url('admin.php?page=member-files-new'); ?>" enctype="multipart/form-data" autocomplete="on">
 			<datalist id="directories">
-	<?php
-	$dirs = glob($mr_file_base_directory . '/*', GLOB_ONLYDIR);
-	foreach ($dirs as $dir)
-	{
-		$base = basename($dir);
-		if ($base != '_removed')
-		{
-			echo '<option value="' . $base . '"/>';
-		}
-	}
-	?>
+                <?php
+                $dirs = glob($mr_file_base_directory . '/*', GLOB_ONLYDIR);
+                foreach ($dirs as $dir)
+                {
+                    $base = basename($dir);
+                    if ($base != '_removed')
+                    {
+                        echo '<option value="' . $base . '"/>';
+                    }
+                }
+                ?>
 			</datalist>
 			<input type="hidden" name="mr_submit_hidden_file" value="Y"/>
 			<table class="form-table" id="mrform">

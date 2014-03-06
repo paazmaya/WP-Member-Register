@@ -32,9 +32,9 @@ label.error {
 input.required {
 	border: 1px solid #22F422;
 }
-th.hideable a {
-	display: inline-block;
-	margin: 4px;
+th.hideable a[href="#hide"] {
+	display: inline;
+	margin: 2px;
 }
 
 table caption {

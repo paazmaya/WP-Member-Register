@@ -205,11 +205,9 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
-        var hideLink = '<a href="#hide" class="dashicons dashicons-upload" title="<?php echo __('Hide', 'member-register'); ?>">_</a>';
 
         jQuery(document).ready(function () {
             jQuery('table.sorter').stupidtable();
-
 
             jQuery.datepicker.setDefaults({
                 showWeek: true,
@@ -231,37 +229,44 @@ function member_register_admin_head()
                 return confirm(title);
             });
 
-            jQuery('th.hideable').prepend(hideLink);
+            var hideLink = '<a href="#hide" class="dashicons dashicons-upload" title="<?php echo __('Hide', 'member-register'); ?>">&nbsp;</a>';
+            jQuery('th.hideable').append(hideLink);
 
             // Hide table columns
-            jQuery('th.hideable a[href="#hide"]').click(function () {
-                var inx = jQuery(this).parent().index() + 1;
-                console.log("inx: " + inx);
-                var table = jQuery(this).parentsUntil('table').parent();
-                var text = jQuery(this).parent().text();
-                console.log("text: " + text);
+            jQuery('th.hideable a[href="#hide"]').on('click', function () {
+                var $self = jQuery(this);
+                var inx = $self.parent().index() + 1;
+                var table = $self.parentsUntil('table').parent();
+                var text = $self.parent().text();
+                //console.log('hide(). inx: ' + inx + ', text: ' + text);
 
-                var showLink = '<a href="#show" title="' + text + '">' + text + '</a>';
+                var showLink = '<a href="#show" title="' + text + '" data-index="' + inx +
+                    '"><i class="' + $self.attr('class') + '"></i>' + text + '</a>';
                 jQuery('table caption').append(showLink);
 
-                table.find('tr td:nth-child(' + inx + ')').hide();
-                table.find('tr th:nth-child(' + inx + ')').hide();
+                var ths = table.find('tr th:nth-child(' + inx + ')');
+                var tds = table.find('tr td:nth-child(' + inx + ')');
+
+                ths.hide();
+                tds.hide();
 
                 return false;
             });
 
             // Show the column again
-            jQuery('table caption a[href="#show"]').live('click', function () {
-                var text = jQuery(this).text();
-                var inx = jQuery('thead th:contains(' + text + ')').index();
-                console.log("show: " + text + ", inx: " + inx);
+            jQuery(document).on('click', 'table caption a[href="#show"]', function () {
+                var $self = jQuery(this);
+                var text = $self.text();
+                var inx = $self.data('index');
+                //console.log('show(). inx: ' + inx + ', text: ' + text);
 
-                var table = jQuery(this).parentsUntil('table').parent();
+                var table = $self.parentsUntil('table').parent();
+                var ths = table.find('tr th:nth-child(' + inx + ')');
+                var tds = table.find('tr td:nth-child(' + inx + ')');
+                ths.show();
+                tds.show();
 
-                table.find('tr td:nth-child(' + inx + ')').show();
-                table.find('tr th:nth-child(' + inx + ')').show();
-
-                jQuery(this).remove();
+                $self.remove();
 
                 return false;
             });

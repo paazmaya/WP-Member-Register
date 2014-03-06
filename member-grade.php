@@ -191,8 +191,8 @@ function mr_show_grades($memberid = null)
 			if ($allowremove)
 			{
 				echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-grade-list') .
-					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Delete grade', 'member-register') . ' ' . 
-                    $grade['type'] . ' ' . $gradeName . '">_</a></td>';
+					'&amp;removegrade=' . $grade['id'] . '" title="' . __('Delete grade', 'member-register') . ' ' .
+                    $grade['type'] . ' ' . $gradeName . '">&nbsp;</a></td>';
 			}
 			echo '</tr>';
 		}

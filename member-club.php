@@ -234,7 +234,7 @@ function mr_show_clubs()
             {
                 echo '<td><a class="dashicons dashicons-dismiss" rel="remove" href="' . admin_url('admin.php?page=member-club-list') .
                     '&amp;removeclub=' . $club['id'] . '" title="' . __('Delete club', 'member-register') . ': ' .
-                    $club['title'] . '">_</a></td>';
+                    $club['title'] . '">&nbsp;</a></td>';
             }
             echo '</tr>';
         }
