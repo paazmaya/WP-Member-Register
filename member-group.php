@@ -253,7 +253,7 @@ function mr_group_new()
 
     ?>
 	<div class="wrap">
-		<h2><?php echo __('Create new group that must have at least one member', 'member-register'); ?></h2>
+		<h3><?php echo __('Create new group that must have at least one member', 'member-register'); ?></h3>
 		<?php
 		mr_new_group_form();
 		?>
@@ -386,7 +386,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>
-				<td><select class="chosen" name="members[]" multiple size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
+				<td><select class="chosen" name="members[]" required multiple size="7" data-placeholder="<?php echo __('Choose members', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				$sql = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id

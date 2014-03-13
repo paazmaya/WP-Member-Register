@@ -205,8 +205,46 @@ function member_register_admin_head()
     // jQuery is in noConflict state while in Wordpress...
     ?>
     <script type="text/javascript">
+        var MEMBER_REGISTER = {
+            storageKey: 'member-register-hidden-columns',
+            hiddenColumns: [],
+            saveHiddenColumns: function () {
+                if (typeof window.localStorage === 'object') {
+                    window.localStorage.setItem(this.storageKey, JSON.stringify(this.hiddenColumns));
+                }
+            },
+            readHiddenColumns: function () {
+                if (typeof window.localStorage === 'object') {
+                    var possibleHidden = window.localStorage.getItem(this.storageKey);
+                    if (possibleHidden !== null) {
+                        this.hiddenColumns = JSON.parse(possibleHidden);
+                    }
+                }
+            },
+            hideColumns: function () {
+                var $table = jQuery('table').has('th.hideable');
+                var $caption = $table.find('caption');
+
+                for (var i = 0; i < MEMBER_REGISTER.hiddenColumns.length; ++i) {
+                    var index = MEMBER_REGISTER.hiddenColumns[i];
+                    var ths = $table.find('tr th:nth-child(' + index + ')');
+                    var text = ths.text();
+                    var tds = $table.find('tr td:nth-child(' + index + ')');
+
+                    var showLink = '<a href="#show" title="' + text + '" data-index="' + index +
+                        '"><i class="dashicons dashicons-download"></i>' + text + '</a>';
+                    $caption.append(showLink);
+                    ths.hide();
+                    tds.hide();
+                }
+
+            }
+        };
 
         jQuery(document).ready(function () {
+            MEMBER_REGISTER.readHiddenColumns();
+            MEMBER_REGISTER.hideColumns();
+
             jQuery('table.sorter').stupidtable();
 
             jQuery.datepicker.setDefaults({
@@ -236,19 +274,24 @@ function member_register_admin_head()
             jQuery('th.hideable a[href="#hide"]').on('click', function () {
                 var $self = jQuery(this);
                 var inx = $self.parent().index() + 1;
+
                 var table = $self.parentsUntil('table').parent();
                 var text = $self.parent().text();
                 //console.log('hide(). inx: ' + inx + ', text: ' + text);
 
+                if (MEMBER_REGISTER.hiddenColumns.indexOf(inx) === -1) {
+                    MEMBER_REGISTER.hiddenColumns.push(inx);
+                }
                 var showLink = '<a href="#show" title="' + text + '" data-index="' + inx +
-                    '"><i class="' + $self.attr('class') + '"></i>' + text + '</a>';
-                jQuery('table caption').append(showLink);
+                    '"><i class="dashicons dashicons-download"></i>' + text + '</a>';
+                table.find('caption').append(showLink);
 
                 var ths = table.find('tr th:nth-child(' + inx + ')');
                 var tds = table.find('tr td:nth-child(' + inx + ')');
 
                 ths.hide();
                 tds.hide();
+                MEMBER_REGISTER.saveHiddenColumns();
 
                 return false;
             });
@@ -266,7 +309,13 @@ function member_register_admin_head()
                 ths.show();
                 tds.show();
 
+                var columnIndex = MEMBER_REGISTER.hiddenColumns.indexOf(inx);
+                if (columnIndex !== -1) {
+                    MEMBER_REGISTER.hiddenColumns.splice(columnIndex, 1);
+                }
+
                 $self.remove();
+                MEMBER_REGISTER.saveHiddenColumns();
 
                 return false;
             });

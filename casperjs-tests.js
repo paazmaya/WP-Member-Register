@@ -325,7 +325,7 @@ casper.start(baseUrl + 'wp-login.php', function () {
     },
     false
   );
-  this.click('#wp-submit');
+  this.click('#wp-submit', 'Login form submit clicked');
   this.waitForSelector('#wpadminbar');
 });
 
@@ -339,7 +339,7 @@ casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-forum', function () {
   this.fill('form', topic, true);
   this.then(function () {
     // Now find that topic from the list and click its title
-    this.click('td[data-sort-value="' + topic.title + '"] > a');
+    this.click('td[data-sort-value="' + topic.title + '"] > a', 'Open topic clicked');
   });
 
   // Topic list page, from PHP mr_show_form_post() method
@@ -352,7 +352,7 @@ casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-forum', function () {
 
   // Remove last own message
   this.then(function () {
-    this.click('tr:last-child a.dashicons-dismiss');
+    this.click('tr:last-child a.dashicons-dismiss', 'Remove last message in the list clicked');
   });
 });
 
@@ -374,9 +374,23 @@ casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-files', function () {
     this.thenEvaluate(function(basename) {
       jQuery('a[rel="remove"][title*="' + basename + '"]').click();
     }, basename);
-    this.wait(200);
+    this.wait(100);
   });
 });
+
+// Groups
+casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-group-list', function () {
+  this.waitForSelector('a[href~="create-group"]', function () {
+    this.eachThen(dummyData.groups, function (response) {
+      var files = response.data;
+      this.waitForSelector('input[name="uploadfile"]', function () {
+        this.fill('form[name="form1"]', files, true);
+      });
+    });
+  });
+});
+
+
 
 casper.wait(200);
 
