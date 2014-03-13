@@ -9,10 +9,10 @@ xgettext \
  --from-code=UTF-8 \
  --copyright-holder="Jukka Paasonen" \
  --package-name=MemberRegister \
- --package-version=0.11.4 \
+ --package-version=0.12.0 \
  --strict \
  --debug \
  --keyword=__ \
  lang/member-register.pot \
-  *.php
+  member-*.php
  
