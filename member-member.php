@@ -669,11 +669,11 @@ function mr_new_member_form($action, $data)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('First Name', 'member-register'); ?></th>
-				<td><input type="text" name="firstname" class="required" required value="<?php echo $values['firstname']; ?>"/></td>
+				<td><input type="text" name="firstname" required value="<?php echo $values['firstname']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Last name', 'member-register'); ?></th>
-				<td><input type="text" name="lastname" class="required" required value="<?php echo $values['lastname']; ?>"/></td>
+				<td><input type="text" name="lastname" required value="<?php echo $values['lastname']; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Birthday', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>

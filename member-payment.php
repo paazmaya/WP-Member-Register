@@ -377,11 +377,11 @@ function mr_new_payment_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Type', 'member-register'); ?> <span class="description">(<?php echo __('annual, lifetime, etc...', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="type" value="" class="required" required list="types"/></td>
+				<td><input type="text" name="type" value="" required list="types"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Amount', 'member-register'); ?> <span class="description">(<?php echo __('EUR', 'member-register'); ?>)</span></th>
-				<td><input type="number" name="amount" value="" class="required" required list="amounts"/></td>
+				<td><input type="number" name="amount" value="" required list="amounts"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Deadline', 'member-register'); ?> <span class="description">(<?php echo __('Three weeks in the future by default', 'member-register'); ?>)</span></th>

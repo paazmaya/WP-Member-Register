@@ -31,12 +31,12 @@ function mr_prf_register_form ()
 	?>
 	<p>
 		<label><?php echo __('First Name', 'member-register'); ?><br/>
-			<input type="text" name="firstname" class="required" required value="<?php echo $values['firstname']; ?>"/>
+			<input type="text" name="firstname" required value="<?php echo $values['firstname']; ?>"/>
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Last name', 'member-register'); ?><br/>
-			<input type="text" name="lastname" class="required" required value="<?php echo $values['lastname']; ?>"/>
+			<input type="text" name="lastname" required value="<?php echo $values['lastname']; ?>"/>
 		</label>
 	</p>
 	<p>
@@ -47,27 +47,27 @@ function mr_prf_register_form ()
 	</p>
 	<p>
 		<label><?php echo __('Postal Address', 'member-register'); ?><br/>
-			<input type="text" name="address" class="required" required value="<?php echo $values['address']; ?>"/>
+			<input type="text" name="address" required value="<?php echo $values['address']; ?>"/>
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Postal Code', 'member-register'); ?><br/>
-			<input type="text" name="zipcode" class="required" required value="<?php echo $values['zipcode']; ?>" list="zipcodes"/>
+			<input type="text" name="zipcode" required value="<?php echo $values['zipcode']; ?>" list="zipcodes"/>
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Post Office', 'member-register'); ?><br/>
-			<input type="text" name="postal" class="required" required value="<?php echo $values['postal']; ?>" list="postals"/>
+			<input type="text" name="postal" required value="<?php echo $values['postal']; ?>" list="postals"/>
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Telephone', 'member-register'); ?><br/>
-			<input type="text" name="phone" class="required" required value="<?php echo $values['phone']; ?>"/>
+			<input type="text" name="phone" required value="<?php echo $values['phone']; ?>"/>
 		</label>
 	</p>
 	<p>
 		<label><?php echo __('Nationality', 'member-register'); ?><br/>
-			<select name="nationality" class="required" required data-placeholder="<?php echo __('Choose nationality', 'member-register'); ?>">
+			<select name="nationality" required data-placeholder="<?php echo __('Choose nationality', 'member-register'); ?>">
 		<option value=""></option>
 		<?php
 		$sql = 'SELECT code, name FROM ' . $wpdb->prefix . 'mr_country ORDER BY name ASC';
@@ -87,7 +87,7 @@ function mr_prf_register_form ()
 	</p>
 	<p>
 		<label><?php echo __('Main martial art', 'member-register'); ?><br/>
-			<select name="martial" class="required" required data-placeholder="<?php echo __('Choose main martial art', 'member-register'); ?>">
+			<select name="martial" required data-placeholder="<?php echo __('Choose main martial art', 'member-register'); ?>">
 				<option value=""></option>
 				<?php
 				foreach ($mr_martial_arts as $k => $v)

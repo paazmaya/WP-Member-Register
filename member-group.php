@@ -382,7 +382,7 @@ function mr_new_group_form($members = null, $title = '', $id = null)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Title', 'member-register'); ?> <span class="description">(<?php echo __('name for easy recognition', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" class="required" required value="<?php echo $title; ?>"/></td>
+				<td><input type="text" name="title" required value="<?php echo $title; ?>"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Members', 'member-register'); ?> <span class="description">(<?php echo __('multiple choice', 'member-register'); ?>)</span></th>

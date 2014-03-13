@@ -29,7 +29,7 @@ label.error {
     margin-left: 10px;
     vertical-align: middle;
 }
-input.required {
+input[required], select[required] {
 	border: 1px solid #22F422;
 }
 th.hideable a[href="#hide"] {

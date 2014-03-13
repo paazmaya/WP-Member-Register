@@ -394,7 +394,7 @@ function mr_show_form_topic()
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Topic', 'member-register'); ?> <span class="description">(<?php echo __('title', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="title" class="required" required value=""/></td>
+				<td><input type="text" name="title" required value=""/></td>
 			</tr>
 		</table>
 
@@ -422,7 +422,7 @@ function mr_show_form_post($topic)
 		<table class="form-table" id="mrform">
 			<tr class="form-field">
 				<th><?php echo __('Message', 'member-register'); ?> <span class="description">(<?php echo __('feel free to write', 'member-register'); ?>)</span></th>
-				<td><textarea name="content" class="required" required></textarea></td>
+				<td><textarea name="content" required></textarea></td>
 			</tr>
 		</table>
 

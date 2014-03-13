@@ -324,11 +324,11 @@ function mr_grade_form($members)
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Location', 'member-register'); ?> <span class="description">(<?php echo __('city and country if not native', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="location" class="required" required value="" list="locations"/></td>
+				<td><input type="text" name="location" required value="" list="locations"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Nominator', 'member-register'); ?> <span class="description">(<?php echo __('who nominated', 'member-register'); ?>)</span></th>
-				<td><input type="text" name="nominator" class="required" required value="" list="nominators"/></td>
+				<td><input type="text" name="nominator" required value="" list="nominators"/></td>
 			</tr>
 			<tr class="form-field">
 				<th><?php echo __('Date', 'member-register'); ?> <span class="description">(YYYY-MM-DD)</span></th>

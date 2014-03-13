@@ -161,13 +161,13 @@ function mr_club_form($data = null)
             <tr class="form-field">
                 <th><?php echo __('Name', 'member-register'); ?> <span
                         class="description">(<?php echo __('official title', 'member-register'); ?>)</span></th>
-                <td><input type="text" name="title" class="required" required
+                <td><input type="text" name="title" required
                            value="<?php echo $values['title']; ?>"/></td>
             </tr>
             <tr class="form-field">
                 <th><?php echo __('Address', 'member-register'); ?> <span
                         class="description">(<?php echo __('main training place', 'member-register'); ?>)</span></th>
-                <td><input type="text" name="address" class="required" required
+                <td><input type="text" name="address" required
                            value="<?php echo $values['address']; ?>"/></td>
             </tr>
         </table>
