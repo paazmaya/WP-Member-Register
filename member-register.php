@@ -207,7 +207,7 @@ function member_register_admin_head()
     <script type="text/javascript">
         var MEMBER_REGISTER = {
             storageKey: 'member-register-hidden-columns',
-            hiddenColumns: [],
+            hiddenColumns: [1, 7, 8],
             saveHiddenColumns: function () {
                 if (typeof window.localStorage === 'object') {
                     window.localStorage.setItem(this.storageKey, JSON.stringify(this.hiddenColumns));
@@ -223,7 +223,7 @@ function member_register_admin_head()
             },
             hideColumns: function () {
                 var $table = jQuery('table').has('th.hideable');
-                var $caption = $table.find('caption');
+                var $caption = $table.find('caption > p');
 
                 for (var i = 0; i < MEMBER_REGISTER.hiddenColumns.length; ++i) {
                     var index = MEMBER_REGISTER.hiddenColumns[i];
@@ -237,7 +237,6 @@ function member_register_admin_head()
                     ths.hide();
                     tds.hide();
                 }
-
             }
         };
 
@@ -246,6 +245,24 @@ function member_register_admin_head()
             MEMBER_REGISTER.hideColumns();
 
             jQuery('table.sorter').stupidtable();
+
+            // Search field
+            jQuery('#tablesearch').bind('change keyup', function (event) {
+                var $self = jQuery(this);
+                var search = $self.val();
+                var $trs = $self.parentsUntil('table').parent().find('tbody > tr');
+                $trs.each(function (index, item) {
+                    var $tr = jQuery(item);
+                    if ($tr.text().indexOf(search) !== -1) {
+                        if ($tr.is(':hidden')) {
+                            $tr.show();
+                        }
+                    }
+                    else {
+                        $tr.hide();
+                    }
+                });
+            });
 
             jQuery.datepicker.setDefaults({
                 showWeek: true,
@@ -284,7 +301,7 @@ function member_register_admin_head()
                 }
                 var showLink = '<a href="#show" title="' + text + '" data-index="' + inx +
                     '"><i class="dashicons dashicons-download"></i>' + text + '</a>';
-                table.find('caption').append(showLink);
+                table.find('caption > p').append(showLink);
 
                 var ths = table.find('tr th:nth-child(' + inx + ')');
                 var tds = table.find('tr td:nth-child(' + inx + ')');

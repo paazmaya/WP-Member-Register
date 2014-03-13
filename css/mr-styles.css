@@ -58,6 +58,14 @@ table caption a {
 }
 
 /* Show red marker on inactive member in the list */
-.inactive td:first-child {
-  border-left: 4px solid #d54e21;
+tbody, .inactive {
+  position: relative;
+}
+.inactive::after {
+  content: '';
+  background-color: #d54e21;
+  width: 4px;
+  height: 30px;
+  position: absolute;
+  left: 0;
 }

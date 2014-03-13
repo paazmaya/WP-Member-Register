@@ -63,7 +63,10 @@ function mr_show_members($filters = null)
 
 	?>
 	<table class="wp-list-table widefat sorter">
-	<caption></caption>
+	<caption>
+        <label><input type="text" id="tablesearch"/></label>
+        <p></p>
+    </caption>
 	<thead>
 	<tr>
 		<th data-sort="int" class="hideable"><?php echo __('Member ID', 'member-register'); ?></th>

@@ -58,6 +58,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 * Fixed showing hidden columns of member list
 * Better error handling and checking in file uploads
 * Use localStorage to remember hidden columns in member listing
+* Filter member list with single input field
 
 = 0.12.0 =
 * Released 4th March 2014
