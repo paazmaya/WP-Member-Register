@@ -119,7 +119,7 @@ function mr_files_list()
 		if ($update !== false)
 		{
 			echo '<div class="updated"><p>';
-			echo '<strong>' . __('The file has been removed.', 'member-register') . '</strong>';
+			echo '<strong>' . __('The file has been removed.', 'member-register') . ' (' . $info['directory'] . '/' . $info['basename'] . ')</strong>';
 			echo '</p></div>';
 		}
 		else
@@ -182,12 +182,13 @@ function mr_files_list()
 				foreach ($files as $file)
 				{
 					$path = realpath($mr_file_base_directory . '/' . $file['directory'] . '/' . $file['id'] . '_' . $file['basename']);
+                    $exists = file_exists($path);
 
-					$out .= '<tr id="user_' . $file['id'] . '">';
+					$out .= '<tr id="user_' . $file['id'] . '"' . ($exists ? '' : ' class="inactive"') . '>';
 					$out .= '<td';
-					if (!file_exists($path))
+					if (!$exists)
 					{
-						$out .= ' class="redback" title="' . __('File not found', 'member-register') . '">' . $file['basename'];
+						$out .= ' title="' . __('File not found', 'member-register') . '">' . $file['basename'];
 					}
 					else
 					{
@@ -271,29 +272,31 @@ function mr_files_list()
 
 			// Check for possible insert
 			$hidden_field_name = 'mr_submit_hidden_file';
-			if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && isset($_FILES['hoplaa']))
+			if (isset($_POST[$hidden_field_name]) && $_POST[$hidden_field_name] == 'Y' && isset($_FILES['uploadfile']))
 			{
-				/*
-				  echo '<pre>';
-				  print_r($_FILES);
-				  echo '</pre>';
-				 */
-				$dir = isset($_POST['directory']) ? mr_urize($_POST['directory']) : '';
-				$mingrade = (isset($_POST['grade']) && $_POST['grade'] != '' && array_key_exists($_POST['grade'], $mr_grade_values)) ? $_POST['grade'] : '';
-				$clubonly = (isset($_POST['club']) && is_numeric($_POST['club'])) ? $_POST['club'] : 0;
-				$artonly = (isset($_POST['art']) && $_POST['art'] != '' && array_key_exists($_POST['art'], $mr_martial_arts)) ? $_POST['art'] : '';
-				$grouponly = isset($_POST['group']) && is_numeric($_POST['group']) ? intval($_POST['group']) : '';
+                if (isset($_FILES['uploadfile']['error']) && $_FILES['uploadfile']['error'] != UPLOAD_ERR_OK)
+                {
+                    echo '<div class="error"><p>' . file_upload_error_message($_FILES['uploadfile']['error']) . '</p></div>';
+                }
+                else
+                {
+                    $dir = isset($_POST['directory']) ? mr_urize($_POST['directory']) : '';
+                    $mingrade = (isset($_POST['grade']) && $_POST['grade'] != '' && array_key_exists($_POST['grade'], $mr_grade_values)) ? $_POST['grade'] : '';
+                    $clubonly = (isset($_POST['club']) && is_numeric($_POST['club'])) ? $_POST['club'] : 0;
+                    $artonly = (isset($_POST['art']) && $_POST['art'] != '' && array_key_exists($_POST['art'], $mr_martial_arts)) ? $_POST['art'] : '';
+                    $grouponly = isset($_POST['group']) && is_numeric($_POST['group']) ? intval($_POST['group']) : '';
 
-				if (mr_insert_new_file($_FILES['hoplaa'], $dir, $mingrade, $clubonly, $artonly, $grouponly))
-				{
-					echo '<div class="updated"><p>';
-					echo '<strong>' . __('New file added.', 'member-register') . ' <em>' . $dir . '/' . $_FILES['hoplaa']['name'] . '</em></strong>';
-					echo '</p></div>';
-				}
-				else
-				{
-					echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
-				}
+                    if (mr_insert_new_file($_FILES['uploadfile'], $dir, $mingrade, $clubonly, $artonly, $grouponly))
+                    {
+                        echo '<div class="updated"><p>';
+                        echo '<strong>' . __('New file added.', 'member-register') . ' <em>' . $dir . '/' . $_FILES['uploadfile']['name'] . '</em></strong>';
+                        echo '</p></div>';
+                    }
+                    else
+                    {
+                        echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
+                    }
+                }
 			}
 			?>
 	<div class="wrap">
@@ -316,7 +319,7 @@ function mr_files_list()
 			<table class="form-table" id="mrform">
 				<tr class="form-field">
 					<th><?php echo __('Choose file', 'member-register'); ?><span class="description">(<?php echo __('max 10 MB', 'member-register'); ?>)</span></th>
-					<td><input type="file" name="hoplaa" value=""/></td>
+					<td><input type="file" name="uploadfile" required value=""/></td>
 				</tr>
 				<tr class="form-field">
 					<th><?php echo __('Folder', 'member-register'); ?><span class="description">(<?php echo __('single word, no spaces', 'member-register'); ?>)</span></th>
@@ -461,3 +464,37 @@ function mr_insert_new_file($filesdata, $dir = '', $mingrade = '',
 	return $insert;
 }
 
+/**
+ * @param int $code
+ * @see http://www.php.net/manual/en/features.file-upload.errors.php
+ * @return string|void
+ */
+function file_upload_error_message($code)
+{
+    $message = __('Unknown upload error', 'member-register');
+    switch ($code)
+    {
+        case UPLOAD_ERR_INI_SIZE:
+            $message = __('The uploaded file exceeds the upload_max_filesize directive in php.ini', 'member-register');
+            break;
+        case UPLOAD_ERR_FORM_SIZE:
+            $message = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', 'member-register');
+            break;
+        case UPLOAD_ERR_PARTIAL:
+            $message = __('The uploaded file was only partially uploaded', 'member-register');
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            $message = __('No file was uploaded', 'member-register');
+            break;
+        case UPLOAD_ERR_NO_TMP_DIR:
+            $message = __('Missing a temporary folder', 'member-register');
+            break;
+        case UPLOAD_ERR_CANT_WRITE:
+            $message = __('Failed to write file to disk', 'member-register');
+            break;
+        case UPLOAD_ERR_EXTENSION:
+            $message = __('File upload stopped by extension', 'member-register');
+            break;
+    }
+    return $message;
+}
