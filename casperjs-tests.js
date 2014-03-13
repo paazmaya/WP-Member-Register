@@ -9,7 +9,7 @@
  * Then, inspired by https://gist.github.com/danzajdband/9334753
  * Make a video of the sequential screen shots, with reduced resolution.
  *
- * ffmpeg -f image2 -framerate 4 -i "sequential-%05d.png" -vcodec libx264 -vf scale=1024:-1 -b 600k output.mp4
+ * ffmpeg -f image2 -framerate 4 -i "sequential-%05d.png" -vcodec libx264 -vf scale=1024:-1 -b:v 600k output.mp4
  *
  * In order to use -pattern_type glob, at least version 1.0 of FFmpeg is needed.
  * That would allow to use -i "sequential-*.png", thus not requiring all numbers in the
@@ -41,6 +41,9 @@ var casper = require('casper').create({
 
 // http://docs.casperjs.org/en/latest/modules/utils.html
 var utils = require('utils');
+
+// https://github.com/ariya/phantomjs/wiki/API-Reference-FileSystem
+var fs = require('fs');
 
 casper.on('waitFor.timeout', function (timeout, details) {
   this.echo('waitFor.timeout: ' + details);
@@ -156,12 +159,52 @@ var dummyData = {
   ],
   files: [
     {
-      hoplaa: '', // file, var fpath = fs.pathJoin(phantom.casperPath, 'README.md');
+      uploadfile: fs.workingDirectory + '/README.md' , // file
       directory: '',
       club: '',
       grade: '',
       art: '',
       group: ''
+    },
+    {
+      uploadfile: fs.workingDirectory + '/readme.txt' , // file
+      directory: 'testing-only',
+      club: '',
+      grade: '',
+      art: '',
+      group: ''
+    },
+    {
+      uploadfile: fs.workingDirectory + '/screenshot-1.jpg' , // file
+      directory: '',
+      club: '1',
+      grade: '',
+      art: '',
+      group: ''
+    },
+    {
+      uploadfile: fs.workingDirectory + '/screenshot-2.jpg' , // file
+      directory: '',
+      club: '',
+      grade: '1K',
+      art: '',
+      group: ''
+    },
+    {
+      uploadfile: fs.workingDirectory + '/xgettext.txt' , // file
+      directory: '',
+      club: '',
+      grade: '',
+      art: 'karate',
+      group: ''
+    },
+    {
+      uploadfile: fs.workingDirectory + '/.editorconfig' , // file
+      directory: '',
+      club: '',
+      grade: '',
+      art: '',
+      group: '1'
     }
   ],
   topics: [
@@ -251,7 +294,7 @@ var testUsers = [
 
 // Record images to be used in a video
 var startSequentialCaptures = function () {
-  var timeout = 50;
+  var timeout = 100;
   return setInterval(function () {
     var n = ((sequentialCount < 10) ? '0' : '') +
       ((sequentialCount < 100) ? '0' : '') +
@@ -266,7 +309,7 @@ var startSequentialCaptures = function () {
 };
 
 
-
+// kirjaudu-sisaan/
 casper.start(baseUrl + 'wp-login.php', function () {
   sequentialIntervalId = startSequentialCaptures();
   this.echo(this.getTitle());
@@ -310,6 +353,28 @@ casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-forum', function () {
   // Remove last own message
   this.then(function () {
     this.click('tr:last-child a.dashicons-dismiss');
+  });
+});
+
+// Files, upload and delete
+casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-files-new', function () {
+  this.waitForSelector('input[name="uploadfile"]', function () {
+    this.eachThen(dummyData.files, function (response) {
+      var files = response.data;
+      this.waitForSelector('input[name="uploadfile"]', function () {
+        this.fill('form[name="form1"]', files, true);
+      });
+    });
+  });
+});
+casper.thenOpen(baseUrl + 'wp-admin/admin.php?page=member-files', function () {
+  this.eachThen(dummyData.files, function (response) {
+    var files = response.data;
+    var basename = files.uploadfile.split('/').pop();
+    this.thenEvaluate(function(basename) {
+      jQuery('a[rel="remove"][title*="' + basename + '"]').click();
+    }, basename);
+    this.wait(200);
   });
 });
 
