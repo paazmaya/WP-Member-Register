@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Jukka Paasonen
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Member Register for keeping things recorder within martial art.
+# Copyright (C) 2011-2014 Jukka Paasonen
+# This file is distributed under the same license as the Member Register package.
+# Juga Paazmaya <olavic@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MemberRegister 0.12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-13 22:55+0200\n"
-"PO-Revision-Date: 2014-03-13 23:45+0200\n"
+"POT-Creation-Date: 2014-03-19 19:37+0200\n"
+"PO-Revision-Date: 2014-03-25 13:56+0200\n"
 "Last-Translator: Juga Paazmaya <olavic@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
