@@ -52,7 +52,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 
 == Changelog ==
 = 0.13.0 =
-* Released 2014
+* Released 26th March 2014
 * User Interface testing with CasperJS, http://casperjs.org
 * Members listed in two lists based on their active state, so that recently registered users will be easier to find
 * Fixed showing hidden columns of member list
