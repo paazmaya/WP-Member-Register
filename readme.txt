@@ -8,7 +8,7 @@ Author: Jukka Paasonen
 Author URI: http://paazmaya.com
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.5.0
-Tested up to: 3.8.0
+Tested up to: 3.9.2
 Stable tag: master
 
 Member register management related to personal information,
