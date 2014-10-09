@@ -7,19 +7,17 @@
  */
 
 
-function mr_install ()
-{
-	global $wpdb;
-	global $mr_db_version;
-	$mr_prefix = 'mr_';
+function mr_install() {
+    global $wpdb;
+    global $mr_db_version;
+    $mr_prefix = 'mr_';
 
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'group';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'group';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) NOT NULL AUTO_INCREMENT,
 		  title varchar(200) COLLATE utf8_swedish_ci NOT NULL,
 		  creator mediumint(6) NOT NULL COMMENT 'Member ID who creted',
@@ -28,26 +26,24 @@ function mr_install ()
 		  PRIMARY KEY (id)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'group_member';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'group_member';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) NOT NULL AUTO_INCREMENT,
 		  group_id mediumint(6) NOT NULL COMMENT 'ID of the group',
 		  member_id mediumint(6) NOT NULL COMMENT 'ID of the member',
 		  PRIMARY KEY (id)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'file';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'file';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  bytesize int(12) unsigned NOT NULL,
 		  basename varchar(255) COLLATE utf8_swedish_ci NOT NULL,
@@ -67,13 +63,12 @@ function mr_install ()
 		  KEY artonly (artonly)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'forum_post';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'forum_post';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  topic mediumint(6) unsigned NOT NULL,
 		  content text COLLATE utf8_swedish_ci NOT NULL,
@@ -85,13 +80,12 @@ function mr_install ()
 		  KEY topic (topic)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'forum_topic';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'forum_topic';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  title varchar(250) COLLATE utf8_swedish_ci NOT NULL,
 		  member mediumint(6) unsigned NOT NULL COMMENT 'User ID in mr_member',
@@ -102,13 +96,12 @@ function mr_install ()
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'grade';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'grade';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  member mediumint(6) unsigned NOT NULL DEFAULT '0',
 		  grade enum('6K','5h','5K','4h','4K','3h','3K','2h','2K','1h','1K','1s','1D','2s','2D','3D','4D','5D','6D','7D','8D','9D') COLLATE utf8_swedish_ci NOT NULL DEFAULT '5K',
@@ -122,13 +115,12 @@ function mr_install ()
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'member';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'member';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  user_login varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '' COMMENT 'wp_users reference',
 		  access mediumint(4) NOT NULL DEFAULT '0',
@@ -155,13 +147,12 @@ function mr_install ()
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'payment';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'payment';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  member mediumint(6) unsigned NOT NULL DEFAULT '0',
 		  reference mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -177,13 +168,12 @@ function mr_install ()
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'club';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'club';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
 		  title varchar(140) COLLATE utf8_swedish_ci NOT NULL,
 		  address tinytext COLLATE utf8_swedish_ci NOT NULL,
@@ -192,21 +182,20 @@ function mr_install ()
 		  KEY visible (visible)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	$table_name = $wpdb->prefix . $mr_prefix . 'country';
-	if ($wpdb->get_var("show tables like '" . $table_name. "'") != $table_name)
-	{
-		$sql = "CREATE TABLE " . $table_name . " (
+    $table_name = $wpdb->prefix . $mr_prefix . 'country';
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
+        $sql = "CREATE TABLE " . $table_name . " (
 		  code varchar(2) COLLATE utf8_swedish_ci NOT NULL,
 		  name varchar(140) COLLATE utf8_swedish_ci NOT NULL,
 		  PRIMARY KEY (code)
 		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci COMMENT='County codes as per ISO 3166-1 alpha-2';";
 
-		dbDelta($sql);
+        dbDelta( $sql );
 
-		$sql = "INSERT INTO wp_mr_country (code, name) VALUES
+        $sql = "INSERT INTO wp_mr_country (code, name) VALUES
 		('AF', 'Afghanistan'),
 		('AL', 'Albania'),
 		('DZ', 'Algeria'),
@@ -450,10 +439,10 @@ function mr_install ()
 		('ZW', 'Zimbabwe'),
 		('AX', 'Åland Islands');";
 
-		dbDelta($sql);
-	}
+        dbDelta( $sql );
+    }
 
-	add_option('mr_db_version', $mr_db_version);
+    add_option( 'mr_db_version', $mr_db_version );
 }
 
 

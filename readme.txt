@@ -19,12 +19,12 @@ payments and what is common for martial arts: belt grades.
 Member register offers a way to keep the information of the members organised.
 
 The personal information is stored and if the given member has been registered to use
-Wordpress via Wordpress user, they can change their personal settings.
+WordPress via WordPress user, they can change their personal settings.
 Also martial art grades and membership payments are stored.
 
 == Installation ==
 
-As any other Wordpress plugin:
+As any other WordPress plugin:
 
 1. Upload folder `member-register` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
@@ -51,6 +51,11 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 2. New grade form, in Finnish
 
 == Changelog ==
+
+= 0.14.0 =
+* Released November 2014
+* Following WordPress coding standards (http://codex.wordpress.org/WordPress_Coding_Standards) for PHP, JavaScript and CSS
+
 = 0.13.0 =
 * Released 26th March 2014
 * User Interface testing with CasperJS, http://casperjs.org
@@ -197,7 +202,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 * Payments can be deleted
 * jQuery Tablesorter for sorting tables
 * Grade type added, karate or kobujutsu
-* Datepicker from jQuery UI, which is not included by default in Wordpress. Strange.
+* Datepicker from jQuery UI, which is not included by default in WordPress. Strange.
 
 = 0.3.0 =
 * Released 03 April 2011
