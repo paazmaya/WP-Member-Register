@@ -1,58 +1,70 @@
-#mrform .form-field select, #mrform .form-field input, #mrform .chosen  {
-    width: 35em;
+#mrform .form-field select, #mrform .form-field input, #mrform .chosen {
+  width: 35em;
 }
+
 #mrform .form-field select[multiple] {
-	height: 10em;
+  height: 10em;
 }
+
 #mrform .form-field input[type=radio] {
-    width: 2em;
+  width: 2em;
 }
+
 #mrform .form-field input.error {
-    border: 1px solid #d54e21;
+  border: 1px solid #d54e21;
 }
+
 .w40em {
-	width: 40em;
+  width: 40em;
 }
+
 .w20em {
-	width: 20em;
+  width: 20em;
 }
+
 .w8em {
-	width: 8em;
+  width: 8em;
 }
+
 .w4em {
-	width: 4em;
+  width: 4em;
 }
 
 label.error {
-    color: #d54e21;
-    font-weight: bold;
-    margin-left: 10px;
-    vertical-align: middle;
+  color: #d54e21;
+  font-weight: bold;
+  margin-left: 10px;
+  vertical-align: middle;
 }
+
 input[required], select[required] {
-	border: 1px solid #22F422;
+  border: 1px solid #22F422;
 }
+
 th.hideable a[href="#hide"] {
-	display: inline;
-	margin: 2px;
+  display: inline;
+  margin: 2px;
 }
 
 table caption {
-	text-align: right;
+  text-align: right;
 }
+
 table caption a {
-	display: inline-block;
-	margin: 4px;
-	padding: 4px;
+  display: inline-block;
+  margin: 4px;
+  padding: 4px;
 }
 
 /** Tables that can be sorted **/
 .sorter .sorting-desc {
   box-shadow: inset 0 10px 10px -10px rgba(80, 80, 80, 0.5);
 }
+
 .sorter .sorting-asc {
   box-shadow: inset 0 -10px 10px -10px rgba(80, 80, 80, 0.5);
 }
+
 .sorter th {
   cursor: pointer;
 }
@@ -61,6 +73,7 @@ table caption a {
 tbody, .inactive {
   position: relative;
 }
+
 .inactive::after {
   content: '';
   background-color: #d54e21;
