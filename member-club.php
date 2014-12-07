@@ -176,6 +176,10 @@ function mr_show_clubs() {
     }
     ?>
     <table class="wp-list-table widefat sorter">
+        <caption>
+            <label><input type="text" id="tablesearch"/></label>
+            <p></p>
+        </caption>
         <thead>
         <tr>
             <th data-sort="string" class="sorting-asc"><?php echo __( 'Name', 'member-register' ); ?></th>

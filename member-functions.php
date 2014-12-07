@@ -138,3 +138,29 @@ function mr_urize( $str ) {
 
     return $str;
 }
+
+
+/**
+ * @param array $filters
+ * @param string $prepend If not empty, should contain WHERE and the first rule
+ * @return string SQL query phrase
+ */
+function mr_filter_list( $filters = null, $prepend = '' ) {
+    $wheres = array();
+    $where  = $prepend;
+    if ( is_array( $filters ) ) {
+        foreach ($filters as $key => $value) {
+            if ( is_numeric( $value ) ) {
+                $wheres[] = 'A.' . $key . ' = ' . intval( $value );
+            }
+            else if ( is_bool( $value ) ) {
+                $wheres[] = 'A.' . $key . ' = ' . ( $value ? 1 : 0 );
+            }
+        }
+
+        if ( count( $wheres ) > 0 ) {
+            $where = $where . ' AND ' . implode( ' AND ', $wheres );
+        }
+    }
+    return $where;
+}

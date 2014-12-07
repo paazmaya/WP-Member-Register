@@ -172,6 +172,10 @@ function mr_show_payments( $memberid = null, $isUnpaidView = false ) {
         // id member reference type amount deadline paidday validuntil visible
         ?>
         <table class="wp-list-table widefat sorter">
+            <caption>
+                <label><input type="text" id="tablesearch"/></label>
+                <p></p>
+            </caption>
             <thead>
             <tr>
                 <?php

@@ -10,24 +10,14 @@
 function mr_filter_members( $filters = null ) {
     global $wpdb;
 
-    $wheres = array();
-    $where  = ' WHERE A.visible = 1'; // those removed have visible 0
-    if ( is_array( $filters ) ) {
-        if ( isset( $filters['club'] ) && is_numeric( $filters['club'] ) ) {
-            $wheres[] = 'A.club = ' . intval( $filters['club'] );
-        }
-        if ( isset( $filters['active'] ) && is_bool( $filters['active'] ) ) {
-            $wheres[] = 'A.active = ' . ( $filters['active'] ? 1 : 0 );
-        }
-        if ( isset( $filters['group'] ) && is_numeric( $filters['group'] ) ) {
-            $wheres[] = 'A.id IN (SELECT GM.member_id
+    $where = mr_filter_list($filters, ' WHERE A.visible = 1');
+
+    if ( is_array( $filters ) && isset( $filters['group'] ) && is_numeric( $filters['group'] ) ) {
+        $where .= 'AND A.id IN (SELECT GM.member_id
                 FROM ' . $wpdb->prefix . 'mr_group_member GM
                 WHERE GM.group_id = ' . intval( $filters['group'] ) . ')';
-        }
-        if ( count( $wheres ) > 0 ) {
-            $where = $where . ' AND ' . implode( ' AND ', $wheres );
-        }
     }
+
     return $where;
 }
 
@@ -46,7 +36,7 @@ function mr_show_members( $filters = null ) {
     }
 
     // Possible filter options: club, active, group
-    $where = mr_filter_members($filters);
+    $where = mr_filter_members( $filters );
 
     // id access firstname lastname birthdate address zipcode postal phone email nationality
     // joindate passnro notes lastlogin active club visible
@@ -65,7 +55,6 @@ function mr_show_members( $filters = null ) {
     <table class="wp-list-table widefat sorter">
         <caption>
             <label><input type="text" id="tablesearch"/></label>
-
             <p></p>
         </caption>
         <thead>
@@ -812,9 +801,3 @@ function mr_new_member_form( $action, $data ) {
     </form>
 <?php
 }
-
-
-
-
-
-

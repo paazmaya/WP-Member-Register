@@ -126,7 +126,10 @@ function mr_show_grades( $memberid = null ) {
     if ( count( $res ) > 0 ) {
         ?>
         <table class="wp-list-table widefat sorter">
-
+            <caption>
+                <label><input type="text" id="tablesearch"/></label>
+                <p></p>
+            </caption>
             <thead>
             <tr>
                 <?php

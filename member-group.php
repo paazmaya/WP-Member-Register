@@ -150,6 +150,10 @@ function mr_show_groups( $memberid = null ) {
         // id member reference type amount deadline paidday validuntil visible
         ?>
         <table class="wp-list-table widefat sorter">
+            <caption>
+                <label><input type="text" id="tablesearch"/></label>
+                <p></p>
+            </caption>
             <thead>
             <tr>
                 <th data-sort="string" class="sorting-asc"><?php echo __( 'Title', 'member-register' ); ?></th>

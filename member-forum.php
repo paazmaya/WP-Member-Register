@@ -167,6 +167,10 @@ function mr_show_list_topics() {
 
     ?>
     <table class="wp-list-table widefat sorter">
+        <caption>
+            <label><input type="text" id="tablesearch"/></label>
+            <p></p>
+        </caption>
         <thead>
         <tr>
             <th data-sort="string"><?php echo __( 'Topic', 'member-register' ); ?></th>
@@ -235,6 +239,10 @@ function mr_show_posts_for_topic( $topic ) {
 
     ?>
     <table class="wp-list-table widefat sorter">
+        <caption>
+            <label><input type="text" id="tablesearch"/></label>
+            <p></p>
+        </caption>
         <thead>
         <tr>
             <th data-sort="int" class="sorting-desc"><?php echo __( 'Time', 'member-register' ); ?></th>

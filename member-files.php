@@ -143,6 +143,10 @@ function mr_files_list() {
     ?>
     <h2><?php echo __( 'Files for members', 'member-register' ); ?></h2>
     <table class="wp-list-table widefat sorter">
+        <caption>
+            <label><input type="text" id="tablesearch"/></label>
+            <p></p>
+        </caption>
         <thead>
         <tr>
             <th data-sort="string"><?php echo __( 'Base name', 'member-register' ); ?></th>
