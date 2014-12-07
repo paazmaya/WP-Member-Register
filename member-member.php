@@ -7,20 +7,8 @@
  */
 
 
-/**
- * Show a table of members based on the given filter if any.
- */
-function mr_show_members( $filters = null ) {
+function mr_filter_members( $filters = null ) {
     global $wpdb;
-    global $mr_access_type;
-    global $mr_martial_arts;
-    global $mr_date_format;
-
-    if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_MEMBERS_VIEW ) ) {
-        wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
-    }
-
-    // Possible filter options: club, active, group
 
     $wheres = array();
     $where  = ' WHERE A.visible = 1'; // those removed have visible 0
@@ -40,6 +28,25 @@ function mr_show_members( $filters = null ) {
             $where = $where . ' AND ' . implode( ' AND ', $wheres );
         }
     }
+    return $where;
+}
+
+
+/**
+ * Show a table of members based on the given filter if any.
+ */
+function mr_show_members( $filters = null ) {
+    global $wpdb;
+    global $mr_access_type;
+    global $mr_martial_arts;
+    global $mr_date_format;
+
+    if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_MEMBERS_VIEW ) ) {
+        wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
+    }
+
+    // Possible filter options: club, active, group
+    $where = mr_filter_members($filters);
 
     // id access firstname lastname birthdate address zipcode postal phone email nationality
     // joindate passnro notes lastlogin active club visible
