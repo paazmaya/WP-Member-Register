@@ -139,7 +139,7 @@ function mr_show_groups( $memberid = null ) {
     }
 
     $sql = 'SELECT A.*, B.firstname, B.lastname, (SELECT COUNT(C.member_id) FROM ' . $wpdb->prefix .
-           'mr_group_member C WHERE C.group_id = A.id) AS total FROM ' . $wpdb->prefix .
+           'mr_group_member C WHERE C.group_id = A.id AND C.active = 1) AS total FROM ' . $wpdb->prefix .
            'mr_group A LEFT JOIN ' . $wpdb->prefix .
            'mr_member B ON A.creator = B.id WHERE A.visible = 1 ' .
            $where . 'ORDER BY A.title DESC';

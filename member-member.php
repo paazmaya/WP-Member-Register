@@ -10,10 +10,14 @@
 function mr_filter_members( $filters = null ) {
     global $wpdb;
 
-    $where = mr_filter_list($filters, ' WHERE A.visible = 1');
+    // Should not use group
+    $list = array_filter($filters, function ($key) {
+        return $key !== 'group';
+    }, ARRAY_FILTER_USE_KEY);
+    $where = mr_filter_list($list, ' WHERE A.visible = 1');
 
     if ( is_array( $filters ) && isset( $filters['group'] ) && is_numeric( $filters['group'] ) ) {
-        $where .= 'AND A.id IN (SELECT GM.member_id
+        $where .= ' AND A.id IN (SELECT GM.member_id
                 FROM ' . $wpdb->prefix . 'mr_group_member GM
                 WHERE GM.group_id = ' . intval( $filters['group'] ) . ')';
     }
@@ -44,10 +48,8 @@ function mr_show_members( $filters = null ) {
     $sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid
 	    FROM ' . $wpdb->prefix . 'mr_member A
 		LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code
-		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login' . $where . '
+		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login ' . $where . '
 		ORDER BY A.lastname ASC';
-
-    //echo '<div class="error"><p>' . $sql . '</p></div>';
 
     $members = $wpdb->get_results( $sql, ARRAY_A );
 

@@ -154,6 +154,9 @@ function mr_club_form( $data = null ) {
 <?php
 }
 
+/**
+ * List clubs and numbr of active members in them
+ */
 function mr_show_clubs() {
     global $wpdb;
     global $userdata;
@@ -163,7 +166,7 @@ function mr_show_clubs() {
     $sql = 'SELECT A.*, COUNT(B.id) AS members FROM ' . $wpdb->prefix .
            'mr_club A LEFT JOIN ' . $wpdb->prefix .
            'mr_member B ON B.club = A.id
-        WHERE A.visible = 1 AND (B.visible = 1 OR B.visible IS NULL)
+        WHERE A.visible = 1 AND (B.active = 1 OR B.active IS NULL) AND (B.visible = 1 OR B.visible IS NULL)
         GROUP BY A.id ORDER BY A.title ASC';
 
     //echo '<div class="error"><p>' . $sql . '</p></div>';
