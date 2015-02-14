@@ -124,7 +124,7 @@ function mr_prf_register_form() {
 
     <datalist id="postals">
         <?php
-        $sql     = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY postal ASC';
+        $sql     = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND active = 1 ORDER BY postal ASC';
         $results = $wpdb->get_results( $sql, ARRAY_A );
         foreach ( $results as $res ) {
             echo '<option value="' . $res['postal'] . '"/>';
@@ -133,7 +133,7 @@ function mr_prf_register_form() {
     </datalist>
     <datalist id="zipcodes">
         <?php
-        $sql     = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY zipcode ASC';
+        $sql     = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND active = 1 ORDER BY zipcode ASC';
         $results = $wpdb->get_results( $sql, ARRAY_A );
         foreach ( $results as $res ) {
             echo '<option value="' . $res['zipcode'] . '"/>';

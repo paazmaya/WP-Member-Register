@@ -351,7 +351,7 @@ function mr_new_group_form( $members = null, $title = '', $id = null ) {
                         <?php
                         $sql   = 'SELECT CONCAT(lastname, ", ", firstname) AS name, id
 				    FROM ' . $wpdb->prefix . 'mr_member
-				    WHERE active = 1 ORDER BY lastname ASC';
+				    WHERE active = 1 AND A.visible = 1 ORDER BY lastname ASC';
                         $users = $wpdb->get_results( $sql, ARRAY_A );
                         foreach ( $users as $user ) {
                             echo '<option value="' . $user['id'] . '"';

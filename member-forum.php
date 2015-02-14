@@ -125,7 +125,7 @@ function mr_show_info_topic( $topic ) {
              $wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
              $wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
              $wpdb->prefix . 'mr_member C ON C.id = A.member WHERE' .
-             ' A.id = ' . intval( $topic ) . ' AND A.visible = 1' .
+             ' A.id = ' . intval( $topic ) . ' AND A.visible = 1 AND (C.visible = 1 OR C.visible IS NULL)' .
              ' GROUP BY A.id ORDER BY lastpost DESC LIMIT 1';
 
     //echo '<div class="error"><p>' . $sql . '</p></div>';
@@ -232,7 +232,7 @@ function mr_show_posts_for_topic( $topic ) {
     $sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' .
            $wpdb->prefix . 'mr_forum_post A LEFT JOIN ' .
            $wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
-           $topic . ' AND A.visible = 1 ORDER BY A.created DESC';
+           $topic . ' AND A.visible = 1 AND (B.visible = 1 OR B.visible IS NULL) ORDER BY A.created DESC';
 
     //echo '<div class="error"><p>' . $sql . '</p></div>';
     $res = $wpdb->get_results( $sql, ARRAY_A );

@@ -162,8 +162,8 @@ function mr_show_payments( $memberid = null, $isUnpaidView = false ) {
         $where .= 'AND A.paidday != \'0000-00-00\' ';
     }
     $sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' . $wpdb->prefix .
-           'mr_payment A LEFT JOIN ' . $wpdb->prefix .
-           'mr_member B ON A.member = B.id WHERE A.visible = 1 ' .
+           'mr_payment A JOIN ' . $wpdb->prefix .
+           'mr_member B ON A.member = B.id WHERE A.visible = 1 AND B.visible = 1 ' .
            $where . 'ORDER BY A.deadline DESC';
     $res = $wpdb->get_results( $sql, ARRAY_A );
 

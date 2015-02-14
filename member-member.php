@@ -48,7 +48,7 @@ function mr_show_members( $filters = null ) {
     $sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid
 	    FROM ' . $wpdb->prefix . 'mr_member A
 		LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code
-		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login ' . $where . '
+		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login ' . $where . ' AND A.visible = 1
 		ORDER BY A.lastname ASC';
 
     $members = $wpdb->get_results( $sql, ARRAY_A );
@@ -779,7 +779,7 @@ function mr_new_member_form( $action, $data ) {
     </table>
     <datalist id="postals">
         <?php
-        $sql     = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY postal ASC';
+        $sql     = 'SELECT DISTINCT postal FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND active = 1 ORDER BY postal ASC';
         $results = $wpdb->get_results( $sql, ARRAY_A );
         foreach ( $results as $res ) {
             echo '<option value="' . $res['postal'] . '"/>';
@@ -788,7 +788,7 @@ function mr_new_member_form( $action, $data ) {
     </datalist>
     <datalist id="zipcodes">
         <?php
-        $sql     = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 ORDER BY zipcode ASC';
+        $sql     = 'SELECT DISTINCT zipcode FROM ' . $wpdb->prefix . 'mr_member WHERE visible = 1 AND active = 1 ORDER BY zipcode ASC';
         $results = $wpdb->get_results( $sql, ARRAY_A );
         foreach ( $results as $res ) {
             echo '<option value="' . $res['zipcode'] . '"/>';

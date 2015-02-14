@@ -135,6 +135,8 @@ function mr_files_list() {
            'mr_club C ON A.clubonly = C.id LEFT JOIN ' . $wpdb->prefix .
            'mr_group D ON A.grouponly = D.id WHERE A.visible = 1 ' . $where . ' ORDER BY A.basename ASC';
 
+    // TODO: Should it be visualised that when A.visible is not 1 ?
+
     //echo '<div class="error"><p>' . $sql . '</p></div>';
 
     echo '<div class="wrap">';

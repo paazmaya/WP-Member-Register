@@ -481,8 +481,6 @@ function member_register_wp_loaded() {
             );
         }
     }
-
-    date_default_timezone_set( 'Europe/Helsinki' );
 }
 
 /*
