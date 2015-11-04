@@ -159,7 +159,7 @@ function mr_show_member_info( $id ) {
 
     // ---------------
 
-    $items  = array(
+    $items  = [
         'id',
         'user_login',
         'access',
@@ -179,7 +179,7 @@ function mr_show_member_info( $id ) {
         'lastlogin',
         'active',
         'club'
-    );
+    ];
     $sql    = 'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname, D.id AS wpuserid, ' .
               '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_grade WHERE member = ' . $id . ' AND visible = 1) AS gradecount, ' .
               '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' . $id . ' AND visible = 1) AS paymentcount FROM ' .
@@ -361,18 +361,18 @@ function mr_remove_member( $id ) {
 
     $removal = $wpdb->update(
         $wpdb->prefix . 'mr_member',
-        array(
+        [
             'visible' => 0
-        ),
-        array(
+        ],
+        [
             'id' => $id
-        ),
-        array(
+        ],
+        [
             '%d'
-        ),
-        array(
+        ],
+        [
             '%d'
-        )
+        ]
     );
 
     // TODO: if 'user_login' is not empty, that WP user should be disabled.
@@ -410,7 +410,7 @@ function mr_member_new() {
     <div class="wrap">
         <h2><?php echo __( 'Add new member', 'member-register' ); ?></h2>
         <?php
-        mr_new_member_form( admin_url( 'admin.php?page=member-register-new' ), array() );
+        mr_new_member_form( admin_url( 'admin.php?page=member-register-new' ), [] );
         ?>
     </div>
 
@@ -421,9 +421,9 @@ function mr_member_new() {
 function mr_insert_new_member( $postdata ) {
     global $wpdb;
 
-    $keys     = array();
-    $values   = array();
-    $required = array(
+    $keys     = [];
+    $values   = [];
+    $required = [
         'user_login',
         'access',
         'firstname',
@@ -441,7 +441,7 @@ function mr_insert_new_member( $postdata ) {
         'notes',
         'active',
         'club'
-    );
+    ];
 
     foreach ( $postdata as $k => $v ) {
         if ( in_array( $k, $required ) ) {
@@ -471,8 +471,8 @@ function mr_update_member_info( $postdata ) {
     global $wpdb;
     global $userdata;
 
-    $values   = array();
-    $required = array(
+    $values   = [];
+    $required = [
         'user_login',
         'access',
         'firstname',
@@ -490,7 +490,7 @@ function mr_update_member_info( $postdata ) {
         'notes',
         'active',
         'club'
-    );
+    ];
 
 
     if ( ! mr_has_permission( MR_ACCESS_MEMBERS_EDIT ) ) {
@@ -526,15 +526,15 @@ function mr_update_member_info( $postdata ) {
         return $wpdb->update(
             $wpdb->prefix . 'mr_member',
             $values,
-            array(
+            [
                 'id' => $memberId
-            ),
-            array(
+            ],
+            [
                 '%s'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
     } else {
         return false;
@@ -565,7 +565,7 @@ function mr_new_member_form( $action, $data ) {
     }
 
     // Default values for an empty form
-    $values = array(
+    $values = [
         'id'          => 0,
         'user_login'  => '',
         'access'      => 1,
@@ -584,7 +584,7 @@ function mr_new_member_form( $action, $data ) {
         'notes'       => '',
         'active'      => 1,
         'club'        => - 1
-    );
+    ];
     $values = array_merge( $values, $data );
 
     /*

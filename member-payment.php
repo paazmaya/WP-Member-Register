@@ -58,18 +58,18 @@ function mr_payment_list() {
 
         $update = $wpdb->update(
             $wpdb->prefix . 'mr_payment',
-            array(
+            [
                 'paidday' => $today
-            ),
-            array(
+            ],
+            [
                 'id' => $_POST['haspaid']
-            ),
-            array(
+            ],
+            [
                 '%s'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         if ( $update !== false ) {
@@ -84,18 +84,18 @@ function mr_payment_list() {
         $id     = intval( $_GET['removepayment'] );
         $update = $wpdb->update(
             $wpdb->prefix . 'mr_payment',
-            array(
+            [
                 'visible' => 0
-            ),
-            array(
+            ],
+            [
                 'id' => $id
-            ),
-            array(
+            ],
+            [
                 '%d'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         if ( $update !== false ) {
@@ -256,11 +256,11 @@ function mr_show_payments( $memberid = null, $isUnpaidView = false ) {
 function mr_insert_new_payment( $postdata ) {
     global $wpdb;
 
-    $keys   = array();
-    $values = array();
-    $setval = array();
+    $keys   = [];
+    $values = [];
+    $setval = [];
 
-    $required = array( 'type', 'amount', 'deadline', 'validuntil' );
+    $required = [ 'type', 'amount', 'deadline', 'validuntil' ];
 
 
     if ( isset( $postdata['members'] ) && is_array( $postdata['members'] ) && count( $postdata['members'] ) > 0 ) {
@@ -288,11 +288,11 @@ function mr_insert_new_payment( $postdata ) {
             // calculate reference number
             $ref = "'" . mr_reference_count( $id ) . "'";
 
-            $setval[] = '(' . implode( ', ', array_merge( $values, array(
+            $setval[] = '(' . implode( ', ', array_merge( $values, [
                             '"' . $member . '"',
                             $ref,
                             '"' . $paidday . '"'
-                        ) ) ) . ')';
+                        ] ) ) . ')';
 
         }
     }
@@ -397,7 +397,7 @@ function mr_new_payment_form( $members ) {
  * Counts and adds the check number used in the Finnish invoices.
  */
 function mr_reference_count( $given ) {
-    $div    = array( 7, 3, 1 );
+    $div    = [ 7, 3, 1 ];
     $len    = strlen( $given );
     $arr    = str_split( $given );
     $summed = 0;

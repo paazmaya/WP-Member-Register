@@ -14,7 +14,7 @@ function mr_prf_register_form() {
     global $wpdb;
     global $mr_martial_arts;
 
-    $values = array(
+    $values = [
         'firstname'   => isset( $_POST['firstname'] ) ? mr_htmlent( $_POST['firstname'] ) : '',
         'lastname'    => isset( $_POST['lastname'] ) ? mr_htmlent( $_POST['lastname'] ) : '',
         'birthdate'   => isset( $_POST['birthdate'] ) ? mr_htmlent( $_POST['birthdate'] ) : '',
@@ -25,7 +25,7 @@ function mr_prf_register_form() {
         'nationality' => isset( $_POST['nationality'] ) ? mr_htmlent( $_POST['nationality'] ) : '',
         'martial'     => isset( $_POST['martial'] ) ? mr_htmlent( $_POST['martial'] ) : '',
         'club'        => isset( $_POST['club'] ) ? intval( $_POST['club'] ) : - 1
-    );
+    ];
 
     ?>
     <p>
@@ -149,7 +149,7 @@ function mr_prf_register_form() {
 function mr_prf_registration_errors( $errors, $sanitized_user_login, $user_email ) {
     global $mr_martial_arts;
 
-    $values = array(
+    $values = [
         'firstname'   => __( 'First name should not be empty', 'member-register' ),
         'lastname'    => __( 'Last name should not be empty', 'member-register' ),
         'birthdate'   => __( 'Birthdate should not be empty', 'member-register' ),
@@ -159,7 +159,7 @@ function mr_prf_registration_errors( $errors, $sanitized_user_login, $user_email
         'phone'       => __( 'Phone number should not be empty', 'member-register' ),
         'nationality' => __( 'Nationality should be selected', 'member-register' ),
         'martial'     => __( 'Main martial art should be selected', 'member-register' )
-    );
+    ];
 
     foreach ( $values as $key => $message ) {
         if ( empty( $_POST[ $key ] ) ) {
@@ -196,7 +196,7 @@ function mr_prf_user_register( $user_id ) {
     $sql  = 'SELECT * FROM ' . $wpdb->users . ' WHERE ID = ' . $user_id;
     $data = $wpdb->get_row( $sql, ARRAY_A );
 
-    $values = array(
+    $values = [
         'user_login'  => $data['user_login'],
         'access'      => 1,
         'email'       => $data['user_email'],
@@ -215,7 +215,7 @@ function mr_prf_user_register( $user_id ) {
         'nationality' => isset( $_POST['nationality'] ) ? mr_htmlent( $_POST['nationality'] ) : '',
         'martial'     => isset( $_POST['martial'] ) ? mr_htmlent( $_POST['martial'] ) : '',
         'club'        => isset( $_POST['club'] ) ? intval( $_POST['club'] ) : - 1
-    );
+    ];
 
     $keys = implode( ', ', array_keys( $values ) );
     $vals = '\'' . implode( '\', \'', array_values( $values ) ) . '\'';
@@ -223,7 +223,7 @@ function mr_prf_user_register( $user_id ) {
     $wpdb->insert(
         $wpdb->prefix . 'mr_member',
         $values,
-        array(
+        [
             '%s', // user_login
             '%d',
             '%s', // email
@@ -241,24 +241,24 @@ function mr_prf_user_register( $user_id ) {
             '%s', // nationality
             '%s',
             '%d' // club
-        )
+        ]
     );
 
     // Finally update few items in the WP_users (display_name)
     $wpdb->update(
         $wpdb->users,
-        array(
+        [
             'display_name' => $values['firstname'] . ' ' . $values['lastname']
-        ),
-        array(
+        ],
+        [
             'ID' => $user_id
-        ),
-        array(
+        ],
+        [
             '%s'
-        ),
-        array(
+        ],
+        [
             '%d'
-        )
+        ]
     );
 
     // Also add the meta data for name

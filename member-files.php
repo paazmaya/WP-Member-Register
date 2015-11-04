@@ -82,15 +82,15 @@ function mr_files_list() {
         $id = intval( $_GET['remove-file'] );
 
         $update = $wpdb->update(
-            $wpdb->prefix . 'mr_file', array(
+            $wpdb->prefix . 'mr_file', [
                 'visible' => 0
-            ), array(
+            ], [
                 'id' => $id
-            ), array(
+            ], [
                 '%d'
-            ), array(
+            ], [
                 '%d'
-            )
+            ]
         );
 
         // How about moving the file?
@@ -201,7 +201,7 @@ function mr_files_list() {
             $out .= '</td>';
             if ( mr_has_permission( MR_ACCESS_FILES_MANAGE ) ) {
                 $out .= '<td>';
-                $restrictions = array();
+                $restrictions = [];
                 if ( $file['clubonly'] != 0 ) {
                     $restrictions[] = __( 'Only club', 'member-register' ) . ': ' . $file['clubname'];
                 }
@@ -379,7 +379,7 @@ function mr_insert_new_file(
         $dir = substr( $dir, 1 );
     }
 
-    $values = array(
+    $values = [
         'basename'  => mr_urize( basename( $filesdata['name'] ) ),
         'bytesize'  => $filesdata['size'],
         'directory' => $dir,
@@ -390,7 +390,7 @@ function mr_insert_new_file(
         'artonly'   => $artonly, // if not empty, checked
         'grouponly' => $grouponly, // if not empty, checked
         'visible'   => 1
-    );
+    ];
 
     umask( 0000 );
 
@@ -407,7 +407,7 @@ function mr_insert_new_file(
     $insert = $wpdb->insert(
         $wpdb->prefix . 'mr_file',
         $values,
-        array(
+        [
             '%s', // basename
             '%d', // bytesize
             '%s', // directory
@@ -418,7 +418,7 @@ function mr_insert_new_file(
             '%s', // artonly
             '%d', // grouponly
             '%d' // visible
-        )
+        ]
     );
 
     if ( $insert !== false ) {

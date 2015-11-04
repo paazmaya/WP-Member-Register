@@ -37,7 +37,7 @@ function mr_has_permission( $access, $rights = 0 ) {
 function list_user_rights( $rights ) {
     global $mr_access_type;
 
-    $list = array();
+    $list = [];
     foreach ( $mr_access_type as $key => $val ) {
         if ( mr_has_permission( $key, $rights ) ) {
             $list[] = $val;
@@ -123,17 +123,17 @@ function mr_htmldec( $str ) {
 function mr_urize( $str ) {
     $str = mb_strtolower( $str, 'UTF-8' );
     $str = mr_htmldec( $str );
-    $str = str_replace( array( ' ', ',', '@', '$', '/', '\\', '&', '!', '=', '%', '´', '`', '^', '¨' ), '-', $str );
-    $str = str_replace( array( '--', '---' ), '-', $str );
-    $str = str_replace( array( '...', '..' ), '.', $str );
+    $str = str_replace( [ ' ', ',', '@', '$', '/', '\\', '&', '!', '=', '%', '´', '`', '^', '¨' ], '-', $str );
+    $str = str_replace( [ '--', '---' ], '-', $str );
+    $str = str_replace( [ '...', '..' ], '.', $str );
     // a...z = ASCII table values 97...122
-    $str = str_replace( array( '?', '"', '\'', ':', '(', ')', '*', '[', ']', '{', '}' ), '', $str );
-    $str = str_replace( array( 'ä', 'æ', 'å' ), 'a', $str );
-    $str = str_replace( array( 'ō', 'ö', 'ø' ), 'o', $str );
-    $str = str_replace( array( 'š', 'ß' ), 's', $str );
-    $str = str_replace( array( 'ć', 'č' ), 'c', $str );
-    $str = str_replace( array( 'ž' ), 'z', $str );
-    $str = str_replace( array( '--', '---', '----' ), '-', $str );
+    $str = str_replace( [ '?', '"', '\'', ':', '(', ')', '*', '[', ']', '{', '}' ], '', $str );
+    $str = str_replace( [ 'ä', 'æ', 'å' ], 'a', $str );
+    $str = str_replace( [ 'ō', 'ö', 'ø' ], 'o', $str );
+    $str = str_replace( [ 'š', 'ß' ], 's', $str );
+    $str = str_replace( [ 'ć', 'č' ], 'c', $str );
+    $str = str_replace( [ 'ž' ], 'z', $str );
+    $str = str_replace( [ '--', '---', '----' ], '-', $str );
     $str = trim( $str, ' -' );
 
     return $str;
@@ -146,7 +146,7 @@ function mr_urize( $str ) {
  * @return string SQL query phrase
  */
 function mr_filter_list( $filters = null, $prepend = '' ) {
-    $wheres = array();
+    $wheres = [];
     $where  = $prepend;
     if ( is_array( $filters ) ) {
         foreach ($filters as $key => $value) {

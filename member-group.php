@@ -21,18 +21,18 @@ function mr_group_list() {
         $id     = intval( $_GET['remove-group'] );
         $update = $wpdb->update(
             $wpdb->prefix . 'mr_group',
-            array(
+            [
                 'visible' => 0
-            ),
-            array(
+            ],
+            [
                 'id' => $id
-            ),
-            array(
+            ],
+            [
                 '%d'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         if ( $update !== false ) {
@@ -54,7 +54,7 @@ function mr_group_list() {
             echo '<h1>' . __( 'Edit this group', 'member-register' ) . ' ' . $res['title'] . '</h1>';
             $sql     = 'SELECT member_id FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id . '';
             $results = $wpdb->get_results( $sql, ARRAY_A );
-            $members = array();
+            $members = [];
             foreach ( $results as $r ) {
                 $members[] = $r['member_id'];
             }
@@ -81,10 +81,10 @@ function mr_group_list() {
                  __( 'Modify this group', 'member-register' ) . '</a></p>';
 
             echo '<h2>' . __( 'Members in this group.', 'member-register' ) . '</h2>';
-            mr_show_members( array(
+            mr_show_members( [
                 'group'  => $id,
                 'active' => true
-            ) );
+            ] );
         }
     } else {
         echo '<h2>' . __( 'Groups', 'member-register' ) . '</h2>';
@@ -233,23 +233,23 @@ function mr_insert_new_group( $postdata ) {
     if ( isset( $postdata['members'] ) && is_array( $postdata['members'] ) &&
          count( $postdata['members'] ) > 0 && isset( $postdata['title'] ) && $postdata['title'] != ''
     ) {
-        $values = array(
+        $values = [
             'title'    => mr_htmlent( $postdata['title'] ),
             'creator'  => $userdata->mr_memberid,
             'modified' => time()
-        );
+        ];
         $insert = $wpdb->insert(
             $wpdb->prefix . 'mr_group',
             $values,
-            array(
+            [
                 '%s',
                 '%d',
                 '%d'
-            )
+            ]
         );
         if ( $insert !== false ) {
             $id     = $wpdb->insert_id;
-            $setval = array();
+            $setval = [];
 
             foreach ( $postdata['members'] as $member ) {
                 $setval[] = '(' . $id . ', ' . intval( $member ) . ')';
@@ -274,34 +274,34 @@ function mr_group_update( $id, $postdata ) {
         // This will fail if title was not changed...
         $update = $wpdb->update(
             $wpdb->prefix . 'mr_group',
-            array(
+            [
                 'title' => $postdata['title']
-            ),
-            array(
+            ],
+            [
                 'id' => $id
-            ),
-            array(
+            ],
+            [
                 '%s'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         // Remove those that exists
         $deletion = $wpdb->delete(
             $wpdb->prefix . 'mr_group_member',
-            array(
+            [
                 'group_id' => $id
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         // Insert current
         if ( $deletion !== false ) {
-            $setval = array();
+            $setval = [];
 
             foreach ( $postdata['members'] as $member ) {
                 $setval[] = '(' . $id . ', ' . intval( $member ) . ')';

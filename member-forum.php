@@ -75,18 +75,18 @@ function mr_forum_list() {
             // In reality just archive the topic
             $update = $wpdb->update(
                 $wpdb->prefix . 'mr_forum_topic',
-                array(
+                [
                     'visible' => 0
-                ),
-                array(
+                ],
+                [
                     'id' => $_GET['remove-topic']
-                ),
-                array(
+                ],
+                [
                     '%d'
-                ),
-                array(
+                ],
+                [
                     '%d'
-                )
+                ]
             );
 
             if ( $update !== false ) {
@@ -120,7 +120,7 @@ function mr_show_info_topic( $topic ) {
     global $wpdb;
     global $mr_date_format;
 
-    $items = array( 'id', 'title', 'member', 'created' );
+    $items = [ 'id', 'title', 'member', 'created' ];
     $sql   = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, C.firstname, C.lastname, C.id AS memberid FROM ' .
              $wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
              $wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
@@ -154,7 +154,7 @@ function mr_show_list_topics() {
 
     // Remember that the "created" is a unix timestamp
     // id, title, member, created
-    $items = array( 'id', 'title', 'member', 'created' );
+    $items = [ 'id', 'title', 'member', 'created' ];
     $sql   = 'SELECT A.*, COUNT(B.id) AS total, MAX(B.created) AS lastpost, D.firstname, D.lastname, D.id AS memberid FROM ' .
              $wpdb->prefix . 'mr_forum_topic A LEFT JOIN ' .
              $wpdb->prefix . 'mr_forum_post B ON A.id = B.topic AND B.visible = 1 LEFT JOIN ' .
@@ -227,7 +227,7 @@ function mr_show_posts_for_topic( $topic ) {
     $topic = intval( $topic );
     // id, topic, content, member, created
 
-    $items = array( 'id', 'topic', 'content', 'member', 'created' );
+    $items = [ 'id', 'topic', 'content', 'member', 'created' ];
 
     $sql = 'SELECT A.*, B.firstname, B.lastname, B.id AS memberid FROM ' .
            $wpdb->prefix . 'mr_forum_post A LEFT JOIN ' .
@@ -282,18 +282,18 @@ function mr_forum_remove_post( $postId ) {
 
     return $wpdb->update(
         $wpdb->prefix . 'mr_forum_post',
-        array(
+        [
             'visible' => 0
-        ),
-        array(
+        ],
+        [
             'id' => $postId
-        ),
-        array(
+        ],
+        [
             '%d'
-        ),
-        array(
+        ],
+        [
             '%d'
-        )
+        ]
     );
 }
 
@@ -304,16 +304,16 @@ function mr_insert_new_topic( $postdata ) {
 
     return $wpdb->insert(
         $wpdb->prefix . 'mr_forum_topic',
-        array(
+        [
             'title'   => $postdata['title'],
             'member'  => $userdata->mr_memberid,
             'created' => time()
-        ),
-        array(
+        ],
+        [
             '%s',
             '%d',
             '%d',
-        )
+        ]
     );
 }
 
@@ -323,18 +323,18 @@ function mr_insert_new_post( $postdata ) {
 
     return $wpdb->insert(
         $wpdb->prefix . 'mr_forum_post',
-        array(
+        [
             'content' => nl2br( strip_tags( $postdata['content'] ), true ),
             'topic'   => $postdata['topic'],
             'member'  => $userdata->mr_memberid,
             'created' => time()
-        ),
-        array(
+        ],
+        [
             '%s',
             '%d',
             '%d',
             '%d',
-        )
+        ]
     );
 }
 

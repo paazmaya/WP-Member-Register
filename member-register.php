@@ -27,7 +27,7 @@ global $mr_db_version;
 $mr_db_version = '12';
 
 global $mr_grade_values;
-$mr_grade_values = array(
+$mr_grade_values = [
     '5K' => '5 kyu',
     '5h' => '5 kyu + ' . __( 'stripe', 'member-register' ),
     '4K' => '4 kyu',
@@ -45,23 +45,23 @@ $mr_grade_values = array(
     '5D' => '5 dan',
     '6D' => '6 dan',
     '7D' => '7 dan'
-);
+];
 
 global $mr_grade_types;
-$mr_grade_types = array(
+$mr_grade_types = [
     'Yuishinkai' => 'Yuishinkai Karate',
     'Kobujutsu'  => 'Ryukyu Kobujutsu'
-);
+];
 
 global $mr_martial_arts;
 // Should match the enum of martial in mr_member table.
-$mr_martial_arts = array(
+$mr_martial_arts = [
     'karate'    => 'Yuishinkai Karate',
     'kobujutsu' => 'Ryukyu Kobujutsu',
     'taiji'     => 'Taiji',
     'judo'      => 'Goshin Judo',
     'mma'       => 'Mixed Martial Arts'
-);
+];
 
 define( 'MR_ACCESS_OWN_INFO', 1 << 0 ); // 1
 define( 'MR_ACCESS_FILES_VIEW', 1 << 1 ); // 2
@@ -77,7 +77,7 @@ define( 'MR_ACCESS_FILES_MANAGE', 1 << 10 ); // 1024
 define( 'MR_ACCESS_GROUP_MANAGE', 1 << 11 ); // 2048
 
 global $mr_access_type;
-$mr_access_type = array(
+$mr_access_type = [
     1    => __( 'Own information view and update', 'member-register' ),
     2    => __( 'Files for members', 'member-register' ),
     4    => __( 'Participate in a discussion', 'member-register' ),
@@ -90,7 +90,7 @@ $mr_access_type = array(
     512  => __( 'The clubs management', 'member-register' ),
     1024 => __( 'File management', 'member-register' ),
     2048 => __( 'Manage groups', 'member-register' )
-);
+];
 
 
 require 'member-functions.php';
@@ -147,15 +147,15 @@ function member_register_public_reg_form() {
 // http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 function member_register_admin_init() {
     wp_register_script( 'jquery-bassistance-validation', plugins_url( '/js/jquery.validate.min.js', __FILE__ ),
-        array( 'jquery' ) ); // 1.9.0
+        [ 'jquery' ] ); // 1.9.0
     wp_register_script( 'jquery-bassistance-validation-messages-fi', plugins_url( '/js/messages_fi.js', __FILE__ ),
-        array( 'jquery' ) );
-    wp_register_script( 'jquery-stupidtable', plugins_url( '/js/stupidtable.min.js', __FILE__ ), array( 'jquery' ) );
+        [ 'jquery' ] );
+    wp_register_script( 'jquery-stupidtable', plugins_url( '/js/stupidtable.min.js', __FILE__ ), [ 'jquery' ] );
     wp_register_script( 'jquery-ui-datepicker-fi', plugins_url( '/js/jquery.ui.datepicker-fi.js', __FILE__ ),
-        array( 'jquery' ) );
-    wp_register_script( 'jquery-select2', plugins_url( '/js/select2.min.js', __FILE__ ), array( 'jquery' ) ); //
+        [ 'jquery' ] );
+    wp_register_script( 'jquery-select2', plugins_url( '/js/select2.min.js', __FILE__ ), [ 'jquery' ] ); //
     wp_register_script( 'jquery-select2-locale-fi', plugins_url( '/js/select2_locale_fi.js', __FILE__ ),
-        array( 'jquery-select2' ) ); //
+        [ 'jquery-select2' ] ); //
 
     wp_register_style( 'jquery-ui-datepicker', plugins_url( '/css/jquery.ui.datepicker.css', __FILE__ ) );
     wp_register_style( 'jquery-select2', plugins_url( '/css/select2.css', __FILE__ ) );
@@ -464,20 +464,20 @@ function member_register_wp_loaded() {
 
             $wpdb->update(
                 $wpdb->prefix . 'mr_member',
-                array(
+                [
                     'lastlogin' => time()
-                ),
-                array(
+                ],
+                [
                     'user_login' => $userdata->user_login,
                     'active'     => 1
-                ),
-                array(
+                ],
+                [
                     '%d'
-                ),
-                array(
+                ],
+                [
                     '%s',
                     '%d'
-                )
+                ]
             );
         }
     }
@@ -517,7 +517,7 @@ function mr_member_list_page( $showActiveMembers ) {
             mr_remove_member( intval( $_GET['removeid'] ) );
         } else {
             echo '<p>' . __( 'A list of registered active members', 'member-register' ) . '</p>';
-            mr_show_members( array( 'active' => $showActiveMembers ) );
+            mr_show_members( [ 'active' => $showActiveMembers ] );
         }
     }
     echo '</div>';

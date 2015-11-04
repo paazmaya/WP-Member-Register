@@ -57,18 +57,18 @@ function mr_grade_list() {
         // http://codex.wordpress.org/Class_Reference/wpdb#UPDATE_rows
         $update = $wpdb->update(
             $wpdb->prefix . 'mr_grade',
-            array(
+            [
                 'visible' => 0
-            ),
-            array(
+            ],
+            [
                 'id' => $id
-            ),
-            array(
+            ],
+            [
                 '%d'
-            ),
-            array(
+            ],
+            [
                 '%d'
-            )
+            ]
         );
 
         if ( $update !== false ) {
@@ -197,12 +197,12 @@ function mr_show_grades( $memberid = null ) {
 function mr_insert_new_grade( $postdata ) {
     global $wpdb;
 
-    $keys   = array();
-    $values = array();
-    $setval = array();
+    $keys   = [];
+    $values = [];
+    $setval = [];
 
     // Note that member/members are also required.
-    $required = array( 'grade', 'type', 'location', 'nominator', 'day' );
+    $required = [ 'grade', 'type', 'location', 'nominator', 'day' ];
 
     foreach ( $postdata as $k => $v ) {
         if ( in_array( $k, $required ) ) {
@@ -221,12 +221,12 @@ function mr_insert_new_grade( $postdata ) {
     $keys[] = 'member';
 
     if ( isset( $postdata['member'] ) ) {
-        $postdata['members'] = array( $postdata['member'] );
+        $postdata['members'] = [ $postdata['member'] ];
     }
 
     if ( isset( $postdata['members'] ) && is_array( $postdata['members'] ) && count( $postdata['members'] ) > 0 ) {
         foreach ( $postdata['members'] as $member ) {
-            $setval[] = '(' . implode( ', ', array_merge( $values, array( '"' . intval( $member ) . '"' ) ) ) . ')';
+            $setval[] = '(' . implode( ', ', array_merge( $values, [ '"' . intval( $member ) . '"' ] ) ) . ')';
         }
 
         $sql = 'INSERT INTO ' . $wpdb->prefix . 'mr_grade (' . implode( ', ', $keys ) . ') VALUES ' . implode( ', ', $setval );

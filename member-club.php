@@ -24,15 +24,15 @@ function mr_club_list() {
         $clubId = intval( $_GET['removeclub'] );
         // Mark the given club visible=0, so it can be recovered just in case...
         $update = $wpdb->update(
-            $wpdb->prefix . 'mr_club', array(
+            $wpdb->prefix . 'mr_club', [
                 'visible' => 0
-            ), array(
+            ], [
                 'id' => $clubId
-            ), array(
+            ], [
                 '%d'
-            ), array(
+            ], [
                 '%d'
-            )
+            ]
         );
 
         if ( $update !== false ) {
@@ -75,10 +75,10 @@ function mr_club_list() {
                  $id . '&edit" title="' . __( 'Modify this club', 'member-register' ) . '" class="button-primary">' .
                  __( 'Modify this club', 'member-register' ) . '</a></p>';
             echo '<h2>' . __( 'Active members in this club', 'member-register' ) . '</h2>';
-            mr_show_members( array(
+            mr_show_members( [
                 'club'   => intval( $_GET['club'] ),
                 'active' => true
-            ) );
+            ] );
         }
     } else {
         echo '<h1>' . __( 'Clubs', 'member-register' ) . '</h1>';
@@ -117,10 +117,10 @@ function mr_club_form( $data = null ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
     }
 
-    $values = array(
+    $values = [
         'title'   => '',
         'address' => ''
-    );
+    ];
     $action = admin_url( 'admin.php?page=member-club-list' );
 
     if ( is_array( $data ) ) {
@@ -227,13 +227,13 @@ function mr_insert_new_club( $postdata ) {
          isset( $postdata['address'] ) && $postdata['address'] != ''
     ) {
         return $wpdb->insert(
-            $wpdb->prefix . 'mr_club', array(
+            $wpdb->prefix . 'mr_club', [
                 'title'   => $postdata['title'],
                 'address' => $postdata['address']
-            ), array(
+            ], [
                 '%s',
                 '%s'
-            )
+            ]
         );
     }
 
@@ -248,17 +248,17 @@ function mr_update_club( $postdata ) {
          isset( $postdata['id'] ) && is_numeric( $postdata['id'] )
     ) {
         return $wpdb->update(
-            $wpdb->prefix . 'mr_club', array(
+            $wpdb->prefix . 'mr_club', [
                 'title'   => $postdata['title'],
                 'address' => $postdata['address']
-            ), array(
+            ], [
                 'id' => $postdata['id']
-            ), array(
+            ], [
                 '%s',
                 '%s'
-            ), array(
+            ], [
                 '%d'
-            )
+            ]
         );
     }
 
