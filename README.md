@@ -13,6 +13,9 @@ Also martial art grades and membership payments are stored.
 For further Wordpress related information, please see `readme.txt`, which also
 includes the version history and changelog.
 
+## License
+
+Copyright (c) [Juga Paazmaya <paazmaya@yahoo.com>](http://paazmaya.fi)
 
 ## Contributing
 
