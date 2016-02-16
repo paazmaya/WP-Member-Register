@@ -166,7 +166,7 @@ function mr_show_list_topics() {
     $res = $wpdb->get_results( $sql, ARRAY_A );
 
     ?>
-    <table class="wp-list-table widefat sorter">
+    <table class="wp-list-table mr-table widefat sorter">
         <caption>
             <label><input type="text" id="tablesearch"/></label>
             <p></p>
@@ -313,7 +313,7 @@ function mr_insert_new_topic( $postdata ) {
             '%s',
             '%d',
             '%d',
-        ]
+        )
     );
 }
 
@@ -364,7 +364,7 @@ function mr_show_form_topic() {
         </p>
 
     </form>
-<?php
+    <?php
 }
 
 
@@ -391,7 +391,7 @@ function mr_show_form_post( $topic ) {
         </p>
 
     </form>
-<?php
+    <?php
 }
 
 

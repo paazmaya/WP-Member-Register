@@ -125,7 +125,7 @@ function mr_show_grades( $memberid = null ) {
 
     if ( count( $res ) > 0 ) {
         ?>
-        <table class="wp-list-table widefat sorter">
+        <table class="wp-list-table mr-table widefat sorter">
             <caption>
                 <label><input type="text" id="tablesearch"/></label>
                 <p></p>
@@ -255,7 +255,7 @@ function mr_grade_form( $members ) {
     ?>
     <form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
         <input type="hidden" name="mr_submit_hidden_grade" value="Y"/>
-        <table class="form-table" id="mrform">
+        <table class="form-table mr-table" id="mrform">
             <tr class="form-field">
                 <th><?php echo __( 'Member', 'member-register' ); ?> <span
                         class="description">(<?php echo __( 'select multiple members if needed', 'member-register' ); ?>

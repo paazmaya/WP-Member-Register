@@ -149,7 +149,7 @@ function mr_show_groups( $memberid = null ) {
     if ( count( $res ) > 0 ) {
         // id member reference type amount deadline paidday validuntil visible
         ?>
-        <table class="wp-list-table widefat sorter">
+        <table class="wp-list-table mr-table widefat sorter">
             <caption>
                 <label><input type="text" id="tablesearch"/></label>
                 <p></p>
@@ -335,7 +335,7 @@ function mr_new_group_form( $members = null, $title = '', $id = null ) {
     ?>
     <form name="form1" method="post" action="<?php echo $action; ?>" enctype="multipart/form-data" autocomplete="off">
         <input type="hidden" name="mr_submit_hidden_group" value="Y"/>
-        <table class="form-table" id="mrform">
+        <table class="form-table mr-table" id="mrform">
             <tr class="form-field">
                 <th><?php echo __( 'Title', 'member-register' ); ?> <span
                         class="description">(<?php echo __( 'name for easy recognition', 'member-register' ); ?>)</span>

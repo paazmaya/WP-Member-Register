@@ -1,31 +1,24 @@
 #mrform .form-field select, #mrform .form-field input, #mrform .chosen {
   width: 35em;
 }
-
 #mrform .form-field select[multiple] {
   height: 10em;
 }
-
 #mrform .form-field input[type=radio] {
   width: 2em;
 }
-
 #mrform .form-field input.error {
   border: 1px solid #d54e21;
 }
-
 .w40em {
   width: 40em;
 }
-
 .w20em {
   width: 20em;
 }
-
 .w8em {
   width: 8em;
 }
-
 .w4em {
   width: 4em;
 }
@@ -36,45 +29,39 @@ label.error {
   margin-left: 10px;
   vertical-align: middle;
 }
-
 input[required], select[required] {
   border: 1px solid #22F422;
 }
-
-th.hideable a[href="#hide"] {
-  display: inline;
-  margin: 2px;
+.mr-table th.hideable a[href="#hide"] {
+	display: inline;
+	margin: 2px;
 }
 
-table caption {
-  text-align: right;
+.mr-table caption {
+	text-align: right;
 }
-
-table caption a {
-  display: inline-block;
-  margin: 4px;
-  padding: 4px;
+.mr-table caption a {
+	display: inline-block;
+	margin: 4px;
+	padding: 4px;
 }
 
 /** Tables that can be sorted **/
 .sorter .sorting-desc {
   box-shadow: inset 0 10px 10px -10px rgba(80, 80, 80, 0.5);
 }
-
 .sorter .sorting-asc {
   box-shadow: inset 0 -10px 10px -10px rgba(80, 80, 80, 0.5);
 }
-
 .sorter th {
   cursor: pointer;
 }
 
 /* Show red marker on inactive member in the list */
-tbody, .inactive {
+.mr-table tbody, .mr-table .inactive {
   position: relative;
 }
-
-.inactive::after {
+.mr-table .inactive::after {
   content: '';
   background-color: #d54e21;
   width: 4px;

@@ -7,13 +7,24 @@
  */
 
 
+/**
+ *
+ * @param array $filters
+ */
 function mr_filter_members( $filters = null ) {
     global $wpdb;
 
     // Should not use group
+    /*
     $list = array_filter($filters, function ($key) {
         return $key !== 'group';
     }, ARRAY_FILTER_USE_KEY);
+    // PHP 5.6+: ARRAY_FILTER_USE_KEY
+    */
+    $list = $filters;
+    if (array_key_exists('group', $list)) {
+        unset($list['group']);
+    }
     $where = mr_filter_list($list, ' WHERE A.visible = 1');
 
     if ( is_array( $filters ) && isset( $filters['group'] ) && is_numeric( $filters['group'] ) ) {
@@ -28,6 +39,7 @@ function mr_filter_members( $filters = null ) {
 
 /**
  * Show a table of members based on the given filter if any.
+ * @param array $filters
  */
 function mr_show_members( $filters = null ) {
     global $wpdb;
@@ -48,13 +60,13 @@ function mr_show_members( $filters = null ) {
     $sql = 'SELECT A.*, B.name AS nationalityname, C.id AS wpuserid
 	    FROM ' . $wpdb->prefix . 'mr_member A
 		LEFT JOIN ' . $wpdb->prefix . 'mr_country B ON A.nationality = B.code
-		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login ' . $where . ' AND A.visible = 1
+		LEFT JOIN ' . $wpdb->users . ' C ON A.user_login = C.user_login ' . $where . '
 		ORDER BY A.lastname ASC';
 
     $members = $wpdb->get_results( $sql, ARRAY_A );
 
     ?>
-    <table class="wp-list-table widefat sorter">
+    <table class="wp-list-table mr-table widefat sorter">
         <caption>
             <label><input type="text" id="tablesearch"/></label>
             <p></p>
@@ -120,6 +132,7 @@ function mr_show_members( $filters = null ) {
 
 /**
  * Show all possible information of the given user.
+ * @param integer $id
  */
 function mr_show_member_info( $id ) {
     if ( ! current_user_can( 'read' ) ) {
@@ -207,7 +220,7 @@ function mr_show_member_info( $id ) {
     } else {
         ?>
         <h3><?php echo __( 'Personal information', 'member-register' ); ?></h3>
-        <table class="wp-list-table widefat fixed pages users">
+        <table class="wp-list-table mr-table widefat fixed pages users">
             <tbody>
             <tr>
                 <th><?php echo __( 'Last name', 'member-register' ); ?></th>
@@ -347,6 +360,7 @@ function mr_show_member_info( $id ) {
 
 /**
  * Remove the given member by setting the visible flag to 0
+ * @param integer $id
  */
 function mr_remove_member( $id ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_MEMBERS_EDIT ) ) {
@@ -387,6 +401,9 @@ function mr_remove_member( $id ) {
     }
 }
 
+/**
+ *
+ */
 function mr_member_new() {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_MEMBERS_EDIT ) ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
@@ -597,7 +614,7 @@ function mr_new_member_form( $action, $data ) {
     <form name="form1" method="post" action="<?php echo $action; ?>" autocomplete="on">
     <input type="hidden" name="mr_submit_hidden_member" value="Y"/>
     <input type="hidden" name="id" value="<?php echo $values['id']; ?>"/>
-    <table class="form-table" id="mrform">
+    <table class="form-table mr-table" id="mrform">
         <tr class="form-field">
             <th><?php echo __( 'WP username', 'member-register' ); ?> <span
                     class="description">(<?php echo __( 'If there is already a', 'member-register' ); ?>)</span></th>

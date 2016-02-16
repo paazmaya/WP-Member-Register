@@ -18,7 +18,7 @@
 define ( 'MEMBER_REGISTER_VERSION', '0.13.0' );
 
 global $mr_file_base_directory;
-$mr_file_base_directory = substr( __DIR__, 0, strpos( __DIR__, '/public_html' ) ) . '/member_register_files';
+$mr_file_base_directory = realpath( ABSPATH . '../member_register_files');
 
 global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';

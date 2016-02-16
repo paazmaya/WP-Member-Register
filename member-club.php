@@ -76,7 +76,7 @@ function mr_club_list() {
                  __( 'Modify this club', 'member-register' ) . '</a></p>';
             echo '<h2>' . __( 'Active members in this club', 'member-register' ) . '</h2>';
             mr_show_members( [
-                'club'   => intval( $_GET['club'] ),
+                'club'   => $id,
                 'active' => true
             ] );
         }

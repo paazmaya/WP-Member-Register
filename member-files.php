@@ -144,7 +144,7 @@ function mr_files_list() {
     $files = $wpdb->get_results( $sql, ARRAY_A );
     ?>
     <h2><?php echo __( 'Files for members', 'member-register' ); ?></h2>
-    <table class="wp-list-table widefat sorter">
+    <table class="wp-list-table mr-table widefat sorter">
         <caption>
             <label><input type="text" id="tablesearch"/></label>
             <p></p>
@@ -283,7 +283,7 @@ function mr_files_new() {
                 ?>
             </datalist>
             <input type="hidden" name="mr_submit_hidden_file" value="Y"/>
-            <table class="form-table" id="mrform">
+            <table class="form-table mr-table" id="mrform">
                 <tr class="form-field">
                     <th><?php echo __( 'Choose file', 'member-register' ); ?><span
                             class="description">(<?php echo __( 'max 10 MB', 'member-register' ); ?>)</span></th>
