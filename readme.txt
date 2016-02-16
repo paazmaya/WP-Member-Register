@@ -1,14 +1,14 @@
 === Member Register ===
 
 Contributors: paazmaya
-Donate link: http://paazmaya.com/
+Donate link: http://paazmaya.fi/
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 Author: Jukka Paasonen
-Author URI: http://paazmaya.com
+Author URI: http://paazmaya.fi
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.5.0
-Tested up to: 3.9.2
+Tested up to: 4.1.0
 Stable tag: master
 
 Member register management related to personal information,
@@ -53,8 +53,11 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 == Changelog ==
 
 = 0.14.0 =
-* Released November 2014
+* Released February 2016
 * Following WordPress coding standards (http://codex.wordpress.org/WordPress_Coding_Standards) for PHP, JavaScript and CSS
+* Only visible and active members used for any calculations
+* Using short syntax for arrays, thus making PHP 5.4 the lowest version supported
+* Styles no longer leaking to other parts of the administrating area
 
 = 0.13.0 =
 * Released 26th March 2014

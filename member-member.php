@@ -438,7 +438,6 @@ function mr_member_new() {
 function mr_insert_new_member( $postdata ) {
     global $wpdb;
 
-    $keys     = [];
     $values   = [];
     $required = [
         'user_login',
@@ -537,9 +536,6 @@ function mr_update_member_info( $postdata ) {
             }
         }
 
-
-        //echo '<div class="error"><p>' . $sql . '</p></div>';
-
         return $wpdb->update(
             $wpdb->prefix . 'mr_member',
             $values,
@@ -603,12 +599,6 @@ function mr_new_member_form( $action, $data ) {
         'club'        => - 1
     ];
     $values = array_merge( $values, $data );
-
-    /*
-    echo '<pre>';
-    print_r($values);
-    echo '</pre>';
-    */
 
     ?>
     <form name="form1" method="post" action="<?php echo $action; ?>" autocomplete="on">

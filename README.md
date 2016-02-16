@@ -13,6 +13,8 @@ Also martial art grades and membership payments are stored.
 For further Wordpress related information, please see `readme.txt`, which also
 includes the version history and changelog.
 
+Minimum PHP version supported is `5.4.0`.
+
 ## License
 
 Copyright (c) [Juga Paazmaya <paazmaya@yahoo.com>](http://paazmaya.fi)
