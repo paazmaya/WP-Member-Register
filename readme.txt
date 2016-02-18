@@ -53,7 +53,7 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 == Changelog ==
 
 = 0.14.0 =
-* Released February 2016
+* Released 18th February 2016
 * Following WordPress coding standards (http://codex.wordpress.org/WordPress_Coding_Standards) for PHP, JavaScript and CSS
 * Only visible and active members used for any calculations
 * Using short syntax for arrays, thus making PHP 5.4 the lowest version supported
