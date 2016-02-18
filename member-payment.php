@@ -117,6 +117,7 @@ function mr_payment_list() {
 
 /**
  * List all payments for all members.
+ * @param $memberid
  */
 function mr_show_payments_lists( $memberid ) {
     ?>
@@ -138,6 +139,8 @@ function mr_show_payments_lists( $memberid ) {
 /**
  * Show list of payments for a member,
  * for all, unpaid, paid ones.
+ * @param null $memberid
+ * @param bool $isUnpaidView
  */
 function mr_show_payments( $memberid = null, $isUnpaidView = false ) {
     global $wpdb;
@@ -306,6 +309,7 @@ function mr_insert_new_payment( $postdata ) {
 
 /**
  * Print out a form for creating new payments
+ * @param $members
  */
 function mr_new_payment_form( $members ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_PAYMENT_MANAGE ) ) {
@@ -395,6 +399,8 @@ function mr_new_payment_form( $members ) {
 
 /**
  * Counts and adds the check number used in the Finnish invoices.
+ * @param $given
+ * @return string
  */
 function mr_reference_count( $given ) {
     $div    = [ 7, 3, 1 ];

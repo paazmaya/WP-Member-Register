@@ -10,6 +10,7 @@
 /**
  *
  * @param array $filters
+ * @return string
  */
 function mr_filter_members( $filters = null ) {
     global $wpdb;

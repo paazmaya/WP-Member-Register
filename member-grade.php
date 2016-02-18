@@ -89,6 +89,7 @@ function mr_grade_list() {
 
 /**
  * Show grades for a single member or for everyone
+ * @param null $memberid
  */
 function mr_show_grades( $memberid = null ) {
     global $wpdb;
@@ -190,7 +191,7 @@ function mr_show_grades( $memberid = null ) {
 /**
  * Insert the given grade
  *
- * @param $postdata Array
+ * @param $postdata array
  *
  * @return bool
  */
@@ -243,7 +244,7 @@ function mr_insert_new_grade( $postdata ) {
 /**
  * Print out a form that is used to give grades.
  *
- * @param $members Array of members, {id: , name: }
+ * @param $members array of members, {id: , name: }
  */
 function mr_grade_form( $members ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_GRADE_MANAGE ) ) {

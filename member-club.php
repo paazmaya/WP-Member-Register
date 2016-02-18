@@ -112,6 +112,9 @@ function mr_club_list() {
     echo '</div>';
 }
 
+/**
+ * @param array|null $data
+ */
 function mr_club_form( $data = null ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_CLUB_MANAGE ) ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );

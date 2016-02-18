@@ -143,7 +143,7 @@ function mr_show_info_topic( $topic ) {
 }
 
 
-function mr_show_list_topics() {
+function mr_show_list_topics( $accessLevel ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_CONVERSATION ) ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
     }
@@ -162,7 +162,6 @@ function mr_show_list_topics() {
              '(SELECT C.member FROM wp_mr_forum_post C WHERE A.id = C.topic ORDER BY C.created DESC LIMIT 1)' .
              ' WHERE A.visible = 1 GROUP BY A.id ORDER BY lastpost DESC';
 
-    //echo '<div class="error"><p>' . $sql . '</p></div>';
     $res = $wpdb->get_results( $sql, ARRAY_A );
 
     ?>
@@ -234,7 +233,6 @@ function mr_show_posts_for_topic( $topic ) {
            $wpdb->prefix . 'mr_member B ON A.member = B.id WHERE A.topic = ' .
            $topic . ' AND A.visible = 1 AND (B.visible = 1 OR B.visible IS NULL) ORDER BY A.created DESC';
 
-    //echo '<div class="error"><p>' . $sql . '</p></div>';
     $res = $wpdb->get_results( $sql, ARRAY_A );
 
     ?>
@@ -312,8 +310,8 @@ function mr_insert_new_topic( $postdata ) {
         [
             '%s',
             '%d',
-            '%d',
-        )
+            '%d'
+        ]
     );
 }
 

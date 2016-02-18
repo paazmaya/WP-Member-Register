@@ -118,6 +118,7 @@ function mr_group_list() {
 
 /**
  * Show list of groups for a specific member (int), or for all (null).
+ * @param null $memberid
  */
 function mr_show_groups( $memberid = null ) {
     global $wpdb;
@@ -320,6 +321,9 @@ function mr_group_update( $id, $postdata ) {
 /**
  * Print out a form for creating new groups
  * $members array of pre selected members by id
+ * @param null $members
+ * @param string $title
+ * @param null $id
  */
 function mr_new_group_form( $members = null, $title = '', $id = null ) {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_GROUP_MANAGE ) ) {

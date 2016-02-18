@@ -33,6 +33,7 @@ function mr_has_permission( $access, $rights = 0 ) {
 
 /**
  * Show all rights that the given access has
+ * @param $rights
  */
 function list_user_rights( $rights ) {
     global $mr_access_type;
@@ -60,6 +61,11 @@ function mr_show_access_values() {
 
 /**
  * Get a set of items from the given table, where should be like something.
+ * @param string $table
+ * @param string $where
+ * @param string $shouldbe
+ * @param string $order
+ * @return array|null|object
  */
 function mr_get_list( $table, $where = '', $shouldbe = '', $order = '1 ASC' ) {
     global $wpdb;

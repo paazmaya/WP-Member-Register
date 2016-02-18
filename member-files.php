@@ -11,6 +11,7 @@
 
 /**
  * Called if $_GET['download'] is set
+ * @param $get
  */
 function mr_file_download( $get ) {
     global $mr_file_base_directory;

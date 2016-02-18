@@ -145,6 +145,10 @@ function mr_prf_register_form() {
 
 /**
  * Public registration. Additional form items validation.
+ * @param $errors
+ * @param $sanitized_user_login
+ * @param $user_email
+ * @return mixed
  */
 function mr_prf_registration_errors( $errors, $sanitized_user_login, $user_email ) {
     global $mr_martial_arts;
@@ -188,6 +192,7 @@ function mr_prf_registration_errors( $errors, $sanitized_user_login, $user_email
 
 /**
  * Public registration. Additional form items saving.
+ * @param $user_id
  */
 function mr_prf_user_register( $user_id ) {
     global $wpdb;
