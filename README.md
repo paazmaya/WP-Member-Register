@@ -20,7 +20,7 @@ Minimum PHP version supported is `5.4.0`.
 
 Licensed under [the MIT license](http://opensource.org/licenses/MIT).
 
-Copyright (c) [Juga Paazmaya](http://paazmaya.fi) <paazmaya@yahoo.com>
+Copyright (c) [Juga Paazmaya](https://paazmaya.fi) <paazmaya@yahoo.com>
 
 ## Contributing
 
