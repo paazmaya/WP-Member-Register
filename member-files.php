@@ -33,8 +33,11 @@ function mr_file_download( $get ) {
     $id = intval( array_shift( $parts ) );
     //$dir = implode('/', $parts);
 
-    $sql = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file
-	    WHERE visible = 1 AND id = \'' . $id . '\' LIMIT 1';
+    $sql = $wpdb->prepare(
+        'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file
+    	    WHERE visible = 1 AND id = %d LIMIT 1',
+        $id
+    );
     $res = $wpdb->get_row( $sql, ARRAY_A );
 
     if ( $res ) {
@@ -95,7 +98,10 @@ function mr_files_list() {
         );
 
         // How about moving the file?
-        $sql  = 'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE id = ' . $id . ' LIMIT 1';
+        $sql = $wpdb->prepare(
+            'SELECT basename, directory FROM ' . $wpdb->prefix . 'mr_file WHERE id = %d LIMIT 1',
+            $id
+        );
         $info = $wpdb->get_row( $sql, ARRAY_A );
 
         // Because of this _remove directory, the user created dirs cannot begin with _
@@ -116,8 +122,10 @@ function mr_files_list() {
         }
     }
 
-    $sql      = 'SELECT * FROM ' . $wpdb->prefix . 'mr_member
-	    WHERE id = ' . $userdata->mr_memberid . ' AND visible = 1 LIMIT 1';
+    $sql = $wpdb->prepare(
+        'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = %d AND visible = 1 LIMIT 1',
+        $userdata->mr_memberid
+    );
     $userinfo = $wpdb->get_row( $sql, ARRAY_A );
 
     if ( mr_has_permission( MR_ACCESS_FILES_MANAGE ) ) {

@@ -94,9 +94,12 @@ function print_access() {
 
     echo 'MR_ACCESS_OWN_INFO: ' . MR_ACCESS_OWN_INFO . '<br/>';
     echo 'MR_ACCESS_FILES_VIEW: ' . MR_ACCESS_FILES_VIEW . '<br/>';
-    echo 'MR_ACCESS_CONVERSATION: ' . MR_ACCESS_CONVERSATION . '<br/>';
+    echo 'MR_ACCESS_GRADE_OWN: ' . MR_ACCESS_GRADE_OWN . '<br/>';
+
+    // Not used
     echo 'MR_ACCESS_FORUM_CREATE: ' . MR_ACCESS_FORUM_CREATE . '<br/>';
     echo 'MR_ACCESS_FORUM_DELETE: ' . MR_ACCESS_FORUM_DELETE . '<br/>';
+
     echo 'MR_ACCESS_MEMBERS_VIEW: ' . MR_ACCESS_MEMBERS_VIEW . '<br/>';
     echo 'MR_ACCESS_MEMBERS_EDIT: ' . MR_ACCESS_MEMBERS_EDIT . '<br/>';
     echo 'MR_ACCESS_GRADE_MANAGE: ' . MR_ACCESS_GRADE_MANAGE . '<br/>';

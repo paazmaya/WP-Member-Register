@@ -194,13 +194,18 @@ function mr_show_member_info( $id ) {
         'active',
         'club'
     ];
-    $sql    = 'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname, D.id AS wpuserid, ' .
-              '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_grade WHERE member = ' . $id . ' AND visible = 1) AS gradecount, ' .
-              '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_payment WHERE member = ' . $id . ' AND visible = 1) AS paymentcount FROM ' .
-              $wpdb->prefix . 'mr_member A LEFT JOIN ' .
-              $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' .
-              $wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
-              $wpdb->users . ' D ON A.user_login = D.user_login WHERE A.id = ' . $id . ' AND A.visible = 1 LIMIT 1';
+    $sql = $wpdb->prepare(
+        'SELECT A.*, B.name AS nationalitycountry, C.title AS clubname, D.id AS wpuserid, ' .
+          '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_grade WHERE member = %d AND visible = 1) AS gradecount, ' .
+          '(SELECT COUNT(*) FROM ' . $wpdb->prefix . 'mr_payment WHERE member = %d AND visible = 1) AS paymentcount FROM ' .
+          $wpdb->prefix . 'mr_member A LEFT JOIN ' .
+          $wpdb->prefix . 'mr_country B ON A.nationality = B.code LEFT JOIN ' .
+          $wpdb->prefix . 'mr_club C ON A.club = C.id LEFT JOIN ' .
+          $wpdb->users . ' D ON A.user_login = D.user_login WHERE A.id = %d AND A.visible = 1 LIMIT 1',
+        $id,
+        $id,
+        $id
+    );
     $person = $wpdb->get_row( $sql, ARRAY_A );
 
     echo '<h1>' . $person['firstname'] . ' ' . $person['lastname'] . '</h1>';
@@ -368,11 +373,13 @@ function mr_remove_member( $id ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
     }
 
-    $id = intval( $id );
-
     global $wpdb;
 
-    $info = $wpdb->get_row( 'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = ' . $id . ' LIMIT 1', ARRAY_A );
+    $sql = $wpdb->prepare(
+        'SELECT * FROM ' . $wpdb->prefix . 'mr_member WHERE id = %d LIMIT 1',
+        $id
+    );
+    $info = $wpdb->get_row( $sql, ARRAY_A );
 
     $removal = $wpdb->update(
         $wpdb->prefix . 'mr_member',

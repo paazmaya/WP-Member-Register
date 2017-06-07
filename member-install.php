@@ -67,34 +67,15 @@ function mr_install() {
     }
 
     $table_name = $wpdb->prefix . $mr_prefix . 'forum_post';
-    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
-        $sql = "CREATE TABLE " . $table_name . " (
-		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
-		  topic mediumint(6) unsigned NOT NULL,
-		  content text COLLATE utf8_swedish_ci NOT NULL,
-		  member mediumint(6) unsigned NOT NULL,
-		  created int(10) NOT NULL COMMENT 'Unix timestamp',
-		  visible tinyint(1) NOT NULL DEFAULT '1',
-		  PRIMARY KEY (id),
-		  KEY visible (visible),
-		  KEY topic (topic)
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) == $table_name ) {
+        $sql = "DROP TABLE " . $table_name . " ;";
 
         dbDelta( $sql );
     }
 
     $table_name = $wpdb->prefix . $mr_prefix . 'forum_topic';
-    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) != $table_name ) {
-        $sql = "CREATE TABLE " . $table_name . " (
-		  id mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
-		  title varchar(250) COLLATE utf8_swedish_ci NOT NULL,
-		  member mediumint(6) unsigned NOT NULL COMMENT 'User ID in mr_member',
-		  access tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Minimum access level needed to see',
-		  created int(10) unsigned NOT NULL COMMENT 'Unix timestamp',
-		  visible tinyint(1) NOT NULL DEFAULT '1',
-		  UNIQUE KEY id (id),
-		  KEY visible (visible)
-		) DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci ;";
+    if ( $wpdb->get_var( "show tables like '" . $table_name . "'" ) == $table_name ) {
+        $sql = "DROP TABLE " . $table_name . " ;";
 
         dbDelta( $sql );
     }
@@ -444,5 +425,3 @@ function mr_install() {
 
     add_option( 'mr_db_version', $mr_db_version );
 }
-
-

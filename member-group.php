@@ -47,12 +47,18 @@ function mr_group_list() {
 
     if ( isset( $_GET['group-member'] ) && is_numeric( $_GET['group-member'] ) ) {
         $id  = intval( $_GET['group-member'] );
-        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_group WHERE id = ' . $id . ' AND visible = 1 LIMIT 1';
+        $sql = $wpdb->prepare(
+            'SELECT * FROM ' . $wpdb->prefix . 'mr_group WHERE id = %d AND visible = 1 LIMIT 1',
+            $id
+        );
         $res = $wpdb->get_row( $sql, ARRAY_A );
 
         if ( isset( $_GET['edit'] ) ) {
             echo '<h1>' . __( 'Edit this group', 'member-register' ) . ' ' . $res['title'] . '</h1>';
-            $sql     = 'SELECT member_id FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = ' . $id . '';
+            $sql = $wpdb->prepare(
+                'SELECT member_id FROM ' . $wpdb->prefix . 'mr_group_member WHERE group_id = %d',
+                $id
+            );
             $results = $wpdb->get_results( $sql, ARRAY_A );
             $members = [];
             foreach ( $results as $r ) {
@@ -212,7 +218,6 @@ function mr_group_new() {
     }
 
     global $wpdb;
-
 
 
     ?>

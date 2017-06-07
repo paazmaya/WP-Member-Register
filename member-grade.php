@@ -6,6 +6,16 @@
  * Grade related functions
  */
 
+// Ability to add own grades up to the 1kyu
+function mr_grade_own() {
+    if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_GRADE_OWN ) ) {
+        wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+    }
+
+    global $wpdb;
+
+
+}
 
 function mr_grade_new() {
     if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_GRADE_MANAGE ) ) {
@@ -247,12 +257,26 @@ function mr_insert_new_grade( $postdata ) {
  * @param $members array of members, {id: , name: }
  */
 function mr_grade_form( $members ) {
-    if ( ! current_user_can( 'read' ) || ! mr_has_permission( MR_ACCESS_GRADE_MANAGE ) ) {
+    if ( ! current_user_can( 'read' )
+        || ! mr_has_permission( MR_ACCESS_GRADE_MANAGE )
+        || ! mr_has_permission( MR_ACCESS_GRADE_OWN )  ) {
         wp_die( __( 'You do not have sufficient permissions to access this page.', 'member-register' ) );
     }
 
     global $wpdb;
+    global $userdata;
     global $mr_grade_values;
+
+    $current_user = wp_get_current_user();
+
+    // Only up to 1kyu when adding allowed only to myself
+    if (! mr_has_permission( MR_ACCESS_GRADE_MANAGE )) {
+        $grade_options = array_slice($mr_grade_values, 0, array_search('1D', array_keys($mr_grade_values)) - 1);
+    }
+    else {
+        $grade_options = $mr_grade_values;
+    }
+
     ?>
     <form name="form1" method="post" action="" enctype="multipart/form-data" autocomplete="on">
         <input type="hidden" name="mr_submit_hidden_grade" value="Y"/>
@@ -263,11 +287,23 @@ function mr_grade_form( $members ) {
                         )</span></th>
                 <td>
                     <select class="chosen required" required name="members[]" multiple size="8"
-                            data-placeholder="<?php echo __( 'Choose members', 'member-register' ); ?>">
-                        <option value=""></option>
                         <?php
-                        foreach ( $members as $user ) {
-                            echo '<option value="' . $user['id'] . '">' . $user['name'] . ' (' . $user['id'] . ')</option>';
+
+                        if (! mr_has_permission( MR_ACCESS_GRADE_MANAGE )) {
+                            ?>
+                            disabled
+                            data-placeholder="<?php echo __( 'Choose members', 'member-register' ); ?>">
+                            <option value="<?php echo $userdata->mr_memberid; ?>"><?php echo $current_user->display_name; ?></option>
+                            <?php
+                        }
+                        else {
+                            ?>
+                            data-placeholder="<?php echo __( 'Choose members', 'member-register' ); ?>">
+                            <option value=""></option>
+                            <?php
+                            foreach ( $members as $user ) {
+                                echo '<option value="' . $user['id'] . '">' . $user['name'] . ' (' . $user['id'] . ')</option>';
+                            }
                         }
                         ?>
                     </select>
@@ -281,7 +317,7 @@ function mr_grade_form( $members ) {
                             data-placeholder="<?php echo __( 'Choose a grade', 'member-register' ); ?>">
                         <option value=""></option>
                         <?php
-                        foreach ( $mr_grade_values as $k => $v ) {
+                        foreach ( $grade_options as $k => $v ) {
                             echo '<option value="' . $k . '">' . $v . ' (' . $k . ')</option>';
                         }
                         ?>
@@ -352,5 +388,3 @@ function mr_grade_form( $members ) {
     </form>
 <?php
 }
-
-

@@ -15,7 +15,7 @@
  */
 
 
-define ( 'MEMBER_REGISTER_VERSION', '0.14.0' );
+define ( 'MEMBER_REGISTER_VERSION', '0.15.0' );
 
 global $mr_file_base_directory;
 
@@ -26,7 +26,7 @@ global $mr_date_format;
 $mr_date_format = 'Y-m-d H:i:s';
 
 global $mr_db_version;
-$mr_db_version = '12';
+$mr_db_version = '13';
 
 global $mr_grade_values;
 $mr_grade_values = [
@@ -67,9 +67,12 @@ $mr_martial_arts = [
 
 define( 'MR_ACCESS_OWN_INFO', 1 << 0 ); // 1
 define( 'MR_ACCESS_FILES_VIEW', 1 << 1 ); // 2
-define( 'MR_ACCESS_CONVERSATION', 1 << 2 ); // 4
+define( 'MR_ACCESS_GRADE_OWN', 1 << 2 ); // 4
+
+// FIXME: Usage removed, how to migrate?
 define( 'MR_ACCESS_FORUM_CREATE', 1 << 3 ); // 8
 define( 'MR_ACCESS_FORUM_DELETE', 1 << 4 ); // 16
+
 define( 'MR_ACCESS_MEMBERS_VIEW', 1 << 5 ); // 32
 define( 'MR_ACCESS_MEMBERS_EDIT', 1 << 6 ); // 64
 define( 'MR_ACCESS_GRADE_MANAGE', 1 << 7 ); // 128
@@ -82,9 +85,11 @@ global $mr_access_type;
 $mr_access_type = [
     1    => __( 'Own information view and update', 'member-register' ),
     2    => __( 'Files for members', 'member-register' ),
-    4    => __( 'Participate in a discussion', 'member-register' ),
+    4    => __( 'Add own missing grades', 'member-register' ),
+
     8    => __( 'Create a discussion topic', 'member-register' ),
     16   => __( 'The debates and discussion topics in the removal', 'member-register' ),
+
     32   => __( 'Members listing and viewing their information', 'member-register' ),
     64   => __( 'Adding, editing and removal of members', 'member-register' ),
     128  => __( 'Grade management', 'member-register' ),
@@ -99,7 +104,6 @@ require 'member-functions.php';
 require 'member-member.php';
 require 'member-grade.php';
 require 'member-payment.php';
-require 'member-forum.php';
 require 'member-group.php';
 require 'member-club.php';
 require 'member-files.php';
@@ -120,7 +124,6 @@ add_action( 'init', 'member_register_public_reg_form' );
 // http://codex.wordpress.org/Function_Reference/add_action
 add_action( 'admin_init', 'member_register_admin_init' );
 add_action( 'admin_menu', 'member_register_admin_menu' );
-add_action( 'admin_menu', 'member_register_forum_menu' );
 add_action( 'admin_menu', 'member_register_files_menu' );
 add_action( 'admin_print_styles', 'member_register_admin_print_styles' );
 add_action( 'admin_print_scripts', 'member_register_admin_print_scripts' );
@@ -362,12 +365,12 @@ function member_register_admin_menu() {
             __( 'New payment', 'member-register' ), 'read', 'member-payment-new', 'mr_payment_new' );
     }
 
-    if ( mr_has_permission( MR_ACCESS_GRADE_MANAGE ) ) {
+    if ( mr_has_permission( MR_ACCESS_GRADE_MANAGE )) {
         add_submenu_page( 'member-register-control', __( 'Grades', 'member-register' ),
             __( 'Grades', 'member-register' ), 'read', 'member-grade-list', 'mr_grade_list' );
     }
 
-    if ( mr_has_permission( MR_ACCESS_GRADE_MANAGE ) ) {
+    if ( mr_has_permission( MR_ACCESS_GRADE_MANAGE ) || mr_has_permission( MR_ACCESS_GRADE_OWN ) ) {
         add_submenu_page( 'member-register-control', __( 'Nominate grades', 'member-register' ),
             __( 'Nominate grades', 'member-register' ), 'read', 'member-grade-new', 'mr_grade_new' );
     }
@@ -382,19 +385,6 @@ function member_register_admin_menu() {
             __( 'Groups', 'member-register' ), 'read', 'member-group-list', 'mr_group_list' );
     }
 
-}
-
-
-/**
- * Any member with login access can use the forum
- * http://codex.wordpress.org/Roles_and_Capabilities#Subscriber
- */
-function member_register_forum_menu() {
-    if ( current_user_can( 'read' ) && mr_has_permission( MR_ACCESS_CONVERSATION ) ) {
-        // http://codex.wordpress.org/Adding_Administration_Menus
-        add_menu_page( __( 'Discussions', 'member-register' ), __( 'Discussions', 'member-register' ), 'read', 'member-forum',
-            'mr_forum_list', 'dashicons-format-chat' ); // $position );
-    }
 }
 
 function member_register_files_menu() {
@@ -532,4 +522,3 @@ function mr_member_list_active() {
 function mr_member_list_inactive() {
     mr_member_list_page( false );
 }
-

@@ -59,8 +59,10 @@ function mr_club_list() {
                 echo '<div class="error"><p>' . $wpdb->print_error() . '</p></div>';
             }
         }
-
-        $sql = 'SELECT * FROM ' . $wpdb->prefix . 'mr_club WHERE id = ' . $id . ' AND visible = 1 LIMIT 1';
+        $sql = $wpdb->prepare(
+            'SELECT * FROM ' . $wpdb->prefix . 'mr_club WHERE id = %d AND visible = 1 LIMIT 1',
+            $id
+        );
         $res = $wpdb->get_row( $sql, ARRAY_A );
 
         if ( isset( $_GET['edit'] ) ) {
@@ -267,4 +269,3 @@ function mr_update_club( $postdata ) {
 
     return false;
 }
-
