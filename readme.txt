@@ -8,7 +8,7 @@ Author: Jukka Paasonen
 Author URI: https://paazmaya.fi
 Tags: members, organisation, forum, conversation, users, register, martial-art, club
 Requires at least: 3.5.0
-Tested up to: 4.4.2
+Tested up to: 4.7.5
 Stable tag: master
 
 Member register management related to personal information,
@@ -53,8 +53,9 @@ Upgrades are somewhat seamless, but not until the release of 1.0.0 will there be
 == Changelog ==
 
 = 0.15.0 =
-* Released 2016
+* Released 2nd June 2017
 * Use uploads folder for member-only files
+* Removed "forum" section due to low usage and there are many alternatives available
 
 = 0.14.0 =
 * Released 18th February 2016
