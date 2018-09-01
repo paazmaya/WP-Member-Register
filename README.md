@@ -2,7 +2,7 @@
 
 > Member register offers a way to keep the information of the members organised.
 
-[![Code Climate](https://img.shields.io/codeclimate/github/paazmaya/WP-Member-Register.svg?style=flat-square)](https://codeclimate.com/github/paazmaya/WP-Member-Register)
+[![Code Climate Maintainability](https://api.codeclimate.com/v1/badges/2e1da8a17b8f699848e7/maintainability)](https://codeclimate.com/github/paazmaya/WP-Member-Register/maintainability)
 [![Analytics](https://ga-beacon.appspot.com/UA-2643697-15/wp-member-register/index?flat-gif)](https://github.com/igrigorik/ga-beacon)
 [![Wordpress Plugin](https://img.shields.io/wordpress/plugin/r/member-register.svg?style=flat-square)](https://wordpress.org/plugins/member-register/)
 
