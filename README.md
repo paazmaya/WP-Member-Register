@@ -16,6 +16,26 @@ which also includes the version history and changelog.
 
 Minimum PHP version supported is `5.4.0`.
 
+## Publishing to WordPress Plugin repository (Subversion)
+
+https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/
+
+Clean checkout:
+
+```sh
+svn co https://plugins.svn.wordpress.org/member-register wordpress-member-register
+```
+
+Or in an existing checkout:
+
+```sh
+svn up
+```
+
+Now delete all contents from `wordpress-member-register/trunk/`, copy everything from `WP-Member-Register/src/` to `wordpress-member-register/trunk/` and commit.
+Follow by creating a version folder under `wordpress-member-register/tags/`, such as `0.22.7` and copy all contents of `wordpress-member-register/trunk/` to there, commit.
+
+
 ## Contributing
 
 [Please refer to a GitHub blog post on how to create somewhat perfect pull request.](https://github.com/blog/1943-how-to-write-the-perfect-pull-request "How to write the perfect pull request")
