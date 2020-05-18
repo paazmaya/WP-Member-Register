@@ -16,9 +16,15 @@ which also includes the version history and changelog.
 
 Minimum PHP version supported is `5.4.0`.
 
-## Publishing to WordPress Plugin repository (Subversion)
+## Development
 
-https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/
+Docker utilising environment made originally by
+https://medium.com/soluto-engineering/testing-wordpress-plugins-can-be-fun-d926a20452b0
+
+
+## Publishing to the WordPress Plugin Repository (Subversion)
+
+[Detailed background here](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/).
 
 Clean checkout:
 
@@ -34,6 +40,9 @@ svn up
 
 Now delete all contents from `wordpress-member-register/trunk/`, copy everything from `WP-Member-Register/src/` to `wordpress-member-register/trunk/` and commit.
 Follow by creating a version folder under `wordpress-member-register/tags/`, such as `0.22.7` and copy all contents of `wordpress-member-register/trunk/` to there, commit.
+
+In case there has been changes to anything under `WP-Member-Register/assets/`, then also copy those over,
+but they go to `wordpress-member-register/assets/`
 
 
 ## Contributing
