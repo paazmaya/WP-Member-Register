@@ -45,6 +45,32 @@ In case there has been changes to anything under `WP-Member-Register/assets/`, t
 but they go to `wordpress-member-register/assets/`
 
 
+## Updating translations
+
+TODO: check these commands, since they are really old without comments...
+
+```sh
+"C:\Program Files\Poedit\bin\xgettext.exe" --join-existing --default-domain=member-register --indent --sort-output --no-wrap --language=PHP --from-code=UTF-8 --copyright-holder="Jukka Paasonen" --package-name=MemberRegister --package-version=0.6.0 --strict --debug --keyword=__  member-forum.php member-functions.php member-install.php member-register.php member-club.php member-member.php
+
+
+xgettext \
+ --default-domain=member-register \
+ --sort-output \
+ --no-wrap \
+ --language=PHP \
+ --from-code=UTF-8 \
+ --copyright-holder="Jukka Paasonen" \
+ --package-name=MemberRegister \
+ --package-version=0.13.0 \
+ --strict \
+ --debug \
+ --keyword=__ \
+ -o member-register.pot \
+ lang/member-register.pot \
+  *.php
+```
+
+
 ## Contributing
 
 [Please refer to a GitHub blog post on how to create somewhat perfect pull request.](https://github.com/blog/1943-how-to-write-the-perfect-pull-request "How to write the perfect pull request")
