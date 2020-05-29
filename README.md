@@ -44,6 +44,7 @@ Follow by creating a version folder under `wordpress-member-register/tags/`, suc
 In case there has been changes to anything under `WP-Member-Register/assets/`, then also copy those over,
 but they go to `wordpress-member-register/assets/`
 
+Remember: Whatever ends up under `wordpress-member-register/tags/` should also be tagged in this git repository, prefixed with `v` as in version.
 
 ## Updating translations
 
